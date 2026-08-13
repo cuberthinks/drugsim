@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+   DrugSim design tokens.
+
+   Palette is deliberately cool/neutral (not warm cream) with exactly one
+   accent (signal teal, a quiet nod to electrophysiology's "signal" without
+   being literal). Reliability/applicability-domain states use a desaturated
+   three-step scale (signal -> caution -> concern) rather than saturated
+   traffic-light red/green -- this is a scientific evidence gauge, not a
+   pass/fail alarm.
+   ------------------------------------------------------------------- */
+@theme {
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --color-ink: #14181f;
+  --color-ink-soft: #4a5160;
+  --color-paper: #fafaf8;
+  --color-paper-alt: #f0f1ee;
+  --color-line: #d8dad5;
+
+  --color-signal: #1c6e6e;
+  --color-signal-soft: #e4efee;
+  --color-caution: #a6631b;
+  --color-caution-soft: #f6ead9;
+  --color-concern: #8b3a3a;
+  --color-concern-soft: #f3e3e0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus everywhere, never suppressed. */
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

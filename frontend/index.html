@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="DrugSim: explore how a molecule may behave based on validated computational models." />
+    <title>DrugSim — Computational ADMET Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Phase 7 performance finding: this stylesheet, loaded the ordinary
+      render-blocking way, measured as ~675ms of a ~960ms total page load
+      (Playwright resource timing against the production build) -- by far
+      the single largest contributor, well above the app's own JS+CSS
+      (under 15ms combined, served locally). Loaded non-blocking here via
+      the standard media="print" swap trick: the browser fetches it at low
+      priority without blocking first paint, then the onload flips it to
+      apply globally. The <noscript> tag preserves the fonts for anyone
+      without JS. Body text is already set on the system font stack in
+      index.css, so nothing is unreadable while the custom fonts are
+      still loading or if this request fails/times out entirely (e.g. a
+      network without access to Google Fonts) -- it degrades to system
+      fonts, not a broken page.
+    -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
