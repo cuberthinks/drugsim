@@ -1,0 +1,6 @@
+# Production.
+log_level: INFO
+log_format: json
+debug: false
+database_pool_size: 40
+database_statement_timeout_ms: 60000

@@ -1,0 +1,6 @@
+# Automated test execution.
+log_level: WARNING
+log_format: json
+debug: false
+database_host: localhost
+object_storage_endpoint: http://localhost:9000

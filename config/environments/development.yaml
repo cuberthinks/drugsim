@@ -1,0 +1,6 @@
+# Shared integration environment.
+log_level: DEBUG
+log_format: json
+debug: true
+database_host: postgres
+object_storage_endpoint: http://minio:9000

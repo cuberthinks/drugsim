@@ -1,0 +1,14 @@
+# Pinned toolchain. Participates in toolchain_id and therefore in feature_set_id.
+#
+# RDKit is pinned EXACTLY. Descriptor values change between RDKit releases; a silent
+# minor upgrade would make features computed before and after non-interchangeable
+# while appearing identical (ADR-005, TDS §6.1).
+#
+# Changing any value here is a MAJOR event: it invalidates every existing
+# feature_set_id and requires model revalidation.
+
+python_version: "3.12"
+rdkit_version: "2025.3.3"
+standardization_pipeline_version: "unset"   # set in Sprint 2.5
+postgres_version: "16"
+postgres_rdkit_image_digest: "unset"        # set in Sprint 2.2 once built

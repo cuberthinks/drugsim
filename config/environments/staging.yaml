@@ -1,0 +1,12 @@
+# Pre-production verification.
+#
+# Holds FULL PUBLIC DATA AND NO CUSTOMER DATA (TDS §10.1). Molecular structures
+# cannot be meaningfully anonymised — the structure IS the sensitive content — so
+# staging uses public reference data plus synthetic tenant data.
+#
+# debug must be false and log_format must be json; enforced by
+# Settings._validate_production_invariants.
+log_level: INFO
+log_format: json
+debug: false
+database_pool_size: 20

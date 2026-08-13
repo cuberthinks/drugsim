@@ -1,0 +1,6 @@
+# Local developer workstation.
+log_level: DEBUG
+log_format: console
+debug: true
+database_host: localhost
+object_storage_endpoint: http://localhost:9000

@@ -1,0 +1,31 @@
+# DrugSim base configuration — non-secret defaults for all environments.
+#
+# SECRETS MUST NEVER APPEAR IN THIS FILE OR ANY FILE UNDER config/.
+# Secret-bearing fields are populated from the environment only, injected from the
+# secret manager in deployed environments (TDS §7.6).
+# Settings.assert_no_secrets_in_yaml() fails the build if a secret appears here.
+
+log_level: INFO
+log_format: json
+
+database_name: drugsim
+database_user: drugsim
+database_port: 5432
+database_pool_size: 10
+database_statement_timeout_ms: 30000
+
+object_storage_region: us-east-1
+bucket_landing: drugsim-z1-landing
+bucket_conformed: drugsim-z2-conformed
+bucket_curated: drugsim-z3-curated
+bucket_features: drugsim-features
+bucket_artifacts: drugsim-artifacts
+
+download_max_retries: 5
+download_timeout_seconds: 1800
+download_chunk_bytes: 8388608
+
+max_upload_bytes: 104857600
+max_records_per_upload: 10000
+max_record_bytes: 102400
+structure_parse_timeout_seconds: 5
