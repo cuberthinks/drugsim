@@ -1,0 +1,76 @@
+{
+  "dataset_id": "cyp3a4_inhibition",
+  "dataset_version": "v1",
+  "n_compounds": 5344,
+  "n_unique_structures_by_inchikey": 5344,
+  "duplicate_inchikeys_in_final_dataset": 0,
+  "n_source_measurements_total": 6189,
+  "measurements_per_compound": {
+    "min": 1,
+    "median": 1.0,
+    "max": 11,
+    "compounds_with_multiple_measurements": 699
+  },
+  "raw_pipeline_accounting": {
+    "raw_records_from_chembl_api": 12359,
+    "raw_records_after_unit_filter_nm": 12357,
+    "raw_records_after_censoring_and_validity_filter": null,
+    "distinct_chembl_molecule_ids_in_raw_pull": 9943,
+    "quarantined_unparseable_structures": 0,
+    "mixtures_excluded": 7,
+    "discordant_entities_excluded_over_10x_spread": 97,
+    "final_compounds_after_all_filters": 5344
+  },
+  "class_distribution": {
+    "inhibitor_label_1": 3579,
+    "non_inhibitor_label_0": 1765,
+    "positive_fraction": 0.6697
+  },
+  "unit_distribution": {
+    "nM": 5344,
+    "note": "single-unit dataset by construction -- fetch step filtered to standard_units=nM only, same as hERG"
+  },
+  "chemical_diversity": {
+    "n_unique_bemis_murcko_scaffolds": 3009,
+    "n_acyclic_compounds_no_scaffold": 0,
+    "scaffold_to_compound_ratio": 0.5631
+  },
+  "source_distribution_by_publication_year": {
+    "1992": 2,
+    "1998": 5,
+    "1999": 2,
+    "2000": 1,
+    "2001": 5,
+    "2002": 30,
+    "2003": 67,
+    "2004": 70,
+    "2005": 81,
+    "2006": 55,
+    "2007": 223,
+    "2008": 356,
+    "2009": 237,
+    "2010": 280,
+    "2011": 281,
+    "2012": 453,
+    "2013": 331,
+    "2014": 295,
+    "2015": 582,
+    "2016": 278,
+    "2017": 267,
+    "2018": 366,
+    "2019": 167,
+    "2020": 158,
+    "2021": 198,
+    "2022": 167,
+    "2023": 154,
+    "2024": 189,
+    "2025": 101
+  },
+  "impossible_or_suspicious_values": {
+    "ic50_le_zero_or_nan": 0,
+    "ic50_above_1_molar_equivalent": 0,
+    "rows_missing_scaffold_field_entirely": 0
+  },
+  "leakage_checks_summary": "One row per standardised entity (inchikey_full) by construction -- 0 duplicate structures possible within this file. Cross-split leakage (train/calibration/validation/test) is checked separately in prepare_features.py's split-group assertion and check_leakage.py, not here.",
+  "assessment": "PROCEED"
+}

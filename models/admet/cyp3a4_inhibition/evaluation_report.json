@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-08-10T17:28:20+00:00",
+  "algorithm": "random_forest",
+  "global_split": {
+    "n_test": 459,
+    "positive_fraction": 0.6667,
+    "roc_auc": 0.7995,
+    "average_precision_pr_auc": 0.8922,
+    "balanced_accuracy": 0.652,
+    "matthews_corrcoef": 0.3564,
+    "sensitivity_recall_positive": 0.8987,
+    "specificity_recall_negative": 0.4052,
+    "f1": 0.8185,
+    "precision": 0.7514,
+    "recall": 0.8987,
+    "brier_score": 0.168,
+    "confusion_matrix": {
+      "tn": 62,
+      "fp": 91,
+      "fn": 31,
+      "tp": 275
+    },
+    "confidence_interval_95pct": {
+      "roc_auc_ci_lower_2.5pct": 0.7593,
+      "roc_auc_ci_upper_97.5pct": 0.8382,
+      "n_bootstrap_replicates": 1000
+    },
+    "description": "Scaffold-level split_group 9, per ADR-009. Touched once, here."
+  },
+  "benchmark_split": {
+    "n_test": 459,
+    "positive_fraction": 0.6688,
+    "roc_auc": 0.8391,
+    "average_precision_pr_auc": 0.9094,
+    "balanced_accuracy": 0.7291,
+    "matthews_corrcoef": 0.4922,
+    "sensitivity_recall_positive": 0.8925,
+    "specificity_recall_negative": 0.5658,
+    "f1": 0.847,
+    "precision": 0.8059,
+    "recall": 0.8925,
+    "brier_score": 0.1511,
+    "confusion_matrix": {
+      "tn": 86,
+      "fp": 66,
+      "fn": 33,
+      "tp": 274
+    },
+    "description": "Random-split PROXY, not a true TDC canonical benchmark split -- no TDC split exists for this exact ChEMBL-sourced compound set. Same model config, same data pool, same test fraction, stratified random assignment instead of scaffold."
+  },
+  "roc_auc_gap": 0.0396,
+  "gap_explanation": "Global scaffold splitting prevents cross-dataset/near-neighbour leakage; the random-split proxy is optimistic because structurally near-identical compounds (same scaffold, minor substituent changes) can appear in both its train and test sets. The +0.0396 ROC-AUC gap is the leakage the scaffold split is removing, not a property of the model changing between the two runs.",
+  "limitation": "Not a TDC-comparable leaderboard number -- a within-dataset random-vs-scaffold ablation on the same ChEMBL-sourced compounds, included because a true external benchmark split does not exist for this dataset."
+}

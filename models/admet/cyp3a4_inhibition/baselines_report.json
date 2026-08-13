@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-08-10T17:26:49+00:00",
+  "evaluated_on": "validation group 8 (never the held-out test group 9)",
+  "n_train": 3767,
+  "n_validation": 604,
+  "baselines": {
+    "majority_class": {
+      "description": "Always predicts the majority training label.",
+      "predicted_label": 1,
+      "balanced_accuracy": 0.5,
+      "roc_auc": null,
+      "note": "ROC-AUC is undefined for a constant predictor (ties every ranking) -- not reported as a number."
+    },
+    "descriptor_only_logistic_regression": {
+      "description": "18 physicochemical descriptors only, no fingerprint, linear model.",
+      "roc_auc": 0.6148,
+      "average_precision": 0.766,
+      "balanced_accuracy": 0.5866
+    },
+    "descriptor_only_random_forest": {
+      "description": "18 physicochemical descriptors only, no fingerprint, simple RF (n_estimators=300, default depth).",
+      "roc_auc": 0.7291,
+      "average_precision": 0.8424,
+      "balanced_accuracy": 0.5976
+    }
+  },
+  "purpose": "The primary model (train.py, descriptors+fingerprint, tuned Random Forest) must be compared against these three numbers, not evaluated in isolation -- see train_manifest.json's baseline_comparison field."
+}

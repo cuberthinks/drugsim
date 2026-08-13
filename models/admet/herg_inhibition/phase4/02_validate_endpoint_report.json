@@ -1,0 +1,36 @@
+{
+  "endpoint_definition": {
+    "name": "hERG (KCNH2/Kv11.1) inhibition, binary blocker classification",
+    "definition": "label=1 (blocker) if aggregated IC50 <= 10000 nM (10 uM), else label=0 (non-blocker). Threshold is a literature convention (commonly 1-30 uM across published hERG QSAR studies), not a universal biological constant.",
+    "threshold_nm": 10000.0,
+    "threshold_source": "Phase 3 original choice; re-examined and explicitly retained (not changed) by Phase 3.5 audit Sec 2"
+  },
+  "dataset_version": {
+    "dataset_id": "herg_inhibition",
+    "dataset_version": "v1",
+    "raw_source_sha256": "098527c12995357682ea377555ac2d0bad8b85b2fffb05de36a81c002bdcb5f5",
+    "processed_dataset_sha256": "1c1d842157f5f01f887c16732b7b366bf2405c82ae2f32bc074792a1c6aed523",
+    "final_compound_count": 9589,
+    "label_distribution": {
+      "blocker_label_1": 6363,
+      "non_blocker_label_0": 3226,
+      "positive_fraction": 0.6636
+    }
+  },
+  "filtering_rules": [
+    "standard_relation == '=' only (censored '>','<','~','>=','<=' excluded per TDS Sec 6.3.1)",
+    "data_validity_comment not in ['Potential author error', 'Potential transcription error']",
+    "structures standardised via drugsim_chem.process_structure; StructureError -> quarantined",
+    "flagged mixtures excluded (no single well-defined structure)",
+    "measurements grouped by standardised inchikey_full (merges salt forms of the same entity)",
+    "discordant entities (>10x IC50 spread, drugsim_quality.aggregation) excluded from training"
+  ],
+  "checks": {
+    "threshold_is_approved_10uM": true,
+    "filtering_rules_unchanged": true,
+    "dataset_version_is_v1": true,
+    "raw_source_checksum_matches": true
+  },
+  "status": "PASS",
+  "note": "This dataset was NOT rebuilt for Phase 4. Per Phase 3.5's recommendation, the 10 uM threshold is retained for this registered model; changing it would require a full rebuild and re-validation (leakage, y-scrambling, AD, conformal), which is out of scope for a reliability audit and would constitute retraining, not validating."
+}

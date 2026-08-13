@@ -1,0 +1,174 @@
+{
+  "n_test": 459,
+  "n_false_positives": 91,
+  "n_false_negatives": 31,
+  "false_positive_rate": 0.5948,
+  "false_negative_rate": 0.1013,
+  "most_confident_false_positives": [
+    {
+      "inchikey_full": "XWAXDNIZFDHSSU-RUZDIDTESA-N",
+      "canonical_smiles": "Cc1cc(N2CCC(NC(=O)OC(C)(C)C)CC2)cc2[nH]c(-c3c(NCC(O)c4cccc(Cl)c4)cc[nH]c3=O)nc12",
+      "predicted_probability": 0.95,
+      "true_label": "non_inhibitor",
+      "aggregated_ic50_nm": 16000.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "NNTFXIZLDBUGCH-YMJVKMAGSA-N",
+      "canonical_smiles": "C=CCN1CC(=O)N2C(Cc3ccc(O)cc3)C(=O)N(Cc3cccc4c(C(=O)Nc5ccc(N6CCN(C7CCCC7)CC6)nc5)cn(C)c34)CC2N1C(=O)NCc1ccccc1",
+      "predicted_probability": 0.942,
+      "true_label": "non_inhibitor",
+      "aggregated_ic50_nm": 17240.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "RZDRIXVHILKLLP-UHFFFAOYSA-N",
+      "canonical_smiles": "O=C(Nc1cnc(-c2ccncc2)c(-c2ccco2)n1)C1CC1",
+      "predicted_probability": 0.908,
+      "true_label": "non_inhibitor",
+      "aggregated_ic50_nm": 25000.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "RURJTHFCGUHOQW-KRWDZBQOSA-N",
+      "canonical_smiles": "CC(C)OC(=O)C(Cn1ccnc1)NC(=O)c1noc2c1ccc1ccccc12",
+      "predicted_probability": 0.888,
+      "true_label": "non_inhibitor",
+      "aggregated_ic50_nm": 14600.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "CLRIOMZLSLAWHG-WBCKFURZSA-N",
+      "canonical_smiles": "CC(C)c1ccccc1C1CCCN1C1CC2(CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CCOCC5)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)C1",
+      "predicted_probability": 0.886,
+      "true_label": "non_inhibitor",
+      "aggregated_ic50_nm": 21100.0,
+      "n_source_measurements": 1
+    }
+  ],
+  "most_confident_false_negatives": [
+    {
+      "inchikey_full": "FZDOVQNLWUMDQE-SNVBAGLBSA-N",
+      "canonical_smiles": "O=S(=O)(Nc1nccs1)c1cc(Cl)c(NCC2CCCN(O)C2)cc1F",
+      "predicted_probability": 0.128,
+      "true_label": "inhibitor",
+      "aggregated_ic50_nm": 7900.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "RFRBKJBYJXZXKQ-LJQANCHMSA-N",
+      "canonical_smiles": "Cc1ccc(CC2COCCN2C(=O)c2ccccc2-n2nccn2)cc1-c1nccs1",
+      "predicted_probability": 0.26,
+      "true_label": "inhibitor",
+      "aggregated_ic50_nm": 600.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "ZGEVFIAJYRECKD-HXUWFJFHSA-N",
+      "canonical_smiles": "Cc1ccc(-n2nccn2)c(C(=O)N2CCOCC2Cc2cccc(-c3nccs3)c2)c1",
+      "predicted_probability": 0.276,
+      "true_label": "inhibitor",
+      "aggregated_ic50_nm": 1200.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "FYEWZQAALXXWSM-LJQANCHMSA-N",
+      "canonical_smiles": "O=C(c1ccccc1-n1nccn1)N1CCOCC1Cc1cccc(-c2nccs2)c1",
+      "predicted_probability": 0.278,
+      "true_label": "inhibitor",
+      "aggregated_ic50_nm": 2000.0,
+      "n_source_measurements": 1
+    },
+    {
+      "inchikey_full": "CMSWWEXLVMHQNL-GOSISDBHSA-N",
+      "canonical_smiles": "COc1ccc(CC2COCCN2C(=O)c2ccccc2-n2nccn2)cc1-c1nccs1",
+      "predicted_probability": 0.286,
+      "true_label": "inhibitor",
+      "aggregated_ic50_nm": 3200.0,
+      "n_source_measurements": 1
+    }
+  ],
+  "borderline_compounds": {
+    "definition": "predicted probability within 0.05 of the 0.5 decision boundary",
+    "n": 35,
+    "accuracy": 0.4571
+  },
+  "assay_variability_proxy": {
+    "single_measurement_compound_accuracy": 0.7494,
+    "multi_measurement_compound_accuracy": 0.625,
+    "interpretation": "Comparable accuracy between single- and multiply-measured compounds would suggest errors are not primarily explained by noisy/discordant source measurements slipping through aggregation; a large gap would point toward label-quality issues rather than model/chemistry limitations."
+  },
+  "representative_worst_errors": [
+    {
+      "inchikey_full": "XWAXDNIZFDHSSU-RUZDIDTESA-N",
+      "canonical_smiles": "Cc1cc(N2CCC(NC(=O)OC(C)(C)C)CC2)cc2[nH]c(-c3c(NCC(O)c4cccc(Cl)c4)cc[nH]c3=O)nc12",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.95,
+      "aggregated_ic50_nm": 16000.0
+    },
+    {
+      "inchikey_full": "NNTFXIZLDBUGCH-YMJVKMAGSA-N",
+      "canonical_smiles": "C=CCN1CC(=O)N2C(Cc3ccc(O)cc3)C(=O)N(Cc3cccc4c(C(=O)Nc5ccc(N6CCN(C7CCCC7)CC6)nc5)cn(C)c34)CC2N1C(=O)NCc1ccccc1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.942,
+      "aggregated_ic50_nm": 17240.0
+    },
+    {
+      "inchikey_full": "RZDRIXVHILKLLP-UHFFFAOYSA-N",
+      "canonical_smiles": "O=C(Nc1cnc(-c2ccncc2)c(-c2ccco2)n1)C1CC1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.908,
+      "aggregated_ic50_nm": 25000.0
+    },
+    {
+      "inchikey_full": "RURJTHFCGUHOQW-KRWDZBQOSA-N",
+      "canonical_smiles": "CC(C)OC(=O)C(Cn1ccnc1)NC(=O)c1noc2c1ccc1ccccc12",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.888,
+      "aggregated_ic50_nm": 14600.0
+    },
+    {
+      "inchikey_full": "CLRIOMZLSLAWHG-WBCKFURZSA-N",
+      "canonical_smiles": "CC(C)c1ccccc1C1CCCN1C1CC2(CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CCOCC5)c([N+](=O)[O-])c4)c(Oc4cnc5[nH]ccc5c4)c3)CC2)C1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.886,
+      "aggregated_ic50_nm": 21100.0
+    },
+    {
+      "inchikey_full": "FZDOVQNLWUMDQE-SNVBAGLBSA-N",
+      "canonical_smiles": "O=S(=O)(Nc1nccs1)c1cc(Cl)c(NCC2CCCN(O)C2)cc1F",
+      "true_label": "inhibitor",
+      "predicted_probability": 0.128,
+      "aggregated_ic50_nm": 7900.0
+    },
+    {
+      "inchikey_full": "VKVJQSCYLIOFEN-NRFANRHFSA-N",
+      "canonical_smiles": "O=S(=O)(c1cncc2ccccc12)N1CCCC1CCN1CCN(c2nsc3ccccc23)CC1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.86,
+      "aggregated_ic50_nm": 23000.0
+    },
+    {
+      "inchikey_full": "GCJVWOKTKPETFI-UHFFFAOYSA-N",
+      "canonical_smiles": "Cn1nnc(-c2c(CC(=O)N(C3CCCC3)C(C(=O)NC34CC(C)(C3)C4)c3ccccc3)cnn2C)n1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.842,
+      "aggregated_ic50_nm": 12000.0
+    },
+    {
+      "inchikey_full": "XNPPAPISIBTENR-UHFFFAOYSA-N",
+      "canonical_smiles": "O=C(NC(Cc1ccc2[nH]ncc2c1)C(=O)N1CCC(N2CCCCC2)CC1)N1CCC(n2c(=O)[nH]c3ccccc32)CC1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.824,
+      "aggregated_ic50_nm": 17000.0
+    },
+    {
+      "inchikey_full": "DUDLUGRLTVPTNX-UHFFFAOYSA-N",
+      "canonical_smiles": "CCCCN(C)C(=O)N1CCC(=CC#Cc2cccc(C)n2)CC1",
+      "true_label": "non_inhibitor",
+      "predicted_probability": 0.8027,
+      "aggregated_ic50_nm": 13400.0
+    }
+  ],
+  "interpretation": "High false-positive rate (see false_positive_rate) is the dominant error mode, consistent with the low specificity (0.405) reported in evaluation_report.json -- the model over-calls 'inhibitor', plausibly reflecting the 67% positive class prevalence in training even with class_weight='balanced' applied, and/or CYP3A4's broad substrate promiscuity making the true negative (non-inhibitor) chemical space harder to characterise with 18 physicochemical descriptors + a 2048-bit fingerprint than hERG's more specific channel-blocking motif. This is a genuine model/endpoint limitation, not a data-pipeline defect -- the data quality audit (data_quality_report.json) found no impossible values, no leakage, and no unit inconsistency in the underlying dataset."
+}

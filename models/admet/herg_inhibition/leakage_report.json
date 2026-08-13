@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-08-08T16:26:31+00:00",
+  "duplicate_leakage": {
+    "n_compounds": 9589,
+    "n_compounds_in_multiple_groups": 0,
+    "examples": {},
+    "status": "PASS"
+  },
+  "scaffold_leakage": {
+    "note": "direct re-check: does any Bemis-Murcko scaffold key span more than one split_group",
+    "n_distinct_scaffold_keys": 5079,
+    "n_scaffolds_spanning_multiple_groups": 0,
+    "examples": {},
+    "status": "PASS"
+  },
+  "exact_feature_collision": {
+    "note": "Distinct from scaffold_leakage: identical FOLDED fingerprint across train/test does not imply the same scaffold or the same compound -- can be a genuine folding collision, or (fixed this phase, see fingerprints.py) an achiral fingerprint failing to distinguish stereoisomers. Fixed by making compute_morgan_fingerprint chirality-aware by default: this count dropped from 30 to 3 (of 800 test compounds) after the fix. The remaining 3 are confirmed (manually inspected) to be a compound with a defined stereocentre colliding with the SAME connectivity but an unspecified stereocentre -- a residual folded-fingerprint collision, not a repeat of the fixed bug.",
+    "identical_fingerprint_train_test_overlap": 3,
+    "fraction_of_test": 0.0038,
+    "status": "REVIEW"
+  },
+  "near_duplicate_leakage": {
+    "threshold": 0.95,
+    "train_size": 6792,
+    "test_size": 800,
+    "n_near_duplicate_pairs": 15,
+    "fraction_of_test_involved": 0.0188,
+    "status": "REVIEW",
+    "interpretation": "Non-zero near-duplicate pairs across train/test despite scaffold splitting -- expected occasionally (different Bemis-Murcko scaffolds can still be structurally very similar, e.g. ring-vs-fused-ring analogues); reported as a REVIEW finding, not silently ignored. See phase3 report for the rate and whether it is material."
+  },
+  "preprocessing_leakage": {
+    "check": "StandardScaler in train.py is fit only on split groups 0-6 (fit_transform on x_train, then .transform (no refit) on x_val/x_test/x_calibration)",
+    "feature_computation": "per-compound, independent (drugsim_chem descriptors + Morgan fingerprint); no cross-row statistic (e.g. dataset-wide mean/std) is baked into a feature value itself",
+    "status": "PASS"
+  },
+  "target_leakage": {
+    "label_adjacent_columns_in_dataset_csv": [
+      "aggregated_ic50_nm",
+      "label",
+      "value_spread_log10"
+    ],
+    "feature_columns": [
+      "aromatic_rings",
+      "exact_mass_g_mol",
+      "formal_charge",
+      "fraction_csp3",
+      "hba_lipinski",
+      "hba_strict",
+      "hbd_lipinski",
+      "hbd_strict",
+      "heavy_atom_count",
+      "heteroatom_count",
+      "largest_ring_size",
+      "logp_crippen",
+      "molar_refractivity",
+      "morgan_fp_r2_2048",
+      "mw_g_mol",
+      "num_stereocentres",
+      "ring_count",
+      "rotatable_bonds",
+      "tpsa_a2"
+    ],
+    "overlap": [],
+    "status": "PASS"
+  },
+  "overall_status": "PASS"
+}

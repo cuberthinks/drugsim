@@ -1,0 +1,116 @@
+{
+  "generated_at": "2026-08-08T16:48:11+00:00",
+  "note": "Read-only sensitivity study. Registered model v0.1.0 and its 10 uM threshold are unchanged by this script -- see phase3.5-scientific-audit.md for the recommendation.",
+  "algorithm": "random_forest",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null
+  },
+  "random_seed": 42,
+  "thresholds": {
+    "1uM": {
+      "threshold_nm": 1000,
+      "class_distribution": {
+        "positive_blocker": 1855,
+        "negative_non_blocker": 7734,
+        "positive_fraction": 0.1935
+      },
+      "n_compounds_changed_class_vs_10uM": 4508,
+      "scaffold_distribution": {
+        "distinct_scaffolds_positive_class": 1042,
+        "distinct_scaffolds_negative_class": 4350,
+        "scaffolds_in_both_classes": 313
+      },
+      "validation_performance": {
+        "n": 1021,
+        "roc_auc": 0.8533,
+        "average_precision": 0.6003,
+        "balanced_accuracy": 0.6135
+      },
+      "test_performance": {
+        "n": 800,
+        "roc_auc": 0.8245,
+        "average_precision": 0.5775,
+        "balanced_accuracy": 0.6455
+      }
+    },
+    "3uM": {
+      "threshold_nm": 3000,
+      "class_distribution": {
+        "positive_blocker": 3446,
+        "negative_non_blocker": 6143,
+        "positive_fraction": 0.3594
+      },
+      "n_compounds_changed_class_vs_10uM": 2917,
+      "scaffold_distribution": {
+        "distinct_scaffolds_positive_class": 1949,
+        "distinct_scaffolds_negative_class": 3609,
+        "scaffolds_in_both_classes": 479
+      },
+      "validation_performance": {
+        "n": 1021,
+        "roc_auc": 0.8392,
+        "average_precision": 0.7427,
+        "balanced_accuracy": 0.6954
+      },
+      "test_performance": {
+        "n": 800,
+        "roc_auc": 0.8252,
+        "average_precision": 0.736,
+        "balanced_accuracy": 0.7153
+      }
+    },
+    "10uM": {
+      "threshold_nm": 10000,
+      "class_distribution": {
+        "positive_blocker": 6363,
+        "negative_non_blocker": 3226,
+        "positive_fraction": 0.6636
+      },
+      "n_compounds_changed_class_vs_10uM": 0,
+      "scaffold_distribution": {
+        "distinct_scaffolds_positive_class": 3477,
+        "distinct_scaffolds_negative_class": 2086,
+        "scaffolds_in_both_classes": 484
+      },
+      "validation_performance": {
+        "n": 1021,
+        "roc_auc": 0.8394,
+        "average_precision": 0.8983,
+        "balanced_accuracy": 0.6758
+      },
+      "test_performance": {
+        "n": 800,
+        "roc_auc": 0.7875,
+        "average_precision": 0.8446,
+        "balanced_accuracy": 0.6495
+      }
+    },
+    "30uM": {
+      "threshold_nm": 30000,
+      "class_distribution": {
+        "positive_blocker": 8537,
+        "negative_non_blocker": 1052,
+        "positive_fraction": 0.8903
+      },
+      "n_compounds_changed_class_vs_10uM": 2174,
+      "scaffold_distribution": {
+        "distinct_scaffolds_positive_class": 4588,
+        "distinct_scaffolds_negative_class": 743,
+        "scaffolds_in_both_classes": 252
+      },
+      "validation_performance": {
+        "n": 1021,
+        "roc_auc": 0.8452,
+        "average_precision": 0.9669,
+        "balanced_accuracy": 0.5705
+      },
+      "test_performance": {
+        "n": 800,
+        "roc_auc": 0.8509,
+        "average_precision": 0.9801,
+        "balanced_accuracy": 0.5441
+      }
+    }
+  }
+}

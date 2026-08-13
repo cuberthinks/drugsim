@@ -1,0 +1,74 @@
+site_name: DrugSim Engineering Documentation
+site_description: Scientific data platform for AI-assisted preclinical prioritisation
+repo_url: https://github.com/drugsim/drugsim
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle: {icon: material/weather-night, name: Dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle: {icon: material/weather-sunny, name: Light mode}
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc: {permalink: true}
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight: {anchor_linenums: true}
+
+nav:
+  - Home: index.md
+  - Technical Design Specification:
+      - Index: tds/README.md
+      - 1 & 12 Overview and principles: tds/01-overview-and-principles.md
+      - 2 System architecture: tds/02-system-architecture.md
+      - 3 Technology stack: tds/03-technology-stack.md
+      - 4 Data contracts: tds/04-data-contracts.md
+      - 5 API specification: tds/05-api-specification.md
+      - 6 ML architecture: tds/06-ml-architecture.md
+      - 7 Security architecture: tds/07-security-architecture.md
+      - 8 & 9 Engineering standards: tds/08-engineering-standards.md
+      - 10 Deployment: tds/09-deployment-strategy.md
+      - 11 Risk register: tds/10-risk-register.md
+  - Phase 1 — Scientific foundation:
+      - 1 Dataset survey: phase1/step1-dataset-survey.md
+      - 2 Data architecture: phase1/step2-data-architecture.md
+      - 2 Data dictionary: phase1/step2-data-dictionary.md
+      - 2 Regulatory addendum: phase1/step2-addendum-regulatory.md
+      - 3 Relational schema: phase1/step3-relational-schema.md
+      - 4 Compound schema: phase1/step4-compound-schema.md
+      - 5 ADMET schema: phase1/step5-admet-schema.md
+      - 6 Biological knowledge: phase1/step6-biological-knowledge.md
+      - 7 Toxicology schema: phase1/step7-toxicology-schema.md
+      - 8 Cleaning pipeline: phase1/step8-data-cleaning-pipeline.md
+      - 9 Knowledge graph: phase1/step9-knowledge-graph.md
+      - 10 Technology stack: phase1/step10-technology-stack.md
+      - 11 Repository structure: phase1/step11-repository-structure.md
+      - 12 Roadmap: phase1/step12-scientific-roadmap.md
+  - DrugSim v1.0 Release:
+      - Start here: README.md
+      - Release notes: release/DRUGSIM_V1_RELEASE_NOTES.md
+      - Final release report: phase10/DRUGSIM_V1_FINAL_REPORT.md
+      - Final scientific audit: phase10/final-scientific-audit.md
+      - Scientific status: scientific/index.md
+      - Methodology: methodology/index.md
+      - API reference: api/index.md
+      - Deployment guide: deployment/index.md
+      - Deploying on Render: deployment/render.md
+      - Privacy: privacy/index.md
+      - Terms of use: terms/index.md

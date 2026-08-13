@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-08-08T16:33:29+00:00",
+  "conformal_prediction": {
+    "nominal_confidence": 0.9,
+    "n_calibration": 976,
+    "n_test": 800,
+    "empirical_coverage": 0.8988,
+    "coverage_within_tolerance": true,
+    "prediction_set_sizes": {
+      "singleton_confident": 451,
+      "both_classes_uncertain": 349,
+      "empty_anomalous": 0
+    },
+    "singleton_fraction": 0.5637
+  },
+  "calibration": {
+    "brier_score_raw": 0.1864,
+    "brier_score_platt": 0.1896,
+    "brier_score_isotonic": 0.1866,
+    "ece_raw": 0.0597,
+    "ece_platt": 0.0725,
+    "ece_isotonic": 0.0627,
+    "reliability_curve_raw": {
+      "note": "sklearn calibration_curve, 10 quantile bins",
+      "fraction_of_positives": [
+        0.25925925925925924,
+        0.26582278481012656,
+        0.3625,
+        0.55,
+        0.55,
+        0.7142857142857143,
+        0.7763157894736842,
+        0.825,
+        0.8902439024390244,
+        0.9230769230769231
+      ],
+      "mean_predicted_value": [
+        0.29776126346275467,
+        0.4522270672901794,
+        0.5263304964603467,
+        0.5911719819278598,
+        0.6415219325339383,
+        0.7066986791495826,
+        0.765410881143654,
+        0.8218614147473298,
+        0.883034222767473,
+        0.9542861122801727
+      ]
+    }
+  },
+  "applicability_domain": {
+    "knn_k": 5,
+    "knn_distance_threshold_p95_of_training": 1.743,
+    "three_signal_verdict_counts": {
+      "in_domain": 0,
+      "borderline": 500,
+      "out_of_domain": 300
+    },
+    "three_signal_accuracy_by_verdict": {
+      "borderline": {
+        "n": 500,
+        "accuracy": 0.754,
+        "mean_max_tanimoto": 0.7456
+      },
+      "out_of_domain": {
+        "n": 300,
+        "accuracy": 0.63,
+        "mean_max_tanimoto": 0.4673
+      }
+    },
+    "three_signal_caveat": "in_domain is 0/800 here BY CONSTRUCTION, not a finding: the scaffold-split test set guarantees scaffold_not_in_training=True for every test compound (that is the entire point of ADR-009), which alone contributes 1 of the up-to-3 triggers this verdict logic requires to hit zero for in_domain. This is a property of evaluating a leakage-preventing holdout set, not of the model or the AD method; at real serving time a query compound's scaffold may or may not already be in the training pool, and only then is 'in_domain' reachable via this signal.",
+    "two_signal_verdict_counts_scaffold_excluded": {
+      "in_domain": 500,
+      "borderline": 166,
+      "out_of_domain": 134
+    },
+    "two_signal_accuracy_by_verdict": {
+      "in_domain": {
+        "n": 500,
+        "accuracy": 0.754
+      },
+      "borderline": {
+        "n": 166,
+        "accuracy": 0.6687
+      },
+      "out_of_domain": {
+        "n": 134,
+        "accuracy": 0.5821
+      }
+    },
+    "verdict_logic": "out_of_domain if max_tanimoto<0.4 OR >=2 of {max_tanimoto<0.6, knn_dist>p95_train, scaffold_not_in_training} triggered; borderline if exactly 1 triggered; else in_domain. undeterminable: 0 cases (all test compounds had computable descriptors)."
+  }
+}

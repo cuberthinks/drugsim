@@ -1,0 +1,45 @@
+# Interim dependency snapshot — NOT a substitute for a real poetry.lock.
+#
+# Phase 7 hardening finding: pyproject.toml states "Reproducibility depends
+# on the lockfile, not on this file (TDS Sec 8.4)", but no poetry.lock has
+# ever existed in this repository, and poetry itself is not installed in
+# this environment (no network access was assumed available either, so a
+# fresh `poetry lock` resolution was not attempted here).
+#
+# This file is the next-best thing: the exact top-level dependency versions
+# actually installed in .venv-verify, the environment every test in this
+# repository (backend unit/security/golden-regression suites, all 584+
+# passing) has been run against as of 2026-08-09. It pins direct
+# dependencies only, not their full transitive closure, and it is NOT
+# regenerated automatically -- it will drift the next time any dependency
+# is upgraded unless someone updates it by hand or replaces it with a real
+# lockfile.
+#
+# To close this gap properly: install poetry and run `poetry lock`, review
+# the diff, commit poetry.lock, and delete this file. Until then, treat this
+# as a known, load-bearing environment record, not a resolved dependency
+# graph -- see docs/phase7/phase7-product-validation-report.md Sec
+# "Production readiness" for why this blocks calling the build fully
+# reproducible.
+
+rdkit==2025.3.3
+pydantic==2.13.4
+pydantic-settings==2.11.0
+structlog==25.5.0
+sqlalchemy==2.0.51
+alembic==1.16.5
+psycopg==3.2.13
+polars==1.36.1
+duckdb==1.4.5
+pyarrow==12.0.1
+httpx==0.28.1
+tenacity==9.1.2
+boto3==1.42.97
+typer==0.23.2
+rich==15.0.0
+pyyaml==6.0.3
+numpy==1.26.4
+scikit-learn==1.6.1
+joblib==1.5.3
+fastapi==0.128.8
+uvicorn==0.39.0

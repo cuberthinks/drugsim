@@ -1,0 +1,200 @@
+{
+  "_comment": "File-based substitute for the Core DB model/model_version/model_validation_record rows (TDS Sec 6.5). No live Postgres exists in this environment (see docs/phase2/phase2-completion-report.md and docs/phase3/phase3-model-validation-report.md Sec 1) -- this record captures every field those tables would, so nothing is lost, but it is not queryable the way a real registry row is. Reconciling this into the actual schema once Postgres is available is a Phase 4 prerequisite, not a Phase 3 one.",
+  "model_id": "herg_inhibition",
+  "model_version": "0.1.0",
+  "status": "challenger",
+  "final_report_status": "VALIDATED FOR INTERNAL RESEARCH",
+  "final_report_status_history": [
+    {
+      "status": "EXPERIMENTAL",
+      "as_of": "2026-08-08T16:35:00+00:00",
+      "report": "docs/phase3/phase3-model-validation-report.md"
+    },
+    {
+      "status": "EXPERIMENTAL",
+      "as_of": "2026-08-09T00:00:00+00:00",
+      "report": "docs/phase3/phase3.5-scientific-audit.md",
+      "note": "status explicitly unchanged by the audit"
+    },
+    {
+      "status": "VALIDATED FOR INTERNAL RESEARCH",
+      "as_of": "2026-08-09T10:57:00+00:00",
+      "report": "docs/phase4/phase4-reliability-report.md",
+      "note": "bounded/conditional promotion -- see report Sec 'Final Decision' for the scope this status covers"
+    }
+  ],
+  "registered_at": "2026-08-08T16:35:00+00:00",
+  "status_updated_at": "2026-08-09T10:57:00+00:00",
+  "endpoint": {
+    "name": "hERG (KCNH2/Kv11.1) inhibition",
+    "task_type": "binary classification",
+    "definition": "label=1 (blocker) if aggregated IC50 <= 10000 nM (10 uM), else label=0 (non-blocker)",
+    "threshold_note": "10 uM is a literature convention (commonly 1-30 uM across published hERG QSAR studies), not a universal biological constant",
+    "target": "ChEMBL CHEMBL240, Voltage-gated inwardly rectifying potassium channel KCNH2, Homo sapiens, target confidence 9 (direct single protein)",
+    "category": "Toxicity"
+  },
+  "dataset": {
+    "dataset_id": "herg_inhibition",
+    "dataset_version": "v1",
+    "source": "ChEMBL REST API (direct), CHEMBL240 IC50/nM activities, complete population not a sample (17,097 raw records)",
+    "source_manifest_sha256": "098527c12995357682ea377555ac2d0bad8b85b2fffb05de36a81c002bdcb5f5",
+    "build_manifest_sha256": "6c0ecaaf97b498e330c941989873bf0d3e646b442cc84bbf14cffa79261ab9bc",
+    "final_compound_count": 9589,
+    "label_distribution": {
+      "blocker": 6363,
+      "non_blocker": 3226,
+      "positive_fraction": 0.6636
+    },
+    "n_distinct_scaffolds": 5079,
+    "quarantined_structures": 0,
+    "mixtures_excluded": 27,
+    "discordant_entities_excluded": 148
+  },
+  "features": {
+    "feature_set_id": "a3ee2afe06243a9c3eca4e1d3f74393e900c0961f915609ac29b07e4d9919b30",
+    "descriptor_spec_version": "v1",
+    "standardization_pipeline_version": "v1",
+    "rdkit_version": "2025.03.3",
+    "layout": "concat(physicochemical_descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+    "descriptor_fields": [
+      "mw_g_mol",
+      "exact_mass_g_mol",
+      "logp_crippen",
+      "molar_refractivity",
+      "tpsa_a2",
+      "rotatable_bonds",
+      "aromatic_rings",
+      "ring_count",
+      "heavy_atom_count",
+      "formal_charge",
+      "hbd_lipinski",
+      "hba_lipinski",
+      "hbd_strict",
+      "hba_strict",
+      "heteroatom_count",
+      "fraction_csp3",
+      "num_stereocentres",
+      "largest_ring_size"
+    ],
+    "fingerprint": "Morgan/ECFP4-equivalent, radius=2, 2048 bits, chirality-aware (include_chirality=True)"
+  },
+  "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null,
+    "class_weight": "balanced"
+  },
+  "random_seed": 42,
+  "compared_against": {
+    "gradient_boosting": 0.7766,
+    "logistic_regression": 0.7056,
+    "note": "validation-group ROC-AUC; random_forest selected at 0.8394"
+  },
+  "validation_strategy": {
+    "split_method": "Global scaffold-level split_group (ADR-009): sha256(scaffold_key || split_salt) mod 10, deterministic, split_salt='herg_inhibition_v1'",
+    "split_roles": {
+      "train": "groups 0-6 (n=6792)",
+      "calibration": "group 7 (n=976, reserved, conformal only)",
+      "validation": "group 8 (n=1021, hyperparameter selection)",
+      "test": "group 9 (n=800, touched once)"
+    },
+    "leakage_checks": {
+      "duplicate_leakage": "PASS",
+      "scaffold_leakage": "PASS (direct re-check: 0 scaffolds span multiple split_groups)",
+      "preprocessing_leakage": "PASS",
+      "target_leakage": "PASS",
+      "near_duplicate_leakage": "REVIEW (15 pairs, 1.88% of test, Tanimoto>=0.95 across different scaffolds -- expected, documented)",
+      "exact_feature_collision": "REVIEW (3 of 800, 0.375%, residual folded-fingerprint collision after fixing an achiral-fingerprint bug that caused 30; manually inspected)",
+      "overall_status": "PASS"
+    },
+    "y_scrambling": {
+      "n_repeats": 10,
+      "real_model_validation_roc_auc": 0.8394,
+      "scrambled_mean_roc_auc": 0.489,
+      "scrambled_std_roc_auc": 0.0427,
+      "status": "PASS (collapsed to chance)"
+    }
+  },
+  "metrics": {
+    "global_split_test_group_9": {
+      "n_test": 800,
+      "roc_auc": 0.7875,
+      "average_precision": 0.8446,
+      "balanced_accuracy": 0.6495,
+      "f1": 0.7918,
+      "precision": 0.7008,
+      "recall": 0.91,
+      "brier_score": 0.1864,
+      "confusion_matrix": {
+        "tn": 121,
+        "fp": 190,
+        "fn": 44,
+        "tp": 445
+      }
+    },
+    "benchmark_split_random_proxy": {
+      "n_test": 800,
+      "roc_auc": 0.8488,
+      "average_precision": 0.9136,
+      "note": "random-split proxy, not a true TDC canonical split -- none exists for this ChEMBL-sourced dataset"
+    },
+    "roc_auc_gap": 0.0613,
+    "gap_explanation": "Global scaffold splitting prevents cross-dataset/near-neighbour leakage; the gap is the leakage the scaffold split removes."
+  },
+  "applicability_domain_method": {
+    "components": [
+      "max Tanimoto similarity to training set (Morgan fingerprints)",
+      "k-NN distance in standardised descriptor space (k=5, threshold=95th percentile of training-internal distances)",
+      "scaffold seen in training (boolean)"
+    ],
+    "verdict_logic": "out_of_domain if max_tanimoto<0.4 OR >=2 of {max_tanimoto<0.6, knn_dist>p95_train, scaffold_not_in_training} triggered; borderline if exactly 1; else in_domain",
+    "empirical_validation": "2-signal verdict (scaffold excluded, since it is tautologically triggered on any scaffold-holdout test set): in_domain accuracy 75.4% (n=500), borderline 66.9% (n=166), out_of_domain 58.2% (n=134) -- monotonic degradation confirms the AD carries real signal",
+    "caveat": "3-signal in_domain verdict is 0/800 on THIS test set by construction (ADR-009 guarantees scaffold_not_in_training=True for every held-out compound); only reachable for a real query compound whose scaffold is already in the training pool"
+  },
+  "uncertainty_method": {
+    "method": "Split (inductive) conformal prediction",
+    "nonconformity_score": "1 - predicted probability of the candidate class",
+    "calibration_set": "split_group 7 (n=976), used here for the first and only time in this pipeline",
+    "nominal_confidence": 0.9,
+    "empirical_coverage_test_group": 0.8988,
+    "coverage_within_tolerance": true,
+    "post_hoc_calibration_evaluated": {
+      "raw_brier": 0.1864,
+      "raw_ece": 0.0597,
+      "platt_brier": 0.1896,
+      "platt_ece": 0.0725,
+      "isotonic_brier": 0.1866,
+      "isotonic_ece": 0.0627,
+      "recommendation": "use raw predict_proba -- neither Platt nor isotonic post-hoc calibration improved on it"
+    }
+  },
+  "code_version": {
+    "git_commit": "b567edfa15b2487849867c461c6e9d197fa11322",
+    "repository": "drugsim",
+    "pipeline_scripts": [
+      "models/admet/herg_inhibition/fetch_chembl_data.py",
+      "models/admet/herg_inhibition/build_dataset.py",
+      "models/admet/herg_inhibition/prepare_features.py",
+      "models/admet/herg_inhibition/train.py",
+      "models/admet/herg_inhibition/check_leakage.py",
+      "models/admet/herg_inhibition/y_scrambling.py",
+      "models/admet/herg_inhibition/evaluate.py",
+      "models/admet/herg_inhibition/reliability.py"
+    ]
+  },
+  "artifact": {
+    "path": "models/admet/herg_inhibition/artifact/model.joblib",
+    "sha256": "8e885f43d22048b68612744fbc630b22723fa75ff3e2f30640966184f224e46e",
+    "note": "gitignored binary, not committed (Phase 1 Step 11: 'models/ holds code, never artefacts'); in a real deployment this would be object-storage-addressed by sha256 per TDS Sec 6.5",
+    "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, with RANDOM_SEED=42 fixed throughout; exact byte-identical retraining is NOT guaranteed since fetch_chembl_data.py re-queries a live external API that can gain new records over time (documented limitation, see Phase 3 report)"
+  },
+  "inference_support": {
+    "_comment": "Added Phase 5. Frozen conformal calibration + AD reference data exported by models/admet/herg_inhibition/10_export_inference_support.py -- never recomputed at inference time.",
+    "npz_path": "models/admet/herg_inhibition/artifact/inference_support.npz",
+    "npz_sha256": "a86c41c390c8492614abfe48d6348972eeed584859b522fd7aea15cb0c25d80f",
+    "scaler_path": "models/admet/herg_inhibition/artifact/descriptor_ad_scaler.joblib",
+    "scaler_sha256": "a0d55ba0e6a11e0e0fef82d97c87953b8db53e4c95fc89fa3db2097518ee2ef6",
+    "manifest_path": "models/admet/herg_inhibition/inference_support_manifest.json",
+    "manifest_sha256": "b10946b474ba8df4cd2f426e35d59b0749fe4fbfc9cc108f5539eab3062c97ff"
+  }
+}

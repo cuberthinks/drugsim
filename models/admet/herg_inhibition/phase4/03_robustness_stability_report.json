@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-08-09T02:15:45+00:00",
+  "seed_repeats": {
+    "n_repeats": 10,
+    "test_roc_auc_mean": 0.7895,
+    "test_roc_auc_std": 0.0015,
+    "test_roc_auc_min_max": [
+      0.7875,
+      0.7926
+    ],
+    "test_balanced_accuracy_mean": 0.6475,
+    "test_balanced_accuracy_std": 0.0063,
+    "registered_test_roc_auc": 0.7875,
+    "registered_within_1_std": false
+  },
+  "bootstrap_train_perturbation": {
+    "n_repeats": 10,
+    "test_roc_auc_mean": 0.7694,
+    "test_roc_auc_std": 0.0095,
+    "test_roc_auc_min_max": [
+      0.7592,
+      0.7854
+    ],
+    "interpretation": "measures sensitivity to WHICH training compounds are included, not just RF internal randomness"
+  },
+  "chemical_diversity": {
+    "n_compounds": 9589,
+    "n_distinct_scaffolds": 5079,
+    "scaffold_to_compound_ratio": 0.5297,
+    "interpretation": "ratio near 1.0 = highly diverse (mostly singleton scaffolds); near 0 = few scaffolds, many analogues each -- 0.53 indicates moderate diversity with a substantial fraction of the dataset in analogue series"
+  },
+  "per_split_group_class_balance": {
+    "groups": {
+      "0": {
+        "n": 892,
+        "positive_fraction": 0.6738
+      },
+      "1": {
+        "n": 1030,
+        "positive_fraction": 0.6932
+      },
+      "2": {
+        "n": 992,
+        "positive_fraction": 0.5927
+      },
+      "3": {
+        "n": 897,
+        "positive_fraction": 0.6466
+      },
+      "4": {
+        "n": 885,
+        "positive_fraction": 0.6576
+      },
+      "5": {
+        "n": 937,
+        "positive_fraction": 0.7054
+      },
+      "6": {
+        "n": 1159,
+        "positive_fraction": 0.7075
+      },
+      "7": {
+        "n": 976,
+        "positive_fraction": 0.6834
+      },
+      "8": {
+        "n": 1021,
+        "positive_fraction": 0.6474
+      },
+      "9": {
+        "n": 800,
+        "positive_fraction": 0.6112
+      }
+    },
+    "positive_fraction_range": [
+      0.5927,
+      0.7075
+    ],
+    "positive_fraction_std_across_groups": 0.0366
+  },
+  "feature_representation_ablation": {
+    "descriptors": {
+      "n_features": 18,
+      "test_roc_auc": 0.7266,
+      "test_balanced_accuracy": 0.6079
+    },
+    "fingerprints": {
+      "n_features": 2048,
+      "test_roc_auc": 0.7722,
+      "test_balanced_accuracy": 0.6224
+    },
+    "combined": {
+      "n_features": 2066,
+      "test_roc_auc": 0.7875,
+      "test_balanced_accuracy": 0.6495
+    }
+  }
+}

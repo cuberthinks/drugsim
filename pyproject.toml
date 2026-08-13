@@ -1,0 +1,193 @@
+[tool.poetry]
+name = "drugsim"
+version = "0.1.0"
+description = "DrugSim — AI-assisted preclinical prioritisation platform: scientific data foundation"
+authors = ["DrugSim Engineering"]
+readme = "README.md"
+license = "Proprietary"
+packages = [
+    { include = "drugsim_core", from = "src" },
+    { include = "drugsim_chem", from = "src" },
+    { include = "drugsim_db", from = "src" },
+    { include = "drugsim_features", from = "src" },
+    { include = "drugsim_quality", from = "src" },
+    { include = "drugsim_predict", from = "src" },
+]
+
+# ---------------------------------------------------------------------------
+# Runtime dependencies
+#
+# Versions are pinned to a compatible-release range here; the exact resolution
+# lives in poetry.lock, which is committed. Reproducibility depends on the
+# lockfile, not on this file (TDS §8.4).
+#
+# RDKit is pinned EXACTLY, not with a caret range. Descriptor values change
+# between RDKit releases, and rdkit_version participates in toolchain_id and
+# therefore in feature_set_id (TDS §6.1, ADR-005). A silent minor upgrade
+# would invalidate feature-set reproducibility.
+# ---------------------------------------------------------------------------
+[tool.poetry.dependencies]
+python = "^3.12"
+rdkit = "2025.3.3"                  # EXACT — see note above
+pydantic = "^2.9"
+pydantic-settings = "^2.6"
+structlog = "^24.4"
+sqlalchemy = "^2.0"
+alembic = "^1.14"
+"psycopg[binary]" = "^3.2"
+polars = "^1.17"
+duckdb = "^1.1"
+pyarrow = "^18.1"
+httpx = "^0.28"
+tenacity = "^9.0"
+boto3 = "^1.35"
+typer = "^0.15"
+rich = "^13.9"
+pyyaml = "^6.0"
+numpy = "^1.26"                     # <2.0 -- pinned for pyarrow/pandas ABI compatibility (see Phase 3 incident)
+scikit-learn = "^1.6"
+joblib = "^1.4"
+fastapi = "^0.115"
+uvicorn = { extras = ["standard"], version = "^0.32" }
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3"
+pytest-cov = "^6.0"
+hypothesis = "^6.122"
+testcontainers = { extras = ["postgres"], version = "^4.9" }
+moto = { extras = ["s3"], version = "^5.0" }  # in-process S3 mock — no Docker needed
+ruff = "^0.8"
+mypy = "^1.13"
+pre-commit = "^4.0"
+types-pyyaml = "^6.0"
+mkdocs = "^1.6"
+mkdocs-material = "^9.5"
+pip-audit = "^2.7"
+
+[tool.poetry.scripts]
+drugsim = "drugsim_core.cli:app"
+
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+# ===========================================================================
+# Ruff — linter AND formatter.
+#
+# Black is deliberately NOT used. `ruff format` is a Black-compatible
+# reimplementation; running both would mean two formatters competing in
+# pre-commit. One formatter, no per-file overrides (TDS §8.2).
+# ===========================================================================
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "etl"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",    # pycodestyle
+    "F",         # pyflakes
+    "I",         # isort
+    "N",         # pep8-naming
+    "UP",        # pyupgrade
+    "B",         # bugbear
+    "A",         # builtins shadowing
+    "C4",        # comprehensions
+    "DTZ",       # flake8-datetimez — naive datetimes are a reproducibility hazard
+    "T20",       # flake8-print — no print() in library code
+    "PT",        # pytest style
+    "RET",       # return simplification
+    "SIM",       # simplify
+    "ARG",       # unused arguments
+    "PTH",       # use pathlib
+    "ERA",       # commented-out code
+    "PL",        # pylint subset
+    "RUF",       # ruff-specific
+    "S",         # bandit security
+    "D",         # pydocstyle
+]
+ignore = [
+    "D100",      # module docstring — enforced on packages, not every module
+    "D104",      # package docstring in __init__ handled explicitly
+    "D203",      # conflicts with D211
+    "D213",      # conflicts with D212
+    "PLR0913",   # many arguments — common and acceptable in scientific config
+    "S101",      # assert — used deliberately in tests and invariant checks
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "S", "PLR2004", "ARG"]
+"scripts/**" = ["T20"]              # scripts may print
+"src/drugsim_core/cli.py" = ["T20"] # CLI may print
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "drugsim_core", "drugsim_chem", "drugsim_db",
+    "drugsim_features", "drugsim_quality",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+# ===========================================================================
+# mypy — strict on src/, CI-blocking (TDS §8.2)
+# ===========================================================================
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+warn_no_return = true
+show_error_codes = true
+pretty = true
+files = ["src", "etl"]
+
+[[tool.mypy.overrides]]
+module = ["rdkit.*", "duckdb.*", "testcontainers.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+strict = false
+
+# ===========================================================================
+# pytest
+# ===========================================================================
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+markers = [
+    "unit: fast, no external dependencies",
+    "integration: requires a real database or object store",
+    "constraints: asserts a database constraint rejects invalid data",
+    "golden: scientific regression against the golden dataset",
+    "security: asserts a security control holds",
+    "slow: takes more than a few seconds",
+    "network: makes a real request to a live external source; excluded from offline CI runs",
+    "model_artifact: requires the local, gitignored Phase 3/4 model artifact (models/admet/herg_inhibition/artifact/) to be present",
+]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = ["*/cli.py"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@overload",
+]

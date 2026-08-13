@@ -1,0 +1,180 @@
+{
+  "generated_at": "2026-08-09T02:46:25+00:00",
+  "causation_caveat": "Feature importance reflects statistical usefulness for separating labels in THIS dataset, not evidence of biological/mechanistic causation about hERG channel binding. A descriptor or substructure can be predictive by correlation with a potent chemical series without being mechanistically responsible for channel block.",
+  "top_physicochemical_descriptors": [
+    {
+      "descriptor": "logp_crippen",
+      "importance": 0.0287
+    },
+    {
+      "descriptor": "tpsa_a2",
+      "importance": 0.0202
+    },
+    {
+      "descriptor": "molar_refractivity",
+      "importance": 0.0169
+    },
+    {
+      "descriptor": "mw_g_mol",
+      "importance": 0.016
+    },
+    {
+      "descriptor": "exact_mass_g_mol",
+      "importance": 0.0155
+    },
+    {
+      "descriptor": "fraction_csp3",
+      "importance": 0.0132
+    },
+    {
+      "descriptor": "hba_lipinski",
+      "importance": 0.0114
+    },
+    {
+      "descriptor": "heavy_atom_count",
+      "importance": 0.0113
+    },
+    {
+      "descriptor": "rotatable_bonds",
+      "importance": 0.0094
+    },
+    {
+      "descriptor": "heteroatom_count",
+      "importance": 0.0086
+    }
+  ],
+  "fingerprint_vs_descriptor_importance_share": {
+    "descriptors_total": 0.1874,
+    "fingerprint_total": 0.8126
+  },
+  "top_fingerprint_bits": [
+    {
+      "bit_index": 807,
+      "importance": 0.004652,
+      "example_substructures": [
+        "C",
+        "C"
+      ]
+    },
+    {
+      "bit_index": 650,
+      "importance": 0.00446,
+      "example_substructures": [
+        "O",
+        "O"
+      ]
+    },
+    {
+      "bit_index": 1917,
+      "importance": 0.004147,
+      "example_substructures": [
+        "C=O",
+        "C=O"
+      ]
+    },
+    {
+      "bit_index": 1482,
+      "importance": 0.00314,
+      "example_substructures": [
+        "CCN(CC)CC",
+        "CCN(CC)CC"
+      ]
+    },
+    {
+      "bit_index": 216,
+      "importance": 0.003038,
+      "example_substructures": [
+        "cc(c)Cl",
+        "cc(c)Cl"
+      ]
+    },
+    {
+      "bit_index": 1243,
+      "importance": 0.002822,
+      "example_substructures": [
+        "CCc",
+        "cCC"
+      ]
+    },
+    {
+      "bit_index": 653,
+      "importance": 0.002729,
+      "example_substructures": [
+        "CCCN(C)C",
+        "CCCN(C)C"
+      ]
+    },
+    {
+      "bit_index": 1791,
+      "importance": 0.002649,
+      "example_substructures": [
+        "CN(C)C",
+        "CN(C)C"
+      ]
+    },
+    {
+      "bit_index": 1683,
+      "importance": 0.002477,
+      "example_substructures": [
+        "Cl",
+        "cc(n)C(=O)Nc"
+      ]
+    },
+    {
+      "bit_index": 1911,
+      "importance": 0.002443,
+      "example_substructures": [
+        "CCC",
+        "CCC"
+      ]
+    }
+  ],
+  "chemical_similarity_example": {
+    "query_compound": {
+      "inchikey": "RAACSHYFBZCXSM-LDMUXNMWSA-N",
+      "name": "(unnamed)",
+      "smiles": "N[C@@H]1CO[C@H]1COc1ccc2ncc(F)c(CCC34CCC(NCc5ccc6c(n5)NC(=O)CO6)(CC3)CO4)c2n1",
+      "label": 0
+    },
+    "nearest_training_neighbour": {
+      "inchikey": "RAACSHYFBZCXSM-AUHLQLFFSA-N",
+      "name": "(unnamed)",
+      "smiles": "N[C@@H]1CO[C@@H]1COc1ccc2ncc(F)c(CCC34CCC(NCc5ccc6c(n5)NC(=O)CO6)(CC3)CO4)c2n1",
+      "label": 1,
+      "tanimoto_similarity": 0.8837
+    }
+  },
+  "representative_confident_correct_predictions": [
+    {
+      "name": "(unnamed)",
+      "true_label": "blocker",
+      "predicted_prob_blocker": 0.96,
+      "true_ic50_nm": 100.0
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "blocker",
+      "predicted_prob_blocker": 0.956,
+      "true_ic50_nm": 50.1
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "blocker",
+      "predicted_prob_blocker": 0.978,
+      "true_ic50_nm": 58.0
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "blocker",
+      "predicted_prob_blocker": 0.98,
+      "true_ic50_nm": 250.0
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "blocker",
+      "predicted_prob_blocker": 0.964,
+      "true_ic50_nm": 769.0
+    }
+  ],
+  "representative_failures": "see models/admet/herg_inhibition/phase4/07_error_analysis_report.json:largest_confident_errors"
+}

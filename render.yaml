@@ -1,0 +1,84 @@
+# Render Blueprint for DrugSim v1.0.
+#
+# Two services, matching this project's actual architecture:
+#   - drugsim-predict-api: the FastAPI prediction service (Docker), serving
+#     both validated endpoints (hERG inhibition, CYP3A4 inhibition).
+#   - drugsim-frontend: the React app, built and served as a static site
+#     (Render's native static hosting -- no Caddy/Docker needed for this
+#     path; deployment/docker/Dockerfile.frontend + deployment/caddy/
+#     remain the self-hosted/docker-compose path, unchanged).
+#
+# These two services do NOT share an origin on Render (each gets its own
+# *.onrender.com URL), unlike the docker-compose topology where Caddy
+# reverse-proxies /api/* on one origin. The frontend is built with
+# VITE_API_BASE_URL pointing at the backend's URL, and the backend's CORS
+# allow-list must include the frontend's URL -- both are placeholders below
+# that MUST be edited to the real service URLs after first deploy (Render
+# assigns the URL only once the service exists -- see docs/deployment/render.md).
+#
+# This file is a best-effort Blueprint, written without a live Render
+# account to validate the exact field names against -- if Render's Blueprint
+# schema has moved since, its own import UI will show a clear validation
+# error for whatever needs adjusting. docs/deployment/render.md also has
+# the equivalent manual (dashboard click-through) setup as a guaranteed
+# fallback.
+
+services:
+  - type: web
+    name: drugsim-predict-api
+    runtime: docker
+    dockerfilePath: ./deployment/docker/Dockerfile.predict-api
+    dockerContext: .
+    dockerBuildArgs:
+      # REQUIRED. Set to https://github.com/<owner>/<repo>/releases/download/<tag>
+      # -- see docs/deployment/render.md "Hosting the model artifacts".
+      MODEL_RELEASE_URL_BASE: https://github.com/CHANGE_ME/CHANGE_ME/releases/download/models-v1
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: DRUGSIM_ENVIRONMENT
+        value: production
+      - key: DRUGSIM_PREDICT_API_KEYS
+        # REQUIRED (production refuses to start with no key configured --
+        # see drugsim_predict.settings.assert_safe_to_start). Not set here
+        # deliberately: generate one yourself (see docs/deployment/render.md
+        # "Access control") and paste the SAME value into both this
+        # service's env vars AND drugsim-frontend's VITE_API_KEY below,
+        # after both services exist -- Render Blueprints don't reliably
+        # share a freshly-generated secret across two separate services'
+        # build-time and runtime env at creation time.
+        sync: false
+      - key: DRUGSIM_PREDICT_CORS_ALLOWED_ORIGINS
+        # CHANGE ME after the frontend service exists and you know its real
+        # URL, e.g. https://drugsim-frontend.onrender.com
+        value: https://CHANGE_ME.onrender.com
+      - key: DRUGSIM_PREDICT_PREDICTION_DB_PATH
+        value: /app/var/predictions.sqlite3
+    disk:
+      name: drugsim-predict-data
+      mountPath: /app/var
+      sizeGB: 1
+
+  - type: web
+    name: drugsim-frontend
+    runtime: static
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        # CHANGE ME to the predict-api service's real URL once it exists,
+        # e.g. https://drugsim-predict-api.onrender.com -- no trailing
+        # slash, no /api suffix. The backend's own routes are mounted at
+        # the root (/predict, /health, /endpoints, ...), not under /api;
+        # that prefix only existed in the docker-compose topology, where
+        # Caddy stripped it before forwarding. The frontend appends its
+        # own request paths directly onto this base URL.
+        value: https://CHANGE_ME.onrender.com
+      - key: VITE_API_KEY
+        # Same value as drugsim-predict-api's DRUGSIM_PREDICT_API_KEYS --
+        # see that field's comment. Required for /predict to work.
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

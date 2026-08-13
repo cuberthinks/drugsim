@@ -1,0 +1,44 @@
+{
+  "algorithm": "random_forest",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null
+  },
+  "random_seed": 42,
+  "requires_scaling": false,
+  "train_groups": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "validation_group": 8,
+  "n_train": 3767,
+  "n_validation": 604,
+  "train_positive_fraction": 0.6695,
+  "validation_metrics": {
+    "roc_auc": 0.787,
+    "average_precision": 0.888,
+    "balanced_accuracy_at_0.5": 0.6506
+  },
+  "candidate_comparison": {
+    "random_forest": 0.787,
+    "gradient_boosting": 0.7298,
+    "logistic_regression": 0.6866
+  },
+  "baseline_comparison": {
+    "champion_roc_auc": 0.787,
+    "majority_class_balanced_accuracy": 0.5,
+    "champion_balanced_accuracy": 0.6506,
+    "descriptor_only_logistic_regression_roc_auc": 0.6148,
+    "descriptor_only_random_forest_roc_auc": 0.7291,
+    "improvement_over_best_baseline_roc_auc": 0.0579,
+    "meaningfully_beats_baselines": true
+  },
+  "trained_at": "2026-08-10T17:27:34+00:00",
+  "model_artifact": "models/admet/cyp3a4_inhibition/artifact/model.joblib",
+  "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns"
+}

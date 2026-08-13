@@ -1,0 +1,15 @@
+{
+  "built_at": "2026-08-09T03:11:31+00:00",
+  "source_model_sha256": "8e885f43d22048b68612744fbc630b22723fa75ff3e2f30640966184f224e46e",
+  "n_calibration": 976,
+  "n_train": 6792,
+  "n_train_scaffolds": 3568,
+  "nominal_confidence": 0.9,
+  "knn_k": 5,
+  "knn_distance_threshold_p95": 1.742974,
+  "output_npz": "models/admet/herg_inhibition/artifact/inference_support.npz",
+  "output_npz_sha256": "a86c41c390c8492614abfe48d6348972eeed584859b522fd7aea15cb0c25d80f",
+  "output_scaler": "models/admet/herg_inhibition/artifact/descriptor_ad_scaler.joblib",
+  "output_scaler_sha256": "a0d55ba0e6a11e0e0fef82d97c87953b8db53e4c95fc89fa3db2097518ee2ef6",
+  "note": "Frozen at Phase 5 export time from the SAME calibration/train split used in Phase 3/4. Never recomputed at inference time. Regenerating this file requires re-running this script deliberately, and should only happen alongside a new model_version."
+}

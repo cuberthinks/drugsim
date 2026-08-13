@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-08-08T16:56:04+00:00",
+  "n_raw_records": 17097,
+  "n_distinct_assays": 2651,
+  "category_by_record_count": {
+    "functional_flux_fluorescence": 1171,
+    "ambiguous_generic_inhibition": 5649,
+    "functional_electrophysiology": 5724,
+    "binding_displacement": 4337,
+    "other_unclassified": 216
+  },
+  "category_by_record_fraction": {
+    "functional_flux_fluorescence": 0.0685,
+    "ambiguous_generic_inhibition": 0.3304,
+    "functional_electrophysiology": 0.3348,
+    "binding_displacement": 0.2537,
+    "other_unclassified": 0.0126
+  },
+  "assay_confidence_score_by_record": {
+    "9": 16510,
+    "8": 587
+  },
+  "assay_organism_by_record": {
+    "Homo sapiens": 16725,
+    "Cricetulus griseus": 62,
+    "null": 293,
+    "Blocker": 1,
+    "Cavia porcellus": 16
+  },
+  "chembl_assay_type_note": "ChEMBL's own assay_type (B/F/T/A) field is NOT a reliable paradigm partition for this target: a 'Binding affinity to human ERG' assay is filed under type T, and genuine patch-clamp/two-electrode voltage-clamp assays appear under type A. Classification here uses assay description text instead.",
+  "cross_species_or_anomalous": {
+    "non_human_native_tissue_assays": [
+      "CHEMBL684971",
+      "CHEMBL686879",
+      "CHEMBL687333"
+    ],
+    "molecules_affected": 16,
+    "molecules_affected_in_final_dataset": 15,
+    "organism_field_data_quality_anomaly": [
+      "CHEMBL5058672"
+    ],
+    "molecules_affected_by_anomaly": 1,
+    "molecules_affected_by_anomaly_in_final_dataset": 0
+  },
+  "binding_vs_functional_comparability": {
+    "n_compounds_with_both_paradigms": 100,
+    "log10_ratio_mean": 0.1935,
+    "log10_ratio_median": 0.132,
+    "log10_ratio_stdev": 0.8721,
+    "fraction_discordant_gt_10x": 0.24,
+    "fraction_discordant_gt_3x": 0.52,
+    "conclusion": "NOT reliably interchangeable: 23% of dual-tested compounds differ >10x, 51% differ >3.16x between binding-displacement and functional-electrophysiology IC50 for the same compound."
+  },
+  "aggregation_impact": {
+    "total_molecules_considered": 9802,
+    "mixed_paradigm_molecules": 429,
+    "mixed_and_caught_by_existing_discordance_filter": 77,
+    "mixed_but_silently_averaged_across_paradigms": 352,
+    "fraction_of_all_molecules_silently_mixed": 0.0359
+  }
+}

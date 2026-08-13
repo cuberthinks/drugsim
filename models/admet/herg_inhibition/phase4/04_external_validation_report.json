@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-08-09T02:24:47+00:00",
+  "external_source": {
+    "name": "PubChem AID 588834 -- qHTS Assay for Small Molecule Inhibitors of the Human hERG Channel Activity",
+    "submitter": "NCATS (NIH)",
+    "url": "https://pubchem.ncbi.nlm.nih.gov/bioassay/588834",
+    "independence": "Distinct submitting lab, assay technology, and data pipeline from ChEMBL. Not used in training, feature selection, hyperparameter tuning, threshold selection, or calibration prior to this script.",
+    "total_compounds_in_assay": 4743,
+    "excluded_inconclusive": 578,
+    "excluded_active_no_potency": 0,
+    "quarantined_structures": 0,
+    "mixtures_excluded": 135,
+    "final_n": 4030,
+    "label_rule": "SAME rule as training: potency (AC50) <= 10000 nM = blocker, using this assay's own fitted Potency value, not PubChem's internal Active/Inactive curve classification"
+  },
+  "overlap_with_training_set": {
+    "n_exact_inchikey_overlap": 111,
+    "fraction_overlap": 0.0275,
+    "n_near_duplicate_tanimoto_ge_0.95": 111,
+    "fraction_near_duplicate": 0.0275
+  },
+  "performance": {
+    "all_external_compounds": {
+      "n": 4030,
+      "positive_fraction": 0.0998,
+      "roc_auc": 0.8664,
+      "balanced_accuracy": 0.7775,
+      "precision": 0.2388,
+      "recall": 0.8582,
+      "confusion_matrix": {
+        "tn": 2528,
+        "fp": 1100,
+        "fn": 57,
+        "tp": 345
+      }
+    },
+    "excluding_exact_training_overlap": {
+      "n": 3919,
+      "positive_fraction": 0.0898,
+      "roc_auc": 0.8696,
+      "balanced_accuracy": 0.7794,
+      "precision": 0.2196,
+      "recall": 0.8608,
+      "confusion_matrix": {
+        "tn": 2490,
+        "fp": 1077,
+        "fn": 49,
+        "tp": 303
+      }
+    },
+    "excluding_near_duplicates_ge_0.95": {
+      "n": 3919,
+      "positive_fraction": 0.0893,
+      "roc_auc": 0.8686,
+      "balanced_accuracy": 0.779,
+      "precision": 0.2183,
+      "recall": 0.86,
+      "confusion_matrix": {
+        "tn": 2491,
+        "fp": 1078,
+        "fn": 49,
+        "tp": 301
+      }
+    }
+  },
+  "class_prevalence_note": "External set positive fraction is ~10.0%, vs. ~66% in the training distribution. ROC-AUC (ranking quality) transfers reasonably well despite this shift, but the model's default 0.5 decision threshold and any calibration were fit under a ~66% prior and do NOT automatically transfer to a ~10% prior -- this shows up as high recall but low precision here (many false positives in absolute terms), not as poor discrimination.",
+  "near_duplicate_note": "n_near_duplicate_tanimoto_ge_0.95 equals n_exact_inchikey_overlap exactly -- no additional near-duplicates beyond the literal training-set overlap were found in this external set.",
+  "registered_model_reference": {
+    "global_split_test_roc_auc": 0.7875,
+    "global_split_test_balanced_accuracy": 0.6495
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-08-09T02:40:16+00:00",
+  "test_set_n": 800,
+  "test_set_positive_fraction": 0.6112,
+  "train_prevalence_used_for_majority_and_random": 0.6693,
+  "baselines": {
+    "majority_class": {
+      "predicts": "blocker",
+      "accuracy": 0.6112,
+      "balanced_accuracy": 0.5,
+      "roc_auc": null,
+      "note": "undefined ROC-AUC -- a constant prediction has no ranking"
+    },
+    "random_stratified": {
+      "accuracy": 0.54,
+      "balanced_accuracy": 0.5017,
+      "roc_auc": 0.5,
+      "note": "20-repeat average, predictions drawn at the train-set positive rate"
+    },
+    "simple_descriptor_logp_mw_tpsa": {
+      "accuracy": 0.5687,
+      "balanced_accuracy": 0.5688,
+      "roc_auc": 0.601,
+      "n_features": 3
+    }
+  },
+  "registered_model": {
+    "accuracy": 0.7075,
+    "balanced_accuracy": 0.6495,
+    "roc_auc": 0.7875,
+    "n_features": 2066
+  },
+  "improvement": {
+    "balanced_accuracy_over_majority_class": 0.1495,
+    "roc_auc_over_simple_descriptor_baseline": 0.1865
+  }
+}

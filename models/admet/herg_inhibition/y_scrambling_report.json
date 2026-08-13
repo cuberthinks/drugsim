@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-08-08T16:29:16+00:00",
+  "algorithm": "random_forest",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null
+  },
+  "n_repeats": 10,
+  "real_model_validation_roc_auc": 0.8394,
+  "scrambled_validation_roc_auc": {
+    "mean": 0.489,
+    "std": 0.0427,
+    "min": 0.4297,
+    "max": 0.57,
+    "all_runs": [
+      0.443,
+      0.5072,
+      0.4297,
+      0.5243,
+      0.4417,
+      0.5229,
+      0.4582,
+      0.4916,
+      0.57,
+      0.5009
+    ]
+  },
+  "near_chance_threshold": "abs(mean_scrambled - 0.5) < 0.07",
+  "near_chance": true,
+  "clearly_separated_threshold": "real_auc - mean_scrambled > 3*std_scrambled",
+  "clearly_separated": true,
+  "status": "PASS (collapsed to chance)"
+}

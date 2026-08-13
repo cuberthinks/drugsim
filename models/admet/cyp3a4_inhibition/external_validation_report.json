@@ -1,0 +1,38 @@
+{
+  "external_dataset": {
+    "name": "TDC CYP3A4_Veith (PubChem AID 1851 qHTS primary screen, Veith et al. 2009 Nat Biotechnol)",
+    "retrieval_method": "direct HTTP fetch of the underlying Harvard Dataverse file (PyTDC's Python wrapper failed in this environment)",
+    "sha256_of_raw_file": "254a6ebc0b79dc4813df3da66ac6d7d06eea8db9814aae03586764573157b7f5",
+    "n_compounds_raw": 12328,
+    "n_compounds_standardised": 12175,
+    "n_quarantined_unparseable": 3
+  },
+  "overlap_with_training_data": {
+    "n_overlapping_with_chembl_training_set": 23,
+    "overlap_fraction": 0.0019,
+    "n_genuinely_disjoint": 12152,
+    "note": "Metrics below are computed ONLY on the disjoint (genuinely unseen) subset."
+  },
+  "label_definition_caveat": "TDC's Y label is PubChem AID 1851's own qHTS active/inactive call, a DIFFERENT operationalisation of 'CYP3A4 inhibition' than this model's 'aggregated ChEMBL literature IC50 <= 10 uM' definition. Some disagreement is expected from label-definition differences alone (single-concentration qHTS screening vs. aggregated dose-response IC50), not only from model error -- this is a real limitation of this validation, reported here rather than presented as a clean apples-to-apples comparison.",
+  "did_not_influence": [
+    "training data selection",
+    "feature selection",
+    "hyperparameter tuning (train.py's validation-group grid search used only ChEMBL group 8)",
+    "the 10 uM threshold (fixed before this dataset was ever fetched)",
+    "calibration (reliability.py's conformal calibration used only ChEMBL group 7)"
+  ],
+  "metrics_on_disjoint_external_set": {
+    "n": 12152,
+    "positive_fraction": 0.4184,
+    "roc_auc": 0.7758,
+    "average_precision_pr_auc": 0.7066,
+    "balanced_accuracy": 0.7022,
+    "matthews_corrcoef": 0.4016,
+    "confusion_matrix": {
+      "tn": 4325,
+      "fp": 2742,
+      "fn": 1056,
+      "tp": 4029
+    }
+  }
+}

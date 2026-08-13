@@ -1,0 +1,27 @@
+{
+  "raw_input_unchanged": true,
+  "dataset_identical_excl_surrogate_id": true,
+  "dataset_row_counts": {
+    "old": 9589,
+    "new": 9589
+  },
+  "features": {
+    "inchikey_order_identical": true,
+    "descriptors_identical": true,
+    "fingerprints_identical": true,
+    "labels_identical": true,
+    "split_groups_identical": true
+  },
+  "training": {
+    "candidate_comparison_identical": true,
+    "validation_metrics_identical": true,
+    "selected_algorithm_identical": true
+  },
+  "model_artifact_byte_identical": true,
+  "evaluation": {
+    "global_split_identical": true,
+    "benchmark_split_identical": true,
+    "roc_auc_gap_identical": true
+  },
+  "overall_status": "PASS (fully reproducible)"
+}

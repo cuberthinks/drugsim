@@ -1,0 +1,30 @@
+# DrugSim code ownership.
+#
+# Review requirements are defined in TDS §8.5.
+
+*                               @drugsim/engineering
+
+# The single implementation of every chemistry operation in DrugSim. Imported
+# unchanged by ETL, training and inference — the structural prevention of
+# training/serving skew (TDS §6.6, risk R5). Requires cheminformatics review.
+/src/drugsim_chem/              @drugsim/cheminformatics @drugsim/engineering
+
+# Schema and migrations: two reviewers including the data owner.
+/database/                      @drugsim/data @drugsim/engineering
+
+# Pipeline gates are hard stops. Weakening one is a scientific decision.
+/etl/gates/                     @drugsim/data @drugsim/engineering
+
+# Source registry drives ETL, licence audit and freshness monitoring.
+/datasets/registry.yaml         @drugsim/data @drugsim/legal
+
+# Golden set encodes edge-case chemistry knowledge as executable tests.
+/datasets/golden/               @drugsim/cheminformatics
+
+# Security controls.
+/src/drugsim_core/redaction.py  @drugsim/security @drugsim/engineering
+/tests/security/                @drugsim/security
+
+# The TDS is under change control (TDS README §0.3).
+/docs/tds/                      @drugsim/engineering
+/docs/adr/                      @drugsim/engineering

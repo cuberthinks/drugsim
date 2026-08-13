@@ -1,0 +1,191 @@
+{
+  "generated_at": "2026-08-09T02:42:40+00:00",
+  "test_set_n": 800,
+  "overall_error_rate": 0.2925,
+  "false_positives": {
+    "n": 190,
+    "fraction_of_test": 0.2375,
+    "mean_true_ic50_nm": 125092.2,
+    "median_true_ic50_nm": 19000.0
+  },
+  "false_negatives": {
+    "n": 44,
+    "fraction_of_test": 0.055,
+    "mean_true_ic50_nm": 5472.0,
+    "median_true_ic50_nm": 5530.0
+  },
+  "borderline_compounds": {
+    "band": [
+      0.4,
+      0.6
+    ],
+    "n": 209,
+    "error_rate_within_band": 0.4545,
+    "error_rate_outside_band": 0.2352
+  },
+  "root_cause_label_uncertainty": {
+    "near_threshold_band_nm": [
+      3333.3333333333335,
+      30000.0
+    ],
+    "n_compounds_near_threshold": 442,
+    "error_rate_near_threshold": 0.4344,
+    "error_rate_far_from_threshold": 0.1173,
+    "interpretation": "compounds whose true aggregated IC50 sits within 3x of the 10 uM cutoff are inherently label-fragile -- a small measurement difference would flip their true label. Comparing error rate near vs. far from the threshold tests whether this is a real driver of errors."
+  },
+  "root_cause_measurement_sparsity": {
+    "single_measurement_compounds": {
+      "n": 721,
+      "error_rate": 0.2913
+    },
+    "multi_measurement_compounds": {
+      "n": 79,
+      "error_rate": 0.3038
+    },
+    "interpretation": "compares error rate for compounds with only one source measurement (more label noise) vs. several"
+  },
+  "worst_performing_scaffolds": [
+    {
+      "scaffold": "C(=C(c1ccccc1)c1ccc(C2CCNCC2)cc1)c1ccccc1",
+      "n": 4,
+      "n_errors": 4,
+      "error_rate": 1.0
+    },
+    {
+      "scaffold": "O=C(CC1CC1)N1CC(c2ccccc2)=C[C@H]1c1ccccc1",
+      "n": 4,
+      "n_errors": 4,
+      "error_rate": 1.0
+    },
+    {
+      "scaffold": "c1cncc(-c2cc(Nc3cnccn3)n[nH]2)c1",
+      "n": 3,
+      "n_errors": 3,
+      "error_rate": 1.0
+    },
+    {
+      "scaffold": "O=C1OCc2cc(CCN3CCC4(CC3)CCN(c3ncns3)C4=O)ccc21",
+      "n": 3,
+      "n_errors": 3,
+      "error_rate": 1.0
+    },
+    {
+      "scaffold": "c1ccc(C[C@H]2CCCN2C2CCN(c3ncn[nH]3)CC2)cc1",
+      "n": 5,
+      "n_errors": 4,
+      "error_rate": 0.8
+    },
+    {
+      "scaffold": "O=C1O[C@H](c2ccccc2)CN1Cc1ncncc1-c1cccc(-c2ccccc2)c1",
+      "n": 10,
+      "n_errors": 8,
+      "error_rate": 0.8
+    },
+    {
+      "scaffold": "O=C(c1ccccc1)N1CCN(c2ccccn2)CC1",
+      "n": 5,
+      "n_errors": 4,
+      "error_rate": 0.8
+    },
+    {
+      "scaffold": "c1ccc([C@H]2CSc3ccccc3[C@H]2c2ccc(OCCN3CCC3)cc2)cc1",
+      "n": 4,
+      "n_errors": 3,
+      "error_rate": 0.75
+    },
+    {
+      "scaffold": "O=C(N[C@@H]1COc2cccc(-c3cccnc3)c2C1)c1cccnc1",
+      "n": 4,
+      "n_errors": 3,
+      "error_rate": 0.75
+    },
+    {
+      "scaffold": "O=C(c1cccc(-c2ncnc3ccc(-c4cccnc4)cc23)c1)N1CCNCC1",
+      "n": 3,
+      "n_errors": 2,
+      "error_rate": 0.6667
+    }
+  ],
+  "largest_confident_errors": [
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.988,
+      "true_ic50_nm": 10580.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.948,
+      "true_ic50_nm": 11000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.9467,
+      "true_ic50_nm": 13000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.938,
+      "true_ic50_nm": 12589.2,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.9327,
+      "true_ic50_nm": 14420.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.93,
+      "true_ic50_nm": 16000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.916,
+      "true_ic50_nm": 14000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.9044,
+      "true_ic50_nm": 14000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.884,
+      "true_ic50_nm": 11000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    },
+    {
+      "name": "(unnamed)",
+      "true_label": "non_blocker",
+      "predicted_prob_blocker": 0.8822,
+      "true_ic50_nm": 11000.0,
+      "n_source_measurements": 1,
+      "near_threshold": true
+    }
+  ]
+}

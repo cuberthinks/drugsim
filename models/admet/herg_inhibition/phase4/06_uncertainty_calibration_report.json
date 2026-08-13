@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-08-09T02:40:20+00:00",
+  "cited_from_phase3_not_recomputed": {
+    "internal_test_conformal_empirical_coverage": 0.8988,
+    "internal_test_nominal_confidence": 0.9,
+    "internal_test_calibration_brier_raw": 0.1864,
+    "internal_test_calibration_ece_raw": 0.0597
+  },
+  "conformal_precision_statement": "Split conformal coverage is a MARGINAL guarantee over a population exchangeable with the calibration set -- e.g. 'the true label falls in the predicted set at least 90% of the time, averaged over many predictions from the calibration distribution.' It is NOT a per-instance probability that any single prediction is correct, and the guarantee is not assumed to survive a population whose label distribution differs sharply from calibration -- which this section tests empirically rather than assumes.",
+  "external_set_conformal_coverage": {
+    "n": 3956,
+    "nominal_confidence": 0.9,
+    "empirical_coverage": 0.9196,
+    "within_tolerance_of_nominal": true,
+    "interpretation": "coverage measured on a population with ~9% positive rate, vs. ~66% in the calibration set -- a real test of whether the exchangeability assumption behind the marginal guarantee holds under distribution shift, not just a repeat of the internal-test check"
+  },
+  "external_set_calibration": {
+    "brier_score_raw": 0.2014,
+    "ece_raw": 0.3634,
+    "comparison_to_internal_test": "internal Brier 0.1864 / ECE 0.0597 -- see cited_from_phase3 above"
+  }
+}

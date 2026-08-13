@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-08-09T02:37:37+00:00",
+  "pool_composition": {
+    "internal_test": 800,
+    "external_pubchem": 3956,
+    "total": 4756
+  },
+  "tiers": {
+    "highly_similar": {
+      "n": 405,
+      "tanimoto_range": [
+        0.7,
+        1.0
+      ],
+      "mean_tanimoto": 0.7886,
+      "positive_fraction": 0.642,
+      "accuracy": 0.7407,
+      "error_rate": 0.2593,
+      "roc_auc": 0.8074,
+      "balanced_accuracy": 0.6852
+    },
+    "moderately_similar": {
+      "n": 760,
+      "tanimoto_range": [
+        0.4,
+        0.7
+      ],
+      "mean_tanimoto": 0.5343,
+      "positive_fraction": 0.425,
+      "accuracy": 0.6895,
+      "error_rate": 0.3105,
+      "roc_auc": 0.8188,
+      "balanced_accuracy": 0.7207
+    },
+    "chemically_novel": {
+      "n": 2700,
+      "tanimoto_range": [
+        0.2,
+        0.4
+      ],
+      "mean_tanimoto": 0.2841,
+      "positive_fraction": 0.0989,
+      "accuracy": 0.7044,
+      "error_rate": 0.2956,
+      "roc_auc": 0.8507,
+      "balanced_accuracy": 0.771
+    },
+    "out_of_domain": {
+      "n": 891,
+      "tanimoto_range": [
+        -0.01,
+        0.2
+      ],
+      "mean_tanimoto": 0.1594,
+      "positive_fraction": 0.0101,
+      "accuracy": 0.7374,
+      "error_rate": 0.2626,
+      "roc_auc": 0.7273,
+      "balanced_accuracy": 0.7024
+    }
+  },
+  "confound_warning": "positive_fraction varies sharply across tiers (64% -> 42% -> 10% -> 1%) because the external PubChem pool (very low positive rate) dominates the two lower-similarity tiers by count. Raw accuracy is therefore NOT a fair cross-tier comparison -- a tier that is 99% one class scores high accuracy almost regardless of discrimination quality. ROC-AUC and balanced accuracy (both prevalence-corrected) are the metrics actually used for the AD-mechanism conclusion below.",
+  "error_vs_similarity_correlation": {
+    "pearson_r_similarity_vs_correctness": 0.0022,
+    "interpretation": "near zero, and NOT the primary evidence here -- raw correctness at a fixed 0.5 threshold is confounded by the same prevalence shift described above. See per-tier ROC-AUC instead."
+  },
+  "ad_mechanism_check": {
+    "claim_tested": "TDS Sec 6.8: max Tanimoto < 0.4 is a 'strong OOD signal' implying degraded reliability",
+    "roc_auc_by_tier": {
+      "highly_similar": 0.8074,
+      "moderately_similar": 0.8188,
+      "chemically_novel": 0.8507,
+      "out_of_domain": 0.7273
+    },
+    "finding": "PARTIALLY supported, not cleanly monotonic. out_of_domain has the lowest ROC-AUC (0.727), consistent with the AD's claim. But chemically_novel (still below the 0.4 threshold) has the HIGHEST ROC-AUC (0.851) of all four tiers, and highly_similar/moderately_similar are similar to each other (0.807/0.819) rather than clearly better than chemically_novel. The single Tanimoto<0.4 cutoff does flag the single worst-performing tier correctly, but does not produce a clean similarity-performance gradient across the full range -- weaker support than Phase 3's original AD validation (which used only the internal, much more homogeneous 800-compound test set) suggested."
+  }
+}

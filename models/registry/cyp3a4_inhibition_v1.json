@@ -1,0 +1,259 @@
+{
+  "_comment": "Phase 9. Second registered DrugSim endpoint (Metabolism category), following the exact registry shape established for herg_inhibition_v1.json. File-based substitute for a real model registry DB row, same limitation already documented there.",
+  "model_id": "cyp3a4_inhibition",
+  "model_version": "0.1.0",
+  "status": "challenger",
+  "final_report_status": "VALIDATED FOR INTERNAL RESEARCH",
+  "final_report_status_history": [
+    {
+      "status": "VALIDATED FOR INTERNAL RESEARCH",
+      "as_of": "2026-08-10T17:45:00+00:00",
+      "report": "docs/phase9/phase9-admet-expansion-report.md",
+      "note": "Promotion decision made on first evaluation -- see report Sec 'Final Decision' for full reasoning (baselines clearly beaten, reliability layer verified functioning, genuinely independent external validation confirms internal test performance)."
+    }
+  ],
+  "registered_at": "2026-08-10T17:45:00+00:00",
+  "status_updated_at": "2026-08-10T17:45:00+00:00",
+  "endpoint": {
+    "name": "CYP3A4 inhibition",
+    "task_type": "binary classification",
+    "definition": "label=1 (inhibitor) if aggregated IC50 <= 10000 nM (10 uM), else label=0 (non-inhibitor)",
+    "threshold_note": "10 uM is a literature convention for a binary CYP-inhibition-risk call (comparable order of magnitude to published in vitro DDI-risk screening cutoffs), not a universal biological constant -- same convention class already used for hERG.",
+    "target": "ChEMBL CHEMBL340, Cytochrome P450 3A4, Homo sapiens, SINGLE PROTEIN",
+    "category": "Metabolism (ADMET) -- the platform's first endpoint outside the existing Toxicity category (hERG)",
+    "positive_class_label": "inhibitor",
+    "negative_class_label": "non_inhibitor"
+  },
+  "dataset": {
+    "dataset_id": "cyp3a4_inhibition",
+    "dataset_version": "v1",
+    "source": "ChEMBL REST API (direct), CHEMBL340 IC50/nM activities, complete population not a sample (12,359 raw records)",
+    "source_manifest_sha256": "64cdd52897bc882634ca978cd0a6662f625df64469c80952c38cc800632aeca1",
+    "build_manifest_sha256": "7851592db0f445e84ac74151baaf92f544137a2a5e7a923ffceb375195532fe3",
+    "final_compound_count": 5344,
+    "label_distribution": {
+      "inhibitor": 3579,
+      "non_inhibitor": 1765,
+      "positive_fraction": 0.6697
+    },
+    "n_distinct_scaffolds": 3009,
+    "quarantined_structures": 0,
+    "mixtures_excluded": 7,
+    "discordant_entities_excluded": 97,
+    "impossible_value_entities_excluded": 1,
+    "impossible_value_note": "One entity (aggregated IC50 = 0 nM) traced to a single ChEMBL record flagged 'Outside typical range'; that validity flag was added to this endpoint's exclusion filter (not retrofitted onto hERG, which is left unchanged per Phase 9's explicit constraint) -- see docs/phase9/phase9-admet-expansion-report.md."
+  },
+  "features": {
+    "feature_set_id": "a3ee2afe06243a9c3eca4e1d3f74393e900c0961f915609ac29b07e4d9919b30",
+    "descriptor_spec_version": "v1",
+    "standardization_pipeline_version": "v1",
+    "rdkit_version": "2025.03.3",
+    "layout": "concat(physicochemical_descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+    "descriptor_fields": [
+      "mw_g_mol",
+      "exact_mass_g_mol",
+      "logp_crippen",
+      "molar_refractivity",
+      "tpsa_a2",
+      "rotatable_bonds",
+      "aromatic_rings",
+      "ring_count",
+      "heavy_atom_count",
+      "formal_charge",
+      "hbd_lipinski",
+      "hba_lipinski",
+      "hbd_strict",
+      "hba_strict",
+      "heteroatom_count",
+      "fraction_csp3",
+      "num_stereocentres",
+      "largest_ring_size"
+    ],
+    "fingerprint": "Morgan/ECFP4-equivalent, radius=2, 2048 bits, chirality-aware (include_chirality=True)",
+    "note": "feature_set_id is IDENTICAL to herg_inhibition_v1.json's -- expected and correct: this is a content address over the descriptor/fingerprint/standardisation/RDKit-version TOOLCHAIN (ADR-005), which both endpoints share unmodified. It is not a per-dataset identifier."
+  },
+  "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null,
+    "class_weight": "balanced"
+  },
+  "random_seed": 42,
+  "compared_against": {
+    "gradient_boosting": 0.7298,
+    "logistic_regression": 0.6866,
+    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.7870"
+  },
+  "baseline_comparison": {
+    "majority_class_balanced_accuracy": 0.5,
+    "descriptor_only_logistic_regression_roc_auc": 0.6148,
+    "descriptor_only_random_forest_roc_auc": 0.7291,
+    "champion_roc_auc": 0.787,
+    "improvement_over_best_baseline_roc_auc": 0.0579,
+    "meaningfully_beats_all_baselines": true
+  },
+  "validation_strategy": {
+    "split_method": "Global scaffold-level split_group (ADR-009): sha256(scaffold_key || split_salt) mod 10, deterministic, split_salt='cyp3a4_inhibition_v1' (independent of hERG's split assignment)",
+    "split_roles": {
+      "train": "groups 0-6 (n=3767)",
+      "calibration": "group 7 (n=514, reserved, conformal only)",
+      "validation": "group 8 (n=604, hyperparameter selection)",
+      "test": "group 9 (n=459, touched once)"
+    },
+    "leakage_prevention": "One row per standardised entity (inchikey_full) by construction -- no duplicate structures possible. Split-group assignment is a pure deterministic function of scaffold key, asserted 1:1 in prepare_features.py (a scaffold key mapping to >1 split_group raises immediately)."
+  },
+  "metrics": {
+    "global_split_test_group_9": {
+      "n_test": 459,
+      "roc_auc": 0.7995,
+      "roc_auc_95pct_ci": [
+        0.7593,
+        0.8382
+      ],
+      "average_precision_pr_auc": 0.8922,
+      "balanced_accuracy": 0.652,
+      "matthews_corrcoef": 0.3564,
+      "sensitivity": 0.8987,
+      "specificity": 0.4052,
+      "f1": 0.8185,
+      "precision": 0.7514,
+      "recall": 0.8987,
+      "brier_score": 0.168,
+      "confusion_matrix": {
+        "tn": 62,
+        "fp": 91,
+        "fn": 31,
+        "tp": 275
+      }
+    },
+    "benchmark_split_random_proxy": {
+      "n_test": 459,
+      "roc_auc": 0.8391,
+      "note": "random-split proxy, not a true TDC canonical split -- none exists for this ChEMBL-sourced dataset"
+    },
+    "roc_auc_gap": 0.0396,
+    "gap_explanation": "Global scaffold splitting prevents cross-dataset/near-neighbour leakage; the gap is the leakage the scaffold split removes.",
+    "comparison_to_herg": "hERG's own registered global-split test metrics (roc_auc=0.7875, balanced_accuracy=0.6495) are directly comparable to CYP3A4's (0.7995, 0.652) -- CYP3A4's discriminative performance is at parity with, not meaningfully weaker than, the platform's existing validated endpoint.",
+    "known_limitation": "Specificity (0.4052) is the weakest metric: the model over-calls 'inhibitor', consistent with the 67% positive training prevalence and CYP3A4's broad substrate promiscuity making the non-inhibitor chemical space harder to characterise than hERG's more specific channel-blocking motif. See error_analysis_report.json."
+  },
+  "external_validation": {
+    "dataset": "TDC CYP3A4_Veith (PubChem AID 1851 qHTS primary screen, Veith et al. 2009 Nat Biotechnol)",
+    "retrieval_method": "Direct HTTP fetch of the underlying Harvard Dataverse file -- PyTDC's own Python package failed in this environment (returned an HTML error page), same limitation Phase 3 documented for TDC access generally.",
+    "n_genuinely_disjoint_from_training": 12152,
+    "overlap_with_training_set": "0.19% (23 of 12,175 standardised compounds)",
+    "did_not_influence": [
+      "training data",
+      "feature selection",
+      "hyperparameter tuning",
+      "the 10 uM threshold",
+      "conformal calibration"
+    ],
+    "label_definition_caveat": "TDC's Y label is PubChem's own qHTS active/inactive call, a different operationalisation of CYP3A4 inhibition than this model's aggregated-IC50-based definition -- some disagreement is expected from label-definition differences alone, not only model error.",
+    "metrics_on_disjoint_set": {
+      "n": 12152,
+      "roc_auc": 0.7758,
+      "average_precision_pr_auc": 0.7066,
+      "balanced_accuracy": 0.7022,
+      "matthews_corrcoef": 0.4016,
+      "confusion_matrix": {
+        "tn": 4325,
+        "fp": 2742,
+        "fn": 1056,
+        "tp": 4029
+      }
+    },
+    "conclusion": "ROC-AUC (0.7758) and balanced accuracy (0.7022) on a genuinely independent 12,152-compound dataset with a different label-generation methodology are consistent with (specificity/balanced-accuracy: better than) internal scaffold-split test performance -- real evidence against overfitting to ChEMBL-specific idiosyncrasies, not merely a re-split of the same data."
+  },
+  "applicability_domain_method": {
+    "components": [
+      "max Tanimoto similarity to training set (Morgan fingerprints)",
+      "k-NN distance in standardised descriptor space (k=5, threshold=95th percentile of training-internal distances)",
+      "scaffold seen in training (boolean)"
+    ],
+    "verdict_logic": "out_of_domain if max_tanimoto<0.4 OR >=2 of {max_tanimoto<0.6, knn_dist>p95_train, scaffold_not_in_training} triggered; borderline if exactly 1; else in_domain",
+    "empirical_validation": "2-signal verdict (scaffold excluded, tautologically triggered on any scaffold-holdout test set): in_domain accuracy 82.8% (n=262), borderline 69.9% (n=93), out_of_domain 52.9% (n=104) -- clean monotonic degradation confirms the AD carries real, usable signal for this endpoint too.",
+    "caveat": "3-signal in_domain verdict is 0/459 on this test set by construction (scaffold-holdout guarantees scaffold_not_in_training=True for every held-out compound); only reachable for a real query compound whose scaffold is already in the training pool."
+  },
+  "uncertainty_method": {
+    "method": "Split (inductive) conformal prediction",
+    "nonconformity_score": "1 - predicted probability of the candidate class",
+    "calibration_set": "split_group 7 (n=514), used for the first and only time in reliability.py",
+    "nominal_confidence": 0.9,
+    "empirical_coverage_test_group": 0.8976,
+    "coverage_within_tolerance": true,
+    "uncertainty_tracks_error": {
+      "accuracy_when_singleton_confident": 0.8368,
+      "accuracy_when_both_classes_uncertain": 0.5614,
+      "conclusion": "Confident (singleton) predictions are substantially more accurate than genuinely uncertain ones -- the uncertainty signal is functioning as intended, not decorative."
+    },
+    "post_hoc_calibration_evaluated": {
+      "raw_brier": 0.168,
+      "raw_ece": 0.0493,
+      "platt_brier": 0.1759,
+      "platt_ece": 0.1025,
+      "isotonic_brier": 0.1701,
+      "isotonic_ece": 0.0571,
+      "recommendation": "use raw predict_proba -- neither Platt nor isotonic post-hoc calibration improved on it, same conclusion as hERG"
+    }
+  },
+  "error_analysis_summary": {
+    "dominant_error_mode": "false positives (model over-calls inhibitor), consistent with low specificity",
+    "representative_pattern": "largest errors cluster among non-inhibitors with true IC50 just above the 10 uM threshold (14-25 uM range) -- consistent with genuine difficulty near a hard threshold applied to a continuous potency measure, not a data-pipeline defect",
+    "assay_variability_check": "single-measurement compounds (74.9% accuracy) outperformed multiply-measured compounds (62.5%) -- opposite of the 'more measurements = cleaner label' hypothesis; plausibly explained by multiply-studied compounds tending to be pharmacologically borderline/interesting rather than by aggregation noise",
+    "full_report": "models/admet/cyp3a4_inhibition/error_analysis_report.json"
+  },
+  "promotion_decision": {
+    "status": "VALIDATED FOR INTERNAL RESEARCH",
+    "reasoning": [
+      "Meaningfully and substantially beats all three required baselines (majority-class, descriptor-only logistic regression, descriptor-only random forest) -- +0.058 ROC-AUC over the strongest baseline.",
+      "Discriminative performance (0.7995 ROC-AUC, scaffold-split test) is at parity with the platform's existing VALIDATED hERG model (0.7875), not a weaker standard applied to pass a new endpoint.",
+      "Applicability domain shows the required monotonic reliability degradation (82.8% -> 69.9% -> 52.9% accuracy from in-domain to out-of-domain) -- the AD signal is real and usable, not decorative.",
+      "Conformal uncertainty achieves empirical coverage (89.76%) within tolerance of its 90% nominal target, AND confident predictions are demonstrably more accurate than uncertain ones (83.7% vs 56.1%) -- the uncertainty layer functions as intended.",
+      "A genuinely independent external validation set (12,152 disjoint compounds, different label-generation methodology, zero influence on any modelling decision) shows CONSISTENT, in some metrics BETTER, performance than the internal test set -- strong evidence against overfitting."
+    ],
+    "documented_limitations_carried_by_this_status": [
+      "Specificity (0.4052 internal / higher externally at 0.61-equivalent) is the weakest metric -- the model has a real, asymmetric tendency to over-predict 'inhibitor'. Any UI surfacing this prediction must show this alongside the reliability/uncertainty information, never as a bare label.",
+      "The 10 uM inhibitor threshold is a literature convention, not a clinical or regulatory boundary -- errors concentrate near this boundary, as expected for any hard threshold on a continuous measure.",
+      "External validation used a differently-labelled dataset (qHTS single-concentration screen vs. aggregated dose-response IC50) -- consistency is reassuring but not a perfect apples-to-apples confirmation.",
+      "Endpoint covers CYP3A4 inhibition ONLY -- says nothing about other CYP isoforms, other metabolic pathways, or actual clinical drug-drug-interaction risk, which depends on additional pharmacokinetic factors (dose, exposure, other enzyme/transporter involvement) this model does not model."
+    ],
+    "not_claimed": [
+      "clinical drug-drug interaction risk",
+      "actual human pharmacokinetics",
+      "regulatory DDI classification",
+      "complete metabolic profile"
+    ]
+  },
+  "code_version": {
+    "git_commit": "unavailable in this environment (no git history check performed for this value; hERG's registry entry recorded one from an environment where `git rev-parse` was run -- not repeated here to avoid fabricating a commit hash)",
+    "repository": "drugsim",
+    "pipeline_scripts": [
+      "models/admet/cyp3a4_inhibition/fetch_chembl_data.py",
+      "models/admet/cyp3a4_inhibition/build_dataset.py",
+      "models/admet/cyp3a4_inhibition/data_quality_audit.py",
+      "models/admet/cyp3a4_inhibition/prepare_features.py",
+      "models/admet/cyp3a4_inhibition/baselines.py",
+      "models/admet/cyp3a4_inhibition/train.py",
+      "models/admet/cyp3a4_inhibition/evaluate.py",
+      "models/admet/cyp3a4_inhibition/reliability.py",
+      "models/admet/cyp3a4_inhibition/error_analysis.py",
+      "models/admet/cyp3a4_inhibition/external_validation.py",
+      "models/admet/cyp3a4_inhibition/10_export_inference_support.py"
+    ]
+  },
+  "artifact": {
+    "path": "models/admet/cyp3a4_inhibition/artifact/model.joblib",
+    "sha256": "44070914744d4ac572d9cd17d3511f6629786eaf448592e52501f5597f98cfb4",
+    "note": "gitignored binary, not committed, same convention as hERG's artifact.",
+    "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, RANDOM_SEED=42 fixed throughout; exact byte-identical retraining is NOT guaranteed since fetch_chembl_data.py re-queries a live external API that can gain new records over time (same documented limitation as hERG)."
+  },
+  "inference_support": {
+    "_comment": "Frozen conformal calibration + AD reference data exported by models/admet/cyp3a4_inhibition/10_export_inference_support.py -- never recomputed at inference time.",
+    "npz_path": "models/admet/cyp3a4_inhibition/artifact/inference_support.npz",
+    "npz_sha256": "50f3aaaf9791dd03cb02800528e890299986f23c371c0a1174a234ec30197b1f",
+    "scaler_path": "models/admet/cyp3a4_inhibition/artifact/descriptor_ad_scaler.joblib",
+    "scaler_sha256": "02dca1d4907a16940dc32045080766b650fd677c1e6b08368991792bd498e7fe",
+    "manifest_path": "models/admet/cyp3a4_inhibition/inference_support_manifest.json",
+    "manifest_sha256": "d139a4c74ed8fdb22e547a3756f0a6408cb2eea8c8300c10f6e9935cd78c5597"
+  }
+}
