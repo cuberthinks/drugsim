@@ -1,0 +1,107 @@
+# DrugSim prediction API image (src/drugsim_predict) -- the FastAPI service
+# serving the two validated ADMET models (hERG inhibition, CYP3A4 inhibition).
+#
+# Phase 8 addition: Dockerfile.app (the existing image in this directory)
+# builds the CLI/ETL tool (entrypoint "drugsim"), not this service.
+#
+# Render deployment fix (this revision): the previous version of this file
+# required a poetry.lock that has never existed in this repository (see
+# git history / docs/phase8's "Known limitations") -- the build would fail
+# at `COPY pyproject.toml poetry.lock` on a clean checkout. Poetry is
+# dropped entirely; the builder stage now installs from
+# requirements-lock.txt via pip, exactly the dependency-installation path
+# already proven throughout this project's own local development and CI
+# (no poetry install has ever actually been exercised end-to-end here).
+# The internal packages under src/ (drugsim_core, drugsim_chem,
+# drugsim_features, drugsim_predict) are made importable via PYTHONPATH
+# rather than an editable pip install, matching how every test run and
+# local server start in this project's history has already been invoked.
+#
+# MODEL ARTIFACTS: models/**/*.joblib and models/**/artifact/ are
+# gitignored on purpose (large trained-model binaries, not source) and are
+# NOT present in a fresh checkout. This build fetches them from a GitHub
+# Release via scripts/fetch_model_artifacts.sh -- set the
+# MODEL_RELEASE_URL_BASE build argument to
+# "https://github.com/<owner>/<repo>/releases/download/<tag>" pointing at
+# a release with the six asset files that script expects (see its own
+# header for exact names). The build fails loudly if any file is missing
+# or a checksum does not match the registry -- never a silent fallback to
+# a different model.
+
+# --------------------------------------------------------------------------
+FROM python:3.12-slim-bookworm AS builder
+
+ENV PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends build-essential curl ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-lock.txt ./
+RUN pip install --no-cache-dir -r requirements-lock.txt
+
+COPY src/ ./src/
+COPY scripts/ ./scripts/
+COPY models/registry/ ./models/registry/
+
+# Fetches the six large artifact files this build does not otherwise have
+# (see header). ARG, not ENV: the URL is a build-time input, not something
+# that needs to persist into the running container.
+ARG MODEL_RELEASE_URL_BASE
+RUN test -n "$MODEL_RELEASE_URL_BASE" || (echo "MODEL_RELEASE_URL_BASE build arg is required -- see this Dockerfile's header." >&2 && exit 1)
+RUN MODEL_RELEASE_URL_BASE="$MODEL_RELEASE_URL_BASE" bash scripts/fetch_model_artifacts.sh
+
+# Copies the small (non-gitignored) per-endpoint manifest files that live
+# alongside (not inside) each artifact/ directory.
+COPY models/admet/herg_inhibition/inference_support_manifest.json ./models/admet/herg_inhibition/inference_support_manifest.json
+COPY models/admet/cyp3a4_inhibition/inference_support_manifest.json ./models/admet/cyp3a4_inhibition/inference_support_manifest.json
+
+# --------------------------------------------------------------------------
+FROM python:3.12-slim-bookworm AS runtime
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPATH=/app/src
+
+# libgomp is required by RDKit's compiled extensions (same as Dockerfile.app).
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libgomp1 curl; \
+    rm -rf /var/lib/apt/lists/*; \
+    groupadd --gid 1000 drugsim; \
+    useradd --uid 1000 --gid 1000 --create-home --shell /usr/sbin/nologin drugsim
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder --chown=drugsim:drugsim /app/src /app/src
+COPY --from=builder --chown=drugsim:drugsim /app/scripts /app/scripts
+COPY --from=builder --chown=drugsim:drugsim /app/models /app/models
+
+# The prediction audit log (SQLite) lives here at runtime -- writable by
+# the non-root user, and expected to be a mounted/persistent disk in
+# production so it survives container replacement (see docs/phase8
+# "Backups"; on Render, attach a Persistent Disk at this mount path).
+RUN mkdir -p /app/var && chown drugsim:drugsim /app/var
+
+USER drugsim
+
+# Fails the build immediately if ANY registered endpoint's artifact is
+# missing or its checksum does not match the registry -- never ships an
+# image that would only discover this at first request. Reuses the exact
+# same multi-endpoint check `scripts/verify_model_integrity.py` runs as an
+# explicit CI/deploy gate (Phase 10 fix: this previously checked only the
+# hERG default, silently skipping any other registered endpoint).
+RUN python scripts/verify_model_integrity.py
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["uvicorn", "drugsim_predict.api:app", "--host", "0.0.0.0", "--port", "8000"]

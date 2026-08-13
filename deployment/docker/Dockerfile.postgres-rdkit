@@ -1,0 +1,56 @@
+# DrugSim PostgreSQL 16 + RDKit cartridge
+#
+# This image is a FIRST-CLASS ARTEFACT, not a convenience (TDS §3.6, §10.3).
+#
+# The RDKit cartridge is unavailable on managed PostgreSQL (RDS, Cloud SQL, Aurora),
+# so DrugSim runs self-managed Postgres and maintains this image itself (ADR-003).
+# The cartridge is what makes substructure (@>) and Tanimoto (%) search possible in
+# SQL over ~3M compounds with GiST indexes; without it every structural query becomes
+# an application-layer scan.
+#
+# The RDKit version inside this image participates in toolchain_id and therefore in
+# feature_set_id. Changing it invalidates every existing feature set and requires
+# model revalidation — so it is pinned, digest-referenced in deployment, and changed
+# only through change control.
+#
+# It is also the highest-value supply-chain target in the stack: custom, running the
+# database. Built from this file in-repo rather than pulled from a community source,
+# then scanned and signed in CI (TDS §7.10).
+
+FROM postgres:16-bookworm
+
+LABEL org.opencontainers.image.title="drugsim-postgres-rdkit" \
+      org.opencontainers.image.description="PostgreSQL 16 with the RDKit cartridge" \
+      org.opencontainers.image.source="https://github.com/drugsim/drugsim"
+
+# Pinned deliberately. See note above on toolchain_id.
+ARG RDKIT_PG_VERSION=202503
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        postgresql-16-rdkit \
+        postgresql-contrib-16; \
+    rm -rf /var/lib/apt/lists/*
+
+# Extensions are created by the first Alembic migration rather than here, so that
+# extension state is captured in migration history and is reproducible from an empty
+# volume. This script only runs on first initialisation of a fresh data directory and
+# would silently not run on an existing one — an unreliable place for schema state.
+COPY deployment/docker/postgres-init/ /docker-entrypoint-initdb.d/
+
+# Conservative defaults for the ETL workload: large sorts and index builds during
+# bulk load, moderate connection count. Tuned further per environment.
+CMD ["postgres", \
+     "-c", "shared_buffers=1GB", \
+     "-c", "work_mem=64MB", \
+     "-c", "maintenance_work_mem=1GB", \
+     "-c", "max_wal_size=4GB", \
+     "-c", "effective_cache_size=3GB", \
+     "-c", "random_page_cost=1.1", \
+     "-c", "log_min_duration_statement=1000", \
+     "-c", "jit=off"]
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
+    CMD pg_isready -U "${POSTGRES_USER:-drugsim}" -d "${POSTGRES_DB:-drugsim}" || exit 1

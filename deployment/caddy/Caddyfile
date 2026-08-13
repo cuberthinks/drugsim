@@ -1,0 +1,65 @@
+# DrugSim reverse proxy / static frontend / TLS termination.
+#
+# Phase 8 Sec 5 (Domain & HTTPS): {$DRUGSIM_DOMAIN} is read from the
+# environment with a documentation-safe placeholder default --
+# "drugsim.example" uses the .example TLD, reserved by IANA (RFC 2606)
+# specifically so documentation never accidentally references a domain
+# someone actually owns. Set DRUGSIM_DOMAIN to the real production
+# hostname when one exists; Caddy then obtains and renews a real
+# Let's Encrypt certificate for it automatically -- no manual TLS
+# configuration needed on this file's part.
+#
+# For purely local/compose use without any real domain or certificate,
+# override DRUGSIM_DOMAIN=:80 (a bare port binding disables Caddy's
+# automatic-HTTPS behaviour, since there is no hostname to issue a
+# certificate for).
+
+{$DRUGSIM_DOMAIN:drugsim.example} {
+	# OPTIONAL, recommended for a real "controlled external demonstration"
+	# (Phase 8 Sec 6): HTTP Basic Auth in front of the ENTIRE site (frontend
+	# and, via the reverse proxy below, the API too), so a small, known
+	# audience authenticates once via the browser's own native prompt --
+	# no key embedded in the JS bundle, no per-request header plumbing on
+	# the frontend's part. This is a genuinely better fit than the
+	# backend's X-API-Key gate (drugsim_predict.security.ApiKeyMiddleware)
+	# for "a small group of invited people share one login," and the two
+	# are complementary, not redundant: this protects the browser path,
+	# the API key protects direct/programmatic access to the API port if
+	# that port is ever reachable independently of this proxy.
+	#
+	# Generate a hash with: caddy hash-password --plaintext 'your-password'
+	# Uncomment and set real values -- never commit a real hash to this file.
+	# basicauth /* {
+	# 	someusername $2a$14$REPLACE_WITH_A_REAL_BCRYPT_HASH
+	# }
+
+	# Security headers (Phase 8 Sec 5: "secure HTTP headers").
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		# Deliberately no restrictive script-src beyond 'self': the app
+		# loads Google Fonts (frontend/index.html) and has no inline
+		# scripts, so this stays simple rather than fighting a CSP against
+		# a build tool's own output.
+		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"
+		-Server
+	}
+
+	# Reverse proxy to the prediction API. Same-origin, path-stripped, so
+	# the frontend's default relative "/api" base URL (frontend/src/api/client.ts)
+	# needs no production override -- see Dockerfile.frontend.
+	handle_path /api/* {
+		reverse_proxy predict-api:8000
+	}
+
+	# Static frontend, with SPA fallback so React Router's client-side
+	# routes (e.g. /predict, /methodology) resolve correctly on a hard
+	# refresh instead of 404ing against a file that doesn't exist on disk.
+	root * /srv
+	try_files {path} /index.html
+	file_server
+
+	encode gzip
+}

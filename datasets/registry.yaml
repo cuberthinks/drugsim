@@ -1,0 +1,522 @@
+# DrugSim — Zone 0 Source Registry
+#
+# Single source of truth for every dataset DrugSim ingests.
+# Nothing enters the data lake without an entry here.
+#
+# This file is normative and git-reviewed. Changes are reviewed like code:
+# a license or cadence change here is a material event, not a config tweak.
+#
+# Verification tags (carried forward from step1-dataset-survey.md):
+#   verified   — confirmed against the primary source on the stated date
+#   secondary  — from a secondary source; plausible, not primary-confirmed
+#   unverified — primary source unreachable at compile time; treat as approximate
+#
+# License tiers (see step2-data-dictionary.md §C.2):
+#   green — CC0 / US public domain      → unrestricted
+#   amber — CC BY                       → attribution only
+#   red   — CC BY-SA                    → ShareAlike, legal opinion pending
+#   black — NC / proprietary            → PROHIBITED on commercial paths
+
+schema_version: "1.0.0"
+compiled_date: "2026-08-05"
+compiled_for: "core-db-v1.0.0"
+
+# ---------------------------------------------------------------------------
+# TIER 1 — Phase 1 ingestion set
+# ---------------------------------------------------------------------------
+
+sources:
+
+  - source_id: chembl
+    name: ChEMBL
+    homepage: https://www.ebi.ac.uk/chembl/
+    role: anchor_bioactivity
+    ingestion_wave: W2
+    upstream_version: chembl_37
+    upstream_prepared_date: "2026-05-01"    # release notes: "prepared on 01/05/2026" (DD/MM)
+    upstream_published_date: "2026-06-02"   # FTP file timestamp
+    retrieval:
+      method: ftp_bulk
+      url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/
+      preferred_artifact: chembl_37_postgresql.tar.gz
+      checksum_url: https://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/checksums.txt
+    license:
+      spdx: CC-BY-SA-3.0
+      tier: red
+      commercial_ok: true
+      sharealike: true
+      attribution: "ChEMBL (EMBL-EBI), release 37, CC BY-SA 3.0"
+    cadence:
+      expected_days: 240        # ~2 releases/year
+      last_seen: "2026-06-02"
+    scale:
+      distinct_compounds: 2921148
+      compound_records: 3824604
+      activities: 24527044
+      assays: 1970438
+      targets: 18552
+      documents: 101100
+    verification:
+      status: verified
+      date: "2026-08-05"
+      method: "FTP release notes + LICENSE file"
+    notes: >
+      Anchor source for compound identity, bioactivity and target linkage.
+      LICENSE file in the release directory confirms CC BY-SA 3.0 Unported.
+      Some calculated properties derive from commercial software; respect
+      those vendors' terms separately. Filter confidence_score >= 8 and
+      standard_relation = '=' for training sets. pChEMBL is the only
+      cross-comparable potency field.
+
+  - source_id: pubchem
+    name: PubChem
+    homepage: https://pubchem.ncbi.nlm.nih.gov/
+    role: identity_spine
+    ingestion_wave: W1
+    upstream_version: "continuous"
+    retrieval:
+      method: [pug_rest, ftp_bulk]
+      url: https://ftp.ncbi.nlm.nih.gov/pubchem/
+      selective: true           # do NOT mirror wholesale in Phase 1
+    license:
+      spdx: US-PD
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "PubChem, National Library of Medicine (NCBI/NIH)"
+      caveat: >
+        Aggregator. Core content is US Government work, but individual
+        depositor records may carry their own terms. Per-depositor diligence
+        required for any depositor whose data is materially relied upon.
+    cadence:
+      expected_days: 1          # continuous
+      last_seen: null
+    scale:
+      compounds: 122000000
+      substances: 338000000
+      bioassays: 1770000
+      data_sources: 1072
+      as_of: "2025-09"
+    verification:
+      status: secondary
+      date: "2026-08-05"
+      method: "search result; primary source DNS-blocked at compile time"
+      action_required: "Re-verify counts from pubchem.ncbi.nlm.nih.gov on an unfiltered network"
+    notes: >
+      Adopted as the chemical identity resolution spine (InChIKey <-> CID).
+      Compound layer is standardised; Substance and BioAssay layers are
+      as-deposited and unvalidated. Ingest selectively.
+
+  - source_id: bindingdb
+    name: BindingDB
+    homepage: https://www.bindingdb.org/
+    role: binding_affinity
+    ingestion_wave: W2
+    upstream_version: "continuous"
+    retrieval:
+      method: http_bulk
+      url: https://www.bindingdb.org/rwd/bind/chemsearch/marvin/Download.jsp
+    license:
+      spdx: MIXED                     # CRITICAL — see split below
+      tier: mixed
+      commercial_ok: true
+      sharealike: partial
+      split_licensing:
+        - portion: bindingdb_curated
+          spdx: CC-BY-3.0
+          tier: amber
+          sharealike: false
+          attribution: "BindingDB (UC San Diego), curator-curated data, CC BY 3.0"
+        - portion: chembl_derived
+          spdx: CC-BY-SA-3.0
+          tier: red
+          sharealike: true
+          attribution: "BindingDB, ChEMBL-derived records, CC BY-SA 3.0 (ChEMBL, EMBL-EBI)"
+      attribution: "BindingDB, UC San Diego (NIGMS-supported)"
+    cadence:
+      expected_days: 30
+      last_seen: "2026-08-05"
+    scale:
+      binding_measurements: 3200000
+      compounds: 1400000
+      protein_targets: 11500
+      curated_subset_measurements: 1600000
+      curated_subset_compounds: 765000
+      curated_subset_targets: 4800
+    verification:
+      status: verified
+      date: "2026-08-05"
+      method: "homepage + info.jsp licensing page"
+    notes: >
+      THE reason per-record license tracking is mandatory (ADR-007).
+      This source is split-licensed internally: BindingDB's own curation is
+      CC BY 3.0 (no copyleft), the ChEMBL-imported portion is CC BY-SA 3.0.
+      A dataset-level license tag would be factually wrong.
+      Heavy overlap with ChEMBL — deduplication on parent_inchikey + target
+      accession + endpoint is mandatory or splits will leak.
+
+  - source_id: tdc
+    name: Therapeutics Data Commons
+    homepage: https://tdcommons.ai/
+    role: admet_training
+    ingestion_wave: W3
+    upstream_version: "pinned_per_benchmark"
+    retrieval:
+      method: python_package
+      package: PyTDC
+      pin_required: true
+    license:
+      spdx: MIXED                     # per-dataset, NOT uniform
+      tier: mixed
+      commercial_ok: partial
+      default_spdx: CC-BY-4.0
+      default_tier: amber
+      exclusions:
+        - dataset: freesolv
+          label: "Hydration Free Energy (FreeSolv)"
+          spdx: CC-BY-NC-SA-4.0
+          tier: black
+          commercial_ok: false
+          enforcement: "Hard-gated in code. Must never enter a commercial training run."
+      attribution: "Therapeutics Data Commons, Harvard (Zitnik Lab)"
+    cadence:
+      expected_days: 90
+      last_seen: "2026-08-05"
+    scale:
+      admet_benchmark_datasets: 22
+      size_range_molecules: [475, 13130]
+      split: "scaffold, 80/20"
+    verification:
+      status: verified
+      date: "2026-08-05"
+      method: "tdcommons.ai ADME and Tox dataset pages"
+    units_documented: false
+    units_caveat: >
+      CRITICAL: TDC does not document units for most ADME/Tox endpoints.
+      Verified 2026-08-05 against both the ADME and Tox pages — neither
+      states units for Caco-2, Lipophilicity, Solubility, VDss, Half Life,
+      Clearance, or LD50. All units in the data dictionary are PROVISIONAL
+      and must be confirmed empirically at gate G4 before model training.
+      Highest risk: LD50 sign convention, clearance denominators.
+    notes: >
+      Lowest-effort / highest-value source in the survey. Also the binding
+      constraint on DrugSim accuracy: human bioavailability 640 compounds,
+      half-life 667, DILI 475. Retain TDC canonical splits for benchmark
+      comparability only — internal claims use global split_group (ADR-009).
+
+  - source_id: toxcast_tox21
+    name: ToxCast / Tox21 (invitrodb)
+    homepage: https://www.epa.gov/comptox-tools/toxicity-forecasting-toxcast
+    role: toxicology_hts
+    ingestion_wave: W4
+    upstream_version: invitrodb_v4.3
+    retrieval:
+      method: [mysql_dump, figshare_csv]
+      url: https://epa.figshare.com/
+      tooling: [tcpl, tcplfit2, ctxR]
+    license:
+      spdx: US-PD
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "US EPA CompTox / Tox21 federal collaboration"
+    cadence:
+      expected_days: 365
+      last_seen: null
+    scale:
+      chemicals: 9500
+      assays: 625
+      endpoints: 1496
+    verification:
+      status: secondary
+      date: "2026-08-05"
+      method: "EPA CompTox pages via search"
+    notes: >
+      Cleanest licensing of any major bioactivity source. Disproportionately
+      valuable for its large volume of NEGATIVE data, which is essential for
+      honest calibration. In vitro != in vivo — translation to organ-level
+      human toxicity is an unsolved scientific problem, not an ETL problem.
+      Requires domain-expert review of hit calls and cytotoxicity burst filters.
+
+  - source_id: uniprot
+    name: UniProt
+    homepage: https://www.uniprot.org/
+    role: protein_identity_spine
+    ingestion_wave: W1
+    upstream_version: "2026_02"
+    upstream_released: "2026-06-10"
+    retrieval:
+      method: ftp_bulk
+      url: https://ftp.uniprot.org/pub/databases/uniprot/
+      subset: swissprot_first          # TrEMBL optional, coverage only
+    license:
+      spdx: CC-BY-4.0
+      tier: amber
+      commercial_ok: true
+      sharealike: false
+      attribution: "UniProt Consortium, CC BY 4.0"
+    cadence:
+      expected_days: 56                # ~8 weeks
+      last_seen: "2026-06-10"
+    scale:
+      swissprot_entries: 575503
+      swissprot_references: 312871
+      swissprot_amino_acids: 208906902
+      trembl_entries: null             # UNVERIFIED
+    verification:
+      status: verified                 # Swiss-Prot figures
+      date: "2026-08-05"
+      method: "release notes 2026_02"
+      action_required: "TrEMBL entry count unverified"
+    notes: >
+      Canonical protein identity. ALL protein references in DrugSim resolve
+      to UniProt accessions — ChEMBL targets, BindingDB targets, PDB chains,
+      Open Targets. Ground truth restricted to Swiss-Prot (is_reviewed=true);
+      TrEMBL is automated annotation and unsuitable as labels.
+
+  - source_id: pdb
+    name: RCSB Protein Data Bank
+    homepage: https://www.rcsb.org/
+    role: structure
+    ingestion_wave: W6
+    upstream_version: "weekly"
+    retrieval:
+      method: [rsync, rest_api]
+      url: https://www.rcsb.org/
+      phase1_scope: "metadata + Chemical Component Dictionary only"
+    license:
+      spdx: CC0-1.0
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "RCSB PDB (CC0 — attribution appreciated, not required)"
+    cadence:
+      expected_days: 7                 # Wednesdays
+      last_seen: "2026-08-05"
+    scale:
+      experimental_structures: 257629
+      experimental_only: 257235
+      integrative_structures: 394
+      computed_structure_models: 1062058
+      csm_alphafold: 992732
+      csm_modelarchive: 69326
+    verification:
+      status: verified
+      date: "2026-08-05"
+      method: "rcsb.org homepage counters"
+    notes: >
+      Cleanest license in the survey. Phase 1 ingests metadata and ligand
+      chemistry only; structural files belong in object storage, not the RDBMS.
+      SCHEMA REQUIREMENT: is_experimental flag enforced — Computed Structure
+      Models are predictions and must never be conflated with experimental
+      structures.
+
+  - source_id: drugcentral
+    name: DrugCentral
+    homepage: https://drugcentral.org/
+    role: approved_drug_reference
+    ingestion_wave: W5
+    upstream_version: "drugcentral_2023"
+    retrieval:
+      method: postgres_dump
+      url: https://drugcentral.org/download
+    license:
+      spdx: CC-BY-SA-4.0
+      tier: red
+      commercial_ok: true
+      sharealike: true
+      attribution: "DrugCentral, University of New Mexico, CC BY-SA 4.0"
+    cadence:
+      expected_days: 365
+      last_seen: "2023-01-01"
+      stale: true
+      stale_reason: "Site indicates 2023 as current release; cadence appears to have slowed"
+    scale:
+      active_ingredients: 4995
+      pharmaceutical_products: 152476
+    verification:
+      status: secondary
+      date: "2026-08-05"
+      method: "drugcentral.org homepage"
+      action_required: "Confirm current release before relying on regulatory currency"
+    notes: >
+      Adopted IN PLACE OF DrugBank, which is commercially gated.
+      Approved-drug validation set: essential for answering "does DrugSim
+      correctly predict known drugs?" Approved drugs only — no preclinical space.
+
+  - source_id: opentargets
+    name: Open Targets Platform
+    homepage: https://platform.opentargets.org/
+    role: biological_knowledge
+    ingestion_wave: W5
+    upstream_version: "latest_quarterly"
+    retrieval:
+      method: [parquet_ftp, graphql, bigquery]
+      url: https://platform.opentargets.org/downloads
+    license:
+      spdx: CC0-1.0
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "Open Targets Platform (CC0)"
+      note: >
+        All contributing sources, including those marked 'commercial use for
+        Open Targets', have agreed to unrestricted downstream use.
+    cadence:
+      expected_days: 90
+      last_seen: null
+    verification:
+      status: secondary
+      date: "2026-08-05"
+      method: "platform-docs.opentargets.org licence page"
+    notes: >
+      Highest leverage-to-effort source in the survey. Supplies most of the
+      Step 6 biological knowledge layer (proteins, genes, diseases, pathways,
+      targets) PRE-INTEGRATED under CC0, and materially de-risks the
+      ShareAlike exposure by providing an unencumbered backbone.
+      Parquet-native — drops straight into the lake.
+
+# ---------------------------------------------------------------------------
+# TIER 2 — later waves
+# ---------------------------------------------------------------------------
+
+  - source_id: openfda_faers
+    name: openFDA (FAERS)
+    homepage: https://open.fda.gov/
+    role: postmarket_safety
+    ingestion_wave: W7
+    upstream_version: "quarterly"
+    retrieval:
+      method: [rest_api, json_bulk]
+      url: https://open.fda.gov/data/downloads/
+    license:
+      spdx: CC0-1.0
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "openFDA, U.S. Food and Drug Administration"
+    cadence:
+      expected_days: 90
+      lag_days: 90
+      coverage_start: "2014-01-01"
+    verification:
+      status: verified
+      date: "2026-08-05"
+      method: "open.fda.gov/data/faers"
+    notes: >
+      Replaces SIDER as the live pharmacovigilance source.
+      HAZARD: spontaneous reporting data has no denominator, strong reporting
+      bias, duplicates, and no causality assessment. Ingest as EVIDENCE, never
+      as labels, until a disproportionality pipeline (PRR/ROR/BCPNN) exists.
+      Naive counting produces confidently wrong safety signals.
+
+  - source_id: dailymed
+    name: DailyMed
+    homepage: https://dailymed.nlm.nih.gov/
+    role: regulatory_text_corpus
+    ingestion_wave: W7
+    upstream_version: "daily"
+    retrieval:
+      method: [rest_api, spl_bulk]
+    license:
+      spdx: US-PD
+      tier: green
+      commercial_ok: true
+      sharealike: false
+      attribution: "DailyMed, U.S. National Library of Medicine"
+    cadence:
+      expected_days: 1
+    scale:
+      spl_records: null                # UNVERIFIED
+    verification:
+      status: unverified
+      date: "2026-08-05"
+      method: "primary source DNS-blocked at compile time"
+      action_required: "Verify SPL record count on an unfiltered network"
+    notes: >
+      Highest-authority regulatory text available, license-clean.
+      Phase 1 scope: document corpus for the future AI Scientific Assistant.
+      Structured PK extraction from narrative prose is deferred — it requires
+      NLP with non-trivial error rates and should not be presented as
+      structured data until validated.
+
+# ---------------------------------------------------------------------------
+# EXPLICITLY EXCLUDED — do not ingest
+# ---------------------------------------------------------------------------
+
+excluded_sources:
+
+  - source_id: drugbank
+    name: DrugBank
+    reason: commercial_license_required
+    license:
+      spdx: PROPRIETARY
+      tier: black
+      commercial_ok: false
+    replacement: drugcentral
+    notes: >
+      Free for academic non-commercial use only; commercial use requires a
+      paid license. Excluded per Step 1. DrugCentral covers the need under a
+      workable license.
+
+  - source_id: freesolv
+    name: FreeSolv (Hydration Free Energy)
+    reason: non_commercial_license
+    license:
+      spdx: CC-BY-NC-SA-4.0
+      tier: black
+      commercial_ok: false
+    parent_source: tdc
+    notes: >
+      Ships inside TDC under a uniform interface, which makes accidental
+      inclusion easy. MUST be hard-gated in code, not merely documented.
+
+  - source_id: pdbbind
+    name: PDBbind
+    reason: license_unverified_restrictive
+    license:
+      spdx: UNKNOWN
+      tier: black
+      commercial_ok: false
+    notes: >
+      Structure-affinity pairs are scientifically valuable, but licensing
+      appears to carry academic restrictions. Blocked pending verification.
+
+  - source_id: sider
+    name: SIDER
+    reason: stale_superseded
+    license:
+      spdx: CC-BY-SA-4.0
+      tier: red
+      commercial_ok: true
+    replacement: openfda_faers
+    scale:
+      drugs: 1430
+      side_effects: 5868
+      drug_se_pairs: 139756
+    upstream_version: "4.1"
+    upstream_released: "2015-10-21"
+    verification:
+      status: verified
+      date: "2026-08-05"
+    notes: >
+      NOT excluded for licensing — excluded for staleness. Frozen at v4.1
+      (21 Oct 2015, MedDRA 16.1). Maintainers state funding ended and the data
+      is outdated; EBI successor planned to begin 2026. Misses every drug
+      approved since 2015. May optionally be ingested as a clearly-labelled
+      static 2015 historical reference. Track the EBI successor.
+
+# ---------------------------------------------------------------------------
+# Deferred — evaluated, not yet scheduled
+# ---------------------------------------------------------------------------
+
+deferred_sources:
+  - {source_id: pharmgkb,     tier: red,   phase: 2, value: "pharmacogenomics / CYP variants"}
+  - {source_id: chebi,        tier: amber, phase: 2, value: "chemical ontology for drug classes"}
+  - {source_id: dsstox,       tier: green, phase: 2, value: "chemical identity for toxicology"}
+  - {source_id: reactome,     tier: green, phase: 3, value: "pathway layer for knowledge graph"}
+  - {source_id: gene_ontology,tier: amber, phase: 3, value: "biological process vocabulary"}
+  - {source_id: clinicaltrials_gov, tier: green, phase: 3, value: "clinical attrition signal"}
+  - {source_id: alphafold_db, tier: amber, phase: 4, value: "structural coverage beyond PDB"}
+  - {source_id: lincs_l1000,  tier: amber, phase: 4, value: "transcriptomic MoA signatures"}
+  - {source_id: zinc22,       tier: unknown, phase: 4, value: "purchasable space for optimisation"}

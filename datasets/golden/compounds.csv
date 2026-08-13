@@ -1,0 +1,29 @@
+name,smiles,category,note
+ethanol,CCO,simple,baseline simple molecule
+water,O,simple,smallest reasonable structure
+methane,C,simple,single heavy atom
+benzene,c1ccccc1,aromatic,simple aromatic ring no scaffold ambiguity
+aspirin,CC(=O)Oc1ccccc1C(=O)O,drug,classic reference compound used throughout this codebase's tests
+caffeine,CN1C=NC2=C1C(=O)N(C)C(=O)N2C,drug,fused bicyclic heterocycle with three N-methyl groups
+ibuprofen,CC(C)Cc1ccc(cc1)C(C)C(=O)O,drug,common NSAID reference
+paracetamol,CC(=O)Nc1ccc(O)cc1,drug,amide plus phenol
+imatinib_like,Cc1ccc(NC(=O)c2ccc(CN3CCN(C)CC3)cc2)cc1Nc1nccc(-c2cccnc2)n1,drug,large multi-ring kinase-inhibitor-class structure
+pyridine,c1ccncc1,heterocycle,weak base aromatic N acceptor-only
+imidazole,c1cnc[nH]1,heterocycle,both donor and acceptor aromatic N
+indole,c1ccc2[nH]ccc2c1,heterocycle,aromatic NH donor no acceptor
+furan,c1ccoc1,heterocycle,ring oxygen acceptor only
+pyrrole,c1cc[nH]c1,heterocycle,aromatic NH donor
+l_alanine,C[C@@H](N)C(=O)O,stereochemistry,single defined stereocentre
+dl_alanine,CC(N)C(=O)O,stereochemistry,single undefined stereocentre
+glycine_zwitterion,[NH3+]CC(=O)[O-],charge,amino acid zwitterion net neutral
+acetate_anion,CC(=O)[O-],charge,simple anion for bioavailability-score anion branch
+triethylamine_hcl,CCN(CC)CC.Cl,salt,common amine hydrochloride salt single organic parent
+sodium_benzoate,c1ccccc1C(=O)[O-].[Na+],salt,organic anion plus sodium counterion
+table_salt,[Na+].[Cl-],whole_salt,every fragment is a recognised salt no organic parent Phase1 Step4 SS2.2
+disodium_phthalate,[Na+].[Na+].O=C([O-])c1ccccc1C(=O)[O-],salt,two salt fragments plus one organic dianion parent
+rhodanine,O=C1CSC(=S)N1,pains,textbook PAINS-flagged scaffold
+naphthalene_acetic_acid,c1ccc2c(c1)ccc(c2)CC(=O)O,fused_ring,fused bicyclic aromatic scaffold
+sulfonamide_simple,CS(=O)(=O)N,functional_group,HBD/HBA convention divergence case verified in Sprint 2.5
+guanidine,NC(=N)N,functional_group,HBD/HBA convention divergence case verified in Sprint 2.5
+long_chain_alkane,CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC,lipinski_edge,fails Lipinski on both MW and LogP verified in Sprint 2.5
+quaterphenyl_acid,c1ccc(cc1)c1ccc(cc1)c1ccc(cc1)c1ccc(cc1)C(=O)O,lipinski_edge,exactly one Lipinski violation verified in Sprint 2.5
