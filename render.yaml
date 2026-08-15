@@ -29,13 +29,21 @@ services:
     runtime: docker
     dockerfilePath: ./deployment/docker/Dockerfile.predict-api
     dockerContext: .
-    dockerBuildArgs:
-      # REQUIRED. Set to https://github.com/<owner>/<repo>/releases/download/<tag>
-      # -- see docs/deployment/render.md "Hosting the model artifacts".
-      MODEL_RELEASE_URL_BASE: https://github.com/CHANGE_ME/CHANGE_ME/releases/download/models-v1
     plan: starter
     healthCheckPath: /health
     envVars:
+      # Render Blueprints have no dedicated field for Docker build ARGs (no
+      # dockerBuildArgs -- confirmed against Render's own docs; the first
+      # Blueprint import attempt was rejected for assuming one existed).
+      # Instead, Render automatically translates a Docker-runtime service's
+      # regular envVars into build args for its docker build -- this entry
+      # is what actually reaches the ARG MODEL_RELEASE_URL_BASE declared in
+      # deployment/docker/Dockerfile.predict-api's builder stage. That same
+      # Dockerfile line also carries this exact value as its own hardcoded
+      # default, so a plain local `docker build` (no env var set at all)
+      # still works without needing this file.
+      - key: MODEL_RELEASE_URL_BASE
+        value: https://github.com/cuberthinks/drugsim/releases/download/models-v1
       - key: DRUGSIM_ENVIRONMENT
         value: production
       - key: DRUGSIM_PREDICT_API_KEYS
