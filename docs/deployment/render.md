@@ -24,7 +24,7 @@ This pushes exactly what's tracked by `.gitignore` — source, docs, tests, conf
 The backend can't serve predictions without these two models' binary files. They're too large for a normal git push and this repo doesn't use Git LFS, so they travel as GitHub Release assets instead, fetched at Docker build time.
 
 1. On GitHub: your repo → **Releases** → **Create a new release**.
-2. Tag: `models-v1` (this exact tag is what `MODEL_RELEASE_URL_BASE` in `render.yaml` points at — use a different tag and update that value to match).
+2. Tag: `models-v1` (this exact tag is what `render.yaml` and `Dockerfile.predict-api` both already point at, if you're deploying `cuberthinks/drugsim` — use a different tag/repo and you'll need to edit both, see Step 3).
 3. Upload these six files as release assets, **renamed exactly as shown** (the build script looks for these exact filenames):
 
    | Local file | Upload as |
@@ -50,21 +50,29 @@ done
 # every line should say "HTTP/2 200"
 ```
 
-## Step 3 — Edit `render.yaml`
+## Step 3 — Edit `render.yaml` (only if your repo/tag differ from the defaults)
 
-Open `render.yaml` at the repo root and replace the one placeholder:
+**Correction, found the hard way:** an earlier revision of this guide had you set `MODEL_RELEASE_URL_BASE` under a `dockerBuildArgs` field in `render.yaml`. That field doesn't exist — Render's Blueprint format has no way to pass Docker build arguments directly, and the first Blueprint import attempt was rejected because of it. What actually works: Render automatically turns a Docker-runtime service's regular `envVars` into build arguments, so it's set as a normal env var instead, alongside a matching hardcoded default in `Dockerfile.predict-api` itself as a fallback.
+
+If you're deploying `cuberthinks/drugsim` with the release tagged `models-v1` (Step 2 above), **both already have the right value and you can skip straight to Step 4.** Only edit something here if your repo or tag differs:
 
 ```yaml
-dockerBuildArgs:
-  MODEL_RELEASE_URL_BASE: https://github.com/YOUR_USERNAME/drugsim/releases/download/models-v1
+# in render.yaml, under drugsim-predict-api's envVars:
+- key: MODEL_RELEASE_URL_BASE
+  value: https://github.com/YOUR_USERNAME/drugsim/releases/download/models-v1
+```
+
+```dockerfile
+# in deployment/docker/Dockerfile.predict-api, the ARG line in the builder stage:
+ARG MODEL_RELEASE_URL_BASE=https://github.com/YOUR_USERNAME/drugsim/releases/download/models-v1
 ```
 
 Leave the other `CHANGE_ME` values (`DRUGSIM_PREDICT_CORS_ALLOWED_ORIGINS`, `VITE_API_BASE_URL`) as-is for now — Render only assigns each service's real URL once it exists, so those get filled in during Step 5.
 
-Commit and push:
+If you changed anything above, commit and push:
 
 ```bash
-git add render.yaml
+git add render.yaml deployment/docker/Dockerfile.predict-api
 git commit -m "deploy: configure Render model artifact URL"
 git push
 ```
@@ -81,7 +89,7 @@ Render dashboard → **New** → **Blueprint** → connect your GitHub account �
    - Runtime: **Docker**
    - Dockerfile path: `deployment/docker/Dockerfile.predict-api`
    - Docker build context: `.` (repo root)
-   - Add a build argument: `MODEL_RELEASE_URL_BASE` = your Step 2 URL
+   - Add an environment variable (not a "build argument" — Render's dashboard has no separate field for those; a Docker service's regular env vars are what get passed through as build args): `MODEL_RELEASE_URL_BASE` = your Step 2 URL. If you're deploying `cuberthinks/drugsim` with the `models-v1` tag, you can skip this — the Dockerfile already defaults to the right value.
    - Health check path: `/health`
    - Add a **persistent disk**: mount path `/app/var`, 1GB (this is where the prediction audit-log SQLite database lives — without a persistent disk it's wiped on every redeploy)
    - Name it `drugsim-predict-api`

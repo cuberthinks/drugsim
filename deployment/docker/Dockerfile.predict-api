@@ -20,13 +20,19 @@
 # MODEL ARTIFACTS: models/**/*.joblib and models/**/artifact/ are
 # gitignored on purpose (large trained-model binaries, not source) and are
 # NOT present in a fresh checkout. This build fetches them from a GitHub
-# Release via scripts/fetch_model_artifacts.sh -- set the
-# MODEL_RELEASE_URL_BASE build argument to
-# "https://github.com/<owner>/<repo>/releases/download/<tag>" pointing at
-# a release with the six asset files that script expects (see its own
-# header for exact names). The build fails loudly if any file is missing
-# or a checksum does not match the registry -- never a silent fallback to
-# a different model.
+# Release via scripts/fetch_model_artifacts.sh, pointed at by the
+# MODEL_RELEASE_URL_BASE ARG in the builder stage below.
+#
+# Render deployment fix (this revision): Render's Blueprint format (render.yaml)
+# has NO way to pass a Docker build ARG -- there is no dockerBuildArgs field,
+# despite an earlier revision of render.yaml assuming one (confirmed against
+# Render's own Blueprint spec: only dockerCommand/dockerfilePath/dockerContext/
+# registryCredential are supported for a docker-runtime service). So that
+# ARG's default value is the real, load-bearing value for a Render deploy of
+# this exact repo, not a placeholder -- change it there (and only there) if
+# the GitHub Release this points to ever moves. A local `docker build` can
+# still override it with `--build-arg MODEL_RELEASE_URL_BASE=...` for testing
+# against a different release without editing this file.
 
 # --------------------------------------------------------------------------
 FROM python:3.12-slim-bookworm AS builder
@@ -48,10 +54,13 @@ COPY src/ ./src/
 COPY scripts/ ./scripts/
 COPY models/registry/ ./models/registry/
 
-# Fetches the six large artifact files this build does not otherwise have
+# Fetches the eight large artifact files this build does not otherwise have
 # (see header). ARG, not ENV: the URL is a build-time input, not something
-# that needs to persist into the running container.
-ARG MODEL_RELEASE_URL_BASE
+# that needs to persist into the running container. Defaulted to this repo's
+# real Release (Render's Blueprint format cannot pass build ARGs -- see
+# header) -- override with `--build-arg MODEL_RELEASE_URL_BASE=...` for a
+# local build against a different release.
+ARG MODEL_RELEASE_URL_BASE=https://github.com/cuberthinks/drugsim/releases/download/models-v1
 RUN test -n "$MODEL_RELEASE_URL_BASE" || (echo "MODEL_RELEASE_URL_BASE build arg is required -- see this Dockerfile's header." >&2 && exit 1)
 RUN MODEL_RELEASE_URL_BASE="$MODEL_RELEASE_URL_BASE" bash scripts/fetch_model_artifacts.sh
 
