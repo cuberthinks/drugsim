@@ -105,6 +105,49 @@ class TestRateLimit:
         assert client.post("/predict", json=_predict_body(), headers={"X-API-Key": "alice"}).status_code == 429
         assert client.post("/predict", json=_predict_body(), headers={"X-API-Key": "bob"}).status_code == 200
 
+    def test_one_shared_api_key_does_not_pool_every_client_into_one_bucket(
+        self, client, monkeypatch
+    ) -> None:
+        """Two people using the deployed app must not rate-limit each other.
+
+        The browser bundle ships a single shared API key (see
+        frontend/src/api/client.ts), so keying the limiter on the key alone
+        put every visitor into one bucket -- the second colleague to click
+        Predict got a 429 caused entirely by the first one's traffic. The
+        bucket is keyed on the originating address too, which behind a
+        reverse proxy means X-Forwarded-For rather than the proxy's own
+        address.
+        """
+        monkeypatch.setenv("DRUGSIM_PREDICT_RATE_LIMIT_REQUESTS_PER_MINUTE", "1")
+        get_predict_settings.cache_clear()
+        reset_rate_limit_state()
+        shared = {"X-API-Key": "shared-browser-key"}
+
+        first = {**shared, "X-Forwarded-For": "203.0.113.10"}
+        assert client.post("/predict", json=_predict_body(), headers=first).status_code == 200
+        assert client.post("/predict", json=_predict_body(), headers=first).status_code == 429
+
+        # A different visitor, same shared key: unaffected by the first one.
+        second = {**shared, "X-Forwarded-For": "203.0.113.11"}
+        assert client.post("/predict", json=_predict_body(), headers=second).status_code == 200
+
+    def test_forwarded_for_chain_uses_the_originating_client(self, client, monkeypatch) -> None:
+        """X-Forwarded-For accumulates proxies left-to-right; the client is first."""
+        monkeypatch.setenv("DRUGSIM_PREDICT_RATE_LIMIT_REQUESTS_PER_MINUTE", "1")
+        get_predict_settings.cache_clear()
+        reset_rate_limit_state()
+        shared = {"X-API-Key": "shared-browser-key"}
+
+        # Same originating client, different intermediate proxy -- still one bucket.
+        assert client.post(
+            "/predict", json=_predict_body(),
+            headers={**shared, "X-Forwarded-For": "203.0.113.10, 70.0.0.1"},
+        ).status_code == 200
+        assert client.post(
+            "/predict", json=_predict_body(),
+            headers={**shared, "X-Forwarded-For": "203.0.113.10, 70.0.0.2"},
+        ).status_code == 429
+
 
 class TestBodySizeLimit:
     def test_body_within_limit_is_accepted(self, client, monkeypatch) -> None:

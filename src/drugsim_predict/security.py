@@ -132,13 +132,42 @@ class RateLimitMiddleware:
     def __init__(self, app: ASGIApp) -> None:
         self.app = app
 
+    def _client_ip(self, scope: Scope, headers: Dict[bytes, bytes]) -> str:
+        """The requesting client's address, seen through any reverse proxy.
+
+        ``scope["client"]`` is the *immediate* peer, which behind Render's
+        router (or the Caddy topology in deployment/caddy/) is the proxy
+        itself -- identical for every visitor, and therefore useless as a
+        per-client identity. The originating address is the first entry of
+        ``X-Forwarded-For``. That header is client-spoofable in general,
+        which is why it is not used for authentication; here it only
+        partitions rate-limit buckets, where the worst case of a forged
+        value is an abuser widening their own limit -- exactly what they
+        could already do from multiple addresses.
+        """
+        forwarded = headers.get(b"x-forwarded-for")
+        if forwarded:
+            first = forwarded.decode("latin-1").split(",")[0].strip()
+            if first:
+                return first
+        client = scope.get("client")
+        return client[0] if client else "unknown"
+
     def _client_key(self, scope: Scope) -> str:
         headers = dict(scope.get("headers") or [])
+        ip = self._client_ip(scope, headers)
         api_key = headers.get(b"x-api-key")
         if api_key:
-            return f"key:{api_key.decode('latin-1')}"
-        client = scope.get("client")
-        return f"ip:{client[0]}" if client else "ip:unknown"
+            # Keyed by API key *and* address, never the key alone. This
+            # product ships a single shared key baked into the browser
+            # bundle (frontend/src/api/client.ts says so explicitly: it is
+            # a "controlled demonstration" barrier, not per-user auth), so
+            # keying on the key alone puts every visitor on earth into one
+            # 30-requests-per-minute bucket -- two colleagues opening the
+            # app at the same time then rate-limit each other, which reads
+            # as the service randomly failing rather than as a quota.
+            return f"key:{api_key.decode('latin-1')}|ip:{ip}"
+        return f"ip:{ip}"
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http" or scope["path"] in _PUBLIC_PATHS:

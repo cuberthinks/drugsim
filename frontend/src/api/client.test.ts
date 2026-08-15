@@ -131,15 +131,15 @@ describe("client error classification (existing)", () => {
     await expect(predict("CCO")).rejects.toMatchObject({ kind: "unavailable" });
   });
 
-  it("classifies a request that never resolves as a timeout, and aborts it", async () => {
+  it("times out a request that never resolves, retries it, and aborts every attempt", async () => {
     vi.useFakeTimers();
-    let aborted = false;
+    let abortCount = 0;
     vi.stubGlobal(
       "fetch",
       vi.fn().mockImplementation((_url: string, init?: RequestInit) => {
         return new Promise((_resolve, reject) => {
           init?.signal?.addEventListener("abort", () => {
-            aborted = true;
+            abortCount++;
             const err = new DOMException("The operation was aborted.", "AbortError");
             reject(err);
           });
@@ -149,9 +149,16 @@ describe("client error classification (existing)", () => {
 
     const resultPromise = predict("CCO");
     const assertion = expect(resultPromise).rejects.toMatchObject({ kind: "timeout" });
-    await vi.advanceTimersByTimeAsync(15_000);
+    // Three attempts of 20s, separated by the 700ms and 1400ms backoffs.
+    await vi.advanceTimersByTimeAsync(20_000);
+    await vi.advanceTimersByTimeAsync(700);
+    await vi.advanceTimersByTimeAsync(20_000);
+    await vi.advanceTimersByTimeAsync(1_400);
+    await vi.advanceTimersByTimeAsync(20_000);
     await assertion;
-    expect(aborted).toBe(true);
+    // Every attempt must be aborted -- a retry that leaves its predecessor
+    // in flight would pile up requests against a struggling backend.
+    expect(abortCount).toBe(3);
   });
 
   it("classifies a network failure (fetch throws) as network", async () => {
@@ -161,5 +168,68 @@ describe("client error classification (existing)", () => {
     );
 
     await expect(predict("CCO")).rejects.toMatchObject({ kind: "network" });
+  });
+});
+
+/**
+ * The hosted backend is restarted by its platform on deploys and routine
+ * platform events, serving gateway errors for a few seconds either side.
+ * Without these retries those windows reach the user as "Could not reach
+ * the prediction service" -- indistinguishable from the service being
+ * broken. See client.ts's MAX_ATTEMPTS comment.
+ */
+describe("client transient-failure retries", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+
+  function okResponse() {
+    return new Response(JSON.stringify({ id: "prd_1", status: "complete" }), { status: 200 });
+  }
+
+  it("recovers from a gateway 502 by retrying, without the caller seeing an error", async () => {
+    const fetchMock = vi
+      .fn()
+      // Render's gateway serves HTML, not problem+json, during a restart.
+      .mockResolvedValueOnce(new Response("<html>502 Bad Gateway</html>", { status: 502 }))
+      .mockResolvedValueOnce(okResponse());
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(predict("CCO")).resolves.toMatchObject({ id: "prd_1" });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("recovers from a dropped connection by retrying", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(okResponse());
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(predict("CCO")).resolves.toMatchObject({ id: "prd_1" });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("gives up after three attempts and reports the failure", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response("<html>502</html>", { status: 502 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(predict("CCO")).rejects.toMatchObject({ kind: "unavailable", status: 502 });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it.each([
+    ["422 invalid structure", 422],
+    ["401 bad API key", 401],
+    ["429 quota exhausted", 429],
+  ])("never retries a %s -- it is a real answer, not a transient fault", async (_label, status) => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ type: "about:blank", title: "x", status, detail: "d" }), { status }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(predict("CCO")).rejects.toBeInstanceOf(ApiError);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

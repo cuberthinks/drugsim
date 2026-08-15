@@ -66,6 +66,13 @@ export function PredictPage() {
   // the prediction, giving the two-step UX the spec asks for without
   // inventing a backend capability that doesn't exist.
   async function runPredictOrValidate(nextStage: "validated" | "complete") {
+    // What was on screen before this run started. A failure must fall back
+    // to exactly that, never to "idle": the results below are gated on
+    // stage, so resetting it discarded a result the user was still reading
+    // and forced them to re-run the whole request to see it again. The
+    // prediction itself was never cleared -- only the stage that displays
+    // it -- so restoring the stage is all that is needed.
+    const stageBeforeRun = stage;
     setStage(nextStage === "validated" ? "validating" : "predicting");
     setError(null);
     try {
@@ -74,7 +81,7 @@ export function PredictPage() {
       setStage(nextStage);
     } catch (err) {
       setError(err instanceof ApiError ? err : new ApiError("network", "Something went wrong."));
-      setStage("idle");
+      setStage(stageBeforeRun === "validated" || stageBeforeRun === "complete" ? stageBeforeRun : "idle");
     }
   }
 
@@ -117,6 +124,13 @@ export function PredictPage() {
           error={error}
           onRetry={() => runPredictOrValidate(stage === "complete" ? "complete" : "validated")}
         />
+      )}
+
+      {error && prediction && (stage === "validated" || stage === "complete") && (
+        <p className="text-sm leading-relaxed text-ink-soft">
+          The result below is from your last successful run. The failed request above did not
+          change it.
+        </p>
       )}
 
       {prediction && (stage === "validated" || stage === "complete") && (

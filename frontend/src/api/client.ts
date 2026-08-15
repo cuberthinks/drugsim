@@ -19,7 +19,32 @@ import type { EndpointsResponse, ModelDetail, PredictionResponse, ProblemDetail,
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 const API_KEY = import.meta.env.VITE_API_KEY ?? "";
-const REQUEST_TIMEOUT_MS = 15_000;
+
+// 20s, not the original 15s: a warm prediction returns in well under a
+// second, so this ceiling only ever fires on a backend that is starting up
+// (a container restart re-loads the model artifacts before serving), where
+// 15s was tight enough to report a false failure for a request that would
+// have succeeded.
+const REQUEST_TIMEOUT_MS = 20_000;
+
+// The hosted backend is restarted by its platform on every deploy and on
+// routine platform events, and serves gateway errors for a few seconds
+// either side of that. Without a retry those windows surface as "Could not
+// reach the prediction service" -- indistinguishable, to someone using the
+// app, from the service being broken. Retrying transient classes only
+// (never a 4xx: a rejected structure or an exhausted quota is a real answer
+// that will not change on a second attempt) converts those windows into a
+// slightly slower success.
+//
+// Retrying POST /predict is safe despite not being formally idempotent: a
+// prediction is deterministic for a given structure, and the only write is
+// an append to the provenance audit log, where a duplicate row is
+// harmless. Retries only happen when no response was received at all, or
+// when the gateway (not the application) answered.
+const MAX_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 700;
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export type ApiErrorKind =
   | "validation" // 422 -- invalid chemistry or malformed request
@@ -46,7 +71,10 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+/** Error classes worth a second attempt -- see MAX_ATTEMPTS above. */
+const RETRYABLE_KINDS: ReadonlySet<ApiErrorKind> = new Set<ApiErrorKind>(["network", "timeout", "unavailable"]);
+
+async function attemptRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -97,10 +125,27 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (response.status === 429) {
     throw new ApiError("rate_limited", problem?.detail ?? "Too many requests.", problem, response.status);
   }
-  if (response.status === 503) {
+  // 502/504 come from the hosting platform's gateway, not the application,
+  // and mean "the backend is restarting or briefly unreachable" -- the same
+  // transient condition as an application-level 503, so they are classed
+  // together here and become retryable rather than a hard server_error.
+  if (response.status === 502 || response.status === 503 || response.status === 504) {
     throw new ApiError("unavailable", problem?.detail ?? "The prediction service is temporarily unavailable.", problem, response.status);
   }
   throw new ApiError("server_error", problem?.detail ?? "An unexpected error occurred.", problem, response.status);
+}
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  for (let attemptNo = 1; ; attemptNo++) {
+    try {
+      return await attemptRequest<T>(path, init);
+    } catch (err) {
+      const canRetry =
+        attemptNo < MAX_ATTEMPTS && err instanceof ApiError && RETRYABLE_KINDS.has(err.kind);
+      if (!canRetry) throw err;
+      await sleep(RETRY_BASE_DELAY_MS * attemptNo);
+    }
+  }
 }
 
 export function predict(

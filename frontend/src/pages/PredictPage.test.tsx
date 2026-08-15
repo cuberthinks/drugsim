@@ -154,4 +154,38 @@ describe("PredictPage", () => {
     expect(screen.getAllByText(/novel chemistry/i).length).toBeGreaterThan(0);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
+
+  // A failed re-run used to reset the stage to "idle", and every result
+  // below is gated on the stage -- so a transient backend error silently
+  // wiped a result the user was still reading and made them run the whole
+  // request again to get it back.
+  it("keeps the existing result on screen when a later request fails", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    renderPage();
+
+    await enterAndValidate(user);
+    await user.click(await screen.findByRole("button", { name: /predict herg inhibition/i }));
+    expect(await screen.findByRole("heading", { name: /predicted non-inhibitor/i })).toBeInTheDocument();
+
+    // The next run fails the way a backend restart does.
+    predictMock.mockRejectedValue(new ApiError("unavailable", "The prediction service is temporarily unavailable."));
+    await user.click(screen.getByRole("button", { name: /predict herg inhibition/i }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    // The earlier result is still there, and labelled as the previous one.
+    expect(screen.getByRole("heading", { name: /predicted non-inhibitor/i })).toBeInTheDocument();
+    expect(screen.getByText(/from your last successful run/i)).toBeInTheDocument();
+  });
+
+  it("does not claim a previous result exists when the very first request fails", async () => {
+    const user = userEvent.setup();
+    predictMock.mockRejectedValue(new ApiError("unavailable", "The prediction service is temporarily unavailable."));
+    renderPage();
+
+    await enterAndValidate(user);
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText(/from your last successful run/i)).not.toBeInTheDocument();
+  });
 });

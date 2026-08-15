@@ -85,16 +85,23 @@
     "class_weight": "balanced"
   },
   "deployment_variant": {
-    "_comment": "Render's Starter plan (512MB RAM) could not hold the full 500-tree model in memory -- every hERG prediction request silently OOM-killed the process (visible in Render logs as the process dying between 'predict.request' and any response, followed by an instance restart, with CYP3A4's smaller 66MB model unaffected). Rather than pay for more RAM, the deployed artifact keeps only the first N of the original model's 500 already-trained trees (same trees, same training run -- not a retrain) to fit the memory budget. This is the artifact actually served by drugsim-predict-api; the metrics elsewhere in this file describe the full 500-tree research model, not this one.",
-    "n_estimators": 35,
-    "reason": "out-of-memory on Render Starter plan (512MB) with the full 500-tree artifact",
-    "validation_group_8_metrics_at_35_trees": {
-      "roc_auc": 0.8113,
-      "average_precision": 0.8723,
-      "balanced_accuracy_at_0.5": 0.6657,
-      "note": "full 500-tree model scores roc_auc=0.8385 on the same validation split -- see hyperparameters/metrics above"
+    "_comment": "The full 500-tree model does not fit the deployment's memory budget: measured resident cost is ~406MB for base+model alone and ~523MB once CYP3A4's model is also loaded, against Render's Starter 512MB limit. Every hERG request therefore OOM-killed the process -- visible in the platform log as the worker dying between 'predict.request' and any response, then an instance restart, with CYP3A4 requests unaffected. The deployed artifact keeps the first N of the original 500 already-trained trees: the same trees from the same training run, not a retrain, so nothing about the data, features, or fitting procedure changes -- only how many of the ensemble's votes are counted. N was chosen by re-running the Phase 7 golden regression panel at each candidate size rather than by aggregate metrics alone: an earlier 35-tree attempt held ROC-AUC at 0.8113 but flipped dofetilide -- a Class III antiarrhythmic whose mechanism is hERG blockade -- from blocker to non_blocker, which aggregate numbers hid and the golden panel caught. Sizes are NOT monotonic on that panel (250 and 150 fail where 200 and 300 pass) because several panel compounds sit at the decision boundary by design, so N is the smallest size that passes the panel outright, not the smallest that could be made to.",
+    "n_estimators": 200,
+    "reason": "full 500-tree artifact exceeds the 512MB deployment memory limit when both endpoints' models are resident",
+    "measured_resident_memory_mb": {
+      "base_python_numpy_sklearn_rdkit": 104,
+      "with_deployed_herg_and_cyp3a4": 353,
+      "with_full_500_tree_herg_and_cyp3a4": 523,
+      "limit": 512
     },
-    "artifact_sha256": "cbc56dac334822768e232d328bdd18308ee422678e0bda64b4a3af11e6e697c0",
+    "validation_group_8_metrics": {
+      "roc_auc": 0.8376,
+      "average_precision": 0.8956,
+      "balanced_accuracy_at_0.5": 0.6728,
+      "note": "full 500-tree model on the same validation split: roc_auc 0.8394, average_precision 0.8974, balanced_accuracy 0.6823"
+    },
+    "golden_regression_panel": "PASSES in full (40/40, tests/golden/test_herg_model_regression.py) -- identical qualitative behaviour to the 500-tree model on every representative compound",
+    "artifact_sha256": "dead78c20721ecfa6c6d220fcc9090c299a9bc8b884a481a3f422257cc660eb5",
     "full_model_backup_path": "models/admet/herg_inhibition/artifact/model_full_500trees.joblib.bak"
   },
   "random_seed": 42,
@@ -197,7 +204,7 @@
   },
   "artifact": {
     "path": "models/admet/herg_inhibition/artifact/model.joblib",
-    "sha256": "cbc56dac334822768e232d328bdd18308ee422678e0bda64b4a3af11e6e697c0",
+    "sha256": "dead78c20721ecfa6c6d220fcc9090c299a9bc8b884a481a3f422257cc660eb5",
     "note": "gitignored binary, not committed (Phase 1 Step 11: 'models/ holds code, never artefacts'); in a real deployment this would be object-storage-addressed by sha256 per TDS Sec 6.5",
     "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, with RANDOM_SEED=42 fixed throughout; exact byte-identical retraining is NOT guaranteed since fetch_chembl_data.py re-queries a live external API that can gain new records over time (documented limitation, see Phase 3 report)"
   },
