@@ -8,14 +8,23 @@
 # required a poetry.lock that has never existed in this repository (see
 # git history / docs/phase8's "Known limitations") -- the build would fail
 # at `COPY pyproject.toml poetry.lock` on a clean checkout. Poetry is
-# dropped entirely; the builder stage now installs from
-# requirements-lock.txt via pip, exactly the dependency-installation path
-# already proven throughout this project's own local development and CI
-# (no poetry install has ever actually been exercised end-to-end here).
-# The internal packages under src/ (drugsim_core, drugsim_chem,
-# drugsim_features, drugsim_predict) are made importable via PYTHONPATH
-# rather than an editable pip install, matching how every test run and
-# local server start in this project's history has already been invoked.
+# dropped entirely; the builder stage installs via pip. The internal
+# packages under src/ (drugsim_core, drugsim_chem, drugsim_features,
+# drugsim_predict) are made importable via PYTHONPATH rather than an
+# editable pip install, matching how every test run and local server start
+# in this project's history has already been invoked.
+#
+# Render deployment fix (this revision, take two): installing from the
+# project-wide requirements-lock.txt (which lists dependencies for the
+# whole platform -- ETL, database migrations, object storage -- not just
+# this one service) pulled in pyarrow==12.0.1, which has no prebuilt wheel
+# for Render's build environment and fails compiling from source. pyarrow
+# is not even imported anywhere in this service's code. Now installs from
+# requirements-predict-api.txt instead: a minimal, verified list (derived
+# by grepping every actual import across src/drugsim_predict, drugsim_core,
+# drugsim_chem, drugsim_features, then confirmed by running a real
+# end-to-end prediction in a venv containing ONLY those packages) -- see
+# that file's own header for the full list and reasoning.
 #
 # MODEL ARTIFACTS: models/**/*.joblib and models/**/artifact/ are
 # gitignored on purpose (large trained-model binaries, not source) and are
@@ -47,8 +56,8 @@ RUN set -eux; \
 
 WORKDIR /app
 
-COPY requirements-lock.txt ./
-RUN pip install --no-cache-dir -r requirements-lock.txt
+COPY requirements-predict-api.txt ./
+RUN pip install --no-cache-dir -r requirements-predict-api.txt
 
 COPY src/ ./src/
 COPY scripts/ ./scripts/

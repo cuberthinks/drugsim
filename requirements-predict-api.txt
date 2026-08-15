@@ -1,0 +1,45 @@
+# Minimal runtime dependencies for the drugsim-predict-api Docker image ONLY.
+#
+# Render deployment fix: the image previously installed from
+# requirements-lock.txt directly -- but that file lists this whole
+# project's dependencies (the ETL/data pipeline, database migrations,
+# object storage), not just what the FastAPI prediction service actually
+# imports. One of those unrelated packages, pyarrow==12.0.1, has no
+# prebuilt wheel for Render's build environment and fails compiling from
+# source (`ModuleNotFoundError: No module named 'pkg_resources'`, a known
+# incompatibility between old pyarrow sdists and modern setuptools) --
+# breaking this image's build for a dependency it never even uses.
+#
+# This file is the actual, verified-minimal set: every package here was
+# derived by grepping every top-level import across src/drugsim_predict,
+# src/drugsim_core, src/drugsim_chem, and src/drugsim_features (excluding
+# stdlib and internal drugsim_* packages), then confirmed by installing
+# ONLY these ten packages into a fresh, empty virtualenv and running a
+# real end-to-end prediction against both registered models in it --
+# no import errors, a real 200 response. Two additions beyond the grep
+# results, for reasons the grep can't see:
+#   - scikit-learn: never `import`ed by name anywhere in this codebase,
+#     but required to unpickle the RandomForestClassifier objects inside
+#     model.joblib via joblib.load() -- a deserialization dependency, not
+#     a source-level one.
+#   - uvicorn: the ASGI server this image's CMD invokes; never imported
+#     by the application code itself.
+# `typer` (drugsim_core/cli.py) and `httpx`/`tenacity` (the ChEMBL fetch
+# scripts under models/admet/) are correctly excluded -- neither is on
+# this service's actual import path, confirmed by the same grep.
+#
+# Keep this in sync with requirements-lock.txt's versions by hand if that
+# file's pins ever change -- there is no tooling that generates this file
+# automatically (same caveat requirements-lock.txt's own header already
+# states about itself).
+
+rdkit==2025.3.3
+pydantic==2.13.4
+pydantic-settings==2.11.0
+structlog==25.5.0
+pyyaml==6.0.3
+numpy==1.26.4
+scikit-learn==1.6.1
+joblib==1.5.3
+fastapi==0.128.8
+uvicorn==0.39.0
