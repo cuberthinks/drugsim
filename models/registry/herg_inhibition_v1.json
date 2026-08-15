@@ -84,6 +84,19 @@
     "max_depth": null,
     "class_weight": "balanced"
   },
+  "deployment_variant": {
+    "_comment": "Render's Starter plan (512MB RAM) could not hold the full 500-tree model in memory -- every hERG prediction request silently OOM-killed the process (visible in Render logs as the process dying between 'predict.request' and any response, followed by an instance restart, with CYP3A4's smaller 66MB model unaffected). Rather than pay for more RAM, the deployed artifact keeps only the first N of the original model's 500 already-trained trees (same trees, same training run -- not a retrain) to fit the memory budget. This is the artifact actually served by drugsim-predict-api; the metrics elsewhere in this file describe the full 500-tree research model, not this one.",
+    "n_estimators": 35,
+    "reason": "out-of-memory on Render Starter plan (512MB) with the full 500-tree artifact",
+    "validation_group_8_metrics_at_35_trees": {
+      "roc_auc": 0.8113,
+      "average_precision": 0.8723,
+      "balanced_accuracy_at_0.5": 0.6657,
+      "note": "full 500-tree model scores roc_auc=0.8385 on the same validation split -- see hyperparameters/metrics above"
+    },
+    "artifact_sha256": "cbc56dac334822768e232d328bdd18308ee422678e0bda64b4a3af11e6e697c0",
+    "full_model_backup_path": "models/admet/herg_inhibition/artifact/model_full_500trees.joblib.bak"
+  },
   "random_seed": 42,
   "compared_against": {
     "gradient_boosting": 0.7766,
@@ -184,7 +197,7 @@
   },
   "artifact": {
     "path": "models/admet/herg_inhibition/artifact/model.joblib",
-    "sha256": "8e885f43d22048b68612744fbc630b22723fa75ff3e2f30640966184f224e46e",
+    "sha256": "cbc56dac334822768e232d328bdd18308ee422678e0bda64b4a3af11e6e697c0",
     "note": "gitignored binary, not committed (Phase 1 Step 11: 'models/ holds code, never artefacts'); in a real deployment this would be object-storage-addressed by sha256 per TDS Sec 6.5",
     "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, with RANDOM_SEED=42 fixed throughout; exact byte-identical retraining is NOT guaranteed since fetch_chembl_data.py re-queries a live external API that can gain new records over time (documented limitation, see Phase 3 report)"
   },
