@@ -47,6 +47,20 @@ export function AboutPage() {
         </p>
       </section>
 
+      <section className="rounded-lg border border-line bg-white p-5" aria-labelledby="credits-heading">
+        <h2 id="credits-heading" className="font-display text-lg font-semibold text-ink">
+          Credits
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+          Origin: Hong Kong.
+        </p>
+        <p className="mt-3 text-sm font-medium text-ink">Collaborators</p>
+        <ul className="mt-1 text-sm leading-relaxed text-ink-soft">
+          <li>Yiu Pak On</li>
+          <li>Lee Man Hung</li>
+        </ul>
+      </section>
+
       <section className="rounded-lg border border-line bg-paper-alt p-5" aria-labelledby="contact-heading">
         <h2 id="contact-heading" className="font-display text-lg font-semibold text-ink">
           Contact
