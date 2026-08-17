@@ -8,12 +8,57 @@ describe("ApplicabilityDomainGauge", () => {
     const { reliability } = makePrediction();
     render(<ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />);
     expect(screen.getByText(/within known chemistry/i)).toBeInTheDocument();
+    // The rationale is shown formatted as a bullet list, not the raw
+    // sentence verbatim in one block -- but every word of it must still
+    // appear, unaltered, somewhere in that list (this revision: "make sure
+    // the raw rationale string ... is formatted nicely as bullet points").
+    const rationaleWithoutTrailingPeriod = reliability.applicability_domain.rationale.replace(/\.$/, "");
     expect(
       screen.getByText(
-        (_, node) => !!node?.textContent?.includes(reliability.applicability_domain.rationale),
-        { selector: "p" },
+        (_, node) => !!node?.textContent?.includes(rationaleWithoutTrailingPeriod),
+        { selector: "li" },
       ),
     ).toBeInTheDocument();
+  });
+
+  it("splits a multi-clause rationale into one bullet per clause", () => {
+    const applicabilityDomain = {
+      verdict: "out_of_domain" as const,
+      max_tanimoto_to_training: 0.32,
+      knn_distance: 2.56,
+      knn_distance_threshold: 1.74,
+      scaffold_seen_in_training: true,
+      rationale:
+        "Maximum similarity to any training compound is 0.32; scaffold is present in the training set; " +
+        "descriptor-space distance to nearest training neighbours is 2.56 (training-internal threshold 1.74).",
+      method: "tanimoto_knn_distance_scaffold_membership",
+    };
+    render(<ApplicabilityDomainGauge applicabilityDomain={applicabilityDomain} />);
+    const items = screen.getAllByRole("listitem");
+    expect(items).toHaveLength(3);
+    expect(items[0]).toHaveTextContent(/maximum similarity to any training compound is 0\.32/i);
+    expect(items[1]).toHaveTextContent(/scaffold is present in the training set/i);
+    expect(items[2]).toHaveTextContent(/descriptor-space distance to nearest training neighbours is 2\.56/i);
+  });
+
+  it("explains why a common, simple molecule can still be flagged as novel chemistry", () => {
+    const applicabilityDomain = {
+      verdict: "out_of_domain" as const,
+      max_tanimoto_to_training: 0.2,
+      knn_distance: 3.0,
+      knn_distance_threshold: 1.5,
+      scaffold_seen_in_training: false,
+      rationale: "This structure is substantially different from the training chemistry.",
+      method: "tanimoto_knn_distance_scaffold_membership",
+    };
+    render(<ApplicabilityDomainGauge applicabilityDomain={applicabilityDomain} />);
+    expect(screen.getByText(/paracetamol or aspirin/i)).toBeInTheDocument();
+  });
+
+  it("does not show the simple-molecule note when the structure is within known chemistry", () => {
+    const { reliability } = makePrediction();
+    render(<ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />);
+    expect(screen.queryByText(/paracetamol or aspirin/i)).not.toBeInTheDocument();
   });
 
   it("leads with the plain-language verdict description, not just the raw backend rationale", () => {

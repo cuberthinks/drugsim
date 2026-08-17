@@ -7,7 +7,10 @@ describe("UncertaintyPanel", () => {
   it("shows the predicted set label for a singleton result", () => {
     const { reliability } = makePrediction();
     render(<UncertaintyPanel conformal={reliability.conformal} endpoint="herg_inhibition" />);
-    expect(screen.getByText(/predicted non-inhibitor/i)).toBeInTheDocument();
+    // Restricted to the pill badge specifically: this revision also shows
+    // the same label text again as a p-value row caption further down, so
+    // an unrestricted query now matches both, correctly.
+    expect(screen.getByText(/predicted non-inhibitor/i, { selector: "span" })).toBeInTheDocument();
     expect(screen.getByText(/only this outcome remains plausible/i)).toBeInTheDocument();
   });
 
@@ -46,6 +49,39 @@ describe("UncertaintyPanel", () => {
       method: "split_conformal_prediction",
     };
     render(<UncertaintyPanel conformal={conformal} endpoint="cyp3a4_inhibition" />);
-    expect(screen.getByText(/predicted cyp3a4 inhibitor/i)).toBeInTheDocument();
+    expect(screen.getByText(/predicted cyp3a4 inhibitor/i, { selector: "span" })).toBeInTheDocument();
+  });
+
+  it("shows both raw p-values from the API response, not just the predicted set", () => {
+    const { reliability } = makePrediction();
+    render(<UncertaintyPanel conformal={reliability.conformal} endpoint="herg_inhibition" />);
+    // Fixture: p_value_blocker 0.03, p_value_non_blocker 0.62 -- both real
+    // numbers from the response, not derived/rounded/invented.
+    expect(screen.getByText("0.030")).toBeInTheDocument();
+    expect(screen.getByText("0.620")).toBeInTheDocument();
+  });
+
+  it("labels each p-value with the class it belongs to, not just 'blocker'/'non_blocker'", () => {
+    const conformal = {
+      predicted_set: ["inhibitor"],
+      p_value_blocker: 0.7,
+      p_value_non_blocker: 0.05,
+      nominal_confidence: 0.9,
+      is_singleton: true,
+      method: "split_conformal_prediction",
+    };
+    render(<UncertaintyPanel conformal={conformal} endpoint="cyp3a4_inhibition" />);
+    expect(screen.getByText(/p-value.*predicted cyp3a4 inhibitor/i)).toBeInTheDocument();
+    expect(screen.getByText(/p-value.*predicted non-inhibitor/i)).toBeInTheDocument();
+  });
+
+  it("explains what a conformal p-value means in plain English", () => {
+    const { reliability } = makePrediction();
+    render(<UncertaintyPanel conformal={reliability.conformal} endpoint="herg_inhibition" />);
+    expect(screen.getByText(/what is a p-value here/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/fraction of training examples that look more extreme than your molecule/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/a low p-value means the model strongly doubts that class/i)).toBeInTheDocument();
   });
 });
