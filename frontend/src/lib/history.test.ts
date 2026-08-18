@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { clearHistory, getHistory, removeFromHistory, saveToHistory } from "./history";
 import { makePrediction } from "../test/fixtures";
 
