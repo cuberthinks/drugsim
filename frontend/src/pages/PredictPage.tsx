@@ -8,6 +8,7 @@ import { MoleculeInput } from "../components/MoleculeInput";
 import { MoleculePreview } from "../components/MoleculePreview";
 import { PredictionResults } from "../components/PredictionResults";
 import { getEndpointCopy } from "../lib/endpointCopy";
+import { saveToHistory } from "../lib/history";
 
 type Stage = "idle" | "validating" | "validated" | "predicting" | "complete";
 type ViewMode = "single" | "profile";
@@ -79,6 +80,12 @@ export function PredictPage() {
       const result = await predict(value.trim(), "smiles", selectedEndpoint);
       setPrediction(result);
       setStage(nextStage);
+      // Only a completed prediction, not a validation preview, is worth
+      // remembering -- see lib/history.ts for why this never leaves the
+      // browser.
+      if (nextStage === "complete") {
+        saveToHistory(result, compoundName, new Date().toISOString());
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err : new ApiError("network", "Something went wrong."));
       setStage(stageBeforeRun === "validated" || stageBeforeRun === "complete" ? stageBeforeRun : "idle");

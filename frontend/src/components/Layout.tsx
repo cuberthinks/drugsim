@@ -26,6 +26,9 @@ export function Layout() {
             <NavLink to="/predict" className={navLinkClass}>
               Predict
             </NavLink>
+            <NavLink to="/history" className={navLinkClass}>
+              History
+            </NavLink>
             <NavLink to="/methodology" className={navLinkClass}>
               Methodology
             </NavLink>
@@ -63,6 +66,9 @@ export function Layout() {
             </NavLink>
             <NavLink to="/terms" className="underline underline-offset-2 hover:text-ink">
               Terms of Use
+            </NavLink>
+            <NavLink to="/changelog" className="underline underline-offset-2 hover:text-ink">
+              What's new
             </NavLink>
           </nav>
         </div>

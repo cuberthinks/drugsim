@@ -97,17 +97,23 @@ test("an optional compound name is shown alongside the result but never sent to 
   await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
 
-  // Shown in the molecule preview once validated (exact match -- avoids the
-  // unrelated "Use example (aspirin)" link, which also contains the word).
+  // Shown in the molecule preview once validated (exact match, scoped to
+  // the molecule region -- avoids the unrelated "Aspirin" example button
+  // in the input form, which also contains the word).
   const moleculeSection = page.getByRole("region", { name: /^molecule$/i });
   await expect(moleculeSection.getByText("Aspirin", { exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: /predict herg inhibition/i }).click();
 
-  // Shown again alongside the prediction result...
+  // Shown again alongside the prediction result -- scoped to the molecule
+  // preview and results regions specifically (not a page-wide count),
+  // since the input form's own "Aspirin" example button also contains the
+  // word and isn't part of what this test is checking.
   const resultsHeading = page.getByRole("heading", { name: /predicted non-inhibitor/i });
   await expect(resultsHeading).toBeVisible();
-  await expect(page.getByText("Aspirin", { exact: true })).toHaveCount(2); // molecule preview + results card
+  const resultsSection = page.getByRole("region", { name: /predicted non-inhibitor/i });
+  await expect(moleculeSection.getByText("Aspirin", { exact: true })).toBeVisible();
+  await expect(resultsSection.getByText("Aspirin", { exact: true })).toBeVisible();
   // ...but never part of the actual request the backend receives.
   expect(sentBody).toBeDefined();
   expect(JSON.stringify(sentBody)).not.toContain("Aspirin");

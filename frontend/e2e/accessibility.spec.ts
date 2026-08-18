@@ -71,7 +71,18 @@ const CYP3A4_RESPONSE = {
   provenance: { ...PREDICTION_RESPONSE.provenance, model_id: "cyp3a4_inhibition", training_set_size: 3767 },
 };
 
-const STATIC_PAGES = ["/", "/predict", "/methodology", "/limitations", "/about", "/privacy", "/terms"];
+const STATIC_PAGES = [
+  "/",
+  "/predict",
+  "/methodology",
+  "/limitations",
+  "/about",
+  "/privacy",
+  "/terms",
+  "/history",
+  "/compare",
+  "/changelog",
+];
 
 for (const path of STATIC_PAGES) {
   test(`no WCAG 2.1 AA violations on ${path}`, async ({ page }) => {

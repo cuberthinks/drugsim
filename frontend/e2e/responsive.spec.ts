@@ -15,7 +15,18 @@ import { expect, test } from "@playwright/test";
  */
 test.use({ viewport: { width: 390, height: 844 } });
 
-const STATIC_PAGES = ["/", "/predict", "/methodology", "/limitations", "/about", "/privacy", "/terms"];
+const STATIC_PAGES = [
+  "/",
+  "/predict",
+  "/methodology",
+  "/limitations",
+  "/about",
+  "/privacy",
+  "/terms",
+  "/history",
+  "/compare",
+  "/changelog",
+];
 
 for (const path of STATIC_PAGES) {
   test(`no horizontal overflow on ${path} at mobile width`, async ({ page }) => {

@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { PredictPage } from "./PredictPage";
 import { ApiError } from "../api/client";
 import { makePrediction } from "../test/fixtures";
+import { getHistory } from "../lib/history";
 
 const { predictMock } = vi.hoisted(() => ({ predictMock: vi.fn() }));
 
@@ -85,6 +86,31 @@ describe("PredictPage", () => {
     expect(screen.getByRole("heading", { name: /uncertainty/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /applicability domain/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /reliability/i })).toBeInTheDocument();
+  });
+
+  it("saves a completed prediction to local history but not a mere validation", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    window.localStorage.clear();
+    renderPage();
+
+    await enterAndValidate(user);
+    expect(getHistory()).toHaveLength(0);
+
+    await user.click(await screen.findByRole("button", { name: /predict herg inhibition/i }));
+    await waitFor(() => expect(getHistory()).toHaveLength(1));
+  });
+
+  it("offers JSON and CSV export of the completed result", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    renderPage();
+
+    await enterAndValidate(user);
+    await user.click(await screen.findByRole("button", { name: /predict herg inhibition/i }));
+
+    expect(await screen.findByRole("button", { name: /download json/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /download csv/i })).toBeInTheDocument();
   });
 
   it("shows an honest error state for an invalid molecule instead of a fabricated result", async () => {

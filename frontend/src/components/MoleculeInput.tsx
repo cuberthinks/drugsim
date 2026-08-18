@@ -1,7 +1,7 @@
 import { useId } from "react";
+import { EXAMPLE_COMPOUNDS } from "../lib/exampleCompounds";
 
-const EXAMPLE_SMILES = "CC(=O)Oc1ccccc1C(=O)O";
-const EXAMPLE_LABEL = "aspirin";
+const EXAMPLE_SMILES = EXAMPLE_COMPOUNDS[0].smiles;
 
 interface Props {
   value: string;
@@ -61,18 +61,33 @@ export function MoleculeInput({
         placeholder={`e.g. ${EXAMPLE_SMILES}`}
         className="mt-2 w-full resize-none rounded-md border border-line bg-paper px-3 py-2 font-mono text-sm text-ink focus:border-signal"
       />
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <button
-          type="button"
-          onClick={() => {
-            onChange(EXAMPLE_SMILES);
-            if (!name.trim()) onNameChange("Aspirin");
-          }}
-          className="text-xs text-ink-soft underline underline-offset-2 hover:text-ink"
-        >
-          Use example ({EXAMPLE_LABEL})
-        </button>
+      <div className="mt-2 flex justify-end">
         <p className="text-xs text-ink-soft">Accepted format: SMILES</p>
+      </div>
+
+      <div className="mt-3">
+        <p className="text-xs font-medium text-ink">Try an example</p>
+        <p className="mt-1 text-xs leading-relaxed text-ink-soft">
+          Four real compounds chosen to show different actual outcomes — not hypothetical
+          scenarios.
+        </p>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {EXAMPLE_COMPOUNDS.map((example) => (
+            <button
+              key={example.name}
+              type="button"
+              onClick={() => {
+                onChange(example.smiles);
+                if (!name.trim()) onNameChange(example.name);
+              }}
+              title={example.note}
+              className="rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:border-signal"
+            >
+              <span className="font-medium text-ink">{example.name}</span>
+              <span className="mt-0.5 block leading-relaxed text-ink-soft">{example.note}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <details className="mt-2 text-xs text-ink-soft">

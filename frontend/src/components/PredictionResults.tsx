@@ -1,5 +1,6 @@
 import type { PredictionResponse } from "../api/types";
 import { getEndpointCopy, labelText } from "../lib/endpointCopy";
+import { downloadTextFile, predictionToCSV, predictionToJSON } from "../lib/export";
 import { ApplicabilityDomainGauge } from "./ApplicabilityDomainGauge";
 import { ModelEvidencePanel } from "./ModelEvidencePanel";
 import { ReliabilityBadge } from "./ReliabilityBadge";
@@ -66,10 +67,36 @@ export function PredictionResults({ prediction, compoundName }: Props) {
 
       <ModelEvidencePanel prediction={prediction} />
 
-      <p className="font-mono text-xs text-ink-soft">
-        Model {provenance.model_id} v{provenance.model_version} · trained on{" "}
-        {provenance.training_set_size.toLocaleString()} compounds · {provenance.final_report_status}
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="font-mono text-xs text-ink-soft">
+          Model {provenance.model_id} v{provenance.model_version} · trained on{" "}
+          {provenance.training_set_size.toLocaleString()} compounds · {provenance.final_report_status}
+        </p>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() =>
+              downloadTextFile(
+                `drugsim-${prediction.id}.json`,
+                predictionToJSON(prediction, compoundName),
+                "application/json",
+              )
+            }
+            className="text-xs font-medium text-ink-soft underline underline-offset-2 hover:text-ink"
+          >
+            Download JSON
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              downloadTextFile(`drugsim-${prediction.id}.csv`, predictionToCSV(prediction, compoundName), "text/csv")
+            }
+            className="text-xs font-medium text-ink-soft underline underline-offset-2 hover:text-ink"
+          >
+            Download CSV
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { MoleculeInput } from "./MoleculeInput";
+import { EXAMPLE_COMPOUNDS } from "../lib/exampleCompounds";
 
 function setup(overrides: Partial<React.ComponentProps<typeof MoleculeInput>> = {}) {
   const props = {
@@ -44,11 +45,20 @@ describe("MoleculeInput", () => {
     expect(screen.getByRole("button", { name: /predict/i })).toBeEnabled();
   });
 
-  it("fills in the example molecule when the example link is used", async () => {
+  it("fills in an example molecule's real SMILES when that example is clicked", async () => {
     const user = userEvent.setup();
     const props = setup();
-    await user.click(screen.getByRole("button", { name: /use example/i }));
-    expect(props.onChange).toHaveBeenCalledWith("CC(=O)Oc1ccccc1C(=O)O");
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+    expect(props.onChange).toHaveBeenCalledWith(first.smiles);
+  });
+
+  it("offers a small, varied set of real example compounds, each labelled as an example", () => {
+    setup();
+    expect(EXAMPLE_COMPOUNDS.length).toBeGreaterThanOrEqual(2);
+    for (const example of EXAMPLE_COMPOUNDS) {
+      expect(screen.getByRole("button", { name: new RegExp(`^${example.name}`, "i") })).toBeInTheDocument();
+    }
   });
 
   it("calls onClear when Clear is pressed", async () => {
@@ -73,17 +83,19 @@ describe("MoleculeInput", () => {
     expect(props.onNameChange).toHaveBeenCalledWith("A");
   });
 
-  it("fills in the example name alongside the example structure when no name was set", async () => {
+  it("fills in the example's name alongside its structure when no name was set", async () => {
     const user = userEvent.setup();
     const props = setup({ name: "" });
-    await user.click(screen.getByRole("button", { name: /use example/i }));
-    expect(props.onNameChange).toHaveBeenCalledWith("Aspirin");
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+    expect(props.onNameChange).toHaveBeenCalledWith(first.name);
   });
 
-  it("does not overwrite a name the user already typed when using the example", async () => {
+  it("does not overwrite a name the user already typed when using an example", async () => {
     const user = userEvent.setup();
     const props = setup({ name: "My custom label" });
-    await user.click(screen.getByRole("button", { name: /use example/i }));
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
     expect(props.onNameChange).not.toHaveBeenCalled();
   });
 

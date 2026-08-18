@@ -7,6 +7,9 @@ import { LimitationsPage } from "./pages/LimitationsPage";
 import { AboutPage } from "./pages/AboutPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { TermsPage } from "./pages/TermsPage";
+import { HistoryPage } from "./pages/HistoryPage";
+import { ComparePage } from "./pages/ComparePage";
+import { ChangelogPage } from "./pages/ChangelogPage";
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="privacy" element={<PrivacyPage />} />
           <Route path="terms" element={<TermsPage />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="compare" element={<ComparePage />} />
+          <Route path="changelog" element={<ChangelogPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
