@@ -31,6 +31,7 @@ HTTP-level concerns, ahead of any structure ever reaching the pipeline.
 from __future__ import annotations
 
 import asyncio
+import hmac
 import time
 from collections import defaultdict, deque
 from typing import Deque, Dict
@@ -97,7 +98,15 @@ class ApiKeyMiddleware:
 
         headers = dict(scope.get("headers") or [])
         provided = headers.get(b"x-api-key", b"").decode("latin-1")
-        if provided not in keys:
+        # Release-audit finding: `provided not in keys` is a plain hash-set
+        # membership check, not a constant-time comparison -- real-world
+        # exploitability against a single shared demo key over HTTP is low
+        # (SipHash's per-process random seed already scrambles bucket
+        # placement, and network jitter dwarfs any residual signal), but
+        # comparing every configured key with hmac.compare_digest costs
+        # nothing here (at most a handful of short keys) and removes the
+        # gap outright rather than relying on that argument.
+        if not any(hmac.compare_digest(provided, key) for key in keys):
             await _send_problem(
                 send, 401, "unauthorized", "Missing or invalid API key",
                 "This endpoint requires a valid X-API-Key header.",

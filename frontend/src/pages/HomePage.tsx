@@ -15,8 +15,9 @@ export function HomePage() {
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             DrugSim estimates individual ADMET endpoints — currently hERG cardiac-channel
             inhibition and CYP3A4 metabolic inhibition — from a molecular structure, using
-            validated machine-learning models, always shown alongside their uncertainty and
-            applicability domain, never as a bare number.
+            machine-learning models statistically validated on held-out data — not clinically
+            validated — always shown alongside their uncertainty and applicability domain,
+            never as a bare number.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link

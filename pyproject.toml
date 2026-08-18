@@ -12,6 +12,7 @@ packages = [
     { include = "drugsim_features", from = "src" },
     { include = "drugsim_quality", from = "src" },
     { include = "drugsim_predict", from = "src" },
+    { include = "drugsim_ingest", from = "src" },
 ]
 
 # ---------------------------------------------------------------------------
