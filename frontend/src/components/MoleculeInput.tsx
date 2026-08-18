@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { EXAMPLE_COMPOUNDS } from "../lib/exampleCompounds";
+import { EXAMPLE_COMPOUNDS, type ExampleCompound } from "../lib/exampleCompounds";
 
 const EXAMPLE_SMILES = EXAMPLE_COMPOUNDS[0].smiles;
 
@@ -11,6 +11,10 @@ interface Props {
   onValidate: () => void;
   onPredict: () => void;
   onClear: () => void;
+  /** Fills the structure/name AND immediately runs a real prediction against
+   * the live model — a single live API call, not a canned/cached result
+   * (see PredictPage's handleUseExample). */
+  onUseExample: (example: ExampleCompound) => void;
   isBusy: boolean;
   isValidated: boolean;
   predictLabel?: string;
@@ -24,6 +28,7 @@ export function MoleculeInput({
   onValidate,
   onPredict,
   onClear,
+  onUseExample,
   isBusy,
   isValidated,
   predictLabel = "Predict",
@@ -69,19 +74,18 @@ export function MoleculeInput({
         <p className="text-xs font-medium text-ink">Try an example</p>
         <p className="mt-1 text-xs leading-relaxed text-ink-soft">
           Four real compounds chosen to show different actual outcomes — not hypothetical
-          scenarios.
+          scenarios. Clicking one runs a real prediction immediately, the same as clicking
+          Predict yourself.
         </p>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {EXAMPLE_COMPOUNDS.map((example) => (
             <button
               key={example.name}
               type="button"
-              onClick={() => {
-                onChange(example.smiles);
-                if (!name.trim()) onNameChange(example.name);
-              }}
+              onClick={() => onUseExample(example)}
+              disabled={isBusy}
               title={example.note}
-              className="rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:border-signal"
+              className="rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:border-signal disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="font-medium text-ink">{example.name}</span>
               <span className="mt-0.5 block leading-relaxed text-ink-soft">{example.note}</span>

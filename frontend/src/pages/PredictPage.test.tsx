@@ -6,6 +6,7 @@ import { PredictPage } from "./PredictPage";
 import { ApiError } from "../api/client";
 import { makePrediction } from "../test/fixtures";
 import { getHistory } from "../lib/history";
+import { EXAMPLE_COMPOUNDS } from "../lib/exampleCompounds";
 
 const { predictMock } = vi.hoisted(() => ({ predictMock: vi.fn() }));
 
@@ -111,6 +112,58 @@ describe("PredictPage", () => {
 
     expect(await screen.findByRole("button", { name: /download json/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /download csv/i })).toBeInTheDocument();
+  });
+
+  it("clicking an example runs a real prediction immediately -- no extra Validate/Predict clicks needed", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    renderPage();
+
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+
+    // A real call to the live model, with that example's real structure --
+    // never a cached/precomputed result (explicit user preference: always
+    // reflect the currently deployed model).
+    await waitFor(() => expect(predictMock).toHaveBeenCalledWith(first.smiles, "smiles", "herg_inhibition"));
+    expect(await screen.findByRole("heading", { name: /predicted non-inhibitor/i })).toBeInTheDocument();
+  });
+
+  it("fills in the example's own name when the user hadn't already typed one", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    renderPage();
+
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+
+    await waitFor(() => expect(screen.getByLabelText(/compound name/i)).toHaveValue(first.name));
+  });
+
+  it("does not overwrite a name the user already typed when running an example", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    renderPage();
+
+    await user.type(screen.getByLabelText(/compound name/i), "My own label");
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+
+    await waitFor(() => expect(predictMock).toHaveBeenCalled());
+    expect(screen.getByLabelText(/compound name/i)).toHaveValue("My own label");
+  });
+
+  it("saves an example's result to local history under its own name, even though the name field update raced the request", async () => {
+    const user = userEvent.setup();
+    predictMock.mockResolvedValue(makePrediction());
+    window.localStorage.clear();
+    renderPage();
+
+    const first = EXAMPLE_COMPOUNDS[0];
+    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
+
+    await waitFor(() => expect(getHistory()).toHaveLength(1));
+    expect(getHistory()[0].compoundName).toBe(first.name);
   });
 
   it("shows an honest error state for an invalid molecule instead of a fabricated result", async () => {

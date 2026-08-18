@@ -13,6 +13,7 @@ function setup(overrides: Partial<React.ComponentProps<typeof MoleculeInput>> = 
     onValidate: vi.fn(),
     onPredict: vi.fn(),
     onClear: vi.fn(),
+    onUseExample: vi.fn(),
     isBusy: false,
     isValidated: false,
     ...overrides,
@@ -45,12 +46,21 @@ describe("MoleculeInput", () => {
     expect(screen.getByRole("button", { name: /predict/i })).toBeEnabled();
   });
 
-  it("fills in an example molecule's real SMILES when that example is clicked", async () => {
+  it("delegates to onUseExample with the full example when clicked -- filling and running are the parent's job, not this component's", async () => {
     const user = userEvent.setup();
     const props = setup();
     const first = EXAMPLE_COMPOUNDS[0];
     await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
-    expect(props.onChange).toHaveBeenCalledWith(first.smiles);
+    expect(props.onUseExample).toHaveBeenCalledWith(first);
+    // Filling the field directly is no longer this component's job -- see
+    // PredictPage.handleUseExample, which also runs a real prediction.
+    expect(props.onChange).not.toHaveBeenCalled();
+  });
+
+  it("disables example buttons while a request is already in flight", () => {
+    setup({ isBusy: true });
+    const first = EXAMPLE_COMPOUNDS[0];
+    expect(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") })).toBeDisabled();
   });
 
   it("offers a small, varied set of real example compounds, each labelled as an example", () => {
@@ -81,22 +91,6 @@ describe("MoleculeInput", () => {
     expect(nameField).toBeInTheDocument();
     await user.type(nameField, "Aspirin");
     expect(props.onNameChange).toHaveBeenCalledWith("A");
-  });
-
-  it("fills in the example's name alongside its structure when no name was set", async () => {
-    const user = userEvent.setup();
-    const props = setup({ name: "" });
-    const first = EXAMPLE_COMPOUNDS[0];
-    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
-    expect(props.onNameChange).toHaveBeenCalledWith(first.name);
-  });
-
-  it("does not overwrite a name the user already typed when using an example", async () => {
-    const user = userEvent.setup();
-    const props = setup({ name: "My custom label" });
-    const first = EXAMPLE_COMPOUNDS[0];
-    await user.click(screen.getByRole("button", { name: new RegExp(`^${first.name}`, "i") }));
-    expect(props.onNameChange).not.toHaveBeenCalled();
   });
 
   it("explains what SMILES is and how to obtain one, for a user who has never heard the term", () => {

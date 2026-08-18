@@ -8,6 +8,7 @@ import { MoleculeInput } from "../components/MoleculeInput";
 import { MoleculePreview } from "../components/MoleculePreview";
 import { PredictionResults } from "../components/PredictionResults";
 import { getEndpointCopy } from "../lib/endpointCopy";
+import type { ExampleCompound } from "../lib/exampleCompounds";
 import { saveToHistory } from "../lib/history";
 
 type Stage = "idle" | "validating" | "validated" | "predicting" | "complete";
@@ -66,7 +67,18 @@ export function PredictPage() {
   // call and shows the resulting molecule preview without yet foregrounding
   // the prediction, giving the two-step UX the spec asks for without
   // inventing a backend capability that doesn't exist.
-  async function runPredictOrValidate(nextStage: "validated" | "complete") {
+  //
+  // `overrides` exists only for handleUseExample below: setValue/
+  // setCompoundName are async (React batches state updates), so a call
+  // made immediately afterward would otherwise still read the OLD value
+  // from this closure. Passing the real value explicitly sidesteps that
+  // race rather than relying on a stale read.
+  async function runPredictOrValidate(
+    nextStage: "validated" | "complete",
+    overrides?: { structure?: string; name?: string },
+  ) {
+    const structureValue = overrides?.structure ?? value.trim();
+    const nameValue = overrides?.name ?? compoundName;
     // What was on screen before this run started. A failure must fall back
     // to exactly that, never to "idle": the results below are gated on
     // stage, so resetting it discarded a result the user was still reading
@@ -77,19 +89,32 @@ export function PredictPage() {
     setStage(nextStage === "validated" ? "validating" : "predicting");
     setError(null);
     try {
-      const result = await predict(value.trim(), "smiles", selectedEndpoint);
+      const result = await predict(structureValue, "smiles", selectedEndpoint);
       setPrediction(result);
       setStage(nextStage);
       // Only a completed prediction, not a validation preview, is worth
       // remembering -- see lib/history.ts for why this never leaves the
       // browser.
       if (nextStage === "complete") {
-        saveToHistory(result, compoundName, new Date().toISOString());
+        saveToHistory(result, nameValue, new Date().toISOString());
       }
     } catch (err) {
       setError(err instanceof ApiError ? err : new ApiError("network", "Something went wrong."));
       setStage(stageBeforeRun === "validated" || stageBeforeRun === "complete" ? stageBeforeRun : "idle");
     }
+  }
+
+  // Fills the example's structure/name and immediately runs a real
+  // prediction against the live model -- one genuine API call, the same
+  // request "Predict" itself makes, not a cached or precomputed result
+  // (user preference, confirmed explicitly: examples must always reflect
+  // the currently deployed model, never go stale if it's ever updated).
+  function handleUseExample(example: ExampleCompound) {
+    const nextName = compoundName.trim() ? compoundName : example.name;
+    setValue(example.smiles);
+    if (!compoundName.trim()) setCompoundName(example.name);
+    setViewMode("single");
+    runPredictOrValidate("complete", { structure: example.smiles, name: nextName });
   }
 
   const isBusy = stage === "validating" || stage === "predicting";
@@ -134,6 +159,7 @@ export function PredictPage() {
         onNameChange={setCompoundName}
         onValidate={() => runPredictOrValidate("validated")}
         onPredict={() => runPredictOrValidate("complete")}
+        onUseExample={handleUseExample}
         onClear={handleClear}
         isBusy={isBusy}
         isValidated={stage === "validated" || stage === "complete"}
