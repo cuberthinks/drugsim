@@ -60,12 +60,11 @@ class ApplicabilityDomainResult:
     method: str = METHOD_NAME
 
 
-def _max_tanimoto(query_fp: np.ndarray, train_fps_f32: np.ndarray, train_fp_sums: np.ndarray) -> float:
-    # train_fps_f32 / train_fp_sums are precomputed once on the ModelBundle
-    # (see its docstring) rather than recast/resummed here on every request.
+def _max_tanimoto(query_fp: np.ndarray, train_fps: np.ndarray) -> float:
     q = query_fp.astype(np.float32)
-    intersection = train_fps_f32 @ q
-    union = train_fp_sums + q.sum() - intersection
+    r = train_fps.astype(np.float32)
+    intersection = r @ q
+    union = r.sum(axis=1) + q.sum() - intersection
     with np.errstate(divide="ignore", invalid="ignore"):
         sim = np.where(union > 0, intersection / union, 0.0)
     return float(sim.max())
@@ -103,10 +102,11 @@ def assess_applicability_domain(
             rationale="Descriptors or fingerprint could not be computed for this structure.",
         )
 
-    max_tanimoto = _max_tanimoto(query_fingerprint, bundle.train_fingerprints_f32, bundle.train_fingerprint_sums)
+    max_tanimoto = _max_tanimoto(query_fingerprint, bundle.train_fingerprints)
 
     scaled = bundle.descriptor_ad_scaler.transform(query_descriptors.reshape(1, -1))
-    dists = np.linalg.norm(bundle.train_descriptors_scaled - scaled, axis=1)
+    train_scaled = bundle.descriptor_ad_scaler.transform(bundle.train_descriptors)
+    dists = np.linalg.norm(train_scaled - scaled, axis=1)
     knn_distance = float(np.sort(dists)[: bundle.knn_k].mean())
 
     scaffold_seen = (query_scaffold in bundle.train_scaffolds) if query_scaffold else False
