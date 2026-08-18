@@ -55,6 +55,26 @@ body {
   outline-offset: 2px;
 }
 
+/* Green-polish pass: a single global rule rather than hand-adding
+   transition-colors to dozens of individual links/inputs -- every
+   hover/focus color change becomes smooth automatically, present and
+   future, with no risk of missing one. Already safe under reduced-motion
+   (forced to 0.001ms by the rule below).
+
+   Deliberately excludes <button>: this app has several buttons that fully
+   invert their color pairing between states (e.g. the "Full compound
+   profile" view toggle swaps ink-on-paper for paper-on-ink when
+   aria-pressed flips) -- animating that swap necessarily passes through
+   a low-contrast intermediate frame partway through the transition,
+   which a real axe-core WCAG scan caught as a genuine violation
+   (color-contrast, 4.06:1 mid-transition vs. the 4.5:1 AA floor) when
+   this rule briefly included <button>. That's not a false positive to
+   suppress -- it's a real accessible-animation constraint. Buttons here
+   keep their existing instant hover feedback rather than risk it. */
+a, input, textarea, select {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
