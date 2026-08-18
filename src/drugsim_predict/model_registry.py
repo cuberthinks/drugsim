@@ -94,6 +94,20 @@ class ModelBundle:
         train_fingerprints / train_descriptors: Frozen training-set
             reference data (groups 0-6) for the applicability-domain
             Tanimoto and k-NN checks.
+        train_fingerprints_f32 / train_fingerprint_sums / train_descriptors_scaled:
+            Derived from the two fields above, computed once here rather
+            than inside the per-request AD check. Measured finding: the AD
+            check used to call ``train_fingerprints.astype(np.float32)`` and
+            ``descriptor_ad_scaler.transform(train_descriptors)`` fresh on
+            EVERY prediction -- re-copying the entire training set every
+            request. Profiled with tracemalloc: that was a ~53MB transient
+            allocation per hERG request (~31MB for CYP3A4) that immediately
+            got GC'd, dwarfing every other allocation in the pipeline
+            combined. The three arrays below are bit-identical to what each
+            call used to compute fresh (deterministic astype/transform of
+            frozen, immutable data) -- this changes WHEN the cost is paid,
+            never a prediction value, same category as this class's
+            ``n_jobs = 1`` fix above.
         train_scaffolds: Frozen training-set Bemis-Murcko scaffold set,
             for the scaffold-seen AD component.
         descriptor_ad_scaler: `StandardScaler` fit on training descriptors
@@ -128,6 +142,9 @@ class ModelBundle:
     calibration_nonconformity: np.ndarray
     train_fingerprints: np.ndarray
     train_descriptors: np.ndarray
+    train_fingerprints_f32: np.ndarray
+    train_fingerprint_sums: np.ndarray
+    train_descriptors_scaled: np.ndarray
     train_scaffolds: frozenset[str]
     descriptor_ad_scaler: Any
     knn_distance_threshold_p95: float
@@ -267,6 +284,15 @@ def load_model_bundle(registry_path: Optional[Path] = None, *, model_id: str = D
 
     features = registry["features"]
     endpoint = registry.get("endpoint", {})
+
+    train_fingerprints = support["train_fingerprints"]
+    train_descriptors = support["train_descriptors"]
+    # See ModelBundle's docstring: precomputed once here instead of inside
+    # the per-request applicability-domain check.
+    train_fingerprints_f32 = train_fingerprints.astype(np.float32)
+    train_fingerprint_sums = train_fingerprints_f32.sum(axis=1)
+    train_descriptors_scaled = scaler.transform(train_descriptors)
+
     return ModelBundle(
         registry=registry,
         model_id=registry["model_id"],
@@ -286,8 +312,11 @@ def load_model_bundle(registry_path: Optional[Path] = None, *, model_id: str = D
         training_set_size=int(support["train_fingerprints"].shape[0]),
         sklearn_model=model,
         calibration_nonconformity=support["calibration_nonconformity"],
-        train_fingerprints=support["train_fingerprints"],
-        train_descriptors=support["train_descriptors"],
+        train_fingerprints=train_fingerprints,
+        train_descriptors=train_descriptors,
+        train_fingerprints_f32=train_fingerprints_f32,
+        train_fingerprint_sums=train_fingerprint_sums,
+        train_descriptors_scaled=train_descriptors_scaled,
         train_scaffolds=frozenset(support["train_scaffolds"].tolist()),
         descriptor_ad_scaler=scaler,
         knn_distance_threshold_p95=manifest["knn_distance_threshold_p95"],
