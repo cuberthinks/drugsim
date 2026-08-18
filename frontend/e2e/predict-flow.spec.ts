@@ -71,7 +71,7 @@ test("full input -> validate -> predict -> display flow", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: /enter a molecule/i }).click();
 
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
 
   await expect(page.getByText(/canonical smiles/i)).toBeVisible();
@@ -94,7 +94,7 @@ test("an optional compound name is shown alongside the result but never sent to 
 
   await page.goto("/predict");
   await page.getByLabel(/compound name/i).fill("Aspirin");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
 
   // Shown in the molecule preview once validated (exact match -- avoids the
@@ -132,7 +132,7 @@ test("shows an honest error instead of a fabricated result on API failure", asyn
   });
 
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
 
   await expect(page.getByRole("alert")).toBeVisible();
@@ -169,7 +169,7 @@ test("renders an out-of-domain prediction as a successful, informative result, n
   });
 
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await page.getByRole("button", { name: /predict herg inhibition/i }).click();
 
@@ -253,7 +253,7 @@ test("full molecule -> endpoint selection -> prediction -> reliability flow for 
   await expect(futureButton).toBeDisabled();
 
   await page.getByRole("button", { name: /cyp3a4 inhibition/i }).click();
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await page.getByRole("button", { name: /predict cyp3a4 inhibition/i }).click();
 

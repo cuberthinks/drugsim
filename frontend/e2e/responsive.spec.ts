@@ -65,7 +65,7 @@ test("no horizontal overflow on the populated results view (with Model & evidenc
     await route.fulfill({ json: PREDICTION_RESPONSE });
   });
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await page.getByRole("button", { name: /predict herg inhibition/i }).click();
   await expect(page.getByRole("heading", { name: /predicted non-inhibitor/i })).toBeVisible();

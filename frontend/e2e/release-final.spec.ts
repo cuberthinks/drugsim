@@ -109,7 +109,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await expect(page.getByRole("heading", { name: /explore how a molecule may behave/i })).toBeVisible();
 
     await page.getByRole("link", { name: /enter a molecule/i }).click();
-    await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+    await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
     await page.getByRole("button", { name: /^validate$/i }).click();
     await expect(page.getByText(/canonical smiles/i)).toBeVisible();
 
@@ -147,7 +147,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await page.route("**/api/endpoints", (route) => route.fulfill({ json: ENDPOINTS_RESPONSE }));
 
     await page.goto("/predict");
-    await page.getByLabel(/molecule \(smiles\)/i).fill("not-a-valid-smiles(((");
+    await page.getByLabel(/paste a smiles string/i).fill("not-a-valid-smiles(((");
     await page.getByRole("button", { name: /^validate$/i }).click();
 
     await expect(page.getByRole("alert")).toBeVisible();
@@ -175,7 +175,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     // The workspace only accepts SMILES text -- there is no format picker to
     // misuse, so "unsupported input" here means input that is not chemistry
     // at all, submitted through the one entry point that exists.
-    await page.getByLabel(/molecule \(smiles\)/i).fill("this is just some English text, not a molecule");
+    await page.getByLabel(/paste a smiles string/i).fill("this is just some English text, not a molecule");
     await page.getByRole("button", { name: /^validate$/i }).click();
 
     await expect(page.getByRole("alert")).toBeVisible();
@@ -184,7 +184,7 @@ test.describe("DrugSim v1.0 final release test", () => {
 
     // Validate/Predict are also never enabled on a genuinely empty field --
     // the other half of "unsupported input" is input that was never sent.
-    await page.getByLabel(/molecule \(smiles\)/i).fill("");
+    await page.getByLabel(/paste a smiles string/i).fill("");
     await expect(page.getByRole("button", { name: /^validate$/i })).toBeDisabled();
   });
 
@@ -199,7 +199,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await page.route("**/api/endpoints", (route) => route.fulfill({ json: ENDPOINTS_RESPONSE }));
 
     await page.goto("/predict");
-    await page.getByLabel(/molecule \(smiles\)/i).fill("CCO");
+    await page.getByLabel(/paste a smiles string/i).fill("CCO");
     await page.getByRole("button", { name: /^validate$/i }).click();
 
     await expect(page.getByRole("alert")).toBeVisible();
@@ -222,7 +222,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await page.route("**/api/endpoints", (route) => route.fulfill({ json: ENDPOINTS_RESPONSE }));
 
     await page.goto("/predict");
-    await page.getByLabel(/molecule \(smiles\)/i).fill("CCO");
+    await page.getByLabel(/paste a smiles string/i).fill("CCO");
     await page.getByRole("button", { name: /^validate$/i }).click();
 
     await expect(page.getByRole("alert")).toBeVisible();
@@ -255,7 +255,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await page.route("**/api/endpoints", (route) => route.fulfill({ json: ENDPOINTS_RESPONSE }));
 
     await page.goto("/predict");
-    await page.getByLabel(/molecule \(smiles\)/i).fill("CCO");
+    await page.getByLabel(/paste a smiles string/i).fill("CCO");
     await page.getByRole("button", { name: /^validate$/i }).click();
     await page.getByRole("button", { name: /predict herg inhibition/i }).click();
 
@@ -269,7 +269,7 @@ test.describe("DrugSim v1.0 final release test", () => {
     await page.route("**/api/predict", (route) => route.fulfill({ json: HERG_RESPONSE }));
 
     await page.goto("/predict");
-    await page.getByLabel(/molecule \(smiles\)/i).fill("CCO");
+    await page.getByLabel(/paste a smiles string/i).fill("CCO");
     await page.getByRole("button", { name: /^validate$/i }).click();
 
     const experimentalButton = page.getByRole("button", { name: /future endpoint/i });

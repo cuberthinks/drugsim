@@ -4,6 +4,14 @@ import { ApplicabilityDomainGauge } from "./ApplicabilityDomainGauge";
 import { makePrediction } from "../test/fixtures";
 
 describe("ApplicabilityDomainGauge", () => {
+  it("defines what applicability domain measures at the point of use, not only elsewhere on the page", () => {
+    const { reliability } = makePrediction();
+    render(<ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />);
+    expect(
+      screen.getByText(/how closely this molecule resembles the chemistry the model was actually trained on/i),
+    ).toBeInTheDocument();
+  });
+
   it("labels an in-domain verdict as known chemistry and shows the real rationale", () => {
     const { reliability } = makePrediction();
     render(<ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />);

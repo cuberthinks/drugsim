@@ -86,7 +86,7 @@ test("no WCAG 2.1 AA violations on the populated results view", async ({ page })
     await route.fulfill({ json: PREDICTION_RESPONSE });
   });
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await page.getByRole("button", { name: /predict herg inhibition/i }).click();
   await expect(page.getByRole("heading", { name: /predicted non-inhibitor/i })).toBeVisible();
@@ -117,7 +117,7 @@ test("no WCAG 2.1 AA violations on the DrugSim Compound Profile view (Phase 10)"
   });
 
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CC(=O)Oc1ccccc1C(=O)O");
+  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await page.getByRole("button", { name: /full compound profile/i }).click();
   await expect(page.getByRole("heading", { name: /every validated endpoint/i })).toBeVisible();
@@ -133,7 +133,7 @@ test("no WCAG 2.1 AA violations with an error state visible", async ({ page }) =
     await route.fulfill({ status: 500, json: { type: "about:blank", title: "Internal Server Error", status: 500, detail: "boom" } });
   });
   await page.goto("/predict");
-  await page.getByLabel(/molecule \(smiles\)/i).fill("CCO");
+  await page.getByLabel(/paste a smiles string/i).fill("CCO");
   await page.getByRole("button", { name: /^validate$/i }).click();
   await expect(page.getByRole("alert")).toBeVisible();
 

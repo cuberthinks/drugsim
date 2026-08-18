@@ -103,6 +103,10 @@ export function ApplicabilityDomainGauge({ applicabilityDomain }: Props) {
           {copy.label}
         </span>
       </div>
+      <p className="mt-1 text-xs leading-relaxed text-ink-soft">
+        How closely this molecule resembles the chemistry the model was actually trained on —
+        not whether the prediction itself is correct.
+      </p>
 
       <div className="mt-4">
         <svg viewBox="0 0 400 56" className="w-full" role="img" aria-label={`Applicability domain: ${copy.label}. ${rationale}`}>

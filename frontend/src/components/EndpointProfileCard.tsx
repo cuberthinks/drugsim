@@ -42,7 +42,7 @@ export function EndpointProfileCard({ endpoint, state }: Props) {
       )}
 
       {state.status === "done" && (
-        <dl className="mt-3 grid grid-cols-3 gap-3">
+        <dl className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div>
             <dt className="text-xs font-medium tracking-wide text-ink-soft uppercase">Prediction</dt>
             <dd className="mt-1 text-sm font-semibold text-ink">

@@ -50,7 +50,7 @@ export function MoleculeInput({
       </p>
 
       <label htmlFor={inputId} className="mt-5 block text-sm font-medium text-ink">
-        Molecule (SMILES)
+        Enter a chemical structure — paste a SMILES string
       </label>
       <textarea
         id={inputId}
@@ -72,8 +72,33 @@ export function MoleculeInput({
         >
           Use example ({EXAMPLE_LABEL})
         </button>
-        <p className="text-xs text-ink-soft">Supported format: SMILES</p>
+        <p className="text-xs text-ink-soft">Accepted format: SMILES</p>
       </div>
+
+      <details className="mt-2 text-xs text-ink-soft">
+        <summary className="cursor-pointer select-none font-medium text-ink hover:underline">
+          Don't know what SMILES is?
+        </summary>
+        <div className="mt-2 space-y-2 leading-relaxed">
+          <p>
+            SMILES (Simplified Molecular Input Line Entry System) is a short line of text that
+            represents a molecule's structure — for example, <code className="font-mono">CCO</code> is
+            ethanol. It's the standard way chemistry software exchanges structures as plain text.
+          </p>
+          <p>
+            If you have a compound in mind but not its SMILES: search the compound's name on{" "}
+            <a
+              href="https://pubchem.ncbi.nlm.nih.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-ink"
+            >
+              PubChem
+            </a>{" "}
+            and copy the SMILES text from its record page, then paste it above.
+          </p>
+        </div>
+      </details>
 
       <div className="mt-5 flex flex-wrap gap-3">
         <button

@@ -99,6 +99,20 @@ export function PredictPage() {
         </p>
       </header>
 
+      <ol className="grid gap-4 sm:grid-cols-3" aria-label="How this works">
+        {[
+          { step: "Enter a molecule", detail: "Paste a SMILES string, or use the example." },
+          { step: "Run a prediction", detail: "Validate the structure, then predict." },
+          { step: "Review prediction + reliability", detail: "Read the result together with its uncertainty and applicability domain." },
+        ].map(({ step, detail }, i) => (
+          <li key={step} className="rounded-lg border border-line bg-paper-alt p-4">
+            <p className="font-mono text-xs text-ink-soft">{i + 1}</p>
+            <p className="mt-1 text-sm font-medium text-ink">{step}</p>
+            <p className="mt-1 text-xs leading-relaxed text-ink-soft">{detail}</p>
+          </li>
+        ))}
+      </ol>
+
       <EndpointSelector
         endpoints={endpoints}
         selected={selectedEndpoint}

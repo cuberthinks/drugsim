@@ -23,7 +23,7 @@ function setup(overrides: Partial<React.ComponentProps<typeof MoleculeInput>> = 
 describe("MoleculeInput", () => {
   it("renders a labelled molecule input field", () => {
     setup();
-    expect(screen.getByLabelText(/molecule \(smiles\)/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/paste a smiles string/i)).toBeInTheDocument();
   });
 
   it("disables Validate, Predict, and Clear when the field is empty", () => {
@@ -85,5 +85,21 @@ describe("MoleculeInput", () => {
     const props = setup({ name: "My custom label" });
     await user.click(screen.getByRole("button", { name: /use example/i }));
     expect(props.onNameChange).not.toHaveBeenCalled();
+  });
+
+  it("explains what SMILES is and how to obtain one, for a user who has never heard the term", () => {
+    setup();
+    expect(screen.getByText(/don't know what smiles is/i)).toBeInTheDocument();
+    expect(screen.getByText(/simplified molecular input line entry system/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /pubchem/i })).toHaveAttribute(
+      "href",
+      "https://pubchem.ncbi.nlm.nih.gov/",
+    );
+  });
+
+  it("only claims the format DrugSim actually accepts", () => {
+    setup();
+    expect(screen.getByText(/accepted format: smiles/i)).toBeInTheDocument();
+    expect(screen.queryByText(/molblock|inchi/i)).not.toBeInTheDocument();
   });
 });

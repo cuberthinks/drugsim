@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -22,7 +22,7 @@ function renderPage() {
 }
 
 async function enterAndValidate(user: ReturnType<typeof userEvent.setup>, smiles = "CC(=O)Oc1ccccc1C(=O)O") {
-  await user.type(screen.getByLabelText(/molecule \(smiles\)/i), smiles);
+  await user.type(screen.getByLabelText(/paste a smiles string/i), smiles);
   await user.click(screen.getByRole("button", { name: /^validate$/i }));
 }
 
@@ -53,6 +53,14 @@ describe("PredictPage", () => {
 
     expect(await screen.findByRole("button", { name: /validating/i })).toBeInTheDocument();
     resolveRequest(makePrediction());
+  });
+
+  it("shows a lightweight, always-visible three-step guide to the workflow", () => {
+    renderPage();
+    const steps = within(screen.getByRole("list", { name: /how this works/i }));
+    expect(steps.getByText(/enter a molecule/i)).toBeInTheDocument();
+    expect(steps.getByText(/run a prediction/i)).toBeInTheDocument();
+    expect(steps.getByText(/review prediction \+ reliability/i)).toBeInTheDocument();
   });
 
   it("renders the molecule preview after validation", async () => {

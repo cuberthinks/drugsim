@@ -23,7 +23,11 @@
 
   --color-signal: #1c6e6e;
   --color-signal-soft: #e4efee;
-  --color-caution: #a6631b;
+  /* Usability audit: the original #a6631b measured 4.54:1 against --color-paper --
+     right at the WCAG AA 4.5:1 floor with no real margin, the one color in this
+     palette without one (every other text color here clears 5.9:1+). Darkened to
+     #875014 (6.3:1), same amber hue, comfortable margin. */
+  --color-caution: #875014;
   --color-caution-soft: #f6ead9;
   --color-concern: #8b3a3a;
   --color-concern-soft: #f3e3e0;
