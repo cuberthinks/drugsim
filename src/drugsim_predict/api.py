@@ -320,7 +320,16 @@ def health_ready(store: PredictionStore = Depends(get_store)) -> JSONResponse:
     checks: dict[str, str] = {"application": "ok"}
 
     try:
-        get_model_bundle()
+        # Explicit DEFAULT_MODEL_ID, not a bare call: functools.lru_cache
+        # keys on the literal arguments passed, not the resolved default --
+        # get_model_bundle() and get_model_bundle(DEFAULT_MODEL_ID) are two
+        # DIFFERENT cache entries even though they load the identical model,
+        # each holding its own full copy in memory forever (verified: two
+        # cache misses, two distinct objects). run_inference() below always
+        # resolves and passes its model_id explicitly, so matching that here
+        # collapses this endpoint onto the same single cache entry instead
+        # of permanently doubling this process's model memory on first use.
+        get_model_bundle(DEFAULT_MODEL_ID)
         checks["model"] = "ok"
     except IntegrityError as exc:
         log.error("health.model_unavailable", reason=str(exc))

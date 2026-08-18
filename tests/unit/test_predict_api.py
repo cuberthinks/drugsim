@@ -50,7 +50,7 @@ class TestHealth:
         import drugsim_predict.api as api_module
         from drugsim_core.errors import IntegrityError
 
-        def boom():
+        def boom(model_id):
             raise IntegrityError("model artifact checksum mismatch", path="/secret/internal/path/model.joblib")
 
         monkeypatch.setattr(api_module, "get_model_bundle", boom)
