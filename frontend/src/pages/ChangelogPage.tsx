@@ -6,6 +6,32 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    date: "2026-08-21",
+    title: "AI attention map (hERG only)",
+    items: [
+      "Added an on-demand \"attention map\" for hERG predictions: which atoms and physicochemical properties pushed a specific prediction toward or away from its outcome, computed via SHAP on the trained model, not a new measurement.",
+      "Honestly discloses when part of a prediction is explained by chemistry the molecule does not contain — a real thing SHAP can attribute weight to, which has no atom to highlight.",
+      "Not yet available for CYP3A4 — its larger model's explanation computation uses more memory than the current server can safely spare, and is disabled there rather than risk instability.",
+      "Attention maps are cached in your browser once computed, so revisiting one doesn't recompute it.",
+    ],
+  },
+  {
+    date: "2026-08-21",
+    title: "Scientific transparency",
+    items: [
+      "The limitations page and each endpoint's own explanation now name the specific, known weaknesses of that model — CYP3A4's real false-positive rate, hERG's lack of independent external validation, and the screening-convention nature of the 10 µM activity threshold — rather than only general disclaimers.",
+    ],
+  },
+  {
+    date: "2026-08-21",
+    title: "Reliability fixes",
+    items: [
+      "Reduced the memory a single prediction allocates by caching reference data the applicability-domain check needs once per server start, instead of recomputing it on every request.",
+      "Fixed a bug where the server's own internal health check could load a model twice into memory instead of reusing the copy already loaded — harmless on its own, but it made an unrelated memory fix ride closer to the server's limit than it should have.",
+      "Raised the per-visitor request limit on the shared demo key.",
+    ],
+  },
+  {
     date: "2026-08-18",
     title: "Product improvements",
     items: [
