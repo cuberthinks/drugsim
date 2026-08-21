@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -31,6 +31,7 @@ async function enterAndValidate(user: ReturnType<typeof userEvent.setup>, smiles
 describe("PredictPage", () => {
   afterEach(() => {
     predictMock.mockReset();
+    window.localStorage.clear();
   });
 
   it("sends a prediction request with the entered structure", async () => {
@@ -57,12 +58,36 @@ describe("PredictPage", () => {
     resolveRequest(makePrediction());
   });
 
-  it("shows a lightweight, always-visible three-step guide to the workflow", () => {
+  it("shows the three-step workflow guide open by default", () => {
     renderPage();
     const steps = within(screen.getByRole("list", { name: /how this works/i }));
     expect(steps.getByText(/enter a molecule/i)).toBeInTheDocument();
     expect(steps.getByText(/run a prediction/i)).toBeInTheDocument();
     expect(steps.getByText(/review prediction \+ reliability/i)).toBeInTheDocument();
+  });
+
+  it("hides the guide when the user collapses it, and remembers that choice", async () => {
+    const user = userEvent.setup();
+    renderPage();
+
+    await user.click(screen.getByRole("button", { name: /how this works/i }));
+    expect(screen.queryByRole("list", { name: /how this works/i })).not.toBeInTheDocument();
+
+    cleanup();
+    renderPage();
+    expect(screen.queryByRole("list", { name: /how this works/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /how this works/i })).toBeInTheDocument();
+  });
+
+  it("can be reopened after being collapsed", async () => {
+    const user = userEvent.setup();
+    renderPage();
+
+    const toggle = () => screen.getByRole("button", { name: /how this works/i });
+    await user.click(toggle());
+    expect(screen.queryByRole("list", { name: /how this works/i })).not.toBeInTheDocument();
+    await user.click(toggle());
+    expect(screen.getByRole("list", { name: /how this works/i })).toBeInTheDocument();
   });
 
   it("renders the molecule preview after validation", async () => {

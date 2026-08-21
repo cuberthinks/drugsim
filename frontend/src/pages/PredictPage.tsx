@@ -4,6 +4,7 @@ import type { EndpointListItem, PredictionResponse } from "../api/types";
 import { CompoundProfile } from "../components/CompoundProfile";
 import { EndpointSelector } from "../components/EndpointSelector";
 import { ErrorPanel } from "../components/ErrorPanel";
+import { HowThisWorksGuide } from "../components/HowThisWorksGuide";
 import { MoleculeInput } from "../components/MoleculeInput";
 import { MoleculePreview } from "../components/MoleculePreview";
 import { PredictionResults } from "../components/PredictionResults";
@@ -126,24 +127,12 @@ export function PredictPage() {
         <p className="font-mono text-xs text-ink-soft uppercase tracking-wide">Prediction workspace</p>
         <h1 className="mt-1 font-display text-3xl font-semibold text-ink">{endpointCopy.displayName} prediction</h1>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          Enter a molecule as SMILES, validate the structure, then run the prediction. Every
-          result below is returned directly by the DrugSim prediction engine.
+          Every result below is returned directly by the DrugSim prediction engine — nothing here
+          is simulated or cached.
         </p>
       </header>
 
-      <ol className="grid gap-4 sm:grid-cols-3" aria-label="How this works">
-        {[
-          { step: "Enter a molecule", detail: "Paste a SMILES string, or use the example." },
-          { step: "Run a prediction", detail: "Validate the structure, then predict." },
-          { step: "Review prediction + reliability", detail: "Read the result together with its uncertainty and applicability domain." },
-        ].map(({ step, detail }, i) => (
-          <li key={step} className="rounded-lg border border-line bg-paper-alt p-4">
-            <p className="font-mono text-xs text-ink-soft">{i + 1}</p>
-            <p className="mt-1 text-sm font-medium text-ink">{step}</p>
-            <p className="mt-1 text-xs leading-relaxed text-ink-soft">{detail}</p>
-          </li>
-        ))}
-      </ol>
+      <HowThisWorksGuide />
 
       <EndpointSelector
         endpoints={endpoints}
