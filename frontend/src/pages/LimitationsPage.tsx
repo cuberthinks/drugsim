@@ -22,6 +22,18 @@ const LIMITATIONS = [
     body: "DrugSim currently covers hERG inhibition and CYP3A4 inhibition, each validated separately. A prediction for one endpoint says nothing about any other ADMET property, efficacy, or safety endpoint — and the two are never combined into a single score or an overall verdict.",
   },
   {
+    title: "CYP3A4 model: a known false-positive tendency",
+    body: "On its own held-out test set, the CYP3A4 model's specificity is only 40.5% — a real, asymmetric tendency to label a compound an inhibitor when it is not. Treat a 'predicted inhibitor' result as a reason to look closer, not as strong evidence on its own.",
+  },
+  {
+    title: "hERG model: no independent external validation",
+    body: "Every reported hERG metric comes from held-out portions of its own training source, not a separate dataset — an external validation attempt was blocked by an unreachable data source during training. The CYP3A4 model does have an external validation result; the hERG model currently does not.",
+  },
+  {
+    title: "The 10 µM active/inactive threshold is a screening convention",
+    body: "Both models label a compound active (blocker/inhibitor) using a 10 µM cutoff on historical IC50 measurements. That threshold is a common literature convention for early screening, not a clinical or biological boundary — predictions near it are the least stable.",
+  },
+  {
     title: "Not a whole-body or whole-drug simulation",
     body: "DrugSim is a collection of validated computational predictions for specific, narrowly defined endpoints. It does not predict exact human pharmacokinetics, clinical safety, patient outcomes, therapeutic efficacy, or complete ADMET behaviour, and its endpoints are never implied to combine into a simulation of a whole organism.",
   },

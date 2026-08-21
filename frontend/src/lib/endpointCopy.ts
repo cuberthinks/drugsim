@@ -27,6 +27,7 @@ export const ENDPOINT_COPY: Record<string, EndpointCopy> = {
     probabilityCaption: "Estimated probability of hERG inhibition",
     description: [
       "hERG inhibition refers to the potential for a compound to interfere with the cardiac hERG potassium channel (KCNH2 / Kv11.1). Strong inhibition can be associated with QT-interval prolongation and cardiac safety concerns, which is why it is one of the most widely screened properties early in drug discovery.",
+      "This model labels a compound a blocker when its aggregated literature IC50 is at or below 10 µM, a screening convention rather than a fixed biological cutoff. Unlike this platform's CYP3A4 model, it has not been validated against an independent external dataset — every reported metric comes from held-out portions of its own training source.",
     ],
   },
   cyp3a4_inhibition: {
@@ -38,6 +39,7 @@ export const ENDPOINT_COPY: Record<string, EndpointCopy> = {
     description: [
       "CYP3A4 (cytochrome P450 3A4) is the single most important drug-metabolising enzyme in humans, responsible for clearing roughly half of all marketed small-molecule drugs. A compound that inhibits CYP3A4 can slow the clearance of other drugs metabolised by the same enzyme, raising their blood levels — the mechanism behind many clinically significant drug-drug interactions.",
       "This model labels a compound an inhibitor when its aggregated literature IC50 is at or below 10 µM, a screening convention rather than a fixed biological cutoff. It says nothing about interaction risk at any particular clinical dose.",
+      "This model has a documented weakness: on its own held-out test set, specificity is only 40.5% — a real, asymmetric tendency to call a compound an inhibitor when it is not. Treat a 'Predicted CYP3A4 inhibitor' result as a reason to investigate further, not as strong evidence on its own.",
     ],
   },
 };
