@@ -33,6 +33,12 @@ from drugsim_features import compute_feature_set_id
 
 from drugsim_predict.applicability_domain import ApplicabilityDomainResult, assess_applicability_domain
 from drugsim_predict.conformal import ConformalResult, compute_conformal_set
+from drugsim_predict.explainability import (
+    EXPLAINABLE_MODEL_IDS,
+    ExplainabilityResult,
+    UnexplainableEndpointError,
+    compute_atom_contributions,
+)
 from drugsim_predict.model_registry import DEFAULT_MODEL_ID, ModelBundle, get_model_bundle
 from drugsim_predict.settings import get_predict_settings
 
@@ -43,7 +49,14 @@ from drugsim_predict.settings import get_predict_settings
 #: but never reachable through this pipeline's normal inference path.
 SERVABLE_STATUSES = frozenset({"VALIDATED FOR INTERNAL RESEARCH"})
 
-__all__ = ["SERVABLE_STATUSES", "InferenceWarning", "PredictionResult", "run_inference"]
+__all__ = [
+    "SERVABLE_STATUSES",
+    "ExplainedStructure",
+    "InferenceWarning",
+    "PredictionResult",
+    "explain_prediction",
+    "run_inference",
+]
 
 Severity = Literal["low", "medium", "high"]
 
@@ -110,49 +123,35 @@ def _check_feature_set_id(bundle: ModelBundle) -> None:
         raise ReproducibilityError(msg, expected=bundle.feature_set_id, actual=current)
 
 
-def run_inference(
-    structure: str,
-    fmt: StructureFormat = "smiles",
-    *,
-    model_id: str = DEFAULT_MODEL_ID,
-    bundle: Optional[ModelBundle] = None,
-) -> PredictionResult:
-    """Run the full, reproducible inference pipeline on one structure.
+@dataclass(frozen=True)
+class _FeaturizedStructure:
+    """Everything downstream of "is this structure servable at all" needs.
 
-    Args:
-        structure: The raw input structure text.
-        fmt: Input format — ``smiles``, ``molblock``, or ``inchi`` (the
-            formats ``drugsim_chem.parsing`` supports; the TDS names the
-            same three for ``POST /v1/predictions``).
-        model_id: Which registered endpoint to run, e.g.
-            ``"herg_inhibition"`` (the default, unchanged from before
-            Phase 9) or ``"cyp3a4_inhibition"``. Ignored if ``bundle`` is
-            given directly.
-        bundle: Override the cached model bundle (tests only).
+    Extracted from ``run_inference`` (Phase 10) so a second caller --
+    :func:`explain_prediction` -- can share the exact same validation and
+    featurisation path rather than a hand-copied duplicate that could drift
+    from it. Same reproducibility rationale as the rest of this module: a
+    prediction and its explanation must be computed from the identical
+    feature vector, or the explanation would not actually be explaining the
+    prediction shown for it.
+    """
 
-    Returns:
-        The complete prediction result, always with a full reliability block.
+    processed: object
+    mol: object
+    descriptors_vec: np.ndarray
+    fingerprint_vec: np.ndarray
+    feature_vec: np.ndarray
+    warnings: list[InferenceWarning]
 
-    Raises:
-        StructureError: Empty input, oversized input, unparseable/
-            unsanitisable chemistry, a polymer/Markush wildcard atom, a
-            mixture with no single dominant fragment, or molecular weight
-            above the configured ceiling. This is the "reject cleanly"
-            signal the API layer maps to a 422 response — never a 500, and
-            never a silently-produced prediction for chemistry the pipeline
-            cannot credibly handle.
-        ReproducibilityError: The serving environment's computed
-            feature_set_id does not match the model's training
-            feature_set_id (TDS Sec 6.6 stage 3) — a hard-stop signal that
-            something about the toolchain has drifted since training.
-        UnknownEndpointError: ``model_id`` has no registry entry.
-        EndpointNotAvailableError: ``model_id`` is registered but has not
-            passed the Phase 9 Sec 14 promotion gate (i.e. its
-            ``final_report_status`` is not ``"VALIDATED FOR INTERNAL
-            RESEARCH"``) — it must not be reachable as a normal prediction.
+
+def _validate_and_featurize(structure: str, fmt: StructureFormat, bundle: ModelBundle) -> _FeaturizedStructure:
+    """Stages 1 and 3 of the TDS Sec 6.6 pipeline: validate the endpoint and
+    the raw input, then parse, standardise, and featurise it. Raises exactly
+    the errors :func:`run_inference` documents (this is the code that used
+    to live inline in it) -- see that function's docstring for the full
+    list, still accurate here.
     """
     settings = get_predict_settings()
-    bundle = bundle or get_model_bundle(model_id)
 
     if bundle.final_report_status not in SERVABLE_STATUSES:
         msg = (
@@ -217,6 +216,63 @@ def run_inference(
     )
     fingerprint_vec = compute_morgan_fingerprint(mol)
     feature_vec = np.concatenate([descriptors_vec, fingerprint_vec]).reshape(1, -1)
+
+    return _FeaturizedStructure(
+        processed=processed,
+        mol=mol,
+        descriptors_vec=descriptors_vec,
+        fingerprint_vec=fingerprint_vec,
+        feature_vec=feature_vec,
+        warnings=warnings,
+    )
+
+
+def run_inference(
+    structure: str,
+    fmt: StructureFormat = "smiles",
+    *,
+    model_id: str = DEFAULT_MODEL_ID,
+    bundle: Optional[ModelBundle] = None,
+) -> PredictionResult:
+    """Run the full, reproducible inference pipeline on one structure.
+
+    Args:
+        structure: The raw input structure text.
+        fmt: Input format — ``smiles``, ``molblock``, or ``inchi`` (the
+            formats ``drugsim_chem.parsing`` supports; the TDS names the
+            same three for ``POST /v1/predictions``).
+        model_id: Which registered endpoint to run, e.g.
+            ``"herg_inhibition"`` (the default, unchanged from before
+            Phase 9) or ``"cyp3a4_inhibition"``. Ignored if ``bundle`` is
+            given directly.
+        bundle: Override the cached model bundle (tests only).
+
+    Returns:
+        The complete prediction result, always with a full reliability block.
+
+    Raises:
+        StructureError: Empty input, oversized input, unparseable/
+            unsanitisable chemistry, a polymer/Markush wildcard atom, a
+            mixture with no single dominant fragment, or molecular weight
+            above the configured ceiling. This is the "reject cleanly"
+            signal the API layer maps to a 422 response — never a 500, and
+            never a silently-produced prediction for chemistry the pipeline
+            cannot credibly handle.
+        ReproducibilityError: The serving environment's computed
+            feature_set_id does not match the model's training
+            feature_set_id (TDS Sec 6.6 stage 3) — a hard-stop signal that
+            something about the toolchain has drifted since training.
+        UnknownEndpointError: ``model_id`` has no registry entry.
+        EndpointNotAvailableError: ``model_id`` is registered but has not
+            passed the Phase 9 Sec 14 promotion gate (i.e. its
+            ``final_report_status`` is not ``"VALIDATED FOR INTERNAL
+            RESEARCH"``) — it must not be reachable as a normal prediction.
+    """
+    bundle = bundle or get_model_bundle(model_id)
+    fs = _validate_and_featurize(structure, fmt, bundle)
+    warnings = list(fs.warnings)
+    processed, mol = fs.processed, fs.mol
+    descriptors_vec, fingerprint_vec, feature_vec = fs.descriptors_vec, fs.fingerprint_vec, fs.feature_vec
 
     # Stage 2: run the registered, already-loaded model.
     class_probabilities = bundle.sklearn_model.predict_proba(feature_vec)[0]
@@ -309,4 +365,79 @@ def run_inference(
         feature_set_id=bundle.feature_set_id,
         training_set_size=bundle.training_set_size,
         inference_timestamp=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    )
+
+
+@dataclass(frozen=True)
+class ExplainedStructure:
+    """Molecule identity (same shape run_inference reports it in) plus the
+    explanation itself -- kept as two parts rather than merged into one flat
+    object so ``explainability.py`` stays decoupled from ``drugsim_chem``
+    identity types; it only ever deals in SHAP values and atom indices."""
+
+    canonical_smiles: str
+    isomeric_smiles: str
+    standardized_smiles: str
+    inchikey_full: str
+    molecular_formula: str
+    explainability: ExplainabilityResult
+
+
+def explain_prediction(
+    structure: str,
+    fmt: StructureFormat = "smiles",
+    *,
+    model_id: str = DEFAULT_MODEL_ID,
+    bundle: Optional[ModelBundle] = None,
+) -> ExplainedStructure:
+    """Explain what drove a prediction for this structure, atom by atom.
+
+    Deliberately NOT part of :func:`run_inference` -- see
+    ``explainability.py``'s module docstring for the measured per-call cost
+    this would add to every single prediction if it were. A caller wanting
+    both a prediction and its explanation calls both functions; this one
+    reruns the identical validate-and-featurise path
+    (:func:`_validate_and_featurize`) rather than accepting a feature vector
+    from elsewhere, so an explanation can never silently drift from what
+    ``run_inference`` would have computed for the same input.
+
+    Args:
+        structure: The raw input structure text.
+        fmt: Input format, same three options as :func:`run_inference`.
+        model_id: Which registered endpoint to explain. Ignored if
+            ``bundle`` is given directly.
+        bundle: Override the cached model bundle (tests only).
+
+    Returns:
+        Per-descriptor and per-atom SHAP contributions toward the
+        endpoint's positive class.
+
+    Raises:
+        Same exceptions as :func:`run_inference` -- an unexplainable
+        structure (unparseable, oversized, a mixture, a wildcard atom, an
+        endpoint not eligible to serve) is also an unpredictable one, and
+        must fail the same way for the same reason.
+        UnexplainableEndpointError: ``model_id`` is a real, servable
+            endpoint but is not in ``explainability.EXPLAINABLE_MODEL_IDS``
+            -- see that module's docstring for why (a real memory-safety
+            incident, not an arbitrary restriction). Checked before any
+            chemistry work, same "fail fast on what we already know"
+            principle as the feature-set assertion above.
+    """
+    bundle = bundle or get_model_bundle(model_id)
+    if bundle.model_id not in EXPLAINABLE_MODEL_IDS:
+        msg = (
+            f"Explainability is not yet available for {bundle.model_id!r}. Currently supported: "
+            f"{sorted(EXPLAINABLE_MODEL_IDS)}."
+        )
+        raise UnexplainableEndpointError(msg, model_id=bundle.model_id)
+    fs = _validate_and_featurize(structure, fmt, bundle)
+    explainability = compute_atom_contributions(fs.mol, fs.descriptors_vec, fs.fingerprint_vec, bundle.descriptor_fields, bundle)
+    return ExplainedStructure(
+        canonical_smiles=fs.processed.identity.canonical_smiles,
+        isomeric_smiles=fs.processed.identity.isomeric_smiles,
+        standardized_smiles=fs.processed.standardized_smiles,
+        inchikey_full=fs.processed.identity.inchikey_full,
+        molecular_formula=fs.processed.identity.molecular_formula,
+        explainability=explainability,
     )

@@ -2,6 +2,7 @@ import type { PredictionResponse } from "../api/types";
 import { getEndpointCopy, labelText } from "../lib/endpointCopy";
 import { downloadTextFile, predictionToCSV, predictionToJSON } from "../lib/export";
 import { ApplicabilityDomainGauge } from "./ApplicabilityDomainGauge";
+import { ExplainabilityHeatmap } from "./ExplainabilityHeatmap";
 import { ModelEvidencePanel } from "./ModelEvidencePanel";
 import { ReliabilityBadge } from "./ReliabilityBadge";
 import { ScientificExplanation } from "./ScientificExplanation";
@@ -62,6 +63,8 @@ export function PredictionResults({ prediction, compoundName }: Props) {
       <div className="rounded-lg border border-line bg-white p-6">
         <ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />
       </div>
+
+      <ExplainabilityHeatmap prediction={prediction} />
 
       <ScientificExplanation endpoint={estimate.endpoint} />
 
