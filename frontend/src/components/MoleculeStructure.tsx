@@ -4,20 +4,23 @@ import { drawMoleculeToSvg } from "../lib/drawMolecule";
 interface MoleculeStructureProps {
   smiles: string;
   label?: string;
+  /** One number per heavy atom (RDKit atom order) -- renders as a red/teal
+   * heatmap instead of a plain depiction. See lib/drawMolecule.ts. */
+  weights?: number[];
 }
 
 /** Renders a 2D depiction of an already-canonicalised SMILES string. Pure
  * presentation — see lib/drawMolecule.ts for why this does not count as
  * duplicating backend chemistry logic. */
-export function MoleculeStructure({ smiles, label }: MoleculeStructureProps) {
+export function MoleculeStructure({ smiles, label, weights }: MoleculeStructureProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
-    const result = drawMoleculeToSvg(smiles, svgRef.current);
+    const result = drawMoleculeToSvg(smiles, svgRef.current, { weights });
     setRenderError(result.ok ? null : (result.error ?? "Rendering failed."));
-  }, [smiles]);
+  }, [smiles, weights]);
 
   return (
     <div className="flex w-full flex-col items-center rounded-lg border border-line bg-white p-4">

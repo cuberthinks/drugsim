@@ -410,3 +410,98 @@ class TestProvenanceLogging:
         with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
             count = conn.execute("SELECT COUNT(*) FROM predictions WHERE validation_status = 'rejected'").fetchone()[0]
         assert count >= 1
+
+
+class TestPredictExplain:
+    def test_herg_then_cyp3a4_in_the_same_process_does_not_crash(self, client) -> None:
+        """The exact production incident, reproduced: a working hERG
+        explanation (which builds and permanently caches hERG's SHAP
+        explainer) followed by a request for the unsupported CYP3A4
+        endpoint in the SAME process. The first fix rejected CYP3A4
+        correctly but still loaded its full model bundle as a side effect
+        of the rejection, and crashed. This must return 501 cleanly, not
+        hang, error, or take down the process."""
+        first = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        assert first.status_code == 200
+        second = client.post(
+            "/predict/explain",
+            json={"structure": {"format": "smiles", "value": "CCO"}, "endpoint": "cyp3a4_inhibition"},
+        )
+        assert second.status_code == 501
+
+    def test_returns_200_with_full_envelope(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        assert r.status_code == 200
+        body = r.json()
+        assert body["endpoint"] == "herg_inhibition"
+        assert body["positive_class_label"] == "blocker"
+        assert isinstance(body["base_value"], float)
+        assert len(body["atom_contributions"]) == 3  # CCO: 2 carbons + 1 oxygen, no implicit Hs counted
+        assert len(body["descriptor_contributions"]) == 18
+        assert isinstance(body["absent_substructure_contribution"], float)
+        assert body["method"] == "shap_tree_explainer_interventional"
+
+    def test_reconstructs_the_matching_predict_probability(self, client) -> None:
+        """The whole point of additivity: explain's numbers must sum back
+        to exactly the /predict probability for the same input."""
+        predict_r = client.post("/predict", json={"structure": {"format": "smiles", "value": "CCO"}})
+        explain_r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        proba = predict_r.json()["estimate"]["predicted_probability"]
+        body = explain_r.json()
+        total = (
+            body["base_value"]
+            + sum(a["contribution"] for a in body["atom_contributions"])
+            + sum(d["contribution"] for d in body["descriptor_contributions"])
+            + body["absent_substructure_contribution"]
+        )
+        assert total == pytest.approx(proba, abs=1e-3)
+
+    def test_same_endpoint_and_molecule_fields_as_predict(self, client) -> None:
+        predict_r = client.post("/predict", json={"structure": {"format": "smiles", "value": "CCO"}})
+        explain_r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        assert explain_r.json()["molecule"] == predict_r.json()["molecule"]
+
+    def test_empty_structure_returns_422(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": ""}})
+        assert r.status_code == 422
+
+    def test_mixture_returns_422(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO.CCN"}})
+        assert r.status_code == 422
+
+    def test_unknown_endpoint_returns_501_without_loading_anything(self, client) -> None:
+        """The EXPLAINABLE_MODEL_IDS allow-list is checked before
+        get_model_bundle is ever called (see pipeline.explain_prediction's
+        docstring for why -- a real incident), so a name that isn't a real
+        endpoint at all gets the same 501 as a real-but-unsupported one,
+        not the 404 /predict itself would give it. Simpler and safer than
+        adding a second lookup just to tell the two apart."""
+        r = client.post(
+            "/predict/explain",
+            json={"structure": {"format": "smiles", "value": "CCO"}, "endpoint": "not_a_real_endpoint"},
+        )
+        assert r.status_code == 501
+
+    def test_cyp3a4_endpoint_returns_501_not_a_crash(self, client) -> None:
+        """cyp3a4_inhibition is deliberately excluded from
+        EXPLAINABLE_MODEL_IDS -- its SHAP explainer measured a ~280MB
+        resident-memory jump and crashed production on first deploy (see
+        explainability.py's module docstring). This must be a clean,
+        honest 501, never a 500 or a repeat of that crash."""
+        r = client.post(
+            "/predict/explain",
+            json={"structure": {"format": "smiles", "value": "CCO"}, "endpoint": "cyp3a4_inhibition"},
+        )
+        assert r.status_code == 501
+        assert "not yet available" in r.json()["detail"].lower()
+
+    def test_not_persisted_to_the_prediction_store(self, client) -> None:
+        """Deliberately not an audited prediction event -- see the route's
+        own docstring for why."""
+        store = app.dependency_overrides[get_store]()
+        with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
+            before = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+        client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
+            after = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+        assert after == before

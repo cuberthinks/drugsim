@@ -106,6 +106,32 @@ export interface PredictionResponse {
   status: "complete";
 }
 
+export interface AtomContribution {
+  atom_index: number;
+  /** Positive pushes toward positive_class_label; negative pushes away from it. */
+  contribution: number;
+}
+
+export interface DescriptorContribution {
+  name: string;
+  value: number;
+  contribution: number;
+}
+
+export interface ExplainabilityResponse {
+  molecule: MoleculeInfo;
+  endpoint: string;
+  positive_class_label: string;
+  base_value: number;
+  atom_contributions: AtomContribution[];
+  descriptor_contributions: DescriptorContribution[];
+  /** How much of the prediction is explained by chemistry NOT present in
+   * this molecule -- see the backend schema's own field description for why
+   * this can't be mapped onto any atom. */
+  absent_substructure_contribution: number;
+  method: string;
+}
+
 export interface ErrorDetail {
   field: string | null;
   code: string;

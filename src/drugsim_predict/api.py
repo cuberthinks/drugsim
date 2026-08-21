@@ -43,14 +43,18 @@ from drugsim_core.logging import configure_logging
 from drugsim_core.redaction import structure_digest
 
 from drugsim_predict.model_registry import DEFAULT_MODEL_ID, ModelBundle, get_model_bundle, list_registered_endpoints
-from drugsim_predict.pipeline import SERVABLE_STATUSES, PredictionResult, run_inference
+from drugsim_predict.explainability import UnexplainableEndpointError
+from drugsim_predict.pipeline import SERVABLE_STATUSES, ExplainedStructure, PredictionResult, explain_prediction, run_inference
 from drugsim_predict.schemas import (
     ApplicabilityDomainSchema,
+    AtomContributionSchema,
     ConformalSchema,
+    DescriptorContributionSchema,
     EndpointListItem,
     EndpointsResponse,
     EstimateSchema,
     ErrorDetail,
+    ExplainabilityResponse,
     HealthResponse,
     ModelDetailResponse,
     MoleculeSchema,
@@ -585,6 +589,143 @@ async def predict(body: PredictRequest, request: Request, store: PredictionStore
         canonical_digest=canonical_hash, applicability_domain=result.applicability_domain.verdict,
         predicted_label=result.predicted_label, duration_ms=_duration_ms(),
     )
+    return JSONResponse(status_code=200, content=response.model_dump())
+
+
+def _explained_to_response(model_id: str, result: ExplainedStructure) -> ExplainabilityResponse:
+    ex = result.explainability
+    return ExplainabilityResponse(
+        molecule=MoleculeSchema(
+            canonical_smiles=result.canonical_smiles,
+            isomeric_smiles=result.isomeric_smiles,
+            standardized_smiles=result.standardized_smiles,
+            inchikey_full=result.inchikey_full,
+            molecular_formula=result.molecular_formula,
+        ),
+        endpoint=model_id,
+        positive_class_label=ex.positive_class_label,
+        base_value=ex.base_value,
+        atom_contributions=[
+            AtomContributionSchema(atom_index=a.atom_index, contribution=a.contribution) for a in ex.atom_contributions
+        ],
+        descriptor_contributions=[
+            DescriptorContributionSchema(name=d.name, value=d.value, contribution=d.contribution)
+            for d in ex.descriptor_contributions
+        ],
+        absent_substructure_contribution=ex.absent_substructure_contribution,
+        method=ex.method,
+    )
+
+
+@app.post("/predict/explain", response_model=ExplainabilityResponse, status_code=200)
+async def predict_explain(body: PredictRequest, request: Request) -> JSONResponse:
+    """Explain a prediction atom-by-atom via SHAP (Phase 11), opt-in.
+
+    Same request shape as ``POST /predict`` -- deliberately not an ID lookup
+    against a previous ``/predict`` call, so a caller who already has the
+    structure and endpoint in hand (e.g. this service's own frontend, right
+    after receiving a `/predict` response for the identical request) can
+    call this independently without the backend needing to persist or look
+    anything up. Recomputes the exact same validate-and-featurise path
+    `/predict` used for the same input, so the explanation always matches
+    what `/predict` would return for it (see pipeline.explain_prediction).
+
+    Deliberately NOT logged to the prediction audit store: this is a
+    supplementary explanation of an input already covered by that store's
+    `/predict` record for the same request, not a second independent
+    prediction event.
+
+    Not free: measured at ~55-200ms of CPU per call (a full SHAP
+    TreeExplainer pass over a 200-500-tree ensemble), meaningfully more than
+    a `/predict` call. Same auth, rate-limit, and concurrency-limit
+    middleware applies as every other route (app-level, not per-endpoint).
+    """
+    request_id = request.state.request_id
+    input_hash = structure_digest(body.structure.value)
+    start_time = time.monotonic()
+
+    def _duration_ms() -> float:
+        return round((time.monotonic() - start_time) * 1000, 1)
+
+    log.info("predict_explain.request", request_id=request_id, input_digest=input_hash, format=body.structure.format, endpoint=body.endpoint)
+
+    try:
+        result = await asyncio.wait_for(
+            run_in_threadpool(explain_prediction, body.structure.value, body.structure.format, model_id=body.endpoint),
+            timeout=get_predict_settings().request_timeout_seconds,
+        )
+    except asyncio.TimeoutError:
+        log.error("predict_explain.timeout", request_id=request_id, input_digest=input_hash, duration_ms=_duration_ms())
+        return _problem(
+            503, "timeout", "Explanation timed out",
+            "This structure could not be explained within the allotted time. This is not "
+            "necessarily a problem with your input -- please try again.",
+            request_id,
+        )
+    except StructureError as exc:
+        log.info("predict_explain.rejected", request_id=request_id, input_digest=input_hash, reason=str(exc), duration_ms=_duration_ms())
+        return _problem(
+            422, "invalid-structure", "Molecular structure could not be processed", str(exc), request_id,
+            errors=[ErrorDetail(field="structure.value", code="invalid_structure", message=str(exc))],
+        )
+    except ReproducibilityError as exc:
+        log.error(
+            "predict_explain.reproducibility_violation", request_id=request_id, expected=exc.expected, actual=exc.actual,
+            duration_ms=_duration_ms(),
+        )
+        return _problem(
+            500, "internal-error", "Explanation could not be produced safely",
+            "The serving environment's feature computation does not match the validated model's training "
+            "environment. This is a service configuration problem, not an issue with your input.",
+            request_id,
+        )
+    except UnknownEndpointError as exc:
+        log.info("predict_explain.unknown_endpoint", request_id=request_id, endpoint=body.endpoint, duration_ms=_duration_ms())
+        return _problem(
+            404, "unknown-endpoint", "Unknown endpoint",
+            f"{exc.message} See GET /endpoints for the list of registered endpoints.",
+            request_id,
+            errors=[ErrorDetail(field="endpoint", code="unknown_endpoint", message=exc.message)],
+        )
+    except EndpointNotAvailableError as exc:
+        log.info(
+            "predict_explain.endpoint_not_available", request_id=request_id, endpoint=exc.model_id,
+            final_report_status=exc.final_report_status, duration_ms=_duration_ms(),
+        )
+        return _problem(
+            403, "endpoint-not-available", "Endpoint not available for predictions",
+            (
+                f"Endpoint {exc.model_id!r} is registered with status {exc.final_report_status!r}, which has not "
+                "passed the promotion gate for normal predictions. See GET /endpoints for which endpoints are servable."
+            ),
+            request_id,
+            errors=[ErrorDetail(field="endpoint", code="endpoint_not_available", message=exc.message)],
+        )
+    except UnexplainableEndpointError as exc:
+        log.info(
+            "predict_explain.unexplainable_endpoint", request_id=request_id, endpoint=exc.model_id,
+            duration_ms=_duration_ms(),
+        )
+        return _problem(
+            501, "explainability-not-available", "Explainability not available for this endpoint",
+            exc.message,
+            request_id,
+            errors=[ErrorDetail(field="endpoint", code="unexplainable_endpoint", message=exc.message)],
+        )
+    except Exception as exc:  # noqa: BLE001 -- last-resort safety net, same rationale as /predict's.
+        log.error(
+            "predict_explain.unexpected_error", request_id=request_id, input_digest=input_hash,
+            error_type=type(exc).__name__, duration_ms=_duration_ms(),
+        )
+        return _problem(
+            500, "internal-error", "Explanation could not be completed",
+            "An unexpected error occurred while processing this request. This has been logged for "
+            "investigation and is not the result of anything wrong with your input.",
+            request_id,
+        )
+
+    response = _explained_to_response(body.endpoint, result)
+    log.info("predict_explain.complete", request_id=request_id, duration_ms=_duration_ms())
     return JSONResponse(status_code=200, content=response.model_dump())
 
 
