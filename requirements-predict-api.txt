@@ -43,9 +43,3 @@ scikit-learn==1.6.1
 joblib==1.5.3
 fastapi==0.128.8
 uvicorn==0.39.0
-# Phase 11: POST /predict/explain's per-atom SHAP explainability. Confirmed
-# manylinux2014_x86_64 cp312 wheels exist for shap and its two native
-# transitive deps (numba, llvmlite) before adding this -- the same class of
-# "does this even install on Render" check that pyarrow's absence from this
-# list (see this file's own header) already burned this project once.
-shap==0.49.1
