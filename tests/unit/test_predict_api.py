@@ -410,3 +410,71 @@ class TestProvenanceLogging:
         with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
             count = conn.execute("SELECT COUNT(*) FROM predictions WHERE validation_status = 'rejected'").fetchone()[0]
         assert count >= 1
+
+
+class TestPredictExplain:
+    def test_returns_200_with_full_envelope(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        assert r.status_code == 200
+        body = r.json()
+        assert body["endpoint"] == "herg_inhibition"
+        assert body["positive_class_label"] == "blocker"
+        assert isinstance(body["base_value"], float)
+        assert len(body["atom_contributions"]) == 3  # CCO: 2 carbons + 1 oxygen, no implicit Hs counted
+        assert len(body["descriptor_contributions"]) == 18
+        assert isinstance(body["absent_substructure_contribution"], float)
+        assert body["method"] == "shap_tree_explainer_interventional"
+
+    def test_reconstructs_the_matching_predict_probability(self, client) -> None:
+        """The whole point of additivity: explain's numbers must sum back
+        to exactly the /predict probability for the same input."""
+        predict_r = client.post("/predict", json={"structure": {"format": "smiles", "value": "CCO"}})
+        explain_r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        proba = predict_r.json()["estimate"]["predicted_probability"]
+        body = explain_r.json()
+        total = (
+            body["base_value"]
+            + sum(a["contribution"] for a in body["atom_contributions"])
+            + sum(d["contribution"] for d in body["descriptor_contributions"])
+            + body["absent_substructure_contribution"]
+        )
+        assert total == pytest.approx(proba, abs=1e-3)
+
+    def test_same_endpoint_and_molecule_fields_as_predict(self, client) -> None:
+        predict_r = client.post("/predict", json={"structure": {"format": "smiles", "value": "CCO"}})
+        explain_r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        assert explain_r.json()["molecule"] == predict_r.json()["molecule"]
+
+    def test_empty_structure_returns_422(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": ""}})
+        assert r.status_code == 422
+
+    def test_mixture_returns_422(self, client) -> None:
+        r = client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO.CCN"}})
+        assert r.status_code == 422
+
+    def test_unknown_endpoint_returns_404(self, client) -> None:
+        r = client.post(
+            "/predict/explain",
+            json={"structure": {"format": "smiles", "value": "CCO"}, "endpoint": "not_a_real_endpoint"},
+        )
+        assert r.status_code == 404
+
+    def test_cyp3a4_endpoint_also_works(self, client) -> None:
+        r = client.post(
+            "/predict/explain",
+            json={"structure": {"format": "smiles", "value": "CCO"}, "endpoint": "cyp3a4_inhibition"},
+        )
+        assert r.status_code == 200
+        assert r.json()["positive_class_label"] == "inhibitor"
+
+    def test_not_persisted_to_the_prediction_store(self, client) -> None:
+        """Deliberately not an audited prediction event -- see the route's
+        own docstring for why."""
+        store = app.dependency_overrides[get_store]()
+        with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
+            before = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+        client.post("/predict/explain", json={"structure": {"format": "smiles", "value": "CCO"}})
+        with store._connect() as conn:  # noqa: SLF001 -- test-only introspection
+            after = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+        assert after == before
