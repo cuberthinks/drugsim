@@ -91,23 +91,23 @@ class ModelBundle:
         sklearn_model: The loaded, checksum-verified classifier.
         calibration_nonconformity: Frozen nonconformity scores from the
             Phase 3 calibration split (split_group 7). Never refit here.
-        train_fingerprints / train_descriptors: Frozen training-set
-            reference data (groups 0-6) for the applicability-domain
-            Tanimoto and k-NN checks.
         train_fingerprints_f32 / train_fingerprint_sums / train_descriptors_scaled:
-            Derived from the two fields above, computed once here rather
-            than inside the per-request AD check. Measured finding: the AD
-            check used to call ``train_fingerprints.astype(np.float32)`` and
+            Frozen training-set reference data (groups 0-6) for the
+            applicability-domain Tanimoto and k-NN checks, computed once
+            here rather than inside the per-request AD check. Measured
+            finding: the AD check used to call
+            ``train_fingerprints.astype(np.float32)`` and
             ``descriptor_ad_scaler.transform(train_descriptors)`` fresh on
             EVERY prediction -- re-copying the entire training set every
             request. Profiled with tracemalloc: that was a ~53MB transient
             allocation per hERG request (~31MB for CYP3A4) that immediately
             got GC'd, dwarfing every other allocation in the pipeline
-            combined. The three arrays below are bit-identical to what each
-            call used to compute fresh (deterministic astype/transform of
-            frozen, immutable data) -- this changes WHEN the cost is paid,
-            never a prediction value, same category as this class's
-            ``n_jobs = 1`` fix above.
+            combined. The raw ``train_fingerprints``/``train_descriptors``
+            arrays these are derived from are only ever read here, at load
+            time, to produce these three -- keeping them on the bundle
+            afterwards would hold a second, permanently-resident copy of
+            the entire training set (~20MB combined across both endpoints)
+            that no request-serving code path ever reads.
         train_scaffolds: Frozen training-set Bemis-Murcko scaffold set,
             for the scaffold-seen AD component.
         descriptor_ad_scaler: `StandardScaler` fit on training descriptors
@@ -140,8 +140,6 @@ class ModelBundle:
     training_set_size: int
     sklearn_model: Any
     calibration_nonconformity: np.ndarray
-    train_fingerprints: np.ndarray
-    train_descriptors: np.ndarray
     train_fingerprints_f32: np.ndarray
     train_fingerprint_sums: np.ndarray
     train_descriptors_scaled: np.ndarray
@@ -312,8 +310,6 @@ def load_model_bundle(registry_path: Optional[Path] = None, *, model_id: str = D
         training_set_size=int(support["train_fingerprints"].shape[0]),
         sklearn_model=model,
         calibration_nonconformity=support["calibration_nonconformity"],
-        train_fingerprints=train_fingerprints,
-        train_descriptors=train_descriptors,
         train_fingerprints_f32=train_fingerprints_f32,
         train_fingerprint_sums=train_fingerprint_sums,
         train_descriptors_scaled=train_descriptors_scaled,

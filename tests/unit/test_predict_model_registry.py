@@ -21,8 +21,8 @@ class TestLoadModelBundle:
     def test_exposes_frozen_reference_data(self) -> None:
         bundle = load_model_bundle()
         assert bundle.calibration_nonconformity.shape[0] > 0
-        assert bundle.train_fingerprints.shape == (bundle.training_set_size, 2048)
-        assert bundle.train_descriptors.shape[0] == bundle.training_set_size
+        assert bundle.train_fingerprints_f32.shape == (bundle.training_set_size, 2048)
+        assert bundle.train_descriptors_scaled.shape[0] == bundle.training_set_size
         assert len(bundle.train_scaffolds) > 0
 
     def test_training_set_size_is_the_training_split_not_full_dataset(self) -> None:
@@ -30,7 +30,7 @@ class TestLoadModelBundle:
         (split groups 0-6), not the full validated dataset (9,589) -- a
         real bug caught during Phase 5 development."""
         bundle = load_model_bundle()
-        assert bundle.training_set_size == bundle.train_fingerprints.shape[0]
+        assert bundle.training_set_size == bundle.train_fingerprints_f32.shape[0]
         assert bundle.training_set_size < 9589
 
     def test_final_report_status_is_the_phase4_status_not_stale_phase3(self) -> None:
