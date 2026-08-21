@@ -45,7 +45,7 @@ export function ComparePage() {
           <p className="font-mono text-xs text-ink-soft uppercase tracking-wide">Compare</p>
           <h1 className="mt-1 font-display text-3xl font-semibold text-ink">Compound comparison</h1>
         </header>
-        <div className="rounded-lg border border-line bg-white p-6 text-sm text-ink-soft">
+        <div className="card p-6 text-sm text-ink-soft">
           Run at least two predictions to compare them.{" "}
           <Link to="/predict" className="underline underline-offset-2 hover:text-ink">
             Run a prediction
@@ -131,7 +131,7 @@ export function ComparePage() {
       {left && right && (
         <div className="grid gap-4 sm:grid-cols-2">
           {[left, right].map((entry) => (
-            <div key={entry.id} className="rounded-lg border border-line bg-white p-5">
+            <div key={entry.id} className="card p-5">
               <p className="text-sm font-medium text-ink">{entryLabel(entry)}</p>
               <p className="mt-1 font-mono text-xs text-ink-soft break-all">{entry.structure}</p>
               <dl className="mt-4 flex flex-col gap-3">

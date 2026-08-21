@@ -20,7 +20,7 @@ export function MoleculeStructure({ smiles, label }: MoleculeStructureProps) {
   }, [smiles]);
 
   return (
-    <div className="flex w-full flex-col items-center rounded-lg border border-line bg-white p-4">
+    <div className="flex w-full flex-col items-center card p-4">
       <svg
         ref={svgRef}
         role="img"

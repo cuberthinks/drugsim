@@ -1,8 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `text-sm font-medium transition-colors ${
-    isActive ? "text-ink" : "text-ink-soft hover:text-ink"
+  `relative pb-0.5 text-sm font-medium transition-colors after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-signal after:transition-[width] after:duration-200 after:content-[''] ${
+    isActive ? "text-ink after:w-full" : "text-ink-soft after:w-0 hover:text-ink hover:after:w-full"
   }`;
 
 export function Layout() {

@@ -19,7 +19,7 @@ export function EndpointSelector({ endpoints, selected, onSelect, isBusy }: Prop
   if (endpoints.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-line bg-white p-6">
+    <div className="card p-6">
       <p className="text-sm font-medium text-ink">Endpoint</p>
       <p className="mt-1 text-xs leading-relaxed text-ink-soft">
         Choose which validated endpoint to run. Only endpoints that have passed the promotion gate
@@ -35,10 +35,10 @@ export function EndpointSelector({ endpoints, selected, onSelect, isBusy }: Prop
               disabled={isBusy || !endpoint.servable}
               onClick={() => onSelect(endpoint.model_id)}
               title={!endpoint.servable ? `Status: ${endpoint.final_report_status} — not available for predictions` : undefined}
-              className={`flex flex-1 flex-col items-start gap-1 rounded-md border px-4 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`flex flex-1 flex-col items-start gap-1 rounded-md border px-4 py-2.5 text-left text-sm shadow-sm transition-[border-color,box-shadow,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm ${
                 isSelected
                   ? "border-ink bg-ink text-paper"
-                  : "border-line bg-white text-ink hover:bg-paper-alt"
+                  : "border-line bg-white text-ink hover:-translate-y-0.5 hover:border-signal hover:bg-signal-soft hover:shadow-md"
               }`}
             >
               <span className="font-medium">{endpoint.endpoint_name}</span>

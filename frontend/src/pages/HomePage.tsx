@@ -4,15 +4,22 @@ export function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-line bg-paper-alt">
-        <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="font-mono text-xs tracking-wide text-signal uppercase">
+      <section className="relative overflow-hidden border-b border-line bg-paper-alt">
+        {/* Signature: a quiet teal glow, the same signal color that marks
+            "known chemistry" on the applicability-domain gauge below --
+            the one ambient-motion accent this page spends. */}
+        <div
+          aria-hidden="true"
+          className="signal-glow pointer-events-none absolute top-1/2 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/10 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-3xl px-6 py-20 text-center">
+          <p className="rise-in font-mono text-xs tracking-wide text-signal uppercase">
             Computational ADMET prediction
           </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h1 className="rise-in mt-4 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl" style={{ animationDelay: "60ms" }}>
             Explore how a molecule may behave, before it ever reaches a bench.
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="rise-in mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft" style={{ animationDelay: "120ms" }}>
             DrugSim estimates individual ADMET (Absorption, Distribution, Metabolism,
             Excretion, Toxicity) endpoints — currently hERG cardiac-channel inhibition and
             CYP3A4 metabolic inhibition — from a molecular structure you provide, using
@@ -20,16 +27,16 @@ export function HomePage() {
             validated — always shown alongside their uncertainty and applicability domain,
             never as a bare number.
           </p>
-          <div className="mt-8 flex items-center justify-center gap-4">
+          <div className="rise-in mt-8 flex items-center justify-center gap-4" style={{ animationDelay: "180ms" }}>
             <Link
               to="/predict"
-              className="rounded-md bg-ink px-6 py-3 text-sm font-medium text-paper transition-opacity hover:opacity-90"
+              className="rounded-md bg-ink px-6 py-3 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md"
             >
               Enter a molecule
             </Link>
             <Link
               to="/methodology"
-              className="text-sm font-medium text-ink-soft underline underline-offset-4 hover:text-ink"
+              className="text-sm font-medium text-ink-soft underline underline-offset-4 transition-colors hover:text-ink"
             >
               How it works
             </Link>

@@ -24,7 +24,7 @@ export function EndpointProfileCard({ endpoint, state }: Props) {
   const copy = getEndpointCopy(endpoint.model_id);
 
   return (
-    <div className="rounded-lg border border-line bg-white p-5">
+    <div className="card p-5">
       <p className="font-mono text-xs text-ink-soft">{endpoint.model_id}</p>
       <h3 className="mt-1 font-display text-base font-semibold text-ink">{endpoint.endpoint_name}</h3>
 

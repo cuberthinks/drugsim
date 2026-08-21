@@ -31,6 +31,14 @@
   --color-caution-soft: #f6ead9;
   --color-concern: #8b3a3a;
   --color-concern-soft: #f3e3e0;
+
+  /* Cool-toned, low-contrast shadows (never pure black) -- give the flat
+     card grid real depth without competing with the ink/paper palette.
+     Two steps: resting state, and a slightly deeper one for hover on
+     genuinely interactive surfaces (never applied to static info cards --
+     lift implies "you can act on this"). */
+  --shadow-card: 0 1px 2px rgba(20, 24, 31, 0.04), 0 8px 20px -14px rgba(20, 24, 31, 0.16);
+  --shadow-card-hover: 0 2px 4px rgba(20, 24, 31, 0.06), 0 16px 32px -14px rgba(20, 24, 31, 0.22);
 }
 
 * {
@@ -53,6 +61,77 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-signal);
   outline-offset: 2px;
+}
+
+/* The one card shape used everywhere (info panels, list rows, the input
+   form) -- previously duplicated as identical border/bg utility strings
+   in 16 separate files, flat with no depth cue at all. Centralising it
+   means a resting shadow (real depth, still quiet) reaches every surface
+   at once, and future tuning happens in one place. */
+.card {
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+  background-color: white;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
+}
+
+/* Opt-in for cards that are themselves the click target (example compound
+   picks, endpoint choices) -- a lift on hover is a real affordance promise,
+   so it's never applied to a static info/results panel. */
+.card-interactive:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-signal);
+  transform: translateY(-2px);
+}
+
+/* Entrance for content that appears in response to an action (a finished
+   prediction, an expanded disclosure) -- a quiet cue that this is new,
+   not a flat pop-in. Reduced-motion users get the already-final state
+   immediately: the global transition-duration override below collapses
+   this animation to its last frame in ~0ms. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 320ms ease-out both;
+}
+
+/* Hero signature: a slow, quiet teal glow behind the headline -- the one
+   place this page spends its single ambient-motion "accent," echoing the
+   product's own signal-to-noise metaphor (and the applicability-domain
+   gauge's teal-to-concern gradient elsewhere in the app) rather than a
+   decorative effect borrowed from nowhere in particular. Reduced-motion
+   users get it frozen at its midpoint brightness, still visible, never
+   pulsing. */
+@keyframes signal-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+.signal-glow {
+  animation: signal-pulse 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-glow {
+    animation: none;
+    opacity: 0.7;
+  }
 }
 
 /* Green-polish pass: a single global rule rather than hand-adding

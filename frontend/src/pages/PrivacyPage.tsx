@@ -18,7 +18,7 @@ export function PrivacyPage() {
       </header>
 
       <section className="flex flex-col gap-4">
-        <div className="rounded-lg border border-line bg-white p-5">
+        <div className="card p-5">
           <h2 className="font-display text-lg font-semibold text-ink">What we receive</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">
             The molecular structure you submit (as SMILES text), and standard request
@@ -29,7 +29,7 @@ export function PrivacyPage() {
           </p>
         </div>
 
-        <div className="rounded-lg border border-line bg-white p-5">
+        <div className="card p-5">
           <h2 className="font-display text-lg font-semibold text-ink">
             How submitted structures are handled
           </h2>
@@ -47,7 +47,7 @@ export function PrivacyPage() {
           </p>
         </div>
 
-        <div className="rounded-lg border border-line bg-white p-5">
+        <div className="card p-5">
           <h2 className="font-display text-lg font-semibold text-ink">Retention</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">
             Prediction records are retained for as long as this deployment operates, to
@@ -57,7 +57,7 @@ export function PrivacyPage() {
           </p>
         </div>
 
-        <div className="rounded-lg border border-line bg-white p-5">
+        <div className="card p-5">
           <h2 className="font-display text-lg font-semibold text-ink">What we do not do</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">
             DrugSim does not sell, share, or use submitted structures for any purpose other

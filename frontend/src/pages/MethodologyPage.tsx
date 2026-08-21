@@ -46,7 +46,7 @@ export function MethodologyPage() {
 
       <ol className="flex flex-col gap-4">
         {STEPS.map((step, i) => (
-          <li key={step.title} className="rounded-lg border border-line bg-white p-5">
+          <li key={step.title} className="card p-5">
             <p className="font-mono text-xs text-ink-soft">
               {String(i + 1).padStart(2, "0")} / {STEPS.length}
             </p>

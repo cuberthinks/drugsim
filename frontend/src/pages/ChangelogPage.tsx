@@ -79,7 +79,7 @@ export function ChangelogPage() {
 
       <ol className="flex flex-col gap-6">
         {ENTRIES.map((entry) => (
-          <li key={`${entry.date}-${entry.title}`} className="rounded-lg border border-line bg-white p-6">
+          <li key={`${entry.date}-${entry.title}`} className="card p-6">
             <p className="font-mono text-xs text-ink-soft">{entry.date}</p>
             <h2 className="mt-1 font-display text-lg font-semibold text-ink">{entry.title}</h2>
             <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-soft">

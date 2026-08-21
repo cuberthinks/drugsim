@@ -37,7 +37,7 @@ export function MoleculeInput({
   const nameInputId = useId();
 
   return (
-    <div className="rounded-lg border border-line bg-white p-6">
+    <div className="card p-6">
       <label htmlFor={nameInputId} className="text-sm font-medium text-ink">
         Compound name <span className="font-normal text-ink-soft">(optional)</span>
       </label>
@@ -47,7 +47,7 @@ export function MoleculeInput({
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
         placeholder="e.g. Aspirin"
-        className="mt-2 w-full rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink focus:border-signal"
+        className="mt-2 w-full rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink transition-[border-color,box-shadow] duration-150 focus:border-signal focus:shadow-[0_0_0_3px_var(--color-signal-soft)]"
       />
       <p className="mt-1 text-xs text-ink-soft">
         For your own reference only — shown alongside the result, never sent to the prediction
@@ -64,7 +64,7 @@ export function MoleculeInput({
         rows={3}
         spellCheck={false}
         placeholder={`e.g. ${EXAMPLE_SMILES}`}
-        className="mt-2 w-full resize-none rounded-md border border-line bg-paper px-3 py-2 font-mono text-sm text-ink focus:border-signal"
+        className="mt-2 w-full resize-none rounded-md border border-line bg-paper px-3 py-2 font-mono text-sm text-ink transition-[border-color,box-shadow] duration-150 focus:border-signal focus:shadow-[0_0_0_3px_var(--color-signal-soft)]"
       />
       <div className="mt-2 flex justify-end">
         <p className="text-xs text-ink-soft">Accepted format: SMILES</p>
@@ -85,7 +85,7 @@ export function MoleculeInput({
               onClick={() => onUseExample(example)}
               disabled={isBusy}
               title={example.note}
-              className="rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:border-signal disabled:cursor-not-allowed disabled:opacity-50"
+              className="card-interactive rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:bg-signal-soft disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="font-medium text-ink">{example.name}</span>
               <span className="mt-0.5 block leading-relaxed text-ink-soft">{example.note}</span>
@@ -124,7 +124,7 @@ export function MoleculeInput({
           type="button"
           onClick={onValidate}
           disabled={isBusy || value.trim().length === 0}
-          className="rounded-md border border-line bg-white px-5 py-2.5 text-sm font-medium text-ink hover:bg-paper-alt disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-line bg-white px-5 py-2.5 text-sm font-medium text-ink shadow-sm transition-[box-shadow,transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-paper-alt hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         >
           {isBusy ? "Validating…" : "Validate"}
         </button>
@@ -132,7 +132,7 @@ export function MoleculeInput({
           type="button"
           onClick={onPredict}
           disabled={isBusy || !isValidated}
-          className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
           title={!isValidated ? "Validate the molecule first" : undefined}
         >
           {isBusy ? "Predicting…" : predictLabel}

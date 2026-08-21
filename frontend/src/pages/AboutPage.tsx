@@ -17,7 +17,7 @@ export function AboutPage() {
         </p>
       </header>
 
-      <section className="rounded-lg border border-line bg-white p-5">
+      <section className="card p-5">
         <h2 className="font-display text-lg font-semibold text-ink">What this deployment is</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
           A controlled research and demonstration deployment. It is intended for
@@ -34,7 +34,7 @@ export function AboutPage() {
         </p>
       </section>
 
-      <section className="rounded-lg border border-line bg-white p-5">
+      <section className="card p-5">
         <h2 className="font-display text-lg font-semibold text-ink">How it works</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
           Every prediction follows the same fixed, versioned pipeline — standardisation,
@@ -47,7 +47,7 @@ export function AboutPage() {
         </p>
       </section>
 
-      <section className="rounded-lg border border-line bg-white p-5" aria-labelledby="credits-heading">
+      <section className="card p-5" aria-labelledby="credits-heading">
         <h2 id="credits-heading" className="font-display text-lg font-semibold text-ink">
           Credits
         </h2>

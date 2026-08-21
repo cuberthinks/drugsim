@@ -53,7 +53,7 @@ export function HistoryPage() {
       </header>
 
       {entries.length === 0 ? (
-        <div className="rounded-lg border border-line bg-white p-6 text-sm text-ink-soft">
+        <div className="card p-6 text-sm text-ink-soft">
           No predictions saved yet.{" "}
           <Link to="/predict" className="underline underline-offset-2 hover:text-ink">
             Run one
@@ -86,7 +86,7 @@ export function HistoryPage() {
             {entries.map((entry) => {
               const copy = getEndpointCopy(entry.endpoint);
               return (
-                <li key={entry.id} className="rounded-lg border border-line bg-white p-5">
+                <li key={entry.id} className="card p-5">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       {entry.compoundName && <p className="text-sm font-medium text-ink">{entry.compoundName}</p>}

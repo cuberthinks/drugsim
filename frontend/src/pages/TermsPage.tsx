@@ -73,7 +73,7 @@ export function TermsPage() {
         </li>
       </ul>
 
-      <section className="rounded-lg border border-line bg-white p-5">
+      <section className="card p-5">
         <h2 className="font-display text-lg font-semibold text-ink">No regulatory status</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
           DrugSim has not been evaluated, cleared, or approved by any regulatory authority
@@ -83,7 +83,7 @@ export function TermsPage() {
         </p>
       </section>
 
-      <section className="rounded-lg border border-line bg-white p-5">
+      <section className="card p-5">
         <h2 className="font-display text-lg font-semibold text-ink">Acceptable use</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
           Do not submit structures you do not have the right to share with this

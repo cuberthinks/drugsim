@@ -17,7 +17,7 @@ interface Props {
  */
 export function MoleculePreview({ molecule, name }: Props) {
   return (
-    <section aria-labelledby="molecule-preview-heading" className="rounded-lg border border-line bg-white p-6">
+    <section aria-labelledby="molecule-preview-heading" className="card p-6">
       <h2 id="molecule-preview-heading" className="font-display text-xl font-semibold text-ink">
         Molecule
       </h2>

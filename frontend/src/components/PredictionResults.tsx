@@ -32,10 +32,10 @@ export function PredictionResults({ prediction, compoundName }: Props) {
   const probability = estimate.predicted_probability;
 
   return (
-    <section aria-labelledby="results-heading" className="flex flex-col gap-6">
+    <section aria-labelledby="results-heading" className="rise-in flex flex-col gap-6">
       <p className="text-xs font-medium tracking-wide text-ink-soft uppercase">Predicted information</p>
 
-      <div className="rounded-lg border border-line bg-white p-6">
+      <div className="card p-6">
         {compoundName?.trim() && <p className="text-sm font-medium text-ink">{compoundName.trim()}</p>}
         <p className="font-mono text-xs text-ink-soft">{estimate.endpoint}</p>
         <h2 id="results-heading" className="mt-1 font-display text-2xl font-semibold text-ink">
@@ -51,15 +51,15 @@ export function PredictionResults({ prediction, compoundName }: Props) {
       <WarningsList warnings={warnings} />
 
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-lg border border-line bg-white p-6">
+        <div className="card p-6">
           <UncertaintyPanel conformal={reliability.conformal} endpoint={estimate.endpoint} />
         </div>
-        <div className="rounded-lg border border-line bg-white p-6">
+        <div className="card p-6">
           <ReliabilityBadge reliability={reliability} />
         </div>
       </div>
 
-      <div className="rounded-lg border border-line bg-white p-6">
+      <div className="card p-6">
         <ApplicabilityDomainGauge applicabilityDomain={reliability.applicability_domain} />
       </div>
 
