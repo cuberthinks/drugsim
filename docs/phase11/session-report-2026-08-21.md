@@ -105,13 +105,33 @@ time.
 
 ---
 
+## Update: the feature is dropped, not just held back
+
+A third deploy attempt fixed the restriction bug correctly (verified with
+a regression test reproducing the exact failing sequence) and went live.
+But real production metrics told a different story than local testing
+had: hERG's own SHAP explainer — not just CYP3A4's — cost ~280MB in the
+actual Linux/Python 3.12 container (195MB → 477MB, measured), against a
+local macOS estimate of ~75MB. That's a roughly 4x platform gap, and it
+meant the "safe" hERG-only version was actually running at 93% of the
+server's memory limit on a single request — stable in that moment, but
+one concurrent request or a heavier molecule away from crashing again.
+
+The natural next fix — shrinking SHAP's background sample size, since
+that's the usual memory lever for this method — was tested locally
+*before* a fourth deploy, not after: memory stayed flat at ~500MB whether
+the background sample was 100 or 5. The real cost turned out to be
+`shap`/`numba`'s own import overhead stacked on top of an already-loaded
+model, not anything tunable via that parameter. This isn't a bug to fix;
+it's a genuine capacity limit of the current 512MB plan.
+
+**Decision: dropped.** Reverted a third time (commit `a0a3ae0`), confirmed
+stable, and the changelog entry describing the feature was removed rather
+than left up describing something that was never actually live.
+
 ## What's changed on the live site right now
 
-Both memory/reliability fixes and the new Limitations/endpoint content
-are live — see the [changelog](/) on the site itself. The attention map
-feature is built and ready but held back per above.
-
-## Open question
-
-Want me to deploy the (now twice-fixed, newly regression-tested) hERG-only
-attention map feature?
+The memory/reliability fixes and the new Limitations/endpoint content are
+live — see the [changelog](/) on the site itself. Nothing related to the
+attention map feature is live; all of that code has been removed from the
+working tree, not just left unshipped.
