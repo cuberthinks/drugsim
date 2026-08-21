@@ -26,14 +26,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 __all__ = [
     "ApplicabilityDomainSchema",
-    "AtomContributionSchema",
     "ConformalSchema",
-    "DescriptorContributionSchema",
     "EndpointListItem",
     "EndpointsResponse",
     "ErrorDetail",
     "EstimateSchema",
-    "ExplainabilityResponse",
     "HealthResponse",
     "ModelDetailResponse",
     "MoleculeSchema",
@@ -231,59 +228,6 @@ class PredictionResponse(BaseModel):
     warnings: list[WarningSchema]
     inference_timestamp: str
     status: Literal["complete"] = "complete"
-
-
-class AtomContributionSchema(BaseModel):
-    """One heavy atom's SHAP contribution, indexed against
-    ``molecule.standardized_smiles`` -- parsing that SMILES with RDKit gives
-    the exact atom ordering ``atom_index`` refers to."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    atom_index: int
-    contribution: float = Field(
-        description="Positive pushes the prediction toward positive_class_label; negative pushes away from it."
-    )
-
-
-class DescriptorContributionSchema(BaseModel):
-    """One physicochemical descriptor's SHAP contribution -- not atom-
-    mappable (there is no single atom "responsible" for molecular weight)."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    name: str
-    value: float
-    contribution: float
-
-
-class ExplainabilityResponse(BaseModel):
-    """``POST /predict/explain`` (200) response body.
-
-    ``base_value + sum(atom_contributions) + sum(descriptor_contributions)
-    + absent_substructure_contribution`` reconstructs ``predicted_probability``
-    from the matching ``/predict`` call for the same structure/endpoint
-    exactly -- this is SHAP's own additivity guarantee, preserved through
-    the atom-mapping step (verified in tests), not an approximation.
-    """
-
-    model_config = ConfigDict(extra="forbid")
-
-    molecule: MoleculeSchema
-    endpoint: str
-    positive_class_label: str
-    base_value: float = Field(
-        description="The model's average predicted probability of positive_class_label over its background "
-        "reference sample -- the starting point every contribution below is measured relative to."
-    )
-    atom_contributions: list[AtomContributionSchema]
-    descriptor_contributions: list[DescriptorContributionSchema]
-    absent_substructure_contribution: float = Field(
-        description="How much of this prediction is explained by chemistry NOT present in this molecule -- SHAP "
-        "attributes real weight to a substructure's absence, but an absent substructure has no atom to highlight, "
-        "so it is disclosed here rather than silently dropped or misattributed to an unrelated atom."
-    )
-    method: str
 
 
 class ErrorDetail(BaseModel):

@@ -15,7 +15,7 @@
  * commented example in deployment/caddy/Caddyfile) so the browser's own
  * native auth prompt covers the whole site without embedding anything.
  */
-import type { EndpointsResponse, ExplainabilityResponse, ModelDetail, PredictionResponse, ProblemDetail, StructureFormat } from "./types";
+import type { EndpointsResponse, ModelDetail, PredictionResponse, ProblemDetail, StructureFormat } from "./types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 const API_KEY = import.meta.env.VITE_API_KEY ?? "";
@@ -161,22 +161,6 @@ export function predict(
 
 export function getPrediction(id: string): Promise<PredictionResponse> {
   return request<PredictionResponse>(`/predict/${encodeURIComponent(id)}`);
-}
-
-// Deliberately a separate call from predict(), never automatic: a full SHAP
-// pass over a 200-500-tree ensemble costs ~55-200ms of backend CPU per call
-// (measured), meaningfully more than a plain prediction -- only fetched when
-// a user explicitly asks to see it (PredictionResults' "Show AI attention
-// map" toggle), not on every result.
-export function explainPrediction(
-  value: string,
-  format: StructureFormat = "smiles",
-  endpoint = "herg_inhibition",
-): Promise<ExplainabilityResponse> {
-  return request<ExplainabilityResponse>("/predict/explain", {
-    method: "POST",
-    body: JSON.stringify({ structure: { format, value }, endpoint }),
-  });
 }
 
 export function getModel(endpoint = "herg_inhibition"): Promise<ModelDetail> {

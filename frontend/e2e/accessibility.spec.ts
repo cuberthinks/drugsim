@@ -111,39 +111,6 @@ test("no WCAG 2.1 AA violations on the populated results view", async ({ page })
   expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
 });
 
-test("no WCAG 2.1 AA violations on the expanded AI attention map (Phase 11)", async ({ page }) => {
-  await page.route("**/api/predict", async (route) => {
-    await route.fulfill({ json: PREDICTION_RESPONSE });
-  });
-  await page.route("**/api/predict/explain", async (route) => {
-    await route.fulfill({
-      json: {
-        molecule: PREDICTION_RESPONSE.molecule,
-        endpoint: "herg_inhibition",
-        positive_class_label: "blocker",
-        base_value: 0.36,
-        atom_contributions: Array.from({ length: 13 }, (_, i) => ({ atom_index: i, contribution: i % 2 === 0 ? 0.01 : -0.01 })),
-        descriptor_contributions: [
-          { name: "mw_g_mol", value: 180.16, contribution: 0.02 },
-          { name: "logp_crippen", value: 1.2, contribution: -0.01 },
-        ],
-        absent_substructure_contribution: 0.05,
-        method: "shap_tree_explainer_interventional",
-      },
-    });
-  });
-  await page.goto("/predict");
-  await page.getByLabel(/paste a smiles string/i).fill("CC(=O)Oc1ccccc1C(=O)O");
-  await page.getByRole("button", { name: /^validate$/i }).click();
-  await page.getByRole("button", { name: /predict herg inhibition/i }).click();
-  await expect(page.getByRole("heading", { name: /predicted non-inhibitor/i })).toBeVisible();
-  await page.getByRole("button", { name: /show attention map/i }).click();
-  await expect(page.getByText(/molecular weight/i)).toBeVisible();
-
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-  expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
-});
-
 test("no WCAG 2.1 AA violations on the endpoint selector, including its disabled experimental option", async ({ page }) => {
   await page.route("**/api/endpoints", (route) => route.fulfill({ json: ENDPOINTS_RESPONSE }));
   await page.goto("/predict");
