@@ -61,6 +61,9 @@ export function Layout() {
             <NavLink to="/about" className="underline underline-offset-2 hover:text-ink">
               About &amp; contact
             </NavLink>
+            <NavLink to="/sources" className="underline underline-offset-2 hover:text-ink">
+              Data Sources
+            </NavLink>
             <NavLink to="/privacy" className="underline underline-offset-2 hover:text-ink">
               Privacy Policy
             </NavLink>

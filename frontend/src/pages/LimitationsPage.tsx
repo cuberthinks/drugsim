@@ -26,8 +26,8 @@ const LIMITATIONS = [
     body: "On its own held-out test set, the CYP3A4 model's specificity is only 40.5% — a real, asymmetric tendency to label a compound an inhibitor when it is not. Treat a 'predicted inhibitor' result as a reason to look closer, not as strong evidence on its own.",
   },
   {
-    title: "hERG model: no independent external validation",
-    body: "Every reported hERG metric comes from held-out portions of its own training source, not a separate dataset — an external validation attempt was blocked by an unreachable data source during training. The CYP3A4 model does have an external validation result; the hERG model currently does not.",
+    title: "hERG model: external validation transfers well, but not its default threshold",
+    body: "Against an independent PubChem screen never used in training (AID 588834, a different lab and assay technology), the model's ranking quality held up — ROC-AUC 0.87, slightly above its own internal test set. But that external set has a much lower positive rate (~10%) than the training data (~66%), and the model's fixed decision threshold does not adapt to that shift: precision drops to 0.22 there, meaning most positive calls on unfamiliar, low-prevalence chemistry are false positives. Read a positive result on a novel structure as a reason to look closer, not as strong evidence on its own — see Data Sources & References for the validation dataset itself.",
   },
   {
     title: "The 10 µM active/inactive threshold is a screening convention",

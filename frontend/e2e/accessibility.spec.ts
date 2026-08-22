@@ -82,6 +82,7 @@ const STATIC_PAGES = [
   "/history",
   "/compare",
   "/changelog",
+  "/sources",
 ];
 
 for (const path of STATIC_PAGES) {
