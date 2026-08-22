@@ -35,7 +35,7 @@ export function EndpointSelector({ endpoints, selected, onSelect, isBusy }: Prop
               disabled={isBusy || !endpoint.servable}
               onClick={() => onSelect(endpoint.model_id)}
               title={!endpoint.servable ? `Status: ${endpoint.final_report_status} — not available for predictions` : undefined}
-              className={`flex flex-1 flex-col items-start gap-1 rounded-md border px-4 py-2.5 text-left text-sm shadow-sm transition-[border-color,box-shadow,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm ${
+              className={`flex flex-1 flex-col items-start gap-1 rounded-md border px-4 py-2.5 text-left text-sm shadow-sm transition-[border-color,box-shadow,transform] duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm disabled:active:scale-100 ${
                 isSelected
                   ? "border-ink bg-ink text-paper"
                   : "border-line bg-white text-ink hover:-translate-y-0.5 hover:border-signal hover:bg-signal-soft hover:shadow-md"

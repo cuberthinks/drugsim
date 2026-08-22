@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { EXAMPLE_COMPOUNDS, type ExampleCompound } from "../lib/exampleCompounds";
+import { Spinner } from "./Spinner";
 
 const EXAMPLE_SMILES = EXAMPLE_COMPOUNDS[0].smiles;
 
@@ -85,7 +86,7 @@ export function MoleculeInput({
               onClick={() => onUseExample(example)}
               disabled={isBusy}
               title={example.note}
-              className="card-interactive rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs hover:bg-signal-soft disabled:cursor-not-allowed disabled:opacity-50"
+              className="card-interactive rounded-md border border-line bg-paper-alt px-3 py-2 text-left text-xs transition-transform duration-200 hover:bg-signal-soft active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="font-medium text-ink">{example.name}</span>
               <span className="mt-0.5 block leading-relaxed text-ink-soft">{example.note}</span>
@@ -124,17 +125,19 @@ export function MoleculeInput({
           type="button"
           onClick={onValidate}
           disabled={isBusy || value.trim().length === 0}
-          className="rounded-md border border-line bg-white px-5 py-2.5 text-sm font-medium text-ink shadow-sm transition-[box-shadow,transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-paper-alt hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
+          className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-5 py-2.5 text-sm font-medium text-ink shadow-sm transition-[box-shadow,transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-paper-alt hover:shadow-md active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-sm disabled:active:scale-100"
         >
+          {isBusy && <Spinner />}
           {isBusy ? "Validating…" : "Validate"}
         </button>
         <button
           type="button"
           onClick={onPredict}
           disabled={isBusy || !isValidated}
-          className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
+          className="inline-flex items-center gap-2 rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-sm disabled:active:scale-100"
           title={!isValidated ? "Validate the molecule first" : undefined}
         >
+          {isBusy && <Spinner />}
           {isBusy ? "Predicting…" : predictLabel}
         </button>
         <button

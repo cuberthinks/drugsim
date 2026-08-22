@@ -2,6 +2,7 @@ import type { EndpointListItem, PredictionResponse } from "../api/types";
 import { ApiError } from "../api/client";
 import { getEndpointCopy, labelText } from "../lib/endpointCopy";
 import { deriveReliabilityRating } from "../lib/reliability";
+import { Spinner } from "./Spinner";
 
 const RATING_COLOR: Record<string, string> = {
   High: "var(--color-signal)",
@@ -29,7 +30,8 @@ export function EndpointProfileCard({ endpoint, state }: Props) {
       <h3 className="mt-1 font-display text-base font-semibold text-ink">{endpoint.endpoint_name}</h3>
 
       {state.status === "loading" && (
-        <p className="mt-3 text-sm text-ink-soft" role="status">
+        <p className="mt-3 flex items-center gap-2 text-sm text-ink-soft" role="status">
+          <Spinner />
           Running prediction…
         </p>
       )}

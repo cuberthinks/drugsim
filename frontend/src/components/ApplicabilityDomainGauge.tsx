@@ -119,7 +119,15 @@ export function ApplicabilityDomainGauge({ applicabilityDomain }: Props) {
           </defs>
           <line x1="10" y1="28" x2="390" y2="28" stroke="url(#ad-gradient)" strokeWidth="4" strokeLinecap="round" />
           {hasPosition && positionPercent !== null && (
-            <g transform={`translate(${10 + (positionPercent / 100) * 380}, 28)`}>
+            // Transitioning transform, not just plopping the marker at its
+            // final spot: a later prediction reuses this same SVG node (no
+            // remount), so without this a re-run's marker would just teleport.
+            // Sliding it communicates "the evidence for THIS molecule moved
+            // from the last one" -- a real state change, not a decoration.
+            <g
+              transform={`translate(${10 + (positionPercent / 100) * 380}, 28)`}
+              style={{ transition: "transform 500ms ease-out" }}
+            >
               <line y1="-14" y2="8" stroke={color} strokeWidth="2" />
               <circle r="6" fill={color} stroke="white" strokeWidth="2" />
             </g>

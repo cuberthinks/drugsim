@@ -30,7 +30,7 @@ export function HomePage() {
           <div className="rise-in mt-8 flex items-center justify-center gap-4" style={{ animationDelay: "180ms" }}>
             <Link
               to="/predict"
-              className="rounded-md bg-ink px-6 py-3 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md"
+              className="rounded-md bg-ink px-6 py-3 text-sm font-medium text-paper shadow-sm transition-[box-shadow,transform,opacity] duration-200 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-md active:scale-[0.97]"
             >
               Enter a molecule
             </Link>
