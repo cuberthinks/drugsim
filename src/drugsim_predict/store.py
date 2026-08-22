@@ -14,6 +14,20 @@ molecule back. What must NEVER contain the raw structure is the
 *application log stream* (structlog), which is a separate, wider-fanout
 system (TDS Sec 7, P11) — callers in :mod:`drugsim_predict.api` log with
 :func:`drugsim_core.redaction.structure_digest`, never the raw SMILES.
+
+**Retrieval scoping** (confidentiality audit, 2026-08-22 finding #1): a row
+records ``api_key_hash`` — a SHA-256 digest of the API key that created it,
+never the raw key — so :mod:`drugsim_predict.api`'s ``GET /predict/{id}``
+handler can require the retrieving caller's key to match the creating
+caller's key before returning ``response_json``. Before this column
+existed, any caller holding any one configured API key could retrieve any
+other caller's stored prediction (including their canonical structure) by
+ID, because this store had no notion of who a row belonged to. ``ALTER
+TABLE ... ADD COLUMN`` in :meth:`_init_schema` migrates an existing
+database file in place; a row written before this change (or written while
+no API key was configured, e.g. local/dev) has ``api_key_hash IS NULL`` and
+is therefore retrievable by no one once key auth is active — fail closed,
+not open, for data this store cannot attribute to a caller.
 """
 
 from __future__ import annotations
@@ -45,7 +59,8 @@ CREATE TABLE IF NOT EXISTS predictions (
     predicted_label TEXT,
     predicted_probability_blocker REAL,
     final_prediction_status TEXT NOT NULL,
-    response_json TEXT
+    response_json TEXT,
+    api_key_hash TEXT
 );
 CREATE INDEX IF NOT EXISTS ix_predictions_request_id ON predictions(request_id);
 CREATE INDEX IF NOT EXISTS ix_predictions_created_at ON predictions(created_at);
@@ -78,6 +93,14 @@ class PredictionStore:
     def _init_schema(self) -> None:
         with self._connect() as conn:
             conn.executescript(_SCHEMA)
+            # Migrates a database file created before api_key_hash existed
+            # (in place, idempotent) -- CREATE TABLE IF NOT EXISTS above is a
+            # no-op against an existing table, so an already-deployed
+            # var/predictions.sqlite3 needs this explicit ALTER TABLE to
+            # pick up the column at all.
+            existing_columns = {row["name"] for row in conn.execute("PRAGMA table_info(predictions)")}
+            if "api_key_hash" not in existing_columns:
+                conn.execute("ALTER TABLE predictions ADD COLUMN api_key_hash TEXT")
             conn.commit()
 
     def record_success(
@@ -96,8 +119,16 @@ class PredictionStore:
         predicted_label: str,
         predicted_probability_blocker: float,
         response_json: str,
+        api_key_hash: Optional[str] = None,
     ) -> None:
-        """Record a completed, successful prediction. One atomic write."""
+        """Record a completed, successful prediction. One atomic write.
+
+        Args:
+            api_key_hash: SHA-256 digest of the API key that made this
+                request (see :mod:`drugsim_predict.security`), or ``None``
+                when no key auth is configured. Gates ``GET /predict/{id}``
+                retrieval -- see this module's docstring.
+        """
         with self._connect() as conn:
             conn.execute("BEGIN IMMEDIATE")
             try:
@@ -107,14 +138,15 @@ class PredictionStore:
                         id, request_id, created_at, model_id, model_version, dataset_version,
                         feature_set_id, input_hash, canonical_structure_hash, validation_status,
                         rejection_reason, applicability_domain_verdict, predicted_label,
-                        predicted_probability_blocker, final_prediction_status, response_json
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'accepted', NULL, ?, ?, ?, 'complete', ?)
+                        predicted_probability_blocker, final_prediction_status, response_json,
+                        api_key_hash
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'accepted', NULL, ?, ?, ?, 'complete', ?, ?)
                     """,
                     (
                         prediction_id, request_id, created_at, model_id, model_version, dataset_version,
                         feature_set_id, input_hash, canonical_structure_hash,
                         applicability_domain_verdict, predicted_label, predicted_probability_blocker,
-                        response_json,
+                        response_json, api_key_hash,
                     ),
                 )
                 conn.commit()

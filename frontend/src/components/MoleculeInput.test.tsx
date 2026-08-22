@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { MoleculeInput } from "./MoleculeInput";
 import { EXAMPLE_COMPOUNDS } from "../lib/exampleCompounds";
@@ -18,7 +19,11 @@ function setup(overrides: Partial<React.ComponentProps<typeof MoleculeInput>> = 
     isValidated: false,
     ...overrides,
   };
-  render(<MoleculeInput {...props} />);
+  render(
+    <MemoryRouter>
+      <MoleculeInput {...props} />
+    </MemoryRouter>,
+  );
   return props;
 }
 
@@ -101,6 +106,12 @@ describe("MoleculeInput", () => {
       "href",
       "https://pubchem.ncbi.nlm.nih.gov/",
     );
+  });
+
+  it("discloses how the submitted structure is handled, with a link to the full policy", () => {
+    setup();
+    expect(screen.getByText(/never uses submitted structures to train its models/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /full privacy policy/i })).toHaveAttribute("href", "/privacy");
   });
 
   it("only claims the format DrugSim actually accepts", () => {

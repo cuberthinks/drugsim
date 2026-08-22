@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { Link } from "react-router-dom";
 import { EXAMPLE_COMPOUNDS, type ExampleCompound } from "../lib/exampleCompounds";
 import { Spinner } from "./Spinner";
 
@@ -70,6 +71,14 @@ export function MoleculeInput({
       <div className="mt-2 flex justify-end">
         <p className="text-xs text-ink-soft">Accepted format: SMILES</p>
       </div>
+      <p className="mt-2 text-xs leading-relaxed text-ink-soft">
+        Processed to produce this prediction and recorded in the prediction audit record.
+        DrugSim never uses submitted structures to train its models. Read the{" "}
+        <Link to="/privacy" className="underline underline-offset-2 hover:text-ink">
+          full privacy policy
+        </Link>
+        .
+      </p>
 
       <div className="mt-3">
         <p className="text-xs font-medium text-ink">Try an example</p>

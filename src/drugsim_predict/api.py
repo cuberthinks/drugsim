@@ -16,9 +16,19 @@ resolves to ``(user_id, tenant_id, roles)`` and requires infrastructure --
 Keycloak, multi-tenant Postgres -- not present in this environment). This
 is the minimum viable access control for a controlled external
 demonstration with a small, known set of users, not a real identity
-platform; there is still no per-user data isolation, because there is no
-per-user data model. Documented as a limitation in docs/phase8, not
-silently omitted.
+platform; there is still no per-user data model (a name, an account, a
+role). Documented as a limitation in docs/phase8, not silently omitted.
+
+Confidentiality audit (2026-08-22): ``GET /predict/{id}`` IS now scoped to
+the API key that created a prediction (see that handler's own docstring
+and store.py) -- the smallest unit of "who" this codebase can express.
+Two different callers sharing the same configured key (e.g. every visitor
+to the one public frontend deployment, which bakes in a single key) are
+still not isolated from each other -- that requires actually issuing
+distinct keys per caller, an operational/deployment decision this code
+does not make for you. What this closes is the case that had NO scoping
+at all: any one of several *distinct* configured keys being able to read
+data created under any other.
 """
 
 from __future__ import annotations
@@ -579,6 +589,7 @@ async def predict(body: PredictRequest, request: Request, store: PredictionStore
         applicability_domain_verdict=result.applicability_domain.verdict,
         predicted_label=result.predicted_label, predicted_probability_blocker=result.predicted_probability_blocker,
         response_json=response.model_dump_json(),
+        api_key_hash=getattr(request.state, "api_key_hash", None),
     )
     log.info(
         "predict.complete", request_id=request_id, prediction_id=prediction_id,
@@ -590,9 +601,33 @@ async def predict(body: PredictRequest, request: Request, store: PredictionStore
 
 @app.get("/predict/{prediction_id}", response_model=PredictionResponse)
 def get_prediction(prediction_id: str, request: Request, store: PredictionStore = Depends(get_store)) -> JSONResponse:
-    """Retrieve a previously computed prediction envelope by its ID."""
+    """Retrieve a previously computed prediction envelope by its ID.
+
+    Confidentiality audit finding (2026-08-22): this handler previously
+    returned any prediction to any caller holding any one configured API
+    key, regardless of who created it -- there was no ownership check at
+    all. IDs are high-entropy ULIDs (not practically guessable), but that
+    is not defense in depth: if an ID were ever exposed through any other
+    channel (a shared JSON export, a support ticket, a copied URL), anyone
+    holding a valid key could then fetch that caller's canonical structure.
+
+    Now scoped to the API key that created it, whenever key auth is
+    configured: :class:`~drugsim_predict.security.ApiKeyMiddleware` hashes
+    the validated key onto ``request.state.api_key_hash``, and a row only
+    matches if its own stored ``api_key_hash`` (see store.py) is identical.
+    A mismatch returns the SAME 404 as a genuinely unknown ID -- never 403
+    -- so this endpoint cannot be used to confirm which IDs exist for
+    someone who does not already have access to them (TDS Sec 5.3's
+    non-disclosing-response principle, applied here for the first time).
+    When no API key is configured at all (local/dev), this check is
+    skipped, matching every other route's permissive-when-unconfigured
+    behaviour.
+    """
     request_id = request.state.request_id
     row = store.get(prediction_id)
+    settings = get_predict_settings()
     if row is None or row["response_json"] is None:
+        return _problem(404, "not-found", "Prediction not found", f"No completed prediction with id {prediction_id!r}", request_id)
+    if settings.api_key_set and row.get("api_key_hash") != getattr(request.state, "api_key_hash", None):
         return _problem(404, "not-found", "Prediction not found", f"No completed prediction with id {prediction_id!r}", request_id)
     return JSONResponse(status_code=200, content=PredictionResponse.model_validate_json(row["response_json"]).model_dump())

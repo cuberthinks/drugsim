@@ -77,6 +77,32 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Why a dedicated pipeline, not a general AI */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <h2 className="font-display text-xl font-semibold text-ink">Why not just ask a general AI?</h2>
+        <div className="mt-6 grid gap-10 sm:grid-cols-2">
+          <p className="leading-relaxed text-ink-soft">
+            A general-purpose AI is built to answer a broad range of questions in natural
+            language, from whatever it can recall or infer about a topic. DrugSim is built
+            around one specific scientific workflow instead: a structure runs through the
+            same standardisation, the same validated model, and the same uncertainty and
+            applicability-domain checks every time — never a different answer depending on
+            how the question was phrased, and never a plausible-sounding guess offered in
+            place of "the model doesn't have enough relevant training data for this."
+          </p>
+          <p className="leading-relaxed text-ink-soft">
+            That also shapes how a submitted structure is handled: DrugSim exists to run
+            one computation on it and record that it did, not to hold a conversation about
+            it, retain it for general reference, or feed it into a language model's future
+            responses. See the{" "}
+            <Link to="/privacy" className="underline underline-offset-2 hover:text-ink">
+              Privacy Policy
+            </Link>{" "}
+            for exactly what is stored, for how long, and why.
+          </p>
+        </div>
+      </section>
+
       {/* Flow */}
       <section className="border-t border-line bg-paper-alt">
         <div className="mx-auto max-w-5xl px-6 py-16">

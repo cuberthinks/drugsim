@@ -10,7 +10,12 @@ Phase 8 scope, deliberately minimal:
   phase ("do not build a complex enterprise identity platform unless
   required"). A shared API key is the smallest change that satisfies
   "distinguish public from protected access" for a controlled external
-  demonstration with a small, known set of users.
+  demonstration with a small, known set of users. On a successful check it
+  also hashes the validated key onto ``scope["state"]["api_key_hash"]``
+  (via :func:`hash_api_key`) -- the one piece of "who made this request"
+  this codebase can express, used by ``GET /predict/{id}`` to scope
+  retrieval to whichever key created a prediction (confidentiality audit,
+  2026-08-22).
 * :class:`RateLimitMiddleware` is a single-process, in-memory sliding
   window limiter -- correct and sufficient for "the simplest appropriate
   deployment architecture," explicitly not Redis-backed, since this
@@ -31,6 +36,7 @@ HTTP-level concerns, ahead of any structure ever reaching the pipeline.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import hmac
 import time
 from collections import defaultdict, deque
@@ -46,6 +52,7 @@ __all__ = [
     "BodySizeLimitMiddleware",
     "ConcurrencyLimitMiddleware",
     "RateLimitMiddleware",
+    "hash_api_key",
     "reset_rate_limit_state",
 ]
 
@@ -53,6 +60,19 @@ __all__ = [
 #: so an external orchestrator or uptime monitor can check them, and the
 #: OpenAPI docs are non-sensitive.
 _PUBLIC_PATHS = frozenset({"/health", "/health/ready", "/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect"})
+
+
+def hash_api_key(key: str) -> str:
+    """One-way digest of a validated API key.
+
+    Used to attribute a stored prediction to the caller who created it
+    (see store.py) without persisting the raw key anywhere -- the same
+    "digest, never the raw value" pattern this service already applies to
+    molecular structures (:func:`drugsim_core.redaction.structure_digest`).
+    No salt: this is a bearer-token equality check, not a password store,
+    and every configured key is already high-entropy.
+    """
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
 
 def _problem_body(status: int, type_slug: str, title: str, detail: str) -> bytes:
@@ -113,6 +133,14 @@ class ApiKeyMiddleware:
             )
             return
 
+        # Confidentiality audit finding: downstream handlers (GET
+        # /predict/{id}) need to know WHICH configured key made this
+        # request, to scope prediction retrieval to its own creator -- but
+        # must never see or persist the raw key again once it has been
+        # checked. Hash it once, here, and hang only the digest off
+        # scope["state"]; Starlette's Request.state reads from this same
+        # dict, so request.state.api_key_hash resolves to it in the route.
+        scope.setdefault("state", {})["api_key_hash"] = hash_api_key(provided)
         await self.app(scope, receive, send)
 
 

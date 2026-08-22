@@ -6,6 +6,16 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    date: "2026-08-22",
+    title: "Confidentiality hardening",
+    items: [
+      "Fixed a gap where a stored prediction could be retrieved by a different valid API key than the one that submitted it — retrieval is now scoped to the key that created it, with no change to what any legitimate caller could already do.",
+      "Added a privacy notice next to the structure input stating plainly that submitted structures are never used to train DrugSim's models, linking to the full privacy policy.",
+      "Added a \"Third parties\" section to the privacy policy naming exactly what does and does not receive a submitted structure — nothing does, beyond DrugSim's own backend.",
+      "Published a full confidentiality audit and its results at docs/privacy/, including every finding and every automated test added to enforce it going forward.",
+    ],
+  },
+  {
     date: "2026-08-21",
     title: "Scientific transparency",
     items: [

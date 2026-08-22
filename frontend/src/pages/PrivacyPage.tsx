@@ -41,9 +41,25 @@ export function PrivacyPage() {
               Methodology
             </Link>
             ) but is deliberately kept out of the application's general log stream, which
-            only ever records a one-way hash of it. Do not submit a structure to this
-            deployment if its confidentiality could not withstand being stored in that
+            only ever records a one-way hash of it — enforced by an automated test that
+            fails the build if a real structure ever appears in a log line. Retrieving a
+            stored prediction by ID is restricted to the same API key that submitted it,
+            whenever key-based access control is configured. Do not submit a structure to
+            this deployment if its confidentiality could not withstand being stored in that
             audit record.
+          </p>
+        </div>
+
+        <div className="card p-5">
+          <h2 className="font-display text-lg font-semibold text-ink">Third parties</h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+            No analytics, error-tracking, or AI/LLM service of any kind runs in this
+            application, and none receives a submitted structure — there is nothing here to
+            opt out of. The only external network request this site makes is a standard
+            font stylesheet load (Google Fonts), which carries no molecule data. The
+            prediction service itself runs on Render's hosting infrastructure, which
+            operates the servers this deployment runs on but does not independently access
+            or process submitted structures.
           </p>
         </div>
 
@@ -60,14 +76,18 @@ export function PrivacyPage() {
         <div className="card p-5">
           <h2 className="font-display text-lg font-semibold text-ink">What we do not do</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-            DrugSim does not sell, share, or use submitted structures for any purpose other
-            than producing and recording the prediction you requested. It does not use
-            submissions to train or retrain the underlying model — the model is a fixed,
-            validated artifact (see{" "}
+            DrugSim does not sell or share submitted structures with any third party, and
+            uses them for nothing beyond producing and recording the prediction you
+            requested. It does not use submissions to train or retrain the underlying
+            model — the model is a fixed, validated artifact (see{" "}
             <Link to="/methodology" className="underline underline-offset-2 hover:text-ink">
               Methodology
             </Link>
-            ), not something this deployment learns from over time.
+            ), not something this deployment learns from over time. This is not only a
+            policy statement: an automated test scans the codebase and fails the build if
+            any training-related code is ever wired to read from the prediction records at
+            all. If that ever changes, it will require its own explicit, separately
+            documented consent mechanism — never a silent default.
           </p>
         </div>
       </section>
