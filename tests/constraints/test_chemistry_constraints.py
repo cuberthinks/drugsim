@@ -158,7 +158,7 @@ class TestScaffoldLeakagePrevention:
         )
         session.flush()
 
-        with pytest.raises(IntegrityError, match="uq_scaffold_single_group"):
+        with pytest.raises(IntegrityError, match="scaffold leakage|uq_scaffold_single_group"):
             session.execute(
                 text(
                     "INSERT INTO compound_split_assignment (compound_uid, scaffold_key, "

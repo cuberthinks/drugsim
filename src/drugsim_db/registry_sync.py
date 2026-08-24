@@ -107,6 +107,87 @@ class SourceSyncPlan:
         return not self.license_changes
 
 
+#: Tier restrictiveness, least to most. Used to collapse a split-licensed
+#: source to a single effective tier.
+_TIER_SEVERITY: dict[str, int] = {
+    LicenseTier.GREEN.value: 0,
+    LicenseTier.AMBER.value: 1,
+    LicenseTier.RED.value: 2,
+    LicenseTier.BLACK.value: 3,
+}
+
+
+def _effective_tier(entry: dict[str, Any], licence: dict[str, Any]) -> str:
+    """Collapse a split-licensed source to the single tier the database stores.
+
+    ``license_tier_t`` is ``ENUM('green','amber','red','black')`` on purpose:
+    ADR-007 makes licence tier a physical partition so that "can we ship this?"
+    is answerable by a SQL predicate alone. Adding a fifth ``mixed`` member
+    would destroy that property -- a ``mixed`` row answers the question with
+    "it depends", which is exactly what the partition exists to prevent. So a
+    ``mixed`` registry entry is resolved here instead, and the fact that it was
+    split is preserved separately in ``is_split_licensed``.
+
+    Resolution rules, both conservative:
+
+    - ``split_licensing`` present: every listed portion is ingested, so the
+      effective tier is the most restrictive portion. BindingDB (CC-BY-3.0
+      curated + CC-BY-SA-3.0 ChEMBL-derived) resolves to ``red``, carrying the
+      ShareAlike obligation of its strictest part.
+    - Otherwise ``default_tier``/``default_spdx``: entries under ``exclusions``
+      are gated out before ingestion rather than ingested, so they do not drag
+      the whole source down. TDC resolves to its ``amber`` default even though
+      it lists a ``black`` FreeSolv exclusion -- and that only holds while the
+      exclusion really is hard-gated in code, which the registry asserts.
+
+    Args:
+        entry: One item from ``registry["sources"]``.
+        licence: That entry's ``license`` block.
+
+    Returns:
+        A tier string valid for the ``license_tier_t`` enum.
+
+    Raises:
+        LicenseViolationError: If a ``mixed`` entry declares neither
+            ``split_licensing`` nor a default tier, leaving nothing to resolve.
+    """
+    declared = licence.get("tier")
+    if declared != LicenseTier.MIXED.value:
+        return str(declared)
+
+    portions = licence.get("split_licensing") or []
+    tiers = [str(p["tier"]) for p in portions if p.get("tier")]
+    if tiers:
+        return max(tiers, key=lambda t: _TIER_SEVERITY.get(t, _TIER_SEVERITY[LicenseTier.BLACK.value]))
+
+    default_tier = licence.get("default_tier")
+    if default_tier is None and licence.get("default_spdx"):
+        mapped = TIER_BY_SPDX.get(str(licence["default_spdx"]))
+        default_tier = mapped.value if mapped else None
+    if default_tier is not None:
+        return str(default_tier)
+
+    msg = (
+        f"source {entry.get('source_id')!r} declares tier 'mixed' but provides "
+        "neither split_licensing portions nor a default_tier/default_spdx, so "
+        "no effective tier can be resolved"
+    )
+    raise LicenseViolationError(msg, source_id=entry.get("source_id"))
+
+
+def _commercial_ok(licence: dict[str, Any], effective_tier: str) -> bool:
+    """Resolve ``commercial_ok`` to a strict boolean.
+
+    The registry uses the string ``"partial"`` for sources that are only
+    conditionally usable commercially (TDC). ``bool("partial")`` is ``True``,
+    which would record a conditional source as unconditionally shippable --
+    an overclaim in exactly the direction that matters. Anything that is not
+    literally boolean ``True`` resolves to ``False`` here.
+    """
+    raw = licence.get("commercial_ok", effective_tier != LicenseTier.BLACK.value)
+    return raw is True
+
+
 def _extract_source_fields(entry: dict[str, Any]) -> dict[str, Any]:
     """Extract the ``data_source`` row fields from one registry entry.
 
@@ -140,15 +221,23 @@ def _extract_source_fields(entry: dict[str, Any]) -> dict[str, Any]:
             )
             raise LicenseViolationError(msg, source_id=entry.get("source_id"))
 
+    effective_tier = _effective_tier(entry, licence)
+
+    # "partial" is a real registry value for sharealike (BindingDB): part of the
+    # source carries it, so the stored row must say yes, not be coerced by
+    # truthiness that happens to land correctly.
+    raw_sharealike = licence.get("sharealike", effective_tier == LicenseTier.RED.value)
+    has_sharealike = raw_sharealike is True or raw_sharealike == "partial"
+
     return {
         "source_id": entry["source_id"],
         "name": entry.get("name", entry["source_id"]),
         "homepage": entry.get("homepage", ""),
         "role": entry.get("role", ""),
         "license_spdx": spdx,
-        "license_tier": tier_str,
-        "is_commercial_ok": bool(licence.get("commercial_ok", tier_str != LicenseTier.BLACK.value)),
-        "has_sharealike": bool(licence.get("sharealike", tier_str == LicenseTier.RED.value)),
+        "license_tier": effective_tier,
+        "is_commercial_ok": _commercial_ok(licence, effective_tier),
+        "has_sharealike": has_sharealike,
         "attribution_text": licence.get("attribution", ""),
         "cadence_days": (entry.get("cadence") or {}).get("expected_days"),
         "is_split_licensed": spdx == "MIXED",

@@ -43,18 +43,31 @@ class TestDataSourceLicenseTierConsistency:
             )
             session.flush()
 
-    def test_non_black_tier_cannot_be_commercially_prohibited(self, session: Session) -> None:
-        with pytest.raises(IntegrityError, match="ck_ds_tier_commercial"):
+    def test_non_black_tier_may_still_be_commercially_restricted(self, session: Session) -> None:
+        """A conditionally-usable source is representable (migration 0014).
+
+        ck_ds_tier_commercial was originally a biconditional -- commercial_ok is
+        false if and ONLY IF the tier is black -- which asserts that tier alone
+        determines commercial usability. That is false for a split-licensed
+        source: TDC resolves to an amber effective tier while carrying a
+        hard-gated CC-BY-NC-SA exclusion, so it is amber AND only conditionally
+        usable. Under the biconditional that row could not exist and syncing the
+        project's own datasets/registry.yaml failed outright. The constraint is
+        now the implication that was actually intended (black => not
+        commercial), which this asserts; the direction that matters is still
+        covered by test_black_tier_must_be_commercially_prohibited above.
+        """
+        with audit_context(session, user_id=SYSTEM_USER_UID, reason="conditional source"):
             session.execute(
                 text(
                     "INSERT INTO data_source (source_id, name, homepage, role, "
                     "license_spdx, license_tier, is_commercial_ok, has_sharealike, "
                     "attribution_text, verification_status, verification_date) "
-                    "VALUES ('bad2', 'Bad', 'https://x', 'test', 'CC-BY-4.0', "
+                    "VALUES ('conditional', 'Conditional', 'https://x', 'test', 'CC-BY-4.0', "
                     "'amber', false, false, 'x', 'verified', now())"
                 )
             )
-            session.flush()
+        session.flush()  # must not raise
 
     def test_red_tier_must_declare_sharealike(self, session: Session) -> None:
         with pytest.raises(IntegrityError, match="ck_ds_tier_sharealike"):
@@ -115,15 +128,20 @@ class TestSystemUserDeactivation:
 
 
 class TestHardDeletesAreImpossible:
-    """P8 as a grant, not a convention: UPDATE/DELETE are revoked on audit_log."""
+    """P8 as enforcement, not a convention: UPDATE/DELETE are refused on audit_log.
+
+    The original REVOKE ... FROM PUBLIC does not bind the table owner, so a
+    trigger (migration 0014) does the real work. Match either message so the
+    test asserts "the database refused", not which of the two layers caught it.
+    """
 
     def test_delete_on_audit_log_is_revoked(self, session: Session, curator_user_id: str) -> None:
-        with pytest.raises(Exception, match="permission denied"):
+        with pytest.raises(Exception, match="permission denied|append-only"):
             session.execute(text("DELETE FROM audit_log"))
             session.flush()
 
     def test_update_on_audit_log_is_revoked(self, session: Session) -> None:
-        with pytest.raises(Exception, match="permission denied"):
+        with pytest.raises(Exception, match="permission denied|append-only"):
             session.execute(text("UPDATE audit_log SET change_reason = 'tampered'"))
             session.flush()
 
