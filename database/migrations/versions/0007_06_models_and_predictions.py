@@ -34,7 +34,7 @@ CREATE TABLE model (
     endpoint_id TEXT          NOT NULL REFERENCES endpoint (endpoint_id) ON DELETE RESTRICT,
     methodology methodology_t NOT NULL,
     description TEXT          NOT NULL,
-    created_by  ulid          NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    created_by  ulid          NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     created_at  TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE model_version (
     is_validated             BOOLEAN            NOT NULL DEFAULT FALSE,
     is_regulatory_ready      BOOLEAN            NOT NULL DEFAULT FALSE,
     trained_at               TIMESTAMPTZ        NOT NULL,
-    created_by               ulid               NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    created_by               ulid               NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     CONSTRAINT uq_model_version UNIQUE (model_uid, version),
     CONSTRAINT ck_commercial_tiers
         CHECK (is_commercial_ok = NOT ('black' = ANY (training_license_tiers))),
@@ -88,7 +88,7 @@ CREATE TABLE model_validation_record (
     validation_type   TEXT             CHECK (validation_type IN
         ('internal_cv', 'external_test', 'y_scrambling', 'bootstrap', 'temporal_holdout')),
     n_compounds       INTEGER          CHECK (n_compounds > 0),
-    reviewed_by       ulid             REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    reviewed_by       ulid             REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     reviewed_at       TIMESTAMPTZ,
     CONSTRAINT uq_validation UNIQUE (model_version_uid, principle, metric_name)
 );
@@ -104,7 +104,7 @@ CREATE TABLE model_qmrf (
     model_version_uid ulid        NOT NULL UNIQUE REFERENCES model_version (model_version_uid) ON DELETE RESTRICT,
     qmrf_document     JSONB       NOT NULL,
     document_uri      TEXT,
-    completed_by      ulid        NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    completed_by      ulid        NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     completed_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -133,7 +133,7 @@ CREATE TABLE prediction (
     quality_formula_version   TEXT         NOT NULL,
     is_commercial_ok          BOOLEAN      NOT NULL,
     predicted_at              TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    requested_by              ulid         REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    requested_by              ulid         REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     CONSTRAINT ck_interval_brackets CHECK (
         (interval_low IS NULL AND interval_high IS NULL)
         OR (interval_low <= predicted_value AND interval_high >= predicted_value)
@@ -168,7 +168,7 @@ CREATE TABLE prediction_evidence (
 
 CREATE TABLE expert_review (
     review_uid      ulid             PRIMARY KEY,
-    reviewer_uid    ulid             NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    reviewer_uid    ulid             NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     outcome         review_outcome_t NOT NULL,
     rationale       TEXT             NOT NULL,
     literature_refs TEXT[],

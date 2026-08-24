@@ -71,7 +71,7 @@ CREATE TABLE compound (
     ingested_at            TIMESTAMPTZ   NOT NULL DEFAULT now(),
 
     -- Governance (P8: nothing deleted or silently altered)
-    created_by             ulid          NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    created_by             ulid          NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     is_deleted              BOOLEAN      NOT NULL DEFAULT FALSE,
     deleted_reason          TEXT,
 

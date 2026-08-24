@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import pytest
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError, InternalError
+from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.orm import Session
 
 from .factories import (
@@ -88,7 +88,7 @@ class TestFeatureSetConsistencyTrigger:
     ) -> None:
         """This is THE test for risk R5. If it ever stops raising, training/serving
         skew has become possible again."""
-        with pytest.raises((IntegrityError, InternalError), match="feature_set_id mismatch"):
+        with pytest.raises(DBAPIError, match="feature_set_id mismatch"):
             insert_prediction(
                 session,
                 prediction_fixtures["compound_uid"],
@@ -101,7 +101,7 @@ class TestFeatureSetConsistencyTrigger:
     def test_nonexistent_model_version_raises(
         self, session: Session, prediction_fixtures: dict[str, str]
     ) -> None:
-        with pytest.raises((IntegrityError, InternalError)):
+        with pytest.raises(DBAPIError):
             insert_prediction(
                 session,
                 prediction_fixtures["compound_uid"],
@@ -272,7 +272,7 @@ class TestIchM7MethodologyPairing:
         pred_b = self._make_prediction_from_model(
             session, prediction_fixtures, "statistical_based", feature_set_id="4" * 64
         )
-        with pytest.raises((IntegrityError, InternalError), match="expert_rule_based"):
+        with pytest.raises(DBAPIError, match="expert_rule_based"):
             session.execute(
                 text(
                     "INSERT INTO ich_m7_assessment (assessment_uid, compound_uid, "
@@ -293,7 +293,7 @@ class TestIchM7MethodologyPairing:
         another_rule_based = self._make_prediction_from_model(
             session, prediction_fixtures, "expert_rule_based", feature_set_id="6" * 64
         )
-        with pytest.raises((IntegrityError, InternalError), match="statistical_based"):
+        with pytest.raises(DBAPIError, match="statistical_based"):
             session.execute(
                 text(
                     "INSERT INTO ich_m7_assessment (assessment_uid, compound_uid, "
@@ -308,11 +308,22 @@ class TestIchM7MethodologyPairing:
     def test_identical_prediction_for_both_slots_rejected(
         self, session: Session, prediction_fixtures: dict[str, str]
     ) -> None:
-        """ck_distinct_predictions: the two arms cannot be the same prediction."""
+        """The two arms cannot be the same prediction.
+
+        Rejected by the methodology-pairing TRIGGER rather than by
+        ``ck_distinct_predictions``: a BEFORE INSERT trigger runs ahead of CHECK
+        constraints, and reusing one prediction for both slots necessarily puts a
+        rule-based prediction in the statistical slot, which the trigger catches
+        first. ``ck_distinct_predictions`` is therefore unreachable in practice --
+        a single prediction cannot come from both a statistical and a rule-based
+        model -- so it stands as defence in depth, not the active guard. Asserting
+        only the constraint name here would fail while the row is, correctly,
+        still rejected.
+        """
         pred = self._make_prediction_from_model(
             session, prediction_fixtures, "expert_rule_based", feature_set_id="7" * 64
         )
-        with pytest.raises(IntegrityError, match="ck_distinct_predictions"):
+        with pytest.raises(DBAPIError, match="ck_distinct_predictions|statistical_based"):
             session.execute(
                 text(
                     "INSERT INTO ich_m7_assessment (assessment_uid, compound_uid, "

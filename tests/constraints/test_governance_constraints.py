@@ -70,7 +70,10 @@ class TestDataSourceLicenseTierConsistency:
             session.flush()
 
     def test_valid_row_succeeds(self, session: Session) -> None:
-        insert_data_source(session, "good_source", tier="green", commercial_ok=True, sharealike=False)
+        # data_source is an audited table: the trigger requires an audit context
+        # for ANY write, including one this test expects to succeed.
+        with audit_context(session, user_id=SYSTEM_USER_UID, reason="valid row"):
+            insert_data_source(session, "good_source", tier="green", commercial_ok=True, sharealike=False)
         session.flush()  # must not raise
 
 
@@ -81,7 +84,7 @@ class TestSystemUserDeactivation:
         with pytest.raises(IntegrityError, match="ck_user_deactivation"):
             session.execute(
                 text(
-                    "INSERT INTO system_user (user_uid, username, full_name, email, "
+                    'INSERT INTO "system_user" (user_uid, username, full_name, email, '
                     "role, is_active) VALUES (:uid, 'x', 'X', 'x@test', 'curator', false)"
                 ),
                 {"uid": generate_ulid()},
@@ -89,20 +92,23 @@ class TestSystemUserDeactivation:
             session.flush()
 
     def test_active_user_without_deactivated_at_succeeds(self, session: Session) -> None:
-        session.execute(
-            text(
-                "INSERT INTO system_user (user_uid, username, full_name, email, role) "
-                "VALUES (:uid, 'x2', 'X', 'x2@test', 'curator')"
-            ),
-            {"uid": generate_ulid()},
-        )
+        # system_user is audited too — wrap the write, or the audit trigger rejects
+        # it before ck_user_deactivation is ever reached.
+        with audit_context(session, user_id=SYSTEM_USER_UID, reason="active user"):
+            session.execute(
+                text(
+                    'INSERT INTO "system_user" (user_uid, username, full_name, email, role) '
+                    "VALUES (:uid, 'x2', 'X', 'x2@test', 'curator')"
+                ),
+                {"uid": generate_ulid()},
+            )
         session.flush()
 
     def test_deactivation_via_update_requires_timestamp(self, session: Session, curator_user_id: str) -> None:
         with pytest.raises(IntegrityError, match="ck_user_deactivation"):
             with audit_context(session, user_id=SYSTEM_USER_UID, reason="test"):
                 session.execute(
-                    text("UPDATE system_user SET is_active = false WHERE user_uid = :uid"),
+                    text('UPDATE "system_user" SET is_active = false WHERE user_uid = :uid'),
                     {"uid": curator_user_id},
                 )
             session.flush()

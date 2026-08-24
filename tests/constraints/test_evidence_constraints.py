@@ -15,6 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from .factories import (
+    fake_ulid,
     insert_compound,
     insert_data_source,
     insert_endpoint,
@@ -87,6 +88,19 @@ def _insert_measurement(session: Session, fx: dict[str, str], **overrides: objec
     )
 
 
+# Distinct, Crockford-safe labels per relation. A naive mapping such as "<" -> "LT"
+# is not usable: L is excluded from Crockford base32, so it is stripped, and "<"
+# and "<=" would then collide.
+_RELATION_LABELS = {
+    "=": "EQ",
+    "<": "REKT",
+    "<=": "REKTEQ",
+    ">": "GT",
+    ">=": "GTEQ",
+    "~": "APPROX",
+}
+
+
 class TestMeasurementNeverHoldsAPrediction:
     """ck_not_predicted: P4 as a database constraint, not a convention."""
 
@@ -107,7 +121,7 @@ class TestMeasurementNeverHoldsAPrediction:
         _insert_measurement(
             session,
             measurement_fixtures,
-            measurement_uid=f"M{evidence_type[:24]:0>25}",
+            measurement_uid=fake_ulid(f"M{evidence_type}"),
             evidence_type=evidence_type,
         )
         session.flush()  # must not raise
@@ -164,7 +178,7 @@ class TestCensoringPreserved:
         _insert_measurement(
             session,
             measurement_fixtures,
-            measurement_uid=f"M{relation.replace('=', 'EQ').replace('<', 'LT').replace('>', 'GT').replace('~', 'TL'):0>25}",
+            measurement_uid=fake_ulid(f"M{_RELATION_LABELS[relation]}"),
             value_relation=relation,
         )
         session.flush()  # must not raise
@@ -181,7 +195,7 @@ class TestMeasurementPartitioning:
         _insert_measurement(
             session,
             measurement_fixtures,
-            measurement_uid=f"M{tier.upper():0>25}",
+            measurement_uid=fake_ulid(f"M{tier}"),
             license_tier=tier,
             evidence_type="experimental" if tier != "black" else "expert_curated",
             is_commercial_ok=(tier != "black"),
@@ -193,7 +207,7 @@ class TestMeasurementPartitioning:
                 "SELECT tableoid::regclass::text FROM measurement "
                 "WHERE measurement_uid = :uid"
             ),
-            {"uid": f"M{tier.upper():0>25}"},
+            {"uid": fake_ulid(f"M{tier}")},
         ).scalar_one()
         assert partition == f"measurement_{tier}"
 

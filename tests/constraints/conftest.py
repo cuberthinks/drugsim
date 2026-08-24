@@ -140,7 +140,7 @@ def curator_user_id(session: Session) -> str:
     with audit_context(session, user_id=SYSTEM_USER_UID, reason="test fixture setup"):
         session.execute(
             text(
-                "INSERT INTO system_user (user_uid, username, full_name, email, role) "
+                'INSERT INTO "system_user" (user_uid, username, full_name, email, role) '
                 "VALUES (:uid, :username, 'Test Curator', 'curator@test.local', 'curator')"
             ),
             {"uid": user_id, "username": f"curator_{user_id[:8]}"},

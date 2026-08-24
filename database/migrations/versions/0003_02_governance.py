@@ -129,7 +129,7 @@ COMMENT ON COLUMN descriptor_spec.hbd_convention IS
 -- sign regulatory records — a real requirement now, because audit_log.changed_by
 -- and electronic_signature.signer_uid must reference someone.
 
-CREATE TABLE system_user (
+CREATE TABLE "system_user" (
     user_uid       ulid        PRIMARY KEY,
     username       TEXT        NOT NULL UNIQUE,
     full_name      TEXT        NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE system_user (
     CONSTRAINT ck_user_deactivation CHECK (is_active OR deactivated_at IS NOT NULL)
 );
 
-COMMENT ON TABLE system_user IS
+COMMENT ON TABLE "system_user" IS
     'Users are never hard-deleted (P8): is_active = false with the audit trail '
     'preserved. Under Part 11, an account whose actions are recorded cannot be '
     'removed.';
@@ -160,7 +160,7 @@ CREATE TABLE audit_log (
     operation        audit_op_t  NOT NULL,
     old_values       JSONB,
     new_values       JSONB,
-    changed_by       ulid        NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    changed_by       ulid        NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     change_reason    TEXT        NOT NULL,
     pipeline_version git_sha,
     PRIMARY KEY (audit_uid, occurred_at),
@@ -194,7 +194,7 @@ CREATE TABLE electronic_signature (
     signed_table      TEXT          NOT NULL,
     signed_record_pk  TEXT          NOT NULL,
     record_hash       sha256_hex    NOT NULL,
-    signer_uid        ulid          NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    signer_uid        ulid          NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     signature_meaning sig_meaning_t NOT NULL,
     signed_at         TIMESTAMPTZ   NOT NULL DEFAULT now(),
     signature_text    TEXT          NOT NULL,
@@ -208,7 +208,7 @@ COMMENT ON COLUMN electronic_signature.record_hash IS
     'signature/record linking: a signature is bound to specific content, so '
     'post-signature modification is detectable rather than merely prohibited.';
 
-COMMENT ON CONSTRAINT ck_user_deactivation ON system_user IS
+COMMENT ON CONSTRAINT ck_user_deactivation ON "system_user" IS
     'A user can only be deactivated (never deleted) — see table comment.';
 """
 

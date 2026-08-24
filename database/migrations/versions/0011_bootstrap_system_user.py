@@ -40,9 +40,9 @@ def upgrade() -> None:
     """Create the bootstrap 'system' service account."""
     op.execute(
         f"""
-        ALTER TABLE system_user DISABLE TRIGGER trg_audit_system_user;
+        ALTER TABLE "system_user" DISABLE TRIGGER trg_audit_system_user;
 
-        INSERT INTO system_user (user_uid, username, full_name, email, role, can_sign, is_active)
+        INSERT INTO "system_user" (user_uid, username, full_name, email, role, can_sign, is_active)
         VALUES (
             '{SYSTEM_USER_UID}',
             'system',
@@ -53,7 +53,7 @@ def upgrade() -> None:
             TRUE
         );
 
-        ALTER TABLE system_user ENABLE TRIGGER trg_audit_system_user;
+        ALTER TABLE "system_user" ENABLE TRIGGER trg_audit_system_user;
         """
     )
 

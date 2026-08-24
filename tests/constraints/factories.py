@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from drugsim_core.ids import generate_ulid
 
 __all__ = [
+    "fake_ulid",
     "insert_assay",
     "insert_compound",
     "insert_data_source",
@@ -258,6 +259,30 @@ def insert_assay(session: Session, source_id: str, snapshot_id: str) -> str:
     return assay_uid
 
 
+# Crockford base32 — the alphabet the ``ulid`` domain's CHECK constraint accepts.
+# Deliberately excludes I, L, O and U to prevent transcription errors, which is
+# why a label like "black" or "LT" cannot be dropped into a ULID column verbatim.
+_CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+
+
+def fake_ulid(label: str) -> str:
+    """Build a deterministic, syntactically valid ULID from an arbitrary label.
+
+    Tests want readable, stable ids (so a failure names the case that produced
+    it), but the ``ulid`` domain only accepts 26 uppercase Crockford base32
+    characters. Uppercasing and dropping the excluded letters keeps the id
+    recognisable without violating the domain.
+
+    Args:
+        label: Any human-readable string, e.g. an evidence type or licence tier.
+
+    Returns:
+        A 26-character string that satisfies the ``ulid`` domain constraint.
+    """
+    cleaned = "".join(c for c in label.upper() if c in _CROCKFORD)
+    return cleaned[:26].rjust(26, "0")
+
+
 def _fake_inchikey(seed: str) -> str:
     """Build a syntactically valid but scientifically meaningless InChIKey from a seed."""
     letters = "".join(c for c in seed.upper() if c.isalpha()) or "A"
@@ -277,7 +302,7 @@ def insert_model(
 ) -> str:
     """Insert a minimal model row and return its id."""
     model_uid = model_uid or generate_ulid()
-    model_name = model_name or f"model_{model_uid[:8]}"
+    model_name = model_name or f"model_{model_uid}"
     session.execute(
         text(
             "INSERT INTO model (model_uid, model_name, endpoint_id, methodology, "

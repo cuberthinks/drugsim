@@ -146,7 +146,7 @@ CREATE TABLE measurement (
     pipeline_version      git_sha          NOT NULL,
     drugsim_release       semver           NOT NULL,
     ingested_at           TIMESTAMPTZ      NOT NULL DEFAULT now(),
-    created_by            ulid             NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    created_by            ulid             NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     is_deleted            BOOLEAN          NOT NULL DEFAULT FALSE,
     deleted_reason        TEXT,
 

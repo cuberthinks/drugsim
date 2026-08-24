@@ -58,7 +58,7 @@ class TestCompoundIdentity:
                     "license_tier, is_commercial_ok, toolchain_id, pipeline_version, "
                     "drugsim_release, created_by) "
                     "VALUES (:uid, 'CCO', 'CCO', 'CCO', 'CCO', 'InChI=1S/x', "
-                    "'AAAAAAAAAAAAAA-BBBBBBBBBB-C', 'WRONGWRONGWR', 'C2H6O', "
+                    "'AAAAAAAAAAAAAA-BBBBBBBBBB-C', 'ZZZZZZZZZZZZZZ', 'C2H6O', "
                     "'not_applicable', mol_from_smiles('CCO'), "
                     "morganbv_fp(mol_from_smiles('CCO'), 2), :source_id, :snapshot_id, "
                     "'CC-BY-4.0', 'amber', true, :toolchain_id, :pv, '0.1.0', :created_by)"

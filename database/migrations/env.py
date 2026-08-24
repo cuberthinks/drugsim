@@ -36,11 +36,26 @@ target_metadata = None  # see module docstring
 
 
 def _database_url() -> str:
-    """Resolve the database URL from application settings.
+    """Resolve the database URL, preferring an explicit override.
+
+    An explicit ``sqlalchemy.url`` already set on the Alembic config (e.g.
+    by a test fixture pointing migrations at an ephemeral database) takes
+    precedence over application settings. Application settings are the
+    correct source for every real invocation -- a database password does
+    not belong in a committed file (TDS §7.6) -- but a caller that has
+    already resolved a specific URL itself must not be silently
+    overridden. Without this, tests/constraints/conftest.py's
+    ``cfg.set_main_option("sqlalchemy.url", url)`` had no effect at all:
+    migrations always ran against the default localhost settings instead
+    of the testcontainers-managed database, so the entire constraint
+    suite failed at fixture setup rather than exercising anything.
 
     Returns:
         A SQLAlchemy connection URL, including the password.
     """
+    explicit = config.get_main_option("sqlalchemy.url")
+    if explicit:
+        return explicit
     return get_settings().database_url
 
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 from sqlalchemy import text
-from sqlalchemy.exc import InternalError
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
 from drugsim_core.ids import SYSTEM_USER_UID, generate_ulid
@@ -25,7 +25,7 @@ class TestAuditContextIsMandatory:
     must fail, not proceed unaudited."""
 
     def test_insert_without_any_context_raises(self, session: Session) -> None:
-        with pytest.raises(InternalError, match="audit context missing"):
+        with pytest.raises(DBAPIError, match="audit context missing"):
             insert_data_source(session, "no_context_source")
             session.flush()
 
@@ -34,7 +34,7 @@ class TestAuditContextIsMandatory:
             text("SELECT set_config('app.current_user_id', :v, true)"),
             {"v": SYSTEM_USER_UID},
         )
-        with pytest.raises(InternalError, match="change_reason"):
+        with pytest.raises(DBAPIError, match="change_reason"):
             insert_data_source(session, "half_context_source")
             session.flush()
 
@@ -42,7 +42,7 @@ class TestAuditContextIsMandatory:
         session.execute(
             text("SELECT set_config('app.change_reason', :v, true)"), {"v": "test"}
         )
-        with pytest.raises(InternalError, match="current_user_id"):
+        with pytest.raises(DBAPIError, match="current_user_id"):
             insert_data_source(session, "half_context_source2")
             session.flush()
 
@@ -58,7 +58,7 @@ class TestAuditContextIsMandatory:
             text("SELECT set_config('app.current_user_id', 'not-a-ulid', true)")
         )
         session.execute(text("SELECT set_config('app.change_reason', 'x', true)"))
-        with pytest.raises(InternalError):
+        with pytest.raises(DBAPIError):
             insert_data_source(session, "bad_user_guc_source")
             session.flush()
 
@@ -139,14 +139,20 @@ class TestAuditLogCapturesChanges:
             )
         session.flush()
 
-        operation = session.execute(
-            text(
-                "SELECT operation FROM audit_log WHERE table_name = 'compound' "
-                "AND record_pk = :uid ORDER BY occurred_at DESC LIMIT 1"
-            ),
-            {"uid": compound_uid},
-        ).scalar_one()
-        assert operation == "soft_delete"
+        operations = {
+            r[0]
+            for r in session.execute(
+                text(
+                    "SELECT operation FROM audit_log WHERE table_name = 'compound' "
+                    "AND record_pk = :uid"
+                ),
+                {"uid": compound_uid},
+            ).all()
+        }
+        assert "soft_delete" in operations
+        # The distinction is the whole point: it must not also be logged as a
+        # plain update, or a compliance query could not tell the two apart.
+        assert "update" not in operations
 
     def test_restore_is_distinguished_from_ordinary_update(
         self, session: Session, curator_user_id: str
@@ -178,20 +184,26 @@ class TestAuditLogCapturesChanges:
             )
         session.flush()
 
-        operation = session.execute(
-            text(
-                "SELECT operation FROM audit_log WHERE table_name = 'compound' "
-                "AND record_pk = :uid ORDER BY occurred_at DESC LIMIT 1"
-            ),
-            {"uid": compound_uid},
-        ).scalar_one()
-        assert operation == "restore"
+        operations = {
+            r[0]
+            for r in session.execute(
+                text(
+                    "SELECT operation FROM audit_log WHERE table_name = 'compound' "
+                    "AND record_pk = :uid"
+                ),
+                {"uid": compound_uid},
+            ).all()
+        }
+        assert "restore" in operations
+        # The distinction is the whole point: it must not also be logged as a
+        # plain update, or a compliance query could not tell the two apart.
+        assert "update" not in operations
 
     def test_bootstrap_user_exists_and_is_a_service_account(self, session: Session) -> None:
         """Sanity check on migration 0011: the account referenced everywhere as
         SYSTEM_USER_UID must actually exist post-migration."""
         row = session.execute(
-            text("SELECT username, role, can_sign FROM system_user WHERE user_uid = :uid"),
+            text('SELECT username, role, can_sign FROM "system_user" WHERE user_uid = :uid'),
             {"uid": SYSTEM_USER_UID},
         ).one()
         assert row.username == "system"

@@ -40,7 +40,7 @@ CREATE TABLE ingestion_run (
     started_at            TIMESTAMPTZ        NOT NULL DEFAULT now(),
     completed_at          TIMESTAMPTZ,
     error_summary         TEXT,
-    started_by            ulid               NOT NULL REFERENCES system_user (user_uid) ON DELETE RESTRICT,
+    started_by            ulid               NOT NULL REFERENCES "system_user" (user_uid) ON DELETE RESTRICT,
     CONSTRAINT ck_completed_after_started
         CHECK (completed_at IS NULL OR completed_at >= started_at),
     CONSTRAINT ck_terminal_status_requires_completion

@@ -131,7 +131,7 @@ CREATE TRIGGER trg_audit_compound
     FOR EACH ROW EXECUTE FUNCTION audit_row_change('compound_uid');
 
 CREATE TRIGGER trg_audit_system_user
-    AFTER INSERT OR UPDATE ON system_user
+    AFTER INSERT OR UPDATE ON "system_user"
     FOR EACH ROW EXECUTE FUNCTION audit_row_change('user_uid');
 
 CREATE TRIGGER trg_audit_data_source
