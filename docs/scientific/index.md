@@ -11,7 +11,7 @@ This page summarises DrugSim's scientific status as of v1.0. It is a curated poi
 | Dataset size | 9,589 compounds | 5,344 compounds |
 | Training-set size | 6,792 | 3,767 |
 | Scaffold-split test ROC-AUC | 0.7875 | 0.7995 (95% CI 0.759–0.838) |
-| External validation | Not performed (disclosed gap) | Performed — 12,152 disjoint TDC compounds, ROC-AUC 0.7758 |
+| External validation | Performed — PubChem AID 588834, 4,030 compounds, ROC-AUC 0.8696 | Performed — 12,152 disjoint TDC compounds, ROC-AUC 0.7758 |
 | Weakest metric | — | Specificity 0.4052 (real, disclosed) |
 | Promotion status | VALIDATED FOR INTERNAL RESEARCH | VALIDATED FOR INTERNAL RESEARCH |
 

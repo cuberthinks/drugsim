@@ -27,7 +27,7 @@ Both endpoints passed the same promotion gate on independently-evaluated evidenc
 ## Known limitations
 
 - **CYP3A4's specificity (0.4052) is a real, disclosed weakness** — the model has an asymmetric tendency to over-call "inhibitor." Always shown with its full reliability context, never as a bare label.
-- **hERG has no external validation** — TDC's download endpoint was unreachable from the training environment at the time (documented since Phase 3). CYP3A4 does have a genuine external validation (12,152 disjoint compounds).
+- **hERG's external validation uses PubChem directly, not TDC** — TDC's own hERG download endpoint remains unreachable from this environment, so no TDC-canonical benchmark split exists for this dataset. A genuine independent validation was still performed via PubChem AID 588834 (NCATS qHTS screen, 4,030 disjoint compounds, ROC-AUC 0.8696) — strong ranking generalization, but its fixed decision threshold does not adapt to the external set's much lower prevalence (precision 0.22 there). CYP3A4's external validation uses TDC instead (12,152 disjoint compounds, ROC-AUC 0.7758).
 - **Both endpoints' 10 µM thresholds are literature screening conventions**, not fixed biological or regulatory boundaries.
 - **DrugSim covers exactly two endpoints.** It says nothing about any other ADMET property, drug-likeness, target engagement, efficacy, or clinical outcome.
 - **Not a whole-organism simulation.** The two endpoints are never combined, and no version of this product implies they represent a complete picture of a compound's behaviour in a human body.

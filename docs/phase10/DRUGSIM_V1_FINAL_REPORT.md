@@ -22,7 +22,7 @@ Both endpoints are `VALIDATED FOR INTERNAL RESEARCH`, held to the same bar:
 | Balanced accuracy | 0.6495 | 0.6520 |
 | Conformal empirical coverage (target 90%) | 89.88% | 89.76% |
 | Applicability domain | Monotonic degradation confirmed | Monotonic degradation confirmed |
-| External validation | Not performed (disclosed gap) | Performed — 12,152 disjoint compounds |
+| External validation | Performed — PubChem AID 588834, 4,030 compounds, ROC-AUC 0.8696 | Performed — 12,152 disjoint compounds |
 
 Full detail, re-verified against the live model registry (fresh checksum verification, not cached claims): [`final-scientific-audit.md`](final-scientific-audit.md).
 
@@ -81,7 +81,8 @@ Both endpoints share the same standardisation pipeline (`drugsim_chem`), the sam
 - Validation: ROC-AUC 0.7875, balanced accuracy 0.6495 (scaffold-split test, n=800)
 - Applicability domain: 2-signal in-domain 75.4% → borderline 66.9% → out-of-domain 58.2% accuracy (monotonic)
 - Uncertainty: split conformal, 89.88% empirical coverage at 90% nominal target
-- Limitations: no external validation performed (disclosed since Phase 3); 10 µM threshold is a literature convention
+- External validation: PubChem AID 588834 (NCATS qHTS hERG screen), 4,030 genuinely disjoint compounds (2.75% training overlap by InChIKey), ROC-AUC 0.8696 — higher than internal test, real evidence the ranking signal generalizes
+- Limitations: the fixed 0.5 decision threshold does not adapt to the external set's much lower prevalence (~9% vs. ~66% training) — precision drops to 0.22 there despite strong ranking; 10 µM threshold is a literature convention; TDC's own hERG download endpoint remains unreachable from this environment, so no TDC-canonical benchmark split exists for this dataset (PubChem was used directly instead)
 - Release status: **VALIDATED FOR INTERNAL RESEARCH**
 
 ### CYP3A4 inhibition
@@ -100,7 +101,7 @@ No endpoint in this release carries `EXPERIMENTAL` or `REJECTED` status. The mec
 ## Known Limitations
 
 - CYP3A4's specificity (0.4052) is a real, asymmetric over-calling of "inhibitor" — the weakest metric of any endpoint in the system.
-- hERG has no external validation (a pre-existing, disclosed gap since Phase 3/4 — TDC's endpoint was unreachable from the original training environment).
+- hERG's external validation (PubChem AID 588834, ROC-AUC 0.8696) shows strong ranking generalization but a fixed threshold that does not adapt to the external set's much lower prevalence — precision drops to 0.22 there, a real, disclosed limitation of the threshold, not of validation coverage. TDC's own hERG download endpoint remains unreachable from this environment, so no TDC-canonical benchmark split exists for this dataset — a narrower, still-true gap.
 - Both endpoints' 10 µM thresholds are literature screening conventions, not fixed biological or regulatory boundaries.
 - DrugSim covers exactly two narrow endpoints. It says nothing about any other ADMET property, drug-likeness, target engagement, efficacy, or clinical outcome, and its two endpoints are never combined into a single score or an implied whole-organism picture.
 - Operational: no per-user data isolation (shared API key, not multi-tenant identity); in-memory, non-distributed rate limiting; no real TLS domain provisioned in this environment; no committed dependency lockfile (interim snapshot only); database migrations verified structurally but not executed against a live Postgres in this sandbox (no Docker daemon available here, same as Phase 8).

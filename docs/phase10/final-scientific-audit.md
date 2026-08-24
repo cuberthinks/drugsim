@@ -23,8 +23,8 @@ Two endpoints are registered. Both are audited below. **Neither is downgraded or
 | Leakage checks | Duplicate/scaffold/preprocessing/target leakage: PASS. Near-duplicate (15 pairs, 1.88% of test) and exact-feature-collision (3/800) reviewed and documented, not silently ignored. Y-scrambling: real model 0.8394 vs. scrambled mean 0.489 ± 0.043 — collapses to chance as required. |
 | Applicability domain | 3-signal (Tanimoto + k-NN descriptor distance + scaffold-seen), with a 2-signal supplementary verdict since scaffold-seen is tautologically false on any scaffold-holdout test. 2-signal accuracy: in-domain 75.4% (n=500), borderline 66.9% (n=166), out-of-domain 58.2% (n=134) — monotonic. |
 | Uncertainty methodology | Split conformal prediction, nonconformity = 1 − P(candidate class), calibrated on split group 7 (n=976, touched once). Nominal confidence 90%, empirical coverage 89.88% — within tolerance. Post-hoc calibration (Platt, isotonic) evaluated and found not to improve on raw `predict_proba`; raw is used. |
-| External validation status | **Not performed for hERG** — TDC's own download endpoint was unreachable from the training environment at the time Phase 3/4 ran (documented in `evaluate.py`'s own docstring). This gap is real and disclosed, not hidden. |
-| Known limitations | Single endpoint, computational estimate only, 10 µM threshold is a convention, no external validation performed, applicability domain's 3-signal `in_domain` verdict is structurally unreachable on a scaffold-holdout test set (by design of ADR-009, not a defect). |
+| External validation status | **Performed** — PubChem AID 588834 ("qHTS Assay for Small Molecule Inhibitors of the Human hERG Channel Activity", NCATS), 4,030 genuinely disjoint compounds after exclusions (2.75% training overlap, checked by InChIKey), independent lab/assay technology/data pipeline from ChEMBL. ROC-AUC 0.8696 excluding overlap — higher than internal test, real evidence the ranking signal generalizes. The fixed 0.5 decision threshold does not adapt to this set's much lower prevalence (~9% vs. ~66% training): precision drops to 0.22 there. TDC's own hERG download endpoint remains unreachable from this environment, so no TDC-canonical benchmark split exists for this dataset — a narrower, still-true gap; PubChem was used directly instead (documented in `phase4/04_external_validation.py`). |
+| Known limitations | Single endpoint, computational estimate only, 10 µM threshold is a convention, external validation's fixed threshold does not adapt to a lower-prevalence population (precision 0.22 there despite strong ranking), applicability domain's 3-signal `in_domain` verdict is structurally unreachable on a scaffold-holdout test set (by design of ADR-009, not a defect). |
 | Promotion status | **VALIDATED FOR INTERNAL RESEARCH** |
 
 ---
@@ -60,10 +60,10 @@ Both endpoints are held to the *same* standard, not two different bars:
 | Scaffold-split test ROC-AUC | 0.7875 | 0.7995 |
 | Scaffold-split test balanced accuracy | 0.6495 | 0.6520 |
 | Conformal empirical coverage (target 90%) | 89.88% | 89.76% |
-| External validation | Not performed (documented gap) | Performed, consistent with internal test |
+| External validation | Performed — PubChem AID 588834, ROC-AUC 0.8696 | Performed — TDC `CYP3A4_Veith`, ROC-AUC 0.7758, consistent with internal test |
 | Applicability domain behaviour | Monotonic degradation confirmed | Monotonic degradation confirmed |
 
-CYP3A4 is not a weaker model admitted on a lowered bar — on the platform's own historical metric (scaffold-split ROC-AUC), it is marginally *stronger* than the original hERG model, and unlike hERG it has a genuine external validation result. Its specificity weakness is a real, disclosed limitation, not evidence the promotion decision was wrong — hERG has its own disclosed gap (no external validation at all).
+CYP3A4 is not a weaker model admitted on a lowered bar — on the platform's own historical metric (scaffold-split ROC-AUC), it is marginally *stronger* than the original hERG model, and both endpoints now carry a genuine external validation result from an independent source (PubChem directly for hERG, since TDC's own hERG download endpoint remains unreachable from this environment; TDC's `CYP3A4_Veith` for CYP3A4). Its specificity weakness is a real, disclosed limitation, not evidence the promotion decision was wrong — hERG carries its own disclosed limitation instead: a fixed decision threshold that does not adapt to its external set's much lower prevalence (precision 0.22 there, despite ROC-AUC 0.8696).
 
 ## Audit conclusion
 
