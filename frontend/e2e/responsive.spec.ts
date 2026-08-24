@@ -27,6 +27,7 @@ const STATIC_PAGES = [
   "/compare",
   "/changelog",
   "/sources",
+  "/benchmarks",
 ];
 
 for (const path of STATIC_PAGES) {

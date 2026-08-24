@@ -1,7 +1,10 @@
 /// <reference types="vitest/config" />
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+
+const repoRoot = fileURLToPath(new URL('..', import.meta.url))
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -14,6 +17,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+    },
+    fs: {
+      // The benchmark registry test reads real evaluation reports from
+      // outside frontend/ (models/, datasets/) to catch drift from the
+      // source of truth -- allow the dev/test server to serve those paths.
+      allow: [repoRoot],
     },
   },
   test: {

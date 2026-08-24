@@ -11,6 +11,7 @@ import { HistoryPage } from "./pages/HistoryPage";
 import { ComparePage } from "./pages/ComparePage";
 import { ChangelogPage } from "./pages/ChangelogPage";
 import { SourcesPage } from "./pages/SourcesPage";
+import { BenchmarkPage } from "./pages/BenchmarkPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="compare" element={<ComparePage />} />
           <Route path="changelog" element={<ChangelogPage />} />
           <Route path="sources" element={<SourcesPage />} />
+          <Route path="benchmarks" element={<BenchmarkPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
