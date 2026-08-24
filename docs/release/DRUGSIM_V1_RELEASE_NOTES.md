@@ -32,6 +32,7 @@ Both endpoints passed the same promotion gate on independently-evaluated evidenc
 - **DrugSim covers exactly two endpoints.** It says nothing about any other ADMET property, drug-likeness, target engagement, efficacy, or clinical outcome.
 - **Not a whole-organism simulation.** The two endpoints are never combined, and no version of this product implies they represent a complete picture of a compound's behaviour in a human body.
 - Operational limitations (no per-user data isolation, in-memory rate limiting, no real TLS domain in this environment, no committed dependency lockfile) are unchanged from Phase 8 — see [`../deployment/index.md`](../deployment/index.md).
+- **Licensing: ChEMBL's ShareAlike terms and the trained model weights — unresolved.** Both live endpoints train directly on ChEMBL data (CC BY-SA 3.0). Whether that copyleft reaches the trained weights and predictions is a genuinely unsettled legal question, flagged as a must-resolve-before-Phase-3 gate in the original risk register (`docs/tds/10-risk-register.md`, R1) but never actually resolved — no legal opinion was obtained, and no later phase re-raised it. This requires a specific legal opinion, not further engineering.
 
 ## Scientific disclaimer
 
