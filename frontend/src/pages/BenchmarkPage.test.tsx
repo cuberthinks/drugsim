@@ -29,11 +29,42 @@ describe("BenchmarkPage", () => {
     expect(screen.getAllByText(/\(v1\)/).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("never renders a numeric score for GPT or Claude -- only 'Not evaluated'", () => {
+  it("never renders a numeric score for GPT or Claude in the validated AI-comparison table -- only 'Not evaluated'", () => {
     setup();
     const notEvaluated = screen.getAllByText(/not evaluated/i);
-    // 2 benchmarks x 2 models x 3 metric rows = 12 "Not evaluated" badges minimum.
+    // 2 benchmarks x 2 models x 3 metric rows = 12 "Not evaluated" badges minimum
+    // in the aggregate table, plus "GPT: not evaluated" once per example-case card.
     expect(notEvaluated.length).toBeGreaterThanOrEqual(12);
+
+    // Scope specifically to each benchmark's aggregate comparison table -- the
+    // one requiring the documented protocol against DrugSim's own held-out test
+    // set -- and assert no digit ever appears in a GPT/Claude cell there.
+    const headings = screen.getAllByRole("heading", { name: /DrugSim vs\. general-purpose AI/i });
+    expect(headings.length).toBeGreaterThan(0);
+    for (const heading of headings) {
+      const card = heading.closest(".card");
+      expect(card).not.toBeNull();
+      const gptClaudeCells = Array.from(card!.querySelectorAll("div")).filter(
+        (el) => el.textContent === "Not evaluated",
+      );
+      expect(gptClaudeCells.length).toBe(6); // 2 models x 3 metric rows, every one a badge, never a number
+    }
+  });
+
+  it("labels the individual-case Claude spot-check as an informal, single-run estimate -- never a validated metric", () => {
+    setup();
+    // Three of the four example compounds have a genuine single-run estimate;
+    // each must say so explicitly, not present the number as validated.
+    expect(screen.getByText(/Claude \(claude-sonnet-5, single-run spot-check\): non-blocker \(90% self-reported\)/)).toBeInTheDocument();
+    expect(screen.getByText(/Claude \(claude-sonnet-5, single-run spot-check\): blocker \(80% self-reported\)/)).toBeInTheDocument();
+    expect(screen.getByText(/Claude \(claude-sonnet-5, single-run spot-check\): non-blocker \(88% self-reported\)/)).toBeInTheDocument();
+    // Dofetilide's ground truth was seen before a prediction could be made, so
+    // it must show unavailable, never a fabricated or retrofitted estimate.
+    expect(screen.getByText(/Claude \(claude-sonnet-5\): no blind estimate available/)).toBeInTheDocument();
+    // The section-level disclosure must be present, not just a per-card tooltip.
+    expect(
+      screen.getByText(/does not fill in the .Not evaluated. cells above/i),
+    ).toBeInTheDocument();
   });
 
   it("displays uncertainty and applicability domain for individual example cases", () => {

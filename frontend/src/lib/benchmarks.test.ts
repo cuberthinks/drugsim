@@ -140,3 +140,39 @@ describe("individual molecule explorer uses only public, non-confidential compou
     }
   });
 });
+
+describe("Claude spot-check is a disclosed single run, never a fabricated or retrofitted estimate", () => {
+  it("every spot-check names a real, versioned model identifier and a run date", () => {
+    for (const c of EXAMPLE_CASE_PREDICTIONS) {
+      expect(c.claudeSpotCheck.modelIdentifier).toBe("claude-sonnet-5");
+      expect(c.claudeSpotCheck.runDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+  });
+
+  it("a compound is either genuinely predicted or explicitly marked unavailable, never both and never neither", () => {
+    for (const c of EXAMPLE_CASE_PREDICTIONS) {
+      const hasPrediction = c.claudeSpotCheck.predictedLabel !== null;
+      const hasReason = c.claudeSpotCheck.notAvailableReason !== null;
+      expect(hasPrediction).toBe(!hasReason);
+      if (hasPrediction) {
+        expect(c.claudeSpotCheck.confidencePercent).toBeGreaterThan(0);
+        expect(c.claudeSpotCheck.confidencePercent).toBeLessThanOrEqual(100);
+      } else {
+        expect(c.claudeSpotCheck.confidencePercent).toBeNull();
+      }
+    }
+  });
+
+  it("Dofetilide's spot-check is unavailable -- its answer was seen before a prediction could be made", () => {
+    const dofetilide = EXAMPLE_CASE_PREDICTIONS.find((c) => c.compoundName === "Dofetilide")!;
+    expect(dofetilide.claudeSpotCheck.predictedLabel).toBeNull();
+    expect(dofetilide.claudeSpotCheck.notAvailableReason).toMatch(/seen before/i);
+  });
+
+  it("matches the exact values recorded during the session that produced them", () => {
+    const byName = Object.fromEntries(EXAMPLE_CASE_PREDICTIONS.map((c) => [c.compoundName, c.claudeSpotCheck]));
+    expect(byName["Aspirin"]).toMatchObject({ predictedLabel: "non_blocker", confidencePercent: 90 });
+    expect(byName["Terfenadine"]).toMatchObject({ predictedLabel: "blocker", confidencePercent: 80 });
+    expect(byName["Paracetamol"]).toMatchObject({ predictedLabel: "non_blocker", confidencePercent: 88 });
+  });
+});

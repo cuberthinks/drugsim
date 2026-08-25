@@ -5,6 +5,7 @@ import {
   OVERALL_DATABASE_SCALE,
   type ApplicabilityDomainTier,
   type Benchmark,
+  type ClaudeSpotCheckResult,
 } from "../lib/benchmarks";
 
 function pct(x: number | null | undefined, digits = 1): string {
@@ -21,6 +22,24 @@ function NotEvaluated({ reason }: { reason: string }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-paper-alt px-2.5 py-0.5 font-mono text-[11px] font-medium tracking-wide text-ink-soft uppercase" title={reason}>
       Not evaluated
+    </span>
+  );
+}
+
+function ClaudeSpotCheckNote({ spotCheck }: { spotCheck: ClaudeSpotCheckResult }) {
+  if (spotCheck.predictedLabel === null) {
+    return (
+      <span title={spotCheck.notAvailableReason ?? undefined}>
+        Claude ({spotCheck.modelIdentifier}): no blind estimate available
+      </span>
+    );
+  }
+  return (
+    <span
+      title={`Single run, SMILES only (compound name withheld until after the prediction), ${spotCheck.runDate}. Not the repeated-run protocol in docs/benchmarks/ai-comparison-protocol.md -- an informal spot-check, not a validated result.`}
+    >
+      Claude ({spotCheck.modelIdentifier}, single-run spot-check): {spotCheck.predictedLabel.replace("_", "-")} (
+      {spotCheck.confidencePercent}% self-reported)
     </span>
   );
 }
@@ -301,7 +320,7 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
             <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">Claude</div>
 
             <div className="text-ink-soft">ROC-AUC</div>
-            <div className="font-mono text-ink">{num3(benchmark.scaffoldSplitTest.rocAuc)}</div>
+            <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.rocAuc)}</div>
             <div><NotEvaluated reason={benchmark.aiComparison.gpt.notEvaluatedReason} /></div>
             <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
 
@@ -311,7 +330,7 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
             <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
 
             <div className="text-ink-soft">F1</div>
-            <div className="font-mono text-ink">{num3(benchmark.scaffoldSplitTest.f1)}</div>
+            <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.f1)}</div>
             <div><NotEvaluated reason={benchmark.aiComparison.gpt.notEvaluatedReason} /></div>
             <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
           </div>
@@ -389,6 +408,13 @@ export function BenchmarkPage() {
             structure. Ground truth is public pharmacological knowledge, cited per compound, not DrugSim's own
             private training or test data.
           </p>
+          <p className="mt-2 text-xs leading-relaxed text-ink-soft">
+            Each card also shows a single Claude prediction made directly in a development session — SMILES only,
+            compound name withheld until after the answer was recorded. This is <strong>not</strong> the documented
+            AI-comparison protocol (one run, not three; no temperature control) and does not fill in the "Not
+            evaluated" cells above, which require a full run against DrugSim's own held-out test set. It's an
+            informal spot-check on four illustrative compounds, shown for transparency, not a validated result.
+          </p>
         </div>
         {EXAMPLE_CASE_PREDICTIONS.map((c) => (
           <div key={c.compoundName} className="card p-5">
@@ -422,9 +448,13 @@ export function BenchmarkPage() {
               </div>
             </dl>
             <p className="mt-2 text-xs leading-relaxed text-ink-soft">{c.groundTruthSource}</p>
-            <p className="mt-2 font-mono text-[10px] text-ink-soft">
-              GPT: not evaluated · Claude: not evaluated · live prediction captured {c.evaluatedAt}
-            </p>
+            <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1 font-mono text-[10px] text-ink-soft">
+              <span>GPT: not evaluated</span>
+              <span>·</span>
+              <ClaudeSpotCheckNote spotCheck={c.claudeSpotCheck} />
+              <span>·</span>
+              <span>live prediction captured {c.evaluatedAt}</span>
+            </div>
           </div>
         ))}
       </section>

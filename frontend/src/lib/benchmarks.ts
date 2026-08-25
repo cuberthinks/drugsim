@@ -341,6 +341,25 @@ export const OVERALL_DATABASE_SCALE = {
   targets: 18_552,
 };
 
+/**
+ * A single, unreplicated Claude prediction made directly in a development
+ * conversation -- SMILES only, compound name withheld until after the
+ * prediction was recorded, matching the "no identifying metadata" rule in
+ * docs/benchmarks/ai-comparison-protocol.md. It is NOT that protocol: one run
+ * per compound rather than three, no temperature control, no fresh session
+ * per run. This is an informal spot-check on four illustrative compounds, not
+ * a validated result -- it does not fill in the "Not evaluated" cells in the
+ * DrugSim vs. general-purpose AI table above, which require the full
+ * protocol run against DrugSim's actual held-out test set.
+ */
+export interface ClaudeSpotCheckResult {
+  predictedLabel: "blocker" | "non_blocker" | null;
+  confidencePercent: number | null;
+  modelIdentifier: string;
+  runDate: string;
+  notAvailableReason: string | null;
+}
+
 export interface ExampleCasePrediction {
   compoundName: string;
   smiles: string;
@@ -355,6 +374,7 @@ export interface ExampleCasePrediction {
   maxTanimotoToTraining: number;
   correct: boolean;
   evaluatedAt: string;
+  claudeSpotCheck: ClaudeSpotCheckResult;
 }
 
 /**
@@ -382,6 +402,13 @@ export const EXAMPLE_CASE_PREDICTIONS: ExampleCasePrediction[] = [
     maxTanimotoToTraining: 0.3208,
     correct: true,
     evaluatedAt: "2026-08-24",
+    claudeSpotCheck: {
+      predictedLabel: "non_blocker",
+      confidencePercent: 90,
+      modelIdentifier: "claude-sonnet-5",
+      runDate: "2026-08-25",
+      notAvailableReason: null,
+    },
   },
   {
     compoundName: "Terfenadine",
@@ -397,6 +424,13 @@ export const EXAMPLE_CASE_PREDICTIONS: ExampleCasePrediction[] = [
     maxTanimotoToTraining: 0.8913,
     correct: true,
     evaluatedAt: "2026-08-24",
+    claudeSpotCheck: {
+      predictedLabel: "blocker",
+      confidencePercent: 80,
+      modelIdentifier: "claude-sonnet-5",
+      runDate: "2026-08-25",
+      notAvailableReason: null,
+    },
   },
   {
     compoundName: "Dofetilide",
@@ -412,6 +446,13 @@ export const EXAMPLE_CASE_PREDICTIONS: ExampleCasePrediction[] = [
     maxTanimotoToTraining: 0.4308,
     correct: true,
     evaluatedAt: "2026-08-24",
+    claudeSpotCheck: {
+      predictedLabel: null,
+      confidencePercent: null,
+      modelIdentifier: "claude-sonnet-5",
+      runDate: "2026-08-25",
+      notAvailableReason: "Ground truth for this compound was seen before an independent prediction could be made, so no genuine blind estimate exists for it.",
+    },
   },
   {
     compoundName: "Paracetamol",
@@ -427,5 +468,12 @@ export const EXAMPLE_CASE_PREDICTIONS: ExampleCasePrediction[] = [
     maxTanimotoToTraining: 0.4211,
     correct: true,
     evaluatedAt: "2026-08-24",
+    claudeSpotCheck: {
+      predictedLabel: "non_blocker",
+      confidencePercent: 88,
+      modelIdentifier: "claude-sonnet-5",
+      runDate: "2026-08-25",
+      notAvailableReason: null,
+    },
   },
 ];

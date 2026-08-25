@@ -96,3 +96,26 @@ production API (`https://drugsim-predict-api.onrender.com/predict`). Values
 will differ if the model is ever retrained — `evaluatedAt` on each entry in
 `frontend/src/lib/benchmarks.ts` records exactly when these specific numbers
 were captured, not a claim that they are permanent.
+
+## Individual molecule explorer — Claude spot-check
+
+Each card also carries a single Claude prediction (`claudeSpotCheck` in
+`frontend/src/lib/benchmarks.ts`), recorded 2026-08-25 directly in a
+development conversation: canonical SMILES only, with the compound name
+withheld until after the prediction was made, matching the
+"no identifying metadata" rule in `ai-comparison-protocol.md`. It is **not**
+that protocol — one run per compound, not three; no temperature control; no
+fresh session per run — and it does not fill in the aggregate table's
+"Not evaluated" cells above, which require the full protocol run against
+DrugSim's own held-out test set. Aspirin, Terfenadine, and Paracetamol have a
+genuine blind estimate. Dofetilide does not: its ground truth was seen
+(while retrieving its file entry) before an independent prediction could be
+made, so `predictedLabel` is `null` and `notAvailableReason` states why,
+rather than a retrofitted or estimated value standing in for a real one.
+
+A GPT dataset was separately proposed for this same purpose but not used: the
+compound name had been disclosed to GPT alongside the SMILES, which risks
+recall of a well-known public fact about the drug (e.g. Terfenadine's 1998
+market withdrawal) rather than structure-based reasoning — exactly what the
+protocol's "no identifying metadata" rule exists to prevent. GPT remains
+**not evaluated** anywhere on this page.
