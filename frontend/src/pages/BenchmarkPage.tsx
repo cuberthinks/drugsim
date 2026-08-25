@@ -15,6 +15,15 @@ function pct(x: number | null | undefined, digits = 1): string {
   return `${(x * 100).toFixed(digits)}%`;
 }
 
+/** Short endpoint label for section headings that repeat once per benchmark
+ * (e.g. "DrugSim vs. general-purpose AI") -- without this, two identically-
+ * titled sections on one page read as duplicates rather than two distinct
+ * endpoints' results. */
+const ENDPOINT_SHORT_LABEL: Record<string, string> = {
+  herg_inhibition: "hERG",
+  cyp3a4_inhibition: "CYP3A4",
+};
+
 function num3(x: number | null | undefined): string {
   if (x === null || x === undefined) return "—";
   return x.toFixed(3);
@@ -334,7 +343,9 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
 
       {/* AI comparison */}
       <div className="card min-w-0 p-6">
-        <h3 className="font-display text-base font-semibold text-ink">DrugSim vs. general-purpose AI</h3>
+        <h3 className="font-display text-base font-semibold text-ink">
+          {ENDPOINT_SHORT_LABEL[benchmark.endpointId] ?? benchmark.endpointId} — DrugSim vs. general-purpose AI
+        </h3>
         <div className="mt-3 overflow-x-auto">
           <div className="grid min-w-[480px] grid-cols-4 gap-2 text-sm">
             <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">Metric</div>

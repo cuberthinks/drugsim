@@ -45,6 +45,12 @@ describe("BenchmarkPage", () => {
     }
   });
 
+  it("each benchmark's AI-comparison table is labeled with its own endpoint, not two identically-titled sections", () => {
+    setup();
+    expect(screen.getByRole("heading", { name: /^hERG — DrugSim vs\. general-purpose AI$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^CYP3A4 — DrugSim vs\. general-purpose AI$/i })).toBeInTheDocument();
+  });
+
   it("hERG's Claude column in the aggregate table is 'Not evaluated' -- only the informal sections cover hERG", () => {
     setup();
     const heading = screen.getByRole("heading", { name: /^hERG \(KCNH2\/Kv11\.1\) cardiac channel inhibition$/i });
