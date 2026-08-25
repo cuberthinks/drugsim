@@ -7,6 +7,7 @@ import cypExternalValidationReport from "../../../models/admet/cyp3a4_inhibition
 import registryYaml from "../../../datasets/registry.yaml?raw";
 import claudeSubsetReport from "../../../models/admet/herg_inhibition/claude_informal_subset_evaluation.json";
 import cypClaudeFullEvaluation from "../../../models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json";
+import hergClaudeFullEvaluation from "../../../models/admet/herg_inhibition/claude_full_test_set_evaluation.json";
 import { BENCHMARKS, CLAUDE_HERG_SUBSET_EVALUATION, EXAMPLE_CASE_PREDICTIONS, OVERALL_DATABASE_SCALE } from "./benchmarks";
 
 /**
@@ -145,11 +146,55 @@ describe("no fabricated AI comparison data", () => {
     expect(report.compounds).toHaveLength(459);
   });
 
-  it("hERG's Claude aggregate result stays 'Not evaluated' -- only the 4/30-compound informal sections cover hERG", () => {
+  it("hERG's real Claude evaluation matches the source file exactly", () => {
     const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
-    expect(herg.aiComparison.claude.notEvaluatedReason).not.toBeNull();
-    expect(herg.aiComparison.claude.rocAuc).toBeNull();
+    const report = hergClaudeFullEvaluation as unknown as {
+      n: number;
+      roc_auc: number;
+      balanced_accuracy: number;
+      f1: number;
+      compounds: unknown[];
+    };
+    expect(herg.aiComparison.claude.rocAuc).toBe(report.roc_auc);
+    expect(herg.aiComparison.claude.accuracy).toBe(report.balanced_accuracy);
+    expect(herg.aiComparison.claude.f1).toBe(report.f1);
+    expect(herg.aiComparison.claude.n).toBe(report.n);
+    expect(report.compounds).toHaveLength(800);
   });
+
+  it("hERG's full-test-set Claude result is lower than DrugSim's own -- shown as-is, not softened", () => {
+    const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
+    expect(herg.aiComparison.claude.rocAuc).toBeLessThan(herg.scaffoldSplitTest.rocAuc);
+    expect(herg.aiComparison.claude.accuracy).toBeLessThan(herg.scaffoldSplitTest.balancedAccuracy);
+    expect(herg.aiComparison.claude.f1).toBeLessThan(herg.scaffoldSplitTest.f1);
+  });
+
+  it.each([
+    ["hERG (800)", hergClaudeFullEvaluation, "blocker"],
+    ["CYP3A4 (459)", cypClaudeFullEvaluation, "inhibitor"],
+  ])(
+    "%s: the raw per-compound outcomes independently recompute to the same confusion matrix -- catches drift between raw results and summary numbers",
+    (_label, reportRaw, positiveLabel) => {
+      const report = reportRaw as unknown as {
+        n: number;
+        tp: number;
+        fp: number;
+        fn: number;
+        tn: number;
+        compounds: { true_label: string; prediction: string; outcome: string }[];
+      };
+      expect(report.compounds).toHaveLength(report.n);
+      const counts = { TP: 0, FP: 0, FN: 0, TN: 0 };
+      for (const c of report.compounds) {
+        const truePos = c.true_label === positiveLabel;
+        const predPos = c.prediction === positiveLabel;
+        const expectedOutcome = truePos === predPos ? (truePos ? "TP" : "TN") : truePos ? "FN" : "FP";
+        expect(c.outcome).toBe(expectedOutcome);
+        counts[c.outcome as keyof typeof counts]++;
+      }
+      expect(counts).toEqual({ TP: report.tp, FP: report.fp, FN: report.fn, TN: report.tn });
+    },
+  );
 });
 
 describe("reproducibility fields are present on every benchmark", () => {

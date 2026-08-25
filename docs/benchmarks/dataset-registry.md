@@ -227,3 +227,38 @@ ROC-AUC 0.5602 (barely above the 0.5 chance level), balanced accuracy 53.6%,
 F1 72.2% — versus DrugSim's real 79.9% / 65.2% / 81.8% on the same 459
 compounds. This is shown directly in the aggregate table, not softened, with
 the methodology caveats above disclosed in the same place rather than buried.
+
+## Claude — full 800-compound hERG evaluation (fills the aggregate table)
+
+Same treatment as CYP3A4 above, run afterward for hERG's own full held-out
+set. Real data: `aiComparison.claude` on the hERG entry in
+`frontend/src/lib/benchmarks.ts`. Full per-compound reasoning, verdicts, and
+probabilities: `models/admet/herg_inhibition/claude_full_test_set_evaluation.json`.
+
+**A genuine session-level failure happened first and is disclosed, not
+hidden.** The first dispatch of 4 batches failed outright with an account
+session-usage-limit error, not a data or methodology problem — nothing was
+written, confirmed by checking for output files before retrying. A single
+probe batch was sent first on retry to confirm capacity had actually
+returned (rather than re-dispatching all 16 and risking a second mass
+failure); once it succeeded, the remaining batches were sent.
+
+**Larger batches than the CYP3A4 run, deliberately, to use fewer tokens for
+a bigger job.** CYP3A4 (459 compounds) used batches of 20 (23 dispatches);
+hERG (800 compounds, ~1.7x more) used batches of 50 (16 dispatches) —
+fewer dispatches despite more compounds, since the fixed per-dispatch
+overhead (system prompt, tool definitions) is what batching actually saves,
+not the per-compound reasoning cost, which is roughly constant regardless of
+batch size. Same independence caveat as CYP3A4: compounds within one batch
+could condition on each other; only the 16 batches are independent of one
+another.
+
+**Verified before scoring**: exactly 800 results, no duplicates, no missing,
+every id real, every prediction/probability well-formed, and the
+probability distribution spans the full 0-100 range across every decile.
+
+**Result: ROC-AUC 0.6539, balanced accuracy 61.5%, F1 59.4%** — all lower
+than DrugSim's own 78.8% / 65.0% / 79.2% on the identical 800 compounds.
+Recall is the specific weak point: 49.3% — Claude missed nearly half of the
+true blockers at this scale, a real and disclosed finding, not smoothed into
+the aggregate numbers.

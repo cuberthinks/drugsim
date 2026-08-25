@@ -51,13 +51,16 @@ describe("BenchmarkPage", () => {
     expect(screen.getByRole("heading", { name: /^CYP3A4 — DrugSim vs\. general-purpose AI$/i })).toBeInTheDocument();
   });
 
-  it("hERG's Claude column in the aggregate table is 'Not evaluated' -- only the informal sections cover hERG", () => {
+  it("hERG's Claude column shows the real, unflattering result -- not 'Not evaluated', not fabricated", () => {
     setup();
     const heading = screen.getByRole("heading", { name: /^hERG \(KCNH2\/Kv11\.1\) cardiac channel inhibition$/i });
     const card = heading.closest(".card")!.parentElement!;
     const notEvaluatedCells = Array.from(card.querySelectorAll("div")).filter((el) => el.textContent === "Not evaluated");
-    // GPT + Claude, 3 metric rows each = 6, since neither has a real hERG-full-test-set evaluation.
-    expect(notEvaluatedCells.length).toBe(6);
+    // GPT only: 3 metric rows. Claude's 3 cells are real numbers now.
+    expect(notEvaluatedCells.length).toBe(3);
+    expect(within(card).getByText("65.4%")).toBeInTheDocument(); // ROC-AUC
+    expect(within(card).getByText("61.5%")).toBeInTheDocument(); // balanced accuracy
+    expect(within(card).getByText("59.4%")).toBeInTheDocument(); // F1
   });
 
   it("CYP3A4's Claude column shows the real, unflattering result -- not 'Not evaluated', not fabricated", () => {

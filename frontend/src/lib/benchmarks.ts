@@ -237,7 +237,19 @@ export const BENCHMARKS: Benchmark[] = [
     },
     aiComparison: {
       gpt: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
-      claude: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
+      claude: {
+        rocAuc: 0.6539,
+        accuracy: 0.6146,
+        f1: 0.5936,
+        notEvaluatedReason: null,
+        methodologyNote:
+          "Not the documented ai-comparison-protocol.md run (3 independent runs per compound in fresh sessions -- not achievable for Claude within a single conversation). This IS the full real 800-compound held-out test set (split_group 9), single run, with a genuine per-compound structural verdict and 0-100 probability. Dispatched in batches of 50 compounds per subagent (16 batches total) -- compounds within one batch were seen by the same subagent and could condition on each other, a weaker independence property than fully isolated per-compound dispatch. Recall is notably low (49.3%) at this scale -- nearly half of true blockers were missed, a real finding, not smoothed over.",
+        n: 800,
+        modelIdentifier: "claude-sonnet-5",
+        evaluatedAt: "2026-08-25",
+        sourceFile: "models/admet/herg_inhibition/claude_full_test_set_evaluation.json",
+        batchSize: 50,
+      },
     },
   },
   {
