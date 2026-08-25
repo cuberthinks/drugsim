@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   BENCHMARKS,
+  CLAUDE_HERG_SUBSET_EVALUATION,
   EXAMPLE_CASE_PREDICTIONS,
   OVERALL_DATABASE_SCALE,
   type ApplicabilityDomainTier,
@@ -457,6 +458,68 @@ export function BenchmarkPage() {
             </div>
           </div>
         ))}
+      </section>
+
+      {/* Claude informal subset evaluation -- 30 of 800, not the protocol */}
+      <section className="card p-6">
+        <h2 className="font-display text-lg font-semibold text-ink">Claude — informal subset evaluation</h2>
+        <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+          {CLAUDE_HERG_SUBSET_EVALUATION.n} of DrugSim's real 800-compound held-out hERG test set (stratified sample,
+          seed {CLAUDE_HERG_SUBSET_EVALUATION.seed}), evaluated by {CLAUDE_HERG_SUBSET_EVALUATION.modelIdentifier} on{" "}
+          {CLAUDE_HERG_SUBSET_EVALUATION.runDate}. Each compound was judged by an independently-isolated subagent —
+          SMILES only, no ground truth, no visibility into any other compound's answer — so this is genuinely
+          independent across compounds. It is <strong>not</strong> the documented protocol: one run per compound, not
+          three fresh-session repeats, and it is 30 of 800 compounds, not the full set. ROC-AUC is not computable — a
+          binary verdict carries no probability. This does not fill in the "Not evaluated" cells above.
+        </p>
+        <dl className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">Accuracy</dt>
+            <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.accuracy)}</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">Balanced accuracy</dt>
+            <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.balancedAccuracy)}</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">F1</dt>
+            <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.f1)}</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">Precision / Recall</dt>
+            <dd className="mt-0.5 font-mono text-ink">
+              {pct(CLAUDE_HERG_SUBSET_EVALUATION.precision)} / {pct(CLAUDE_HERG_SUBSET_EVALUATION.recall)}
+            </dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">Specificity</dt>
+            <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.specificity)}</dd>
+          </div>
+        </dl>
+        <div className="mt-4">
+          <ConfusionMatrixGrid
+            matrix={{
+              tn: CLAUDE_HERG_SUBSET_EVALUATION.confusionMatrix.tn,
+              fp: CLAUDE_HERG_SUBSET_EVALUATION.confusionMatrix.fp,
+              fn: CLAUDE_HERG_SUBSET_EVALUATION.confusionMatrix.fn,
+              tp: CLAUDE_HERG_SUBSET_EVALUATION.confusionMatrix.tp,
+            }}
+          />
+        </div>
+        {(() => {
+          const hergBenchmark = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition");
+          if (!hergBenchmark) return null;
+          return (
+            <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+              For comparison, DrugSim's own registered model on the full 800-compound version of this same test set:
+              balanced accuracy {pct(hergBenchmark.scaffoldSplitTest.balancedAccuracy)}, F1{" "}
+              {pct(hergBenchmark.scaffoldSplitTest.f1)}. This subset result is lower on both — a real difference on
+              30 compounds, not a claim about DrugSim being "better," since 30 compounds is far too small a sample to
+              establish that on its own.
+            </p>
+          );
+        })()}
+        <p className="mt-2 font-mono text-[10px] text-ink-soft break-all">source: {CLAUDE_HERG_SUBSET_EVALUATION.sourceFile}</p>
       </section>
 
       {/* Methodology */}

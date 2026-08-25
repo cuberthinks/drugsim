@@ -360,6 +360,54 @@ export interface ClaudeSpotCheckResult {
   notAvailableReason: string | null;
 }
 
+/**
+ * An informal, single-run Claude evaluation against a stratified 30-compound
+ * subset of DrugSim's real 800-compound scaffold-split hERG test set
+ * (split_group 9). Each of the 30 was dispatched to an independently-isolated
+ * subagent -- SMILES only, no ground truth, no visibility into any other
+ * compound's reasoning or answer -- so this is genuinely independent per
+ * compound, even though it is NOT the documented protocol's "3 runs of the
+ * same compound in fresh sessions" (not achievable within one conversation --
+ * see docs/benchmarks/ai-comparison-protocol.md). ROC-AUC is not computable:
+ * each subagent gave a binary verdict, not a probability. Sample: seed 42,
+ * proportionally stratified to the real test set's 489/311 blocker/non-blocker
+ * split. Full per-compound reasoning and verdicts:
+ * models/admet/herg_inhibition/claude_informal_subset_evaluation.json.
+ *
+ * This is 30 of 800 compounds, not the full set, and does not fill in the
+ * "Not evaluated" cells in the DrugSim vs. general-purpose AI table above --
+ * that requires the full protocol run against the complete held-out set.
+ */
+export interface ClaudeSubsetEvaluation {
+  n: number;
+  seed: number;
+  modelIdentifier: string;
+  runDate: string;
+  sourceFile: string;
+  confusionMatrix: { tp: number; fp: number; fn: number; tn: number };
+  accuracy: number;
+  balancedAccuracy: number;
+  precision: number;
+  recall: number;
+  specificity: number;
+  f1: number;
+}
+
+export const CLAUDE_HERG_SUBSET_EVALUATION: ClaudeSubsetEvaluation = {
+  n: 30,
+  seed: 42,
+  modelIdentifier: "claude-sonnet-5",
+  runDate: "2026-08-25",
+  sourceFile: "models/admet/herg_inhibition/claude_informal_subset_evaluation.json",
+  confusionMatrix: { tp: 13, fp: 7, fn: 5, tn: 5 },
+  accuracy: 0.6,
+  balancedAccuracy: 0.5694,
+  precision: 0.65,
+  recall: 0.7222,
+  specificity: 0.4167,
+  f1: 0.6842,
+};
+
 export interface ExampleCasePrediction {
   compoundName: string;
   smiles: string;

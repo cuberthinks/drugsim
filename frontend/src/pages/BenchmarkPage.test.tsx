@@ -61,10 +61,12 @@ describe("BenchmarkPage", () => {
     // Dofetilide's ground truth was seen before a prediction could be made, so
     // it must show unavailable, never a fabricated or retrofitted estimate.
     expect(screen.getByText(/Claude \(claude-sonnet-5\): no blind estimate available/)).toBeInTheDocument();
-    // The section-level disclosure must be present, not just a per-card tooltip.
+    // The section-level disclosure must be present, not just a per-card tooltip
+    // -- both the 4-compound spot-check section and the 30-compound subset
+    // evaluation section say this, independently, so at least 2 matches.
     expect(
-      screen.getByText(/does not fill in the .Not evaluated. cells above/i),
-    ).toBeInTheDocument();
+      screen.getAllByText(/does not fill in the .Not evaluated. cells above/i).length,
+    ).toBeGreaterThanOrEqual(2);
   });
 
   it("displays uncertainty and applicability domain for individual example cases", () => {
@@ -80,6 +82,22 @@ describe("BenchmarkPage", () => {
     setup();
     expect(screen.getAllByText(/true blocker/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/true non-blocker/i).length).toBeGreaterThan(0);
+  });
+
+  it("shows the 30-compound Claude subset evaluation, clearly labeled as informal and 30 of 800", () => {
+    setup();
+    expect(screen.getByRole("heading", { name: /Claude — informal subset evaluation/i })).toBeInTheDocument();
+    expect(screen.getByText(/30 of DrugSim's real 800-compound held-out hERG test set/i)).toBeInTheDocument();
+    // "not" is wrapped in <strong>, splitting the phrase across text nodes --
+    // match on textContent, same pattern used for the database-scale disclosure above.
+    expect(
+      screen.getAllByText((_, element) => /is\s+not\s+the documented protocol/i.test(element?.textContent ?? "")).length,
+    ).toBeGreaterThan(0);
+    expect(screen.getByText(/ROC-AUC is not computable/i)).toBeInTheDocument();
+    // The real, unflattering result -- lower than DrugSim's own, and shown as such.
+    expect(screen.getByText(/56\.9%/)).toBeInTheDocument(); // balanced accuracy
+    expect(screen.getByText(/68\.4%/)).toBeInTheDocument(); // F1
+    expect(screen.getByText(/not a claim about DrugSim being "better,"/i)).toBeInTheDocument();
   });
 
   it("distinguishes the overall ChEMBL database scale from either endpoint's own training set", () => {

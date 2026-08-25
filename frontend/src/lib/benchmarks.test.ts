@@ -5,7 +5,8 @@ import hergExternalValidationReport from "../../../models/admet/herg_inhibition/
 import cypEvaluationReport from "../../../models/admet/cyp3a4_inhibition/evaluation_report.json";
 import cypExternalValidationReport from "../../../models/admet/cyp3a4_inhibition/external_validation_report.json";
 import registryYaml from "../../../datasets/registry.yaml?raw";
-import { BENCHMARKS, EXAMPLE_CASE_PREDICTIONS, OVERALL_DATABASE_SCALE } from "./benchmarks";
+import claudeSubsetReport from "../../../models/admet/herg_inhibition/claude_informal_subset_evaluation.json";
+import { BENCHMARKS, CLAUDE_HERG_SUBSET_EVALUATION, EXAMPLE_CASE_PREDICTIONS, OVERALL_DATABASE_SCALE } from "./benchmarks";
 
 /**
  * These tests read the ACTUAL evaluation report JSON files this project's
@@ -174,5 +175,67 @@ describe("Claude spot-check is a disclosed single run, never a fabricated or ret
     expect(byName["Aspirin"]).toMatchObject({ predictedLabel: "non_blocker", confidencePercent: 90 });
     expect(byName["Terfenadine"]).toMatchObject({ predictedLabel: "blocker", confidencePercent: 80 });
     expect(byName["Paracetamol"]).toMatchObject({ predictedLabel: "non_blocker", confidencePercent: 88 });
+  });
+});
+
+describe("Claude's 30-compound subset evaluation matches the real per-compound source file exactly", () => {
+  const report = claudeSubsetReport as unknown as {
+    n: number;
+    tp: number;
+    fp: number;
+    fn: number;
+    tn: number;
+    accuracy: number;
+    balanced_accuracy: number;
+    precision: number;
+    recall: number;
+    specificity: number;
+    f1: number;
+    seed: number;
+    compounds: { true_label: string; claude_prediction: string; outcome: string }[];
+  };
+
+  it("displayed confusion matrix and metrics match the source report exactly", () => {
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.n).toBe(report.n);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.seed).toBe(report.seed);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.confusionMatrix).toEqual({
+      tp: report.tp,
+      fp: report.fp,
+      fn: report.fn,
+      tn: report.tn,
+    });
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.accuracy).toBe(report.accuracy);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.balancedAccuracy).toBe(report.balanced_accuracy);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.precision).toBe(report.precision);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.recall).toBe(report.recall);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.specificity).toBe(report.specificity);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.f1).toBe(report.f1);
+  });
+
+  it("the 30 raw per-compound outcomes independently recompute to the same confusion matrix -- catches drift between the raw results and the summary numbers", () => {
+    expect(report.compounds).toHaveLength(30);
+    const counts = { TP: 0, FP: 0, FN: 0, TN: 0 };
+    for (const c of report.compounds) {
+      const trueBlocker = c.true_label === "blocker";
+      const predBlocker = c.claude_prediction === "blocker";
+      const expectedOutcome = trueBlocker === predBlocker ? (trueBlocker ? "TP" : "TN") : trueBlocker ? "FN" : "FP";
+      expect(c.outcome).toBe(expectedOutcome);
+      counts[c.outcome as keyof typeof counts]++;
+    }
+    expect(counts).toEqual({ TP: report.tp, FP: report.fp, FN: report.fn, TN: report.tn });
+  });
+
+  it("is a real, disclosed, unflattering-if-that's-what-it-is result -- not silently rounded up to match DrugSim's own number", () => {
+    const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
+    // This is the actual finding: the 30-compound subset scored lower than
+    // DrugSim's own model on the full 800. The test locks in that this stays
+    // visible rather than quietly disappearing in a future edit.
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.balancedAccuracy).toBeLessThan(herg.scaffoldSplitTest.balancedAccuracy);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.f1).toBeLessThan(herg.scaffoldSplitTest.f1);
+  });
+
+  it("sample size is real and small -- 30, not fabricated as if it were the full 800", () => {
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.n).toBe(30);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.n).toBeLessThan(800);
   });
 });

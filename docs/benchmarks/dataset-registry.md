@@ -119,3 +119,54 @@ recall of a well-known public fact about the drug (e.g. Terfenadine's 1998
 market withdrawal) rather than structure-based reasoning — exactly what the
 protocol's "no identifying metadata" rule exists to prevent. GPT remains
 **not evaluated** anywhere on this page.
+
+## Claude — 30-compound informal subset evaluation
+
+A second, larger Claude evaluation (`CLAUDE_HERG_SUBSET_EVALUATION` in
+`frontend/src/lib/benchmarks.ts`) runs against 30 compounds drawn from
+DrugSim's actual 800-compound scaffold-split hERG test set (`split_group ==
+9` in `datasets/processed/herg_inhibition_features.npz`, joined to SMILES via
+`datasets/processed/herg_inhibition_dataset.csv`). The sample is
+proportionally stratified (seed 42) to the real test set's 489/311
+blocker/non-blocker split, giving 18 blocker / 12 non-blocker. Full
+per-compound reasoning and verdicts:
+`models/admet/herg_inhibition/claude_informal_subset_evaluation.json`.
+
+**Independence, not the protocol.** Each of the 30 compounds was dispatched
+to an isolated subagent with no shared context — SMILES only, no ground
+truth, no visibility into any other compound's reasoning or answer. That is
+genuine independence across compounds, but it is not the documented
+protocol's "3 runs of the same compound in fresh sessions": that specific
+requirement is not achievable within a single Claude conversation, since
+there is no way to make a later turn forget an earlier one's answer to the
+same question. Recorded 2026-08-25, single run per compound.
+
+**A methodology failure during this run, corrected before any data was
+used.** The first attempt used the ai-comparison-protocol.md's exact fixed
+prompt (forced single-word "Yes"/"No", no reasoning permitted). All 10
+compounds run this way returned "No" regardless of true label. Asked to
+explain its own answer, the first subagent admitted the "No" was "a fast
+pattern-based guess, not a rigorous pharmacophore workup," and on actual
+inspection the correct read was "Yes" — a real basic-amine/aromatic-flanking
+pharmacophore it had not engaged with under the terse format. All 10 results
+from that attempt were discarded, and the prompt was changed to require 2-4
+sentences of structural reasoning before the final verdict. This is a
+disclosed deviation from the protocol's exact wording (which forces a bare
+one-word answer for GPT), made because the terse format was directly shown
+to produce non-representative shortcuts for Claude specifically, not because
+matching GPT's format was undesirable in principle.
+
+**ROC-AUC is not computable**, same reasoning as the GPT protocol: a binary
+verdict carries no probability. Balanced accuracy, F1, precision, recall,
+and specificity are reported instead.
+
+**The result is real and not flattering: balanced accuracy 56.9%, F1 68.4%,
+both lower than DrugSim's own 65.0%/79.2% on the full 800.** This is
+disclosed as such on the page, with an explicit note that 30 compounds is far
+too small a sample to conclude DrugSim is "better" from this alone — the
+same caution applied everywhere else GPT/Claude comparisons appear on this
+page.
+
+This is 30 of 800 compounds. It does not fill in the aggregate "DrugSim vs.
+general-purpose AI" table's "Not evaluated" cells, which still require the
+full protocol run against the complete held-out set.
