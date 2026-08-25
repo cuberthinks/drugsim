@@ -156,9 +156,15 @@ one-word answer for GPT), made because the terse format was directly shown
 to produce non-representative shortcuts for Claude specifically, not because
 matching GPT's format was undesirable in principle.
 
-**ROC-AUC is not computable**, same reasoning as the GPT protocol: a binary
-verdict carries no probability. Balanced accuracy, F1, precision, recall,
-and specificity are reported instead.
+**ROC-AUC was initially not computable**, same reasoning as the GPT protocol:
+a bare Yes/No verdict carries no probability. It was added afterward by
+resuming each of the 30 already-dispatched subagents (not fresh dispatches,
+to reuse their existing reasoning and cut token cost) and asking each for a
+0-100 probability consistent with its own prior structural analysis. All 30
+follow-up scores were directionally consistent with the original binary
+verdicts (score >= 50 iff the original verdict was "blocker" — checked
+programmatically, zero mismatches). ROC-AUC computed from those scores:
+**0.6759**.
 
 **The result is real and not flattering: balanced accuracy 56.9%, F1 68.4%,
 both lower than DrugSim's own 65.0%/79.2% on the full 800.** This is
@@ -170,3 +176,54 @@ page.
 This is 30 of 800 compounds. It does not fill in the aggregate "DrugSim vs.
 general-purpose AI" table's "Not evaluated" cells, which still require the
 full protocol run against the complete held-out set.
+
+## Claude — full 459-compound CYP3A4 evaluation (fills the aggregate table)
+
+Unlike the hERG entries above, this one **does** fill in the aggregate
+"DrugSim vs. general-purpose AI" table's Claude column for CYP3A4, because
+it covers the complete real held-out test set, not a subset. Real data:
+`aiComparison.claude` on the CYP3A4 entry in `frontend/src/lib/benchmarks.ts`.
+Full per-compound reasoning, verdicts, and probabilities:
+`models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json`.
+
+**Real held-out test set, verified.** All 459 compounds are `split_group ==
+9` from `datasets/processed/cyp3a4_inhibition_features.npz`, joined to SMILES
+via `datasets/processed/cyp3a4_inhibition_dataset.csv`. The label
+distribution (306 inhibitor / 153 non-inhibitor) matches DrugSim's own
+reported confusion matrix exactly (tp+fn = 275+31 = 306, tn+fp = 62+91 = 153)
+— confirmation this is the genuine test set, not a stand-in.
+
+**Batched, not fully isolated per compound — a real, disclosed methodology
+difference from the hERG subset above.** Token cost made 459 individual
+isolated subagent dispatches impractical, so compounds were split into 23
+batches of ~20, each batch handled by one subagent that read its batch from
+a file and wrote structured JSON results back to disk (avoiding any manual
+SMILES retyping, which is where a real transcription error was caught and
+fixed earlier in this same session). This means compounds *within* one batch
+were seen by the same subagent and could condition on each other; only the
+23 batches are independent of each other, a weaker property than the hERG
+subset's fully-isolated one-subagent-per-compound design. Disclosed in the
+`methodologyNote` field and in the page's tooltip, not presented as
+equivalent.
+
+**Correctness of the 459 results was verified programmatically before
+scoring**: exactly 459 results collected (no drops, no duplicates), every id
+matches a real test-set compound, every prediction is a valid label, every
+probability is an integer in [0, 100]. The prediction/probability
+distribution spans the full 0-100 range across all ten deciles (not
+collapsed to one answer) — checked specifically because an earlier hERG
+attempt did collapse this way under a different (terser) prompt format; this
+run's prompt required brief reasoning per compound from the start.
+
+**CYP3A4 uses a different pharmacophore than hERG in the prompt, correctly.**
+hERG's basic-amine-flanked-by-aromatics rule does not apply to CYP3A4;
+subagents were instead directed to weigh heme-iron-coordinating nitrogens
+(the classic azole-antifungal mechanism), a large flexible lipophilic active
+site, and overall lipophilic/aromatic bulk — the actual, different,
+well-established CYP3A4 inhibition risk factors.
+
+**The result is real and substantially weaker than DrugSim's own model**:
+ROC-AUC 0.5602 (barely above the 0.5 chance level), balanced accuracy 53.6%,
+F1 72.2% — versus DrugSim's real 79.9% / 65.2% / 81.8% on the same 459
+compounds. This is shown directly in the aggregate table, not softened, with
+the methodology caveats above disclosed in the same place rather than buried.

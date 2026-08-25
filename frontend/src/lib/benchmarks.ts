@@ -75,9 +75,30 @@ export interface ApplicabilityDomainTier {
 export interface AiComparisonResult {
   /** null means genuinely not evaluated -- the UI must render "Not evaluated", never 0 or a dash implying a score. */
   rocAuc: number | null;
+  /** Balanced accuracy for this row's metric. */
   accuracy: number | null;
   f1: number | null;
-  notEvaluatedReason: string;
+  /** Non-null only when rocAuc/accuracy/f1 are all null -- why no evaluation exists. */
+  notEvaluatedReason: string | null;
+  /**
+   * Present only when this result is real (notEvaluatedReason is null).
+   * Not the documented ai-comparison-protocol.md run -- that protocol
+   * specifies 3 independent runs per compound in fresh sessions, which
+   * is not achievable for Claude within a single conversation. This is a
+   * real, disclosed deviation: full real test set, genuine per-compound
+   * structural reasoning, single run, and (see batchSize) not fully
+   * isolated per compound if batched.
+   */
+  methodologyNote?: string;
+  n?: number;
+  modelIdentifier?: string;
+  evaluatedAt?: string;
+  sourceFile?: string;
+  /** Compounds per subagent dispatch. 1 = fully isolated per compound (no
+   * cross-compound conditioning possible). >1 = compounds within a batch
+   * were seen by the same subagent, a weaker independence property,
+   * disclosed rather than presented as equivalent to full isolation. */
+  batchSize?: number;
 }
 
 export interface Benchmark {
@@ -320,7 +341,19 @@ export const BENCHMARKS: Benchmark[] = [
     },
     aiComparison: {
       gpt: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
-      claude: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
+      claude: {
+        rocAuc: 0.5602,
+        accuracy: 0.5359,
+        f1: 0.7216,
+        notEvaluatedReason: null,
+        methodologyNote:
+          "Not the documented ai-comparison-protocol.md run (which specifies 3 independent runs per compound in fresh sessions -- not achievable for Claude within a single conversation). This IS the full real 459-compound held-out test set (split_group 9), single run, with a genuine per-compound structural verdict and 0-100 probability. Dispatched in batches of 20 compounds per subagent for tractability -- compounds within one batch were seen by the same subagent and could condition on each other, a weaker independence property than fully isolated per-compound dispatch (used for the smaller hERG informal subset). ROC-AUC is computable here because a probability was elicited, unlike the bare Yes/No hERG spot-check.",
+        n: 459,
+        modelIdentifier: "claude-sonnet-5",
+        evaluatedAt: "2026-08-25",
+        sourceFile: "models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json",
+        batchSize: 20,
+      },
     },
   },
 ];
@@ -385,6 +418,11 @@ export interface ClaudeSubsetEvaluation {
   runDate: string;
   sourceFile: string;
   confusionMatrix: { tp: number; fp: number; fn: number; tn: number };
+  /** Added after the initial binary-verdict run, by resuming each subagent
+   * and asking for a 0-100 probability consistent with its own prior
+   * analysis -- not a fresh dispatch. All 30 follow-up scores were
+   * directionally consistent with the original binary verdicts. */
+  rocAuc: number;
   accuracy: number;
   balancedAccuracy: number;
   precision: number;
@@ -400,6 +438,7 @@ export const CLAUDE_HERG_SUBSET_EVALUATION: ClaudeSubsetEvaluation = {
   runDate: "2026-08-25",
   sourceFile: "models/admet/herg_inhibition/claude_informal_subset_evaluation.json",
   confusionMatrix: { tp: 13, fp: 7, fn: 5, tn: 5 },
+  rocAuc: 0.6759,
   accuracy: 0.6,
   balancedAccuracy: 0.5694,
   precision: 0.65,

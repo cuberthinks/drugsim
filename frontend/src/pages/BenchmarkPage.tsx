@@ -4,6 +4,7 @@ import {
   CLAUDE_HERG_SUBSET_EVALUATION,
   EXAMPLE_CASE_PREDICTIONS,
   OVERALL_DATABASE_SCALE,
+  type AiComparisonResult,
   type ApplicabilityDomainTier,
   type Benchmark,
   type ClaudeSpotCheckResult,
@@ -23,6 +24,27 @@ function NotEvaluated({ reason }: { reason: string }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-paper-alt px-2.5 py-0.5 font-mono text-[11px] font-medium tracking-wide text-ink-soft uppercase" title={reason}>
       Not evaluated
+    </span>
+  );
+}
+
+function AiMetricCell({ result, metric }: { result: AiComparisonResult; metric: "rocAuc" | "accuracy" | "f1" }) {
+  const value = result[metric];
+  if (value === null) {
+    return <NotEvaluated reason={result.notEvaluatedReason ?? "Not evaluated."} />;
+  }
+  const title = [
+    result.methodologyNote,
+    result.n !== undefined ? `n = ${result.n}` : null,
+    result.modelIdentifier ? `model: ${result.modelIdentifier}` : null,
+    result.evaluatedAt ? `evaluated ${result.evaluatedAt}` : null,
+    result.sourceFile ? `source: ${result.sourceFile}` : null,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+  return (
+    <span className="font-mono text-ink" title={title}>
+      {pct(value)}
     </span>
   );
 }
@@ -322,28 +344,42 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
 
             <div className="text-ink-soft">ROC-AUC</div>
             <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.rocAuc)}</div>
-            <div><NotEvaluated reason={benchmark.aiComparison.gpt.notEvaluatedReason} /></div>
-            <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="rocAuc" /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="rocAuc" /></div>
 
             <div className="text-ink-soft">Balanced accuracy</div>
             <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.balancedAccuracy)}</div>
-            <div><NotEvaluated reason={benchmark.aiComparison.gpt.notEvaluatedReason} /></div>
-            <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="accuracy" /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="accuracy" /></div>
 
             <div className="text-ink-soft">F1</div>
             <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.f1)}</div>
-            <div><NotEvaluated reason={benchmark.aiComparison.gpt.notEvaluatedReason} /></div>
-            <div><NotEvaluated reason={benchmark.aiComparison.claude.notEvaluatedReason} /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="f1" /></div>
+            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="f1" /></div>
           </div>
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-ink-soft">
-          No GPT or Claude evaluation has been run against this benchmark yet. Running one requires the documented,
-          identical-inputs protocol at{" "}
-          <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
-            docs/benchmarks/ai-comparison-protocol.md
-          </Link>{" "}
-          — not an informal comparison, and not a number inferred from general knowledge of how these models perform.
-        </p>
+        {benchmark.aiComparison.gpt.notEvaluatedReason !== null && benchmark.aiComparison.claude.notEvaluatedReason !== null && (
+          <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+            No GPT or Claude evaluation has been run against this benchmark yet. Running one requires the documented,
+            identical-inputs protocol at{" "}
+            <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
+              docs/benchmarks/ai-comparison-protocol.md
+            </Link>{" "}
+            — not an informal comparison, and not a number inferred from general knowledge of how these models perform.
+          </p>
+        )}
+        {benchmark.aiComparison.claude.notEvaluatedReason === null && (
+          <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+            Claude's numbers here are real (n = {benchmark.aiComparison.claude.n}, evaluated{" "}
+            {benchmark.aiComparison.claude.evaluatedAt}, hover a value for the full methodology note) but are{" "}
+            <strong>not</strong> the documented protocol at{" "}
+            <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
+              docs/benchmarks/ai-comparison-protocol.md
+            </Link>
+            , which specifies 3 independent runs per compound in fresh sessions — not achievable for Claude within a
+            single conversation. GPT remains not evaluated: no API access.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -469,10 +505,15 @@ export function BenchmarkPage() {
           {CLAUDE_HERG_SUBSET_EVALUATION.runDate}. Each compound was judged by an independently-isolated subagent —
           SMILES only, no ground truth, no visibility into any other compound's answer — so this is genuinely
           independent across compounds. It is <strong>not</strong> the documented protocol: one run per compound, not
-          three fresh-session repeats, and it is 30 of 800 compounds, not the full set. ROC-AUC is not computable — a
-          binary verdict carries no probability. This does not fill in the "Not evaluated" cells above.
+          three fresh-session repeats, and it is 30 of 800 compounds, not the full set. ROC-AUC was added afterward by
+          asking each already-dispatched subagent for a 0-100 probability consistent with its own prior verdict, not
+          a fresh run. This does not fill in the "Not evaluated" cells above.
         </p>
         <dl className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
+          <div>
+            <dt className="font-medium text-ink-soft uppercase tracking-wide">ROC-AUC</dt>
+            <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.rocAuc)}</dd>
+          </div>
           <div>
             <dt className="font-medium text-ink-soft uppercase tracking-wide">Accuracy</dt>
             <dd className="mt-0.5 font-mono text-ink">{pct(CLAUDE_HERG_SUBSET_EVALUATION.accuracy)}</dd>
@@ -512,10 +553,10 @@ export function BenchmarkPage() {
           return (
             <p className="mt-3 text-xs leading-relaxed text-ink-soft">
               For comparison, DrugSim's own registered model on the full 800-compound version of this same test set:
-              balanced accuracy {pct(hergBenchmark.scaffoldSplitTest.balancedAccuracy)}, F1{" "}
-              {pct(hergBenchmark.scaffoldSplitTest.f1)}. This subset result is lower on both — a real difference on
-              30 compounds, not a claim about DrugSim being "better," since 30 compounds is far too small a sample to
-              establish that on its own.
+              ROC-AUC {pct(hergBenchmark.scaffoldSplitTest.rocAuc)}, balanced accuracy{" "}
+              {pct(hergBenchmark.scaffoldSplitTest.balancedAccuracy)}, F1 {pct(hergBenchmark.scaffoldSplitTest.f1)}.
+              This subset result is lower on all three — a real difference on 30 compounds, not a claim about DrugSim
+              being "better," since 30 compounds is far too small a sample to establish that on its own.
             </p>
           );
         })()}

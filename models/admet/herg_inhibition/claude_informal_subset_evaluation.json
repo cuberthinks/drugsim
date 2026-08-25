@@ -17,210 +17,241 @@
       "smiles": "COc1cnc2ncc(=O)n(CCN3CCC(c4nc5cc(Cl)c(C)cc5[nH]4)CC3)c2c1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1XKJMCPB4QFMWJY3WGD",
       "smiles": "Nc1nc2cc3c(cc2s1)CCN(Cc1ccccn1)CC3",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1Y7TZRM5W51TC7PCSD4",
       "smiles": "Cn1cc(-c2ccc(F)c(C(F)(F)F)c2)nc1C1CCN(c2ncnc(N)c2C#N)CC1",
       "true_label": "blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "FN"
+      "outcome": "FN",
+      "probability": 18
     },
     {
       "id": "01KZJ4C1WYY9EE2CDZ56Y1F775",
       "smiles": "Fc1ccc(-n2cc(C3CCNCC3)c3cc(Cl)ccc32)cc1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1YC060VE7PC06ZB8VM3",
       "smiles": "CN(C)C(C)(C)C(=O)Nc1cc(F)c2c(c1)CC(CNCCC1CN(c3cnc4c(n3)NC(=O)CO4)C(=O)O1)C2",
       "true_label": "blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "FN"
+      "outcome": "FN",
+      "probability": 25
     },
     {
       "id": "01KZJ4C1YE5BSD1VP128B9WN3C",
       "smiles": "CC1OC(=O)C2(CC(N)=O)CC(F)(F)C(C)C(C=Cc3ccc(-c4cccnc4C#N)cn3)C12",
       "true_label": "non_blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "TN"
+      "outcome": "TN",
+      "probability": 12
     },
     {
       "id": "01KZJ4C1XJEQ1A51FMM6CHW2HK",
       "smiles": "O=C1CCCN1C1CCN(CCOc2ccc(Oc3nc4ncccc4s3)cc2)CC1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1XJMHEM8DGP9PFB5N02",
       "smiles": "O=C(NCC(O)CN1CCC(Oc2ccc(Cl)c(Cl)c2)CC1)c1c[nH]c(=O)c2cc(S(=O)(=O)NC3CC3)ccc12",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1XXQYMKCRF2BM5SS79Z",
       "smiles": "O=C(c1ccc(CC2CCC(C(O)c3ccccc3)N2)cc1)N1CCN(Cc2nnn(CC(F)(F)F)n2)CC1",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1XQN9A9M91V46CTKKY5",
       "smiles": "COc1ccc(-c2cc(-c3ccc4c(c3)CN(C(C)C)C4=O)on2)cn1",
       "true_label": "non_blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "TN"
+      "outcome": "TN",
+      "probability": 15
     },
     {
       "id": "01KZJ4C1XW3JDRXPEJSYPH4KMC",
       "smiles": "Cc1cc2nc(CC3CCCC3)n(Cc3ccc(Cl)cc3)c2cc1C",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 62
     },
     {
       "id": "01KZJ4C1XTH4621XACYX578R3W",
       "smiles": "COCCCN1CC2C(CNC(=O)c3nc(C(C)C)n4ccccc34)C2C1",
       "true_label": "blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "FN"
+      "outcome": "FN",
+      "probability": 18
     },
     {
       "id": "01KZJ4C1Y40RXZPBE9WT01BXPM",
       "smiles": "Cc1ccc(-c2cc3nccnc3c(NCC3CCCNC3)n2)o1",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 68
     },
     {
       "id": "01KZJ4C1XJ6VSN387X93Q0YTKR",
       "smiles": "COc1ccc(-c2cc(-c3ccc(S(=O)(=O)NC4CC4)cc3)cnc2N)cn1",
       "true_label": "blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "FN"
+      "outcome": "FN",
+      "probability": 15
     },
     {
       "id": "01KZJ4C1XY747ZD213Z3494WVA",
       "smiles": "NC1CCC=C(c2ccc(F)cc2)C1COc1cc(F)c(S(=O)(=O)Nc2cscn2)cc1Cl",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1YMPAC5M2TA44SSY9F6",
       "smiles": "COc1ccc(C2CSc3cc(O)ccc3C2c2ccc(OCCN3CC(CF)C3)cc2)c(F)c1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1Y9W43R6PPERMDXNY2W",
       "smiles": "Cc1ccc(F)c2[nH]c(-c3cncc(-c4cc(F)cc(C#N)c4)c3N3CCC(N)C3)nc12",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1WYAH67H65RMNQB25TG",
       "smiles": "CN1Cc2ccccc2C(c2ccccc2)N=C1OCc1ccc(NS(C)(=O)=O)cc1",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1XF8ZP4631MPA7C8JX6",
       "smiles": "CC(C)(C)c1cc(CN2CCN(CCCCCC(c3ccc(F)cc3)c3ccc(F)cc3)CC2)cc(C(C)(C)C)c1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1XGQ5R9411QM39HXSHA",
       "smiles": "CSc1cc(CCN2CCN(CCc3ccc4c(c3)COC4=O)CC2)ccc1C#N",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1X08PZBNZQ2YYQ9KQKJ",
       "smiles": "CC(C1CCC(N(C)C(=O)C2CC2)CC1)C(N)C(=O)N1CCC(F)C1",
       "true_label": "non_blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "TN"
+      "outcome": "TN",
+      "probability": 12
     },
     {
       "id": "01KZJ4C1XGWNZDFCGFG2YQC80H",
       "smiles": "N#Cc1ccc(CCN2CCN(CCc3ccc4c(c3)COC4=O)CC2)cc1Cl",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 82
     },
     {
       "id": "01KZJ4C1XNTN234VSKNENXW693",
       "smiles": "CCCCCCCN(CC)CC#CCOC(c1ccccc1)c1ccccc1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1YACHQ1VBDBJJ4CY54P",
       "smiles": "CCC(=O)CCCCCC(NC(=O)C1CC12CCN(CC)CC2)c1ncc(-c2cc3ccncc3nc2OC)o1",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1XNP15TH4G115H40X78",
       "smiles": "O=C1NN=C(c2ccc(OC3CCN(C4CCC4)CC3)cc2)C2CC12",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 68
     },
     {
       "id": "01KZJ4C1WXQ7A2Z3RM03ZZ8452",
       "smiles": "COc1c(N2CCNC(C)C2)c(F)cc2c(=O)c(C(=O)O)cn(C3CC3)c12",
       "true_label": "non_blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "TN"
+      "outcome": "TN",
+      "probability": 12
     },
     {
       "id": "01KZJ4C1Y0N30818MP2EXNA1EN",
       "smiles": "CS(=O)(=O)c1ccc(N2CCC(F)(F)CC2)c(C(=O)N2Cc3cn(-c4ccccc4F)nc3C2)c1",
       "true_label": "blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "FN"
+      "outcome": "FN",
+      "probability": 12
     },
     {
       "id": "01KZJ4C1X1N86J9PEF855EXP8V",
       "smiles": "Cc1nc2ccc3c(c2s1)CCN(CCCSc1nnc(-c2ocnc2C)n1C)CC3",
       "true_label": "non_blocker",
       "claude_prediction": "blocker",
-      "outcome": "FP"
+      "outcome": "FP",
+      "probability": 78
     },
     {
       "id": "01KZJ4C1X8HQMDEDC5ZK0CP9KC",
       "smiles": "NC(=O)c1ccnc(OC2CC3CCC(C2)N3Cc2ccccc2)c1",
       "true_label": "blocker",
       "claude_prediction": "blocker",
-      "outcome": "TP"
+      "outcome": "TP",
+      "probability": 72
     },
     {
       "id": "01KZJ4C1Y2N75AQZCWP75VVGW0",
       "smiles": "C[S+]([O-])c1ccc(Nc2ccc3ncc(-c4ccc([S+](C)[O-])cc4)n3n2)cc1",
       "true_label": "non_blocker",
       "claude_prediction": "non_blocker",
-      "outcome": "TN"
+      "outcome": "TN",
+      "probability": 15
     }
-  ]
+  ],
+  "roc_auc": 0.6759
 }

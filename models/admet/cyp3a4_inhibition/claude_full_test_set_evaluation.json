@@ -1,0 +1,3688 @@
+{
+  "n": 459,
+  "tp": 232,
+  "fp": 105,
+  "fn": 74,
+  "tn": 48,
+  "roc_auc": 0.5602,
+  "accuracy": 0.61,
+  "balanced_accuracy": 0.5359,
+  "precision": 0.6884,
+  "recall": 0.7582,
+  "specificity": 0.3137,
+  "f1": 0.7216,
+  "compounds": [
+    {
+      "id": "01KZPB9WSVSH1B7CY0CBWGNG69",
+      "reasoning": "A large flexible peptidomimetic bearing a thiazole ring, a thiazolylmethyl carbamate, and two benzyl groups (strongly reminiscent of the ritonavir scaffold) gives ample lipophilic bulk plus a heme-coordinating heteroaromatic nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKQW7JDTXTBY12NBK8",
+      "reasoning": "Contains a furan, an aminopyridine, a cyanoindole, and a fused pyrazolopyrimidine in one extended polyaromatic, multi-nitrogen system, giving both heme-coordinating pyridine-type nitrogens and a large planar stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBMBY6J8TCBC8C4XYC",
+      "reasoning": "A fluorophenyl-piperidine linked through an ether to a benzodioxole has only a basic aliphatic secondary amine (not an aromatic heme-coordinating nitrogen) and modest overall aromatic bulk, so binding-pocket affinity is limited.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSEZEJ3Z2KB1D1EZH3D",
+      "reasoning": "Small, fairly polar molecule (hydroxy-propanamide, piperidine, indazole-NH) with low aromatic surface area and no strong heme-coordinating nitrogen, so it falls below typical CYP3A4-inhibitor lipophilicity/size.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSWWPR2QYHC9FKWJDBW",
+      "reasoning": "A small dichlorobenzyl amine with cyclopropyl and azetidine groups has only one aromatic ring and a simple aliphatic amine, lacking the bulk and heme-binding nitrogen needed for strong CYP3A4 affinity.",
+      "prediction": "non_inhibitor",
+      "probability": 22,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSXHA5F3GYVJT72JH42",
+      "reasoning": "A dimethoxyphenyl-pyrrolidinone N-substituted with an OCF3-benzyl group is moderately lipophilic with two aromatic rings, but the lactam nitrogen's lone pair is delocalized into the carbonyl and there is no azole/pyridine heme-coordinating nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTC3F9W3FCKBCZDEE62",
+      "reasoning": "A large tricyclic purine/pyrimido-indole aromatic core with multiple ring nitrogens (kinase-inhibitor-like scaffold) plus a flexible alkylamino tail provides both a heme-coordinating diazine nitrogen and extensive planar stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRJSRN64P8N09ERTRX",
+      "reasoning": "This is a macrolactone with multiple sugar rings and a tertiary amine, structurally matching the erythromycin/roxithromycin macrolide class, which is a well-known, mechanism-based strong CYP3A4 inhibitor family.",
+      "prediction": "inhibitor",
+      "probability": 95,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM0AC6XV3QMEW803F0",
+      "reasoning": "Contains a benzimidazole (fused imidazole, heme-coordinating nitrogen), an aminopyridine substituent, and a chlorophenyl-thiophene carboxamide, combining an azole-type nitrogen with substantial aromatic/halogen lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT70TM60XYAVGZB1PBA",
+      "reasoning": "A difluoromethylpyridine linked to a fused triazolo-naphthyridine-type polyaromatic system offers multiple sp2 nitrogens (pyridine and triazole) for heme coordination along with an extensive flat aromatic stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5RKH9V8332CV3N3JS",
+      "reasoning": "An imidazolylmethyl group (classic heme-coordinating azole nitrogen) attached near a fluorinated biphenyl amide gives moderate lipophilic aromatic bulk plus the type II inhibition signal, though the molecule is otherwise fairly compact.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEDR8MVR43F9NJ5ERW",
+      "reasoning": "A CF3/ethyl-substituted fused bicyclic aromatic lactam with a piperazine has only a basic aliphatic NH (no azole/pyridine nitrogen) and a relatively small ring system, limiting deep hydrophobic-pocket engagement.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSRCP8R7VT3BATFW4R1",
+      "reasoning": "A guanidine-carboxamide (highly polar, likely protonated at physiological pH) attached to a piperidine-cyclopropanecarbonyl and a CF3-phenyl is dominated by polar/basic character rather than lipophilicity, with no heme-coordinating azole nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 18,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSHVYXMRE5120V9SQ2Q",
+      "reasoning": "A methoxypiperidine-substituted benzimidazole fused to a pyridinone bearing a chlorophenyl-hydroxyethylamino arm is a large, multi-ring heteroaromatic (kinase-inhibitor-like) structure with heme-coordinating benzimidazole nitrogens and extensive conjugation.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT266289CPBNMMM3HK7",
+      "reasoning": "Two pyridine-type diazine rings (each with a lone-pair nitrogen) connected by an ether and a chloropyridyl amide give some heme-coordination potential, but the molecule is relatively small and polar overall, keeping affinity borderline.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSJZBW44JEZ6V2VMGT8",
+      "reasoning": "A heavily halogenated (four Cl plus F) indole-acrylamide-sulfonamide-dichlorothiophene assembly has very high lipophilicity and a large planar polyaromatic surface, even though the indole nitrogen is alkylated and unavailable for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZHE4YY9H2TEYEQJ2V",
+      "reasoning": "This dioxolane bearing an imidazole and a 2,4-dichlorophenyl group, linked via an aryl ether to a piperazine-thiophenesulfonyl moiety, is essentially the ketoconazole/itraconazole azole-antifungal pharmacophore, the textbook example of type II CYP3A4 heme-nitrogen inhibition.",
+      "prediction": "inhibitor",
+      "probability": 92,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3439XB7S1NSSJYRVC",
+      "reasoning": "A triazolone plus a tetrazole attached to a tertiary alcohol flanked by di/mono-fluorophenyl rings closely mirrors the fluconazole/voriconazole triazole-antifungal design, a classic heme-nitrogen-coordinating CYP3A4 inhibitor motif.",
+      "prediction": "inhibitor",
+      "probability": 88,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYDG6CHVZ7Z9KPP1X8",
+      "reasoning": "A tricyclic ether-bridged benzoxazinone-sulfonamide-fluorobenzo system provides notable fused aromatic surface area, but lacks any azole/pyridine heme-coordinating nitrogen and carries polar lactam/sulfonamide groups that offset lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSZY70X26NCYCNY2GQY",
+      "reasoning": "A cyanoguanidine (highly polar, H-bond-heavy, cimetidine-like) connected through a flexible hexyl-chlorophenoxy chain to a pyridylamine provides one heme-coordinating pyridine nitrogen, but the dominant cyanoguanidine polarity works against strong CYP3A4 binding.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV6C1TFS2P285WRBQH",
+      "reasoning": "A pyridin-3-yl group directly bonded to the piperidine's tertiary aryl-amine nitrogen sits alongside a CF3-phenyl and isoxazole, giving a heme-coordinating pyridine N plus substantial lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1MJQSAQ8BZ4DRPKB8",
+      "reasoning": "Carries both a 1,2,3-triazole and a 1,2,4-oxadiazole on adjacent aromatic rings plus a chlorophenyl and morpholine, the classic azole-type-II heme-ligation motif combined with high aromatic lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSS24AW9EBMZ41T2FXB",
+      "reasoning": "A pyrazole linked to a pyridylmethyl amide and a pyrimidine bearing a thiophene gives several sp2 nitrogens capable of heme coordination in a moderately lipophilic, multi-ring scaffold.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWWET8WC4DNPBQY1YT",
+      "reasoning": "Small dichlorophenyl attached to a saturated azabicyclic amine with no conjugation between the basic nitrogen and any aromatic/heteroaromatic pi system, so there is no heme-coordinating geometry and low overall bulk.",
+      "prediction": "non_inhibitor",
+      "probability": 20,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSH8VEXWC7QYK2PKJES",
+      "reasoning": "Fused imidazo-pyridine (two ring nitrogens) plus a bromo-enone spiro-cyclohexane and pendant phenyl make this a large, highly lipophilic polyheteroaromatic capable of active-site stacking and heme approach.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT14CVKNZSHRSZR6MJA",
+      "reasoning": "Near-identical triazole/oxadiazole/morpholine pharmacophore to other azole-bearing analogs in this set, with an added dimethylphenyl increasing lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2JYN9CVC3FD3T5VHK",
+      "reasoning": "A trichlorinated diarylamide is lipophilic but its only nitrogen is a tertiary amide whose lone pair is delocalized into the carbonyl, giving poor heme-iron ligation capacity.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT9A8F9CJ9KVVRVN8J2",
+      "reasoning": "A large, flexible molecule combining a planar chromone, a dimethoxybenzamide, and a pyrazole-fused indazolylpiperidine offers extensive aromatic surface and lipophilic bulk that fits a large hydrophobic CYP3A4 pocket well.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZ9E4DTMWTCZ5ZVETS",
+      "reasoning": "A biphenyl-linked aminopyrazole with free aniline and phenol groups is reasonably planar/aromatic but carries multiple polar H-bond donors that reduce net lipophilicity and lack a classic heme-coordinating azole nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYX0M4PJ9EVV24MAF8",
+      "reasoning": "A large dihydroisoquinolinone core bearing a chlorophenyl, a tertiary benzylic amine, and a piperazinone gives substantial lipophilic bulk and multiple basic/aromatic nitrogens well suited to the flexible CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSR0F5MJTTDD7J449VN",
+      "reasoning": "This is a macrolide-type macrocyclic lactone with a desosamine-like sugar, cyclic carbamate/imine nitrogen, and tertiary amine \u2014 the structural class typified by erythromycin/clarithromycin that is a canonical mechanism-based CYP3A4 inhibitor.",
+      "prediction": "inhibitor",
+      "probability": 90,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNMM6NKJXAWPN7SKRN",
+      "reasoning": "A lignan-lactone (podophyllotoxin-like) scaffold with methoxy/hydroxy-substituted aromatic rings has no basic or heme-coordinating nitrogen at all, limiting inhibition potential despite moderate aromaticity.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT93Q7PTDB6EMP8VT6Y",
+      "reasoning": "Contains an isoquinoline nitrogen, a pyridin-3-yl group, and a piperazine linker within a large dimethoxy-diamide scaffold, giving multiple heme-ligating nitrogens plus high lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSD1T2V3FP1AFE1EHX9",
+      "reasoning": "A biphenyl-cyclohexyl system is lipophilic and aromatic-rich, but the free carboxylic acid on the cyclopropane will be ionized at physiological pH, disfavoring deep partition into the hydrophobic active site and removing any heme-coordinating nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSNX17FZ4QXH3DBW947",
+      "reasoning": "A polar hydroxamic acid and sulfonamide flank a pyrimidine-linked bicyclic amine and naphthalene, giving one heme-coordinating pyrimidine nitrogen but substantial polarity that likely limits potency.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSD0D7XTJ1VVYKNFVQN",
+      "reasoning": "Essentially a fluorinated biphenyl with a gem-dimethylcyclohexane and a cyclobutane carboxylic acid \u2014 lipophilic ring system but again terminates in an ionizable acid with no heme-ligating nitrogen present.",
+      "prediction": "non_inhibitor",
+      "probability": 33,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT8FC6HCSSAF2QWGGPX",
+      "reasoning": "A chloropyridine ether tethered through a piperidine to a pyrrolidine-acetic acid, with extended ether/alkyl chains, provides a heme-coordinating pyridine nitrogen and considerable flexible lipophilicity, partly offset by the terminal carboxylic acid.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2E16HCEGS4X01J3F6",
+      "reasoning": "Two separate pyridine rings (one bearing chlorine, one bearing fluorine) connected through an ether and an amide give multiple sp2 nitrogens available for heme coordination despite modest overall size.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT77KARWQWEVZVW3RC4",
+      "reasoning": "A very large, highly lipophilic molecule combining a tetrahydroisoquinoline, a 1,2,3-triazole, a pyridyl ether, and a planar chromone amide gives multiple heme-coordinating nitrogens plus extensive aromatic surface for the spacious CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 83,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT13W5ST3BSZ24CSV2E",
+      "reasoning": "Shares the triazole + oxadiazole + morpholine + chloro/fluorophenyl pharmacophore seen in related analogs, a strong azole-type heme-ligation signal combined with high lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 81,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSTQDHE99W03P8B972C",
+      "reasoning": "An imidazole ring hangs directly off the core arene alongside a phenyl-pyrazine amide, giving a classic heme-coordinating azole N plus extended planar aromatic surface.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1FFN704YFRQGMP14Z",
+      "reasoning": "A large flexible peptidomimetic (protease-inhibitor-like) bearing two thiazoles, two benzyl phenyls and a pyrrolidine urea is bulky, lipophilic and rich in coordinating N.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQAMB4ATBJEB7JQ8XA",
+      "reasoning": "Benzoxazole and thiazole rings combined with a cyclohexylmethyl amide and benzyl carbamate give a large, lipophilic, N-heterocycle-laden scaffold typical of strong 3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 83,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY2Y7XP812TGTG6J5D",
+      "reasoning": "A chloropyridine directly linked to a pyridine core plus a 2-pyridyl substituent creates a bipyridine-like heme-chelating motif on an otherwise moderately lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4ZXNNVYP5ER79NPFB",
+      "reasoning": "A stilbene-like biaryl bearing chlorine, an imidazole, a trifluoromethoxyphenyl sulfonamide and a piperazine is large, highly halogenated/lipophilic, and carries a classic heme-binding azole N.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT99GEWPBEM11PBFMQS",
+      "reasoning": "This is an enormous, highly lipophilic multi-ring venetoclax-like scaffold (spirocycle, piperidine, nitroarylsulfonamide, pyridoindole ether) that fills a large hydrophobic pocket easily.",
+      "prediction": "inhibitor",
+      "probability": 88,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYE1SSX2SBBX6GH6Z8",
+      "reasoning": "A chlorophenyl-substituted dihydroisoquinolinone with a piperazinone-linked cyclohexyl aniline is moderately lipophilic and aromatic but lacks a strong heme-coordinating azole N.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSE8CABMP9JWKVWSZJT",
+      "reasoning": "A fused thienopyrimidinedione core carries a dichloro-methylimidazole substituent, giving both a heme-coordinating azole nitrogen and a halogenated, moderately planar polycyclic system.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSK57HT9BRWXD3PART6",
+      "reasoning": "Multiple fused N-heterocycles (furan-pyridine, indole, pyrazolopyrimidine) create an extended, nitrogen-dense planar aromatic system consistent with active-site stacking and heme access.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1SW2TKNAW23XJ9WDC",
+      "reasoning": "Two separate azole rings (a 1,2,3-triazole and a thiazole) each on aryl substituents give a strong double heme-coordination signal reminiscent of azole antifungal chemistry.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4DQ6KBHCBTTTBTVT3",
+      "reasoning": "A methylenedioxyphenylacetamide linked to a thiazole-azaindole gives moderate lipophilicity and an azole/pyridine-type nitrogen but a relatively compact, non-bulky framework.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWBQ5MW8QGSTYRESWZ",
+      "reasoning": "Heavy fluorination (CF3, aryl-F), a biphenyl-like phenyl-azaindole system and a bulky gem-dimethyl chain give high lipophilicity and an accessible pyridine-type nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8520T6G484Z0E41R6",
+      "reasoning": "A bicyclic pyrimidinone core linked through a diarylamine to an oxadiazole-piperazine gives several coordinating nitrogens on a moderately large, kinase-inhibitor-like lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6S62JD3DSKCQN13TE",
+      "reasoning": "A 1,3,4-thiadiazole fused to an azaindole via an acetamide provides adjacent heme-coordinating nitrogens, though the overall molecule is modestly sized and polar (sulfonamide).",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6Y7SNPDXZ6NZ7VB95",
+      "reasoning": "An imatinib-like diaminopyrimidine/pyrrolopyridine core with a basic piperidine and isopropylsulfone aryl group is large, aromatic-N-rich and moderately lipophilic.",
+      "prediction": "inhibitor",
+      "probability": 67,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5M6P4SP6BZ0K50AW4",
+      "reasoning": "An imidazole tethered by a CH2 linker plus a fluorinated biphenylamide is only moderately sized and lipophilic, with the azole N not well positioned for direct heme access.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT7E91Z8KKHQ6VEZQV4",
+      "reasoning": "A pyrrolopyrimidine kinase-inhibitor-like core bearing a benzoxazole, cyclopentyloxy group and diarylamine linkage is large and rich in aromatic/heterocyclic nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4G603ENCZDK0XZ0RZ",
+      "reasoning": "A pyrazolopyridine amide bearing a methylsulfonylpyridine and fluorophenyl group has multiple aromatic nitrogens but is moderate in size and polarity (sulfone).",
+      "prediction": "inhibitor",
+      "probability": 54,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQEENWN96505RM9QJH",
+      "reasoning": "A benzimidazole thioether linked to a cyclohexylmethyl group carries a genuine heme-coordinating fused-azole nitrogen, though the molecule itself is fairly small and only modestly lipophilic.",
+      "prediction": "inhibitor",
+      "probability": 54,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT16HR2GJ6J4HKMY883",
+      "reasoning": "A trifluoromethylphenyl bearing both a triazole and a separate oxadiazole, plus a morpholine amide, combines two heme-coordinating azole rings with substantial lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 71,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT009QW9TT50ET9GM0B",
+      "reasoning": "Large flexible peptide-like macrocycle with a phenol, an indole-type aromatic, a benzyl urea and a tertiary piperazine nitrogen, giving substantial bulk and lipophilicity to fill the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXSYZN1MTNH3N7ATN4",
+      "reasoning": "A dimethoxyphenyl-chlorolactam bearing a benzylic OCF3 group is moderately lipophilic and halogenated but has no pyridine/azole nitrogen available to coordinate heme iron.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSZTB72NHWK27SCFH18",
+      "reasoning": "Four aromatic/heteroaromatic rings (isoxazole-amine bicycle, chlorophenyl, difluorophenyl, thiadiazole) linked by a diaryl ether and sulfonamide give large planar lipophilic surface area plus a thiadiazole nitrogen capable of heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1K6Z10F18ER6QVD3R",
+      "reasoning": "Contains both a 1,2,4-triazole and an oxadiazole ring attached to a biaryl fluorophenyl-methoxyphenyl scaffold, a classic multi-azole heme-iron-coordinating motif reminiscent of azole antifungals.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1JAME735PBBQ7B4VR",
+      "reasoning": "Same triazole+oxadiazole diazole pharmacophore fused to a fluorophenyl-morpholine amide with a dimethylphenyl group, giving strong heme-coordination potential and good lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 69,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT146EZQQ3MF29WWXKR",
+      "reasoning": "Regioisomer of the previous triazole/oxadiazole-morpholine amide scaffold, retaining the dual-azole heme-binding motif and aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2J75EM5BW1M5YXAFR",
+      "reasoning": "Pyridylmethylpyridine ether with an aminochloropyridine amide provides several pyridine-type lone-pair nitrogens for heme coordination, though the molecule is relatively small and moderately polar overall.",
+      "prediction": "inhibitor",
+      "probability": 52,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC5DAW0JS3MXYGV6YJ",
+      "reasoning": "A complex fused polycyclic scaffold containing a nitrile, diaryl ether, and an imidazole ring within a macrocyclic lactam offers both strong azole-type heme coordination and large lipophilic aromatic surface.",
+      "prediction": "inhibitor",
+      "probability": 64,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYV3EGVB4KMHBA4N72",
+      "reasoning": "A methoxyphenylsulfonamide-pyrrolidine amide with a thioanisole substituent is moderately lipophilic but lacks any pyridine/azole nitrogen for heme-iron coordination, limiting inhibition risk.",
+      "prediction": "non_inhibitor",
+      "probability": 32,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSVV8MBQVHQD8T9GCPT",
+      "reasoning": "A flexible peptidomimetic bearing a thiazole and an N-methylimidazole plus two benzyl/phenyl groups combines multiple azole heme-coordinating nitrogens with high lipophilicity, favoring the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 64,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSX5YHT8N2G4ZWKQWQX",
+      "reasoning": "An extended conjugated indazole-styryl system fused to a methoxy-spirocyclopropane indane, with a dimethylaminomethyl group, provides a large planar aromatic stacking surface plus a tertiary/indazole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT255X2N21YRYA9PD19",
+      "reasoning": "An oxazolidinone/morpholinone core with a chlorothiophene amide and formamide is compact and polar (several carbonyls) with only amide-type nitrogens, unlikely to engage the heme iron strongly.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSNR5PR8J7BZREDAVGX",
+      "reasoning": "A biphenol-naphthalene-aniline system is a highly extended planar polyaromatic capable of active-site pi-stacking, though the multiple phenolic/amino groups add polarity that partly offsets lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP4GYS15CHX1SC9NDE",
+      "reasoning": "A bromobenzyl urea linked to a purine-like fused pyrrolopyrimidine gives multiple heteroaromatic ring nitrogens (imidazole/pyridine-type) for heme coordination along with a halogen and extended aromatic surface.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8SVZQQEVCZWCSVMD2",
+      "reasoning": "A large macrocyclic kinase-inhibitor-like structure with a pyrazole, fused diazepine/pyrimidine, nitrile and long lipophilic ether tether presents ample heme-coordinating nitrogen and bulk to fill the CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSM8A8T26GHAR2VB8RZ",
+      "reasoning": "A Hantzsch-type dihydropyridine bearing a chlorofluorophenyl substituent and an N-pyrazolylmethyl group resembles the dihydropyridine calcium-channel-blocker class known to interact with CYP3A4, giving moderate risk.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT55TV94CQDQ9PC8FK1",
+      "reasoning": "A butyl-methylurea piperidine conjugated through an enyne to a methylpyridine provides one heme-coordinating pyridine nitrogen plus moderate alkyl/alkyne lipophilicity, but overall bulk and aromaticity are limited.",
+      "prediction": "non_inhibitor",
+      "probability": 46,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT4PD92ZXG4NX4N66SE",
+      "reasoning": "A pyrimidinylacetamide-piperidine attached to a fused imidazo-fluorene tricyclic system offers both azole/pyrimidine nitrogen lone pairs for heme binding and an extended planar aromatic stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZXZ755GTDE8B9E4P3",
+      "reasoning": "A dioxolane bearing both an imidazole and a dichlorophenyl group attached to a piperazine sulfonamide closely mirrors the classic azole-antifungal (ketoconazole-like) pharmacophore, a strong type II heme-coordination signal.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHZB04XBYZTVPWDA4D",
+      "reasoning": "A biaryl linking a morpholine-substituted amine to a fused dimethyl-quinoxalinone through an amide gives multiple aromatic rings and a fused heteroaromatic bicycle, contributing notable lipophilic bulk though coordinating nitrogens are mostly amide-type.",
+      "prediction": "inhibitor",
+      "probability": 54,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3RSHF69RHV4FPFJ2G",
+      "reasoning": "Large flexible molecule with a tertiary amine linker, tetrahydroisoquinoline, and a fused pyridine (cccnc) capable of heme-iron coordination, plus high overall lipophilicity from the gem-dimethyl cyclohexane and multiple aromatic rings.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV148PKA3WPN5B8NVG",
+      "reasoning": "Peptidomimetic scaffold (protease-inhibitor-like) with a thiazole nitrogen, carbamate, and two benzyl groups giving large lipophilic surface area typical of classic potent CYP3A4 inhibitors like ritonavir.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZXFKFDTNJGE8JXNYQ",
+      "reasoning": "Biaryl pyridine core with a piperazine and a CF3-substituted aromatic ring gives moderate lipophilicity and a heme-coordinating pyridine nitrogen embedded in an extended planar system.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2SAHY1AGXFS55XBYW",
+      "reasoning": "Contains three separate pyridine-type nitrogens connected by an ether and amide linkage, a strong heme-coordination signal, though the molecule is relatively small and fluorinated, limiting hydrophobic pocket fill.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3YA008XM4AD8Y7WJV",
+      "reasoning": "Fused tetrahydroisoquinoline-pyridine system with a cyclopropylpiperazine and tertiary amine, closely resembling compound 1's flexible lipophilic pharmacophore with a heme-coordinating pyridine.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3K8BFM1THXPJTKZCJ",
+      "reasoning": "Methoxypyridine plus an indole and a free phenyl ring around a ketone gives an extended, moderately lipophilic aromatic system with a heme-coordinating pyridine nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDP0C5VNWQM7Q6N658",
+      "reasoning": "Fused xanthine/thienopyrimidinedione core bearing a quinoline-type nitrogen and a pyrrolidinol amide; sizeable planar heteroaromatic system but tempered by polar carbonyl/hydroxyl groups.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT19B5PMF3AE7QVCR3Y",
+      "reasoning": "Bears both an oxadiazole and a 1,2,3-triazole ring alongside a fluorophenyl and morpholine amide -- triazoles are the classic azole-antifungal CYP3A4 heme-ligating motif despite the morpholine's polarity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4TRET49XHJZSFAG8W",
+      "reasoning": "Large macrolide lactone with an aminosugar and a pyridylpropyl carbamate substituent -- structurally analogous to erythromycin/clarithromycin, prototypical potent CYP3A4 mechanism-based inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 90,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3DW061HECTYVMCXT6",
+      "reasoning": "Highly flexible bis-tertiary-amine chain flanked by a tetrahydroisoquinoline-pyridine fusion and a separate pyridylmethyl group, giving multiple heme-coordinating nitrogens and substantial lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP3R0XY83V92SW7BWP",
+      "reasoning": "Polycyclic fused benzoxazole/quinazolinedione-like system with a methoxy group and a hydantoin-bearing benzyl arm gives a large planar aromatic surface favorable for the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSD7N1XAVK852EEZ653",
+      "reasoning": "Minimal biaryl of pyridine and thiophene with no other substituents -- despite a heme-coordinating pyridine nitrogen, the molecule is too small and simple to effectively fill the large hydrophobic pocket.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYFV5A7GE3DAZVN8Q3",
+      "reasoning": "Extended naphthalene-diphenol (stilbene/flavonoid-like) aromatic system offers large planar stacking surface typical of flavonoid CYP3A4 inhibitors, moderated somewhat by the polar sulfonamide and phenols.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHHZSFN6KDJ74EC01W",
+      "reasoning": "Bulky, flexible molecule with piperazine, piperidine, biphenyl, and a fluorophenyl ketone providing substantial lipophilic surface for the large CYP3A4 cavity, even without a classic azole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKPB9YJ19Q6MCD5N87",
+      "reasoning": "Densely fused pyrazolo-pyrimidine core plus separate pyridine, indole, and furan rings creates an extensively conjugated polyheteroaromatic system rich in heme-coordinating nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2MC6XPXQ1W3FQRB8C",
+      "reasoning": "Trihydroxyflavone (chromone) scaffold -- flavonoids of this type are well documented CYP3A4 inhibitors via planar aromatic stacking, though the polyhydroxylation adds polarity.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1VV7Q63PHHRZN009P",
+      "reasoning": "Carries both a 1,2,3-triazole and a thiazole nitrogen alongside a morpholine amide and phenyl substituents, giving two classic azole-type heme-ligating groups on a moderately lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2XP9VT800W352SX1C",
+      "reasoning": "Sulfonamide-thiazole with a chloro/fluorophenyl and an N-hydroxypiperidine is comparatively small and polar (sulfonamide, N-OH), limiting hydrophobic pocket engagement despite the thiazole nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTCR0G3RC7VXCQMY91Z",
+      "reasoning": "Pyrazole-containing molecule with cyclopentyl, a bicyclic spiro amine, and two separate phenyl rings gives notable steric bulk and lipophilicity favorable to the large CYP3A4 active site.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMJZXMRAP86JDDE4FM",
+      "reasoning": "Fused benzimidazole-thiophene core plus a separate aminopyridine and chlorophenyl group provides multiple heme-coordinating nitrogens on an extended, fairly lipophilic aromatic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM0VQZDMAABZQQJFKZ",
+      "reasoning": "A pentynyl-fluorophenyl/difluoromethoxy-tolyl hydantoin-guanidine is lipophilic with several aryl/halogen groups but the only nitrogens are an amidine-type guanidine, not a classic heme-coordinating azole/pyridine lone pair.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT6GQGTQ7BB0TS9V3YP",
+      "reasoning": "A biaryl (fluoroanisole-pyridine) linked via an ether to a cyclobutyl isothiocyanate has a pyridine nitrogen that could weakly coordinate heme iron but overall modest bulk and polarity from the isothiocyanate keep lipophilicity moderate.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT26HR4Y37RS2P0BVSD",
+      "reasoning": "A dichlorobenzamide N-aryl(chlorophenyl) with a pendant primary aminoethyl group is fairly lipophilic and halogenated but the free primary amine is a poor heme ligand and there is no azole/pyridine nitrogen, giving only moderate risk.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTCDWG6NNR5S86S2P4Y",
+      "reasoning": "This bulky compound bears two separate triazole rings plus a phenyl and cyclopentyl/spirocyclic cage, and triazole nitrogens are classic azole-type heme-iron ligands combined with high overall lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5B7ESBV4G48BB6QMB",
+      "reasoning": "An extended fused pyrazolo-pyridine core linked through a urea to a phenethylamine-pyridine carries multiple sp2 nitrogen lone pairs (pyrazole, pyridine) on a fairly planar polyaromatic scaffold, favoring heme coordination and pocket stacking.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXXC97Y4HDEV28W6E1",
+      "reasoning": "A dimethoxyphenyl-substituted pyrrolidinone N-benzylated with a trifluoromethoxyphenyl group is moderately lipophilic but its only nitrogen is an amide within the lactam, which is a poor heme-iron ligand.",
+      "prediction": "non_inhibitor",
+      "probability": 28,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSYWYT6PHAPQS3C9MEG",
+      "reasoning": "This molecule combines a triazole, a fused imidazo-pyridazine-like bicyclic heteroaromatic, a tetrafluorophenoxy group, and a butyl chain, giving strong heme-coordinating azole/aza-aromatic nitrogens plus high overall lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS10HVHY1PTNE70KT3",
+      "reasoning": "A polychlorinated diaryl ether sulfonanilide with an acetylpyridine is highly halogenated and lipophilic with a pyridine-type nitrogen available for weak heme coordination, though it is substituted and somewhat hindered.",
+      "prediction": "inhibitor",
+      "probability": 48,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDS0504CGWT521CZ3H",
+      "reasoning": "A fluorocinnamamide bearing a morpholine and fluorophenyl group is only modestly lipophilic and its nitrogens are an amide and a morpholine ether-amine, neither a strong heme-iron ligand nor part of an extended planar aromatic system.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT83SRPGKW6KAPT9NNE",
+      "reasoning": "A chloropyridine-piperidine linked via a diaryl ether to a trifluoromethyl-pyrazoline acetic acid is structurally complex and lipophilic with a pyridine nitrogen present, giving moderate heme-coordination potential.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSKZMDRC8N3TMDYFGD2",
+      "reasoning": "This fused benzimidazole/pyridinone scaffold carries a morpholine and an additional imidazole-bearing side chain, giving multiple classic azole-type nitrogens on an extended planar heteroaromatic system that favors both heme coordination and pocket stacking.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEH0QKSPJPXZGQAY06",
+      "reasoning": "A fused benzimidazole-pyridinone core substituted with a free imidazole ring and a pyridylmethyl group presents several strong heme-iron-coordinating azole/pyridine nitrogens on a large planar aromatic system, a textbook CYP3A4 pharmacophore.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT17DCYRM15EJT9Y6CV",
+      "reasoning": "This molecule contains both a 1,2,4-triazole and an oxadiazole ring plus chloro- and fluorophenyl groups linked through a morpholine amide, combining multiple azole-type heme-coordinating nitrogens with substantial halogenated aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCZR9X996TRWK03AM8",
+      "reasoning": "A tricyclic purine/pyrimido-indole-like aromatic core with an aminopyrimidine and extended fused ring system, substituted with flexible alkyl-alcohol and tetrahydrofuranylmethyl amine chains, presents a large planar heteroaromatic surface with multiple ring nitrogens capable of active-site interaction.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTC3DR6N0RY07WXPAK0",
+      "reasoning": "Identical structure to the previous entry: a tricyclic purine/pyrimido-indole-like aromatic core with an aminopyrimidine and extended fused ring system, substituted with flexible alkyl-alcohol and tetrahydrofuranylmethyl amine chains, giving a large planar heteroaromatic surface with multiple ring nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2QJBWJ1RJA2S3ZK5Y",
+      "reasoning": "A cyclohexylamine tethered via an ethylamine to a chloro/fluoro-aminobenzenesulfonamide bearing an aminothiazole has a thiazole nitrogen for weak heme coordination but otherwise moderate lipophilicity and a polar sulfonamide limiting binding.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT2P5BBGVR59AAZYHZW",
+      "reasoning": "Identical structure to the previous entry: a cyclohexylamine-ethylamine linked to a chloro/fluoro-aminobenzenesulfonamide bearing an aminothiazole, with a thiazole nitrogen offering weak heme coordination but moderate overall lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSHRTFB4EFZQA5V5WK6",
+      "reasoning": "A pyrazole-substituted benzamide fused to a difluoro-tetrahydrobenzazepine bearing a pyridylmethyl amide and a chlorophenyl group is large, lipophilic, and richly polyaromatic with multiple heterocyclic nitrogens well suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSSZ7ZRCK7ZZGNK05XJ",
+      "reasoning": "This compound has a fused triazole-oxazine bicyclic system plus a separate free imidazole ring, a trifluoromethylphenyl, and a methoxyphenyl group, giving multiple strong azole heme-coordinating nitrogens on a lipophilic polyaromatic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 63,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6YA3FGMBP8X20W4PX",
+      "reasoning": "An aminopyrazole fused to a triazole/tetrazole-like bicyclic heterocycle, connected through a pyrazole-methylene linker to a phenylpiperidine, offers several azole nitrogens but the molecule is fairly polar overall with a free amine, moderating lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1KP1QDHJT4F1EQBPT",
+      "reasoning": "Large flexible peptidomimetic with two benzyl groups, a thiazole ring, and a thiazolylmethyl carbamate offering multiple weak heme-coordinating N atoms in a high-logP scaffold reminiscent of HIV protease inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYPQH5DBW7J41NZZE2",
+      "reasoning": "Fused pyrazolo-triazine core bearing a CF3 group, phenyl substituent and methoxyphenyl provides an extended planar aromatic system with adjacent sp2 nitrogens, favoring active-site stacking.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT424F6QDJS4WN8WFND",
+      "reasoning": "A thienopyrimidine fused heteroaromatic core linked to a sulfonamide-bearing benzylpiperidine gives a large planar N-rich aromatic surface with strong heme-coordination potential.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSP05GNKJEK7Y37G3E",
+      "reasoning": "Trisubstituted pyridine diaryl ether with a dichlorophenylsulfonamide combines a heme-coordinating pyridine nitrogen with heavy halogenation, raising lipophilicity and active-site affinity.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS3FAG1VZYAPXWYVTS",
+      "reasoning": "Nitrile-substituted diaryl ether featuring a chloropyridine and dichlorobenzenesulfonamide again places a coordinating pyridine N in a halogen-rich lipophilic biaryl framework.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM7NFCFZ26JNBNFEJC",
+      "reasoning": "A hydroxypyrrolidine amide linked through a phenyl to an oxadiazole and cyclohexylethyl chain is moderately lipophilic but the oxadiazole N is poorly positioned and the molecule lacks an extended planar aromatic surface.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSJ3CXTYDJWRZTT8JAB",
+      "reasoning": "A bulky adamantane-like tricyclic cage fused to a dimethoxy-tetrahydroisoquinoline amide and methyl benzoate gives very high lipophilicity and bulk that fits the large CYP3A4 pocket, with a tertiary amine as weak coordinator.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSK6DX7SXMVCZWNZ5B4",
+      "reasoning": "A large flexible bis-carbamate peptidomimetic bearing a pyridylmethyl tertiary amine plus two thiazole rings and multiple phenyls presents strong heme-coordination potential in a very lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHNV3Y06TFZJHXP0XK",
+      "reasoning": "Fused benzimidazole-pyridinone kinase-inhibitor-like scaffold with a dimethylaminopiperidine and chlorophenyl carbinol offers several coordinating nitrogens on an extended aromatic system.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRES7ATJEY80MK74A9",
+      "reasoning": "A fluorophenylpyrazole carboxamide bearing a free carboxylic acid is moderately sized but the ionizable acid group lowers effective lipophilicity and active-site binding despite the pyrazole nitrogens.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV7AYEA22X8ZZQ4ASW",
+      "reasoning": "A fluorobenzoylpiperidine bearing an N-aryl pyridine with a trifluoromethylphenyl substituent has a heme-coordinating pyridine nitrogen embedded in a highly lipophilic multi-aromatic, halogenated framework.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV1NPFWG49E70MYXDS",
+      "reasoning": "Close analog of the previous compound with a benzoylpiperidine, chlorophenyl and pyridine substituent, retaining the coordinating pyridine N and multi-ring lipophilicity though slightly less halogenated.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSFJJKHGE8KPGSBZWW2",
+      "reasoning": "An imidazole ether flanked by two methoxyphenyl groups closely resembles the classic azole-antifungal pharmacophore, a strong type II heme-iron-coordination signal.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5RPJ36PVVAFVMG7GN",
+      "reasoning": "An extended fused aminopyridine-triazanaphthalene system carrying a phenyl and an aminocyclobutylphenyl group is a large planar polyaromatic, N-heterocyclic scaffold well suited to the roomy CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5B7K02TVRCW01C0RR",
+      "reasoning": "A brominated quinoline fused with a methylenedioxyphenyl and bearing a tertiary dimethylaminoethyl chain and pyridine ring is a bulky, highly lipophilic, halogenated polyaromatic amine reminiscent of antimalarial quinolines known to inhibit CYP3A4.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZF6SNW18GQ9MAYVBQ",
+      "reasoning": "An imidazolylacetate ester linked to a fluorophenyl-phenyl biaryl amide again places an imidazole heme-coordinating nitrogen on a lipophilic biaryl scaffold.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVDXXKM243ACA9682C",
+      "reasoning": "Large flexible urea-linked peptidomimetic bearing a thiazole ring, a second thiazolylmethyl carbamate and two phenyl groups gives strong heme-coordination potential in a very high-logP molecule.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8C9ZXBW6QV8PW8CZC",
+      "reasoning": "A pyrrolopyrimidine (purine-like) fused heteroaromatic linked via an amine to a piperidine acetamide bearing a dichlorophenyl group combines multiple coordinating ring nitrogens with halogen-driven lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSER525CSBPE54AA64E",
+      "reasoning": "A purine-like fused triazolopyrimidine directly conjugated to a chlorophenyl-piperidine gives an electron-rich fused N-heteroaromatic well positioned for heme iron coordination alongside notable lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1XH11Q9J9628VCMT1",
+      "reasoning": "Near-identical scaffold to the first compound (secondary methylamine in place of the acetamide) retaining the two thiazole rings, carbamate and multiple phenyls, so the same strong high-logP heme-coordination risk applies.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP4XR9WW6K143WN5EN",
+      "reasoning": "Candesartan/ARB-like scaffold with an ethoxy-benzimidazole (aromatic sp2 N available for heme coordination) fused to a lipophilic biphenyl-tetrazole system that stacks well in a large hydrophobic pocket.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1GTW8WAAC6Y4H76BG",
+      "reasoning": "Contains an N-aryl 1,2,4-triazole plus an oxadiazole and a methoxy-biaryl core, giving both a heme-coordinating azole nitrogen and extended aromatic surface for pocket stacking.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3PMNR5NKZC5SW7QCS",
+      "reasoning": "Small aminomethyl-pyridine ether bearing a fluoro-hydroxypyrrolidine amide; the pyridine N is ether-flanked and the molecule is compact and polar (free NH2, OH, amide) with low overall lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSFNMG9WHJEWK9PXVNH",
+      "reasoning": "Bulky multi-ring system (2,5-disubstituted oxazole, phenyl ether, tert-butylphenyl amide) offers a large lipophilic/aromatic surface, but a free carboxylic acid ionizes at physiological pH and blunts heme access, giving mixed risk.",
+      "prediction": "non_inhibitor",
+      "probability": 47,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2WXVG44BCK3XC4X45",
+      "reasoning": "N-methylpiperidine tethered through an aminoethyl linker to a chloro/fluoroaniline sulfonamide-thiazole, combining a basic sp3 amine and an aromatic thiazole N with two halogens for added lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 52,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT7KGECACQHC9CW8ESJ",
+      "reasoning": "Large fused polyheterocyclic core (imidazo-fused pyridine/pyrrolopyridine) decorated with a methylisoxazole and tetrahydropyran, giving an extended planar aromatic system rich in ring nitrogens well suited to the CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5DF09GDTBDP56ECBD",
+      "reasoning": "Pyrazolopyridine core with a dimethylpyridine and a phenylethyl urea; several pyridine-type nitrogens exist but the urea and NH groups add polarity that partially offsets the moderate aromatic bulk.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSEH0N72KVVZB5A18G",
+      "reasoning": "Heavily chlorinated diaryl ether/sulfonamide (four Cl atoms) with a pyridine nitrile core, giving high lipophilicity, an accessible pyridine N, and extensive aromatic surface \u2014 classic promiscuous CYP3A4 substrate features.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1K3GSQ3YPJ3Z1EKKS",
+      "reasoning": "N-aryl triazole on a chlorophenyl ring combined with a morpholine amide and an oxadiazole-phenyl group provides a heme-coordinating azole plus multiple aromatic rings, though morpholine polarity moderates overall lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5RZVP08GMV1XQC7A2",
+      "reasoning": "Fused pyrrolopyridine (7-azaindole-like) bearing a fluorophenyl and a pyridin-4-ylamino substituent gives an extended planar heteroaromatic system with multiple nitrogens capable of heme coordination, typical of kinase-inhibitor-class CYP3A4 hits.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS8XZ37DG6FTSY71F8",
+      "reasoning": "N-methyltetrazole-methyl chloropyridine linked to a dichlorophenyl sulfonamide; tetrazole nitrogens offer weaker heme-coordination than imidazole/triazole, and the sulfonamide adds polarity despite three chlorines boosting lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSJ8MZVS589GAJ9JPY6",
+      "reasoning": "Biaryl thiophene linking two phenols (methylphenol and hydroxyphenyl); no basic or heme-coordinating nitrogen, and the two free phenolic OH groups add polarity/H-bonding that reduces net lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 28,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSMEK46CJV10FMPN3TS",
+      "reasoning": "Nitrogen-rich molecule combining a benzyl-tetrazole, an aryl-1,2,4-triazole, and a cyclobutyl-piperazine tertiary amine \u2014 multiple azole/basic nitrogens plus substantial aromatic and alicyclic bulk favor pocket binding and heme access.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJPCHDWCNWA6AA6JE7",
+      "reasoning": "Isoxazole-carboxamide bridging two chlorophenyl rings; the isoxazole N sits adjacent to ring oxygen (weaker heme ligand than imidazole/triazole) and the molecule is only moderately sized/lipophilic.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTCYTHC0BGA1KWCVB1F",
+      "reasoning": "Large tetracyclic aminopyrimidine-indole/carbazole-type scaffold (PI3K-inhibitor-like) with an extended planar fused aromatic system and multiple pyrimidine/indole nitrogens, strongly favoring stacking and heme coordination in the large CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTADY7AZAM8RMZFD5M2",
+      "reasoning": "Pyridylmethylamine linked to a phenyl-isoxazole-morpholine; pyridine N provides mild heme-coordination potential, but the morpholine oxygen and secondary amine linker keep overall lipophilicity modest.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSHN0TQ8AR58C131A7J",
+      "reasoning": "Complex fused benzimidazole-pyridinone scaffold with a chlorophenyl-hydroxyethylamino side chain and a methylaminopiperidine; multiple aromatic/heteroaromatic rings with imidazole-type nitrogens give real heme-coordination and stacking potential despite several polar OH/NH groups.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT50S7R0QPRPQMXGGKF",
+      "reasoning": "Difluorophenyl-substituted pyrrolopyridine bearing a pyridin-4-ylamino group, essentially the same extended nitrogen-rich fused heteroaromatic scaffold as the analogous monofluoro compound in this set, favoring CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9ZQZARH3NR0BYB5FM",
+      "reasoning": "Hydrazone-linked pyridine with a fluorophenyl-oxazolidinone bearing a hydroxymethyl group; the hydrazone and oxazolidinone carbonyl/OH add polarity, and only a single pyridine nitrogen offers weak heme-coordination on a moderately sized scaffold.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTAV8H597HD3SBC1AH2",
+      "reasoning": "Propylphenyl sulfonamide attached to a difluorophenyl ketone fused to a pyrrolopyrimidine bearing a cyclopropylamino group \u2014 an extended nitrogen-rich fused aromatic core plus an alkyl chain gives good lipophilicity and heme-coordinating nitrogens typical of kinase-inhibitor CYP3A4 hits.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE6H3C3W47P1AMMDP9",
+      "reasoning": "A fused thieno-pyrimidinedione bicyclic core with a flanking dimethylpyrazole gives moderate planarity and lipophilicity but the pyrazole nitrogens are both substituted/hindered and not positioned for clean heme-iron ligation.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5X6C32X3D9E50WA4J",
+      "reasoning": "A 2-alkylpyridine conjugated through an alkyne to a piperidine urea places a classic heme-coordinating pyridyl nitrogen in an extended, lipophilic, flexible scaffold typical of CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCC5QZ0CD4W7JJ86P2",
+      "reasoning": "The molecule links a thiazole-aminopyridine aromatic system with an oxazolidine-substituted pyridine, giving multiple sp2 heterocyclic nitrogens capable of heme coordination plus a sizable lipophilic aromatic surface, though a sulfonamide and ether add polarity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYCBT4TDYG16PRZKKN",
+      "reasoning": "A purine-like fused tricyclic scaffold bearing several sp2 ring nitrogens (imidazole/pyrimidine-type) fused to an aminopyrazole is a highly planar, nitrogen-rich aromatic system well suited to stack in and coordinate the CYP3A4 heme pocket.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5NFC0X6K21C2KDX13",
+      "reasoning": "Nearly identical to the ethylurea analog above, this 2-methylpyridine-alkyne-piperidine sulfonamide retains the heme-coordinating pyridyl nitrogen conjugated through an alkyne, a strong azole-antifungal-like signal.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCWR4KD32KSAEJQ3H2",
+      "reasoning": "A purine/deazapurine-like fused tricyclic aromatic core with an exocyclic 2-aminopyrimidine nitrogen offers heme-coordinating potential and decent lipophilicity, tempered by several polar hydroxyl/methoxy/hydroxyethyl substituents.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN2S4QQMWXJXVQBCRG",
+      "reasoning": "This is a large planar acridone/azaanthracenone-type polyaromatic with an embedded pyridine-like ring nitrogen and an appended methylpyrazole, giving strong extended-aromatic stacking plus heme-coordinating nitrogen despite the polar sulfonamide.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHXCRNNEV98YWHQTE6",
+      "reasoning": "An imidazo-pyridine fused bicyclic (aromatic N-heterocycle) bearing a CF3-cyclopropyl group, bromine, and a lipophilic bicyclic cyclohexanone gives real heme-coordination potential and high lipophilicity, though the free carboxylic acid partially offsets membrane/pocket affinity.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WST2PQSXX6T5PRJTGA7",
+      "reasoning": "A bromonaphthalene ether tethered via a hydroxypropyl linker to an N-methylpiperidine has only an aliphatic tertiary amine (not classically heme-coordinating) but sizeable planar aromatic/halogen-driven lipophilicity that could still fill the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQTMHEQB34JE6RBQCH",
+      "reasoning": "A tricyclic quinazolinone-like fused aromatic system carrying an isoxazole and a phenethyl substituent contains an embedded pyridine-type ring nitrogen and extensive planar aromatic surface favorable for the large CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQQCP7KX0XRPRBE818",
+      "reasoning": "Identical structure to the previous entry: a tricyclic quinazolinone-isoxazole-phenyl system with an embedded pyridine-type nitrogen and large planar aromatic surface consistent with CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYFZ37G5K3Y9RDG1AE",
+      "reasoning": "An indole fused to a thiophene-containing saturated ring bearing a dimethoxybenzyl group is bulky and lipophilic but lacks a clear sp2 lone-pair nitrogen positioned for heme ligation, since the indole and thiophene nitrogens/sulfur are not classic ligands.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSDXX6D3AHFCG2CQDT9",
+      "reasoning": "A thienopyrimidinedione core substituted with a quinoline-methylene arm provides a genuine heme-coordinating quinoline nitrogen fused to an extended planar bicyclic aromatic system, a strong CYP3A4 inhibition signal.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSPAJBH7JP3ZGTKPKJ0",
+      "reasoning": "A pyridine ring directly bearing an aryl ether to a chloro/trifluoromethyl-phenyl group supplies a classic heme-coordinating pyridyl nitrogen embedded in a highly lipophilic, halogen-rich, benzyl-substituted peptidomimetic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVEP4G8XNEXCQ8SR0G",
+      "reasoning": "A pyridine ring attached via cyclopropane to a sulfonamide-linked pyrazole-oxane aryl system carries a heme-coordinating pyridyl nitrogen, though overall polarity from the sulfonyl and oxane groups moderates lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6KF4H2THSSXRJKWD5",
+      "reasoning": "A large, flexible molecule built around a pyridine core bearing a cyclopropylmethyl-piperazine and a pyridone amide gives both a heme-coordinating pyridyl nitrogen and substantial molecular bulk/lipophilicity typical of CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6PWCCY7KJPN5RW08V",
+      "reasoning": "A brominated quinoline-type fused bicyclic aromatic bearing a phenyl substituent and a chlorophenyl-glycine arm combines a heme-coordinating aromatic nitrogen with heavy halogenation and extended planar stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSH6ZX76TNJV0KTP24V",
+      "reasoning": "A difluorocinnamoyl-piperidine linked to a second piperidine bearing a 7-azaindole gives a heme-coordinating pyridine-type nitrogen within a large, flexible, doubly-piperidine lipophilic scaffold characteristic of promiscuous CYP3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSWP43FQ22ZF04JA9CQ",
+      "reasoning": "An imidazo[1,2-a]pyridine fused aromatic core with a chlorine substituent, linked through an amide to a fluorophenyl-piperazine, presents a bridgehead-type aromatic nitrogen and a lipophilic, halogenated, flexible framework favorable for CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXT44MF4Z3B44GMAM8",
+      "reasoning": "A methylpiperazine-pyridine conjugated through a styryl linker to an indazole fused with a spiro-oxindole gives multiple sp2 heterocyclic nitrogens (pyridine, indazole) in an extended conjugated planar system plus a bulky spirocyclic lipophilic cap, a strong composite CYP3A4 risk profile.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV90B9M57WC6W38GW2",
+      "reasoning": "Large flexible peptidomimetic with two benzyl groups, a thiazole ring, and a thiazolylmethyl carbamate, giving high lipophilicity/bulk plus a heme-coordinating heteroaromatic N typical of protease-inhibitor-like CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDME6AHQRDQ34Y2KTY",
+      "reasoning": "Small biaryl (methylthiophene-fluoropyridine) with only one heme-coordinating pyridine N and modest ring count/lipophilicity, too small to fill the large CYP3A4 pocket effectively.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSVPDZZX3APAA7N14A4",
+      "reasoning": "Bulky peptidomimetic nearly identical in class to compound 1 -- thiazole heteroaromatic N, two phenyl rings, and a thiazolylmethyl carbamate give strong lipophilic/heme-coordination signals.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1HG90R1VDS4A19ZS7",
+      "reasoning": "Biaryl anisole-pyridine linked to a benzoylpiperazine bearing a triazole substituent -- multiple aromatic rings plus classic azole (triazole) and pyridine nitrogens strongly favor heme-iron coordination.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSFQVY9R88CZM6XQWK2",
+      "reasoning": "Extended planar benzodiazepinone/quinazolinone-like fused ring system substituted with a triazole and a fluorophenyl -- classic azole nitrogen plus large aromatic surface strongly resembles known CYP3A4-interacting benzodiazepine-type scaffolds.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXCX7ZTRF17GWKJEKM",
+      "reasoning": "Fused benzimidazole-pyridopyrimidinedione bicyclic core has heme-coordinating N's but the terminal hydroxybutyl chain adds polarity that tempers overall lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT1Q1Q9WC56KW3EVFFC",
+      "reasoning": "Same bulky thiazole/bis-phenyl peptidomimetic scaffold as compounds 1 and 3 with an added dimethylaminopyrrolidine, retaining high lipophilicity and a heme-coordinating thiazole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWM00XNNQKSGHH9W1C",
+      "reasoning": "Bulky bis-chlorophenyl lactam bearing sulfone and trifluoromethanesulfonamide groups is very lipophilic and halogen-rich but lacks a classic sp2 heme-coordinating nitrogen (only an amide N), giving moderate risk.",
+      "prediction": "inhibitor",
+      "probability": 48,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2N1FKZW83RG8K4SS7",
+      "reasoning": "Fused thiadiazole-triazine core with an azetidine-linked difluorophenyl carries multiple ring nitrogens but the free amine/amide groups and modest size keep overall lipophilicity and pocket fit limited.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKSJ3HY2JFKDCJHV86",
+      "reasoning": "Highly fused polyheteroaromatic system (pyrazolopyrimidine, pyridine, furan, indole) with a nitrile and multiple ring nitrogens offers extensive planar stacking surface and heme-coordinating potential typical of strong CYP3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNKD7Q7KRT93YNYNZH",
+      "reasoning": "N-methylindole fused core with a cyclohexyl and furan substituent is bulky and lipophilic, but the free cinnamic-acid carboxylate is ionizable/polar and the indole N is capped, reducing heme-coordination and net inhibition likelihood.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5MSXT4ZZQ95XTT9GV",
+      "reasoning": "Fused imidazopyridine/pyrazolopyridine lactam bearing a CF3-substituted aryl ring and cyclopropyl group gives good planar aromatic bulk plus a fused-ring pyridine-type nitrogen for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSCY9QDVRS39EEGY9NA",
+      "reasoning": "Large, complex molecule with a pyridine ring, a basic piperazine, and a biaryl furan-phenyl extension gives substantial lipophilic bulk and multiple nitrogen lone pairs despite several hydroxyls, resembling protease-inhibitor-class CYP3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS7BXN87RPJ24QGSPS",
+      "reasoning": "Pentachlorinated diaryl ether sulfonamide with a pyridine nitrogen is extremely lipophilic and halogen-dense, closely mirroring known strong CYP-inhibiting halogenated diphenyl ether/triclosan-like chemotypes.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT50VJX65Y318FYXGFV",
+      "reasoning": "Fused azaindole/pyrrolopyridine kinase-inhibitor-like scaffold with a chlorofluorophenyl group offers extended planar aromatic surface and multiple ring nitrogens capable of heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 57,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKKPX6YSS0KJRRCKG4",
+      "reasoning": "Highly complex multi-fused heteroaromatic system (furan, aminopyridine, indole-carboxamide, pyrazolopyrimidine) provides abundant nitrogen lone pairs and extensive aromatic stacking surface favoring a large hydrophobic-pocket enzyme like CYP3A4.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNW1Y56W0RFRHX1SQ0",
+      "reasoning": "Methoxyphenyl-triazolopyridazine biaryl linked through an aniline to an N-methylpiperazine combines fused-heteroaromatic nitrogens with a basic amine and good lipophilic bulk, a pattern common among CYP3A4-interacting kinase-inhibitor scaffolds.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT65QZ58SZDH02W0W07",
+      "reasoning": "Tricyclic fused oxazole-quinazolinone core substituted with a difluoroaniline and cyclopropyl gives a large planar lipophilic aromatic system with an oxazole nitrogen for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3PMPP33PD0TC4TEJ8",
+      "reasoning": "Large flexible molecule with multiple pyridine rings, a tetrahydroisoquinoline and a fused tetrahydronaphthyridine plus secondary amine linkers is highly lipophilic with several heme-coordinating pyridine nitrogens, fitting a large promiscuous pocket well.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCS7WBVKHWT64WF6AA",
+      "reasoning": "Fused isoquinoline/naphthyridine ether linked to a pyridine and a chloroimidazole packs three heme-coordinating nitrogen-containing heterocycles (including a classic azole) onto a moderately lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWVY2JVXQDNWZPXR7H",
+      "reasoning": "Two chloroaryl rings and a bulky tert-alkyl sulfone give notable lipophilic bulk, but the only nitrogen is an amide/lactam N with no accessible lone pair for heme coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSE4GA2ZM3AF9ZV2Q8M",
+      "reasoning": "An isoquinoline nitrogen plus a flexible dimethoxyphenethyl-diamine chain linking two more aromatic rings gives both a heme-coordinating N and substantial lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9P0NAS35GXVXX0TZZ",
+      "reasoning": "A pyridine nitrogen, piperazine, chromone, and benzanilide combine into a large, highly aromatic/planar, lipophilic scaffold well suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1CKXDMZ2TJ521N3KG",
+      "reasoning": "A pyrazole and an oxadiazole (both azole-type sp2 nitrogens) sit on a moderately sized aromatic/morpholine scaffold, giving a real but only moderate heme-coordination and lipophilicity signal.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1HBWDAWDS6Y29G4YP",
+      "reasoning": "This large peptidomimetic (protease-inhibitor-like) has two thiazole rings, multiple benzyl groups, and a carbamate, giving high flexibility, lipophilicity, and azole-type heme-coordinating nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 73,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT584KDQD6VVCQ5SP1B",
+      "reasoning": "A pyridine ring directly fused into a biaryl system with a piperazine and dimethoxy/fluoro substitution provides a heme-coordinating nitrogen plus an extended, lipophilic planar aromatic core.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT263T3YF5J5J8916RH",
+      "reasoning": "Three pyridine-type nitrogens (two ether-linked pyridines plus the core pyridine) give strong heme-ligand potential, though the molecule is relatively small and moderately polar overall.",
+      "prediction": "inhibitor",
+      "probability": 56,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVERRPYCEXDVVY2MJ9",
+      "reasoning": "A fused pyrrolopyrimidine (kinase-inhibitor-like) scaffold with an aminopyridine-piperazine appendage and cyclopentyl group offers multiple aromatic nitrogens and extended planar ring stacking.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSZ55MGMH16M5B4V5M",
+      "reasoning": "An isonicotinamide (pyridine) group plus a thiazole and benzyl substituent give a clear heme-coordinating nitrogen on a moderately lipophilic aromatic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSK6E6DAKZ01B1AQ6TA",
+      "reasoning": "A pyridine ring directly attached to a fused benzothiophene core with a tertiary amine chain provides both heme-coordinating nitrogen and a compact but lipophilic planar bicyclic system.",
+      "prediction": "inhibitor",
+      "probability": 63,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHQWBRGCHNF8QZAKPB",
+      "reasoning": "A benzimidazole (classic azole-type heme-coordinating N) fused to a pyridinone, with a piperidinol and chlorophenyl group, gives a kinase-inhibitor-like scaffold with strong CYP3A4 liability signals.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSH214V0CXTXCXCMW4Y",
+      "reasoning": "An indazole fused ring plus a pyrimidine core (multiple aromatic nitrogens), a benzyl group, and a sulfonamide make an extended, lipophilic, kinase-inhibitor-like planar system typical of CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT68MTM3C0JJJAX7K25",
+      "reasoning": "Despite a CHF2 group, this molecule is dominated by polar features (free aniline NH2, sulfonamide, piperidinol, amide) with no azole/pyridine nitrogen for heme coordination, limiting CYP3A4 risk.",
+      "prediction": "non_inhibitor",
+      "probability": 28,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKDB8C55KG1RCZGSAR",
+      "reasoning": "Three phenyl rings linked by amide bonds and a benzylic dimethylamino group give moderate lipophilic bulk, but the amine is a simple benzylamine-type with no strong heme-coordinating lone pair.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV0W2N32NFR3GGXC6Q",
+      "reasoning": "Two trifluoromethyl-aryl groups plus a pyridine nitrogen on a piperidine-amide scaffold combine high lipophilicity with a direct heme-coordinating nitrogen, a strong dual signal for inhibition.",
+      "prediction": "inhibitor",
+      "probability": 71,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZT9XK96DRBAQEQJTQ",
+      "reasoning": "An oxazole fused to a thio-linked triazole, a spirocyclopropane, and a CF3-phenyl group give multiple azole-type nitrogens plus considerable lipophilic/halogenated bulk.",
+      "prediction": "inhibitor",
+      "probability": 64,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVFAAN8QY30XCWHDVN",
+      "reasoning": "A large peptidomimetic with two thiazole rings and multiple benzyl/carbamate groups closely resembles known protease-inhibitor CYP3A4 inhibitors, combining bulk, lipophilicity, and azole nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT06KWJ0DKHS2E85WHG",
+      "reasoning": "This very large bicyclic diketopiperazine/indole/pyrimidine-piperazine conjugate has multiple aromatic heme-coordinating nitrogens and extensive ring stacking, though high polar surface area (several amide NH/OH groups) tempers the risk somewhat.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTAX1QFS2MQJVB6EN8P",
+      "reasoning": "A cyclopropyl-phenoxy enol-lactone with dimethoxy and an azetidinol-amine chain has only an aliphatic tertiary amine (no azole/pyridine heme ligand) and moderate aromatic content, giving lower inhibition likelihood.",
+      "prediction": "non_inhibitor",
+      "probability": 33,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT6ZPFAFK0QH8N79CPC",
+      "reasoning": "A pyridine ring fused near a pyrimidine-type core plus a difluorophenyl amide provide multiple heme-coordinating aromatic nitrogens, though the cyclohexanediol substituent adds notable polarity.",
+      "prediction": "inhibitor",
+      "probability": 54,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT99QTWB92P9THW05V7",
+      "reasoning": "A large dimethoxychromone-carboxamide bearing a piperazine-linked pyridylmethyl aryl group gives both a heme-coordinating pyridine nitrogen and an extensive lipophilic multi-ring surface well suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8JCASX6EW0H5GG6CK",
+      "reasoning": "A chlorophenyl-isopropylaminopropanamide attached through a piperazine to a fused pyrimidinone bears a pyridine-like sp2 nitrogen for heme coordination alongside moderate lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHKZWK5J0YG3M6RMB6",
+      "reasoning": "This flexible piperidine-linked bis-heteroaromatic (benzimidazole/pyridinone core) with a chlorophenyl and dialkoxyethylamino tail combines multiple sp2 nitrogens and high lipophilic bulk, fitting the large CYP3A4 cavity well.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSR8CDBBA7ZN49531H5",
+      "reasoning": "A bulky triarylmethane-like scaffold with two flanking piperidine rings is highly lipophilic and bulky enough to fill the large CYP3A4 pocket even though the amines are purely aliphatic rather than heme-coordinating aromatics.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTBXZD0DXYW1B1N0DRN",
+      "reasoning": "A dichloro-benzoxazinone with a chlorobenzamide-aminobenzyl linker has decent aromatic/halogen lipophilicity but lacks any pyridine/imidazole-type heme-coordinating nitrogen, keeping risk moderate rather than high.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSJ204XTANA2Q8WHYM",
+      "reasoning": "A dichlorotoluene sulfonamide linked via a diaryl ether to a chloropyridine provides a heme-coordinating pyridine nitrogen plus multiple halogenated aromatic rings, favoring inhibition.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKP803ZZ6Q9NWYZS6F",
+      "reasoning": "This fused polycyclic system combines a pyridine ring, a thiazole-fused benzothiophene, and a cyclic phosphonate, giving several accessible sp2 nitrogens and an extended aromatic/lipophilic framework typical of CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMHR9THBBDAXST8QW0",
+      "reasoning": "A difluoromethoxyphenyl-substituted iminohydantoin/amidinoimidazolone with an alkyne is moderately lipophilic but its amidine nitrogen is not well-positioned like a classic azole for heme iron coordination, so risk is only modest.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSNXN3NP4Q6V16P1Y0S",
+      "reasoning": "A dichlorophenyl-substituted tetralin/indane bearing a secondary methylamine closely resembles the sertraline-type scaffold, a bicyclic lipophilic amine known for CYP3A4 interaction.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYWKT78HKRBV9997HV",
+      "reasoning": "A methoxyphenyl sulfonamide-pyrrolidine carboxamide to a dimethylaniline is compact with only simple monocyclic aromatics and no heme-coordinating nitrogen, so it is unlikely to strongly inhibit CYP3A4.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT7487RYZ0X5064SNCZ",
+      "reasoning": "This very large molecule stacks a chromone-carboxamide, a tetrazole, and an imidazole-substituted benzazepine-ethylphenyl chain, giving multiple heme-coordinating azole nitrogens plus enormous lipophilic aromatic surface area, a strong inhibition signal.",
+      "prediction": "inhibitor",
+      "probability": 90,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMVCV9NS5SZBWXKCQR",
+      "reasoning": "A dichlorophenyl-substituted pyridone conjugated to an indazole with a pyrrolidinylethyl tail offers extended planar aromatic stacking and multiple sp2 nitrogens for possible heme interaction.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSFZM4GNKCGKY9YY87H",
+      "reasoning": "A piperidine directly N-linked to a pyridine ring (a heme-coordinating motif) is combined with a large lipophilic bis-thiophene chlorothienyl vinylsulfonamide tail, strongly favoring the big CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0WY338H7J9QE0R18H",
+      "reasoning": "This high-molecular-weight polycyclic construct contains an indole, a pyrimidine-like fused ring, a piperazine-cyclopentyl unit, and a phenol/benzylurea, giving abundant sp2 nitrogens and vast lipophilic surface that suit the large flexible CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2SS0A5RN50JNM2R9B",
+      "reasoning": "A small dichlorobenzamide bearing only a primary aminoethyl group and a fluorophenyl has limited lipophilic bulk and no heteroaromatic heme-coordinating nitrogen, making inhibition unlikely.",
+      "prediction": "non_inhibitor",
+      "probability": 20,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSJ0S5HZWYFT6BSVX3R",
+      "reasoning": "A biphenyl-thiophene diphenol with a fluorine offers an extended planar conjugated system for pocket stacking, but the absence of any nitrogen atom removes the classic heme-coordination signal and the phenols add polarity, so risk stays moderate-low.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSS639P6EY902PKS4BN",
+      "reasoning": "A piperazine directly bonded to a cyanopyridine nitrogen combined with a very bulky lipophilic adamantane carboxamide gives both a heme-coordinating pyridine and exceptional hydrophobic bulk for the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEV69RR9QF70FJ8A44",
+      "reasoning": "A phenylalanine-like free primary amine linked through an amide/piperidine to an indazole provides one heteroaromatic nitrogen but the polar free amine and amide groups keep overall lipophilicity and pocket fit only moderate.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSGR2JKK2YR5MSTYFX",
+      "reasoning": "A quinazolinone bearing a hydroxamic acid and phenethyl substituent has a metal-chelating hydroxamate that could weakly engage heme iron, but the polar hydroxamic acid group and moderate ring system limit overall lipophilicity-driven risk.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT40KQ2R9H9Z805A2YR",
+      "reasoning": "A methoxyphenyl-thiazolidinone linked to a bromophenethylbenzamide has decent aromatic/halogen lipophilicity but the ring nitrogen sits within an amide-like thiazolidinone rather than a heme-coordinating aromatic system, giving only moderate risk.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSXA521ZM2S3PQR8EM3",
+      "reasoning": "A large, multi-ring, spirocyclic oxindole-pyrazole-indazole system with an extended aromatic vinyl linker and a dimethylaminobenzyl group offers both a heme-coordinating pyrazole nitrogen and substantial lipophilic bulk for the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSGZ81F0Z1RM3QH0CE0",
+      "reasoning": "This bis-arylidene cyclopentanone (curcuminoid-like) has two methoxyphenol rings and extended conjugation but no basic/azole nitrogen for heme coordination, giving only moderate CYP3A4 risk from planarity and lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2YX542SMYY78VS1KR",
+      "reasoning": "Two 1,2,3-triazole rings attached to aromatic systems plus a piperidine amide closely mimic the azole-antifungal heme-iron-coordinating pharmacophore combined with sizeable aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVN2PZ4YPZ062K2WV1",
+      "reasoning": "A thiazole-fused bicyclic core, a pyridine nitrogen, and a pyrrolidine ring give moderate heme-coordination potential alongside multiple lipophilic aromatic/alicyclic rings.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQVHJQMRXPSK4R21GR",
+      "reasoning": "This large, flexible peptidomimetic (protease-inhibitor-like) bears a thiazole, benzoxazole, and N-methylpiperazine with multiple sp2 nitrogens plus high overall lipophilicity, a classic strong CYP3A4 inhibitor profile.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSW6D1C17JB5BD09CZ3",
+      "reasoning": "Despite two chlorophenyl rings and a bulky lactam core providing lipophilicity, there is no accessible heme-coordinating nitrogen (only an amide N and a sulfone), so the mechanism is less classic though bulk still poses moderate risk.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXYM8CDQT9J91WNGKE",
+      "reasoning": "A chloropyridine linked to a piperidine/morpholine system and spiro-lactam offers one weakly basic pyridine nitrogen with only moderate aromatic bulk, giving intermediate risk.",
+      "prediction": "inhibitor",
+      "probability": 52,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHR9XNMZX9F0WTA50W",
+      "reasoning": "A fused benzimidazole-pyridinone core with multiple ring nitrogens, a chlorophenyl group, and a piperidine ether substituent gives both heme-ligating nitrogen character and large lipophilic surface area.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNQY2R6YWR5JNN59X2",
+      "reasoning": "A pyrazine nitrogen directly conjugated to an indane/benzofused aromatic system, plus a difluoropiperidine, provides a heme-coordinating heteroaromatic nitrogen alongside notable lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1CDK81D3SHN339ED4",
+      "reasoning": "A 1,2,3-triazole and a pyridine both present on an extended biaryl scaffold with a morpholine-like amide strongly resembles azole-type CYP3A4 inhibitor pharmacophores with good lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHZ0HJB0RPYQQVY363",
+      "reasoning": "Nearly identical scaffold to another compound in this set: a benzimidazole-pyridinone fused with a piperidine ether and chlorophenyl group gives multiple heteroaromatic nitrogens and high lipophilic surface area.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKMD9ZGR1ZSHM4X4D4",
+      "reasoning": "A fused pyridopyrazolone core bearing a difluorophenyl-pyrazole and cyclopropylamide provides pyrazole/pyridinone nitrogens plus multiple aromatic rings, favoring the large hydrophobic active site.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT718TRSN4VQCVY98DA",
+      "reasoning": "A trifluoromethylpyridine amide combined with a biaryl spiro-chromanone-oxane system supplies a heme-coordinating pyridine nitrogen and substantial lipophilic/planar aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 63,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSETJSZVEK8DGBNHSAR",
+      "reasoning": "A dichlorophenyl group fused to a phthalazine-like diazine ring (two adjacent ring nitrogens) linked via an aniline ether to a pyrrolidine strongly resembles azole-type heme-binding chemotypes with high lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT018GJ9CSW429ANEZ0",
+      "reasoning": "This very large, flexible macrocyclic peptidomimetic with an indole, phenol, and multiple amide/urea linkages is bulky enough to fill the CYP3A4 pocket, though its high polar-group density (many amides/ureas) tempers the risk somewhat versus a clean azole ligand.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNHM89A1A7E4DJYA4V",
+      "reasoning": "A small aminopyrazine-pyridine-anilide is compact and carries polar NH2/amide groups that reduce lipophilicity, despite having heteroaromatic nitrogens, making strong CYP3A4 binding less likely.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSH5929X86JY1JPG31K",
+      "reasoning": "A small thiazole flanked by two free phenols is only modestly lipophilic and the phenolic OH groups add polarity, giving a thiazole nitrogen but limited bulk for strong inhibition.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSCGN7F1CKRWWET8Y6F",
+      "reasoning": "A complex macrocycle containing an imidazole ring, a nitrile, and an aryl ether biaryl linkage combines a heme-coordinating imidazole nitrogen with considerable aromatic/lipophilic bulk typical of CYP3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT76KT7D6YGTZMSGGTX",
+      "reasoning": "A BACE-like cyclic amidine bearing an imidazole-nitrile and a fluoropyridine amide has heteroaromatic nitrogens but also a highly polar basic amidine group that limits overall lipophilicity, giving moderate risk.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSX08ACG3EZQC3NSD5K",
+      "reasoning": "A densely fused polycyclic system featuring a pyrrole, furan, and a 2-mercaptobenzimidazole-thioether moiety supplies azole-like heme-coordinating nitrogens along with an extensive planar aromatic surface favorable for the large CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ21ZYPQ3Y442RCPDZ",
+      "reasoning": "A large flexible peptidomimetic bearing phenyl, benzoxazole, and thiazole rings gives high lipophilicity and multiple sp2 nitrogens available for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8DKKB444AHGQH8N1F",
+      "reasoning": "Contains a 1,2,4-triazole (classic azole-antifungal heme-ligating group) plus a thiophene and difluorophenyl for extra aromatic bulk and lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 88,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKPK2R6GQEGSW45K0R",
+      "reasoning": "An imidazole-substituted pyridazine linked through a piperidine to a trifluoromethylphenoxy group provides both a heme-coordinating azole nitrogen and substantial lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8KJ0QK33FAAJ1JRJ2",
+      "reasoning": "A diaminopyrimidine/pyrazole fused core with a piperidinylpyridine substituent has several nitrogens but they are mostly exocyclic amines rather than a free heme-ligating lone pair, and overall lipophilicity is moderate.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV49XNGDKJEAGF12XW",
+      "reasoning": "Piperazine-linked trifluoromethylpyrimidine with a pyrrolidine amide and benzonitrile is moderately lipophilic but the ring nitrogens are largely tied up in amine/amide bonding rather than free for heme coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT8YJGREQEA5QZ30N9Q",
+      "reasoning": "A very large, highly flexible molecule with fused benzimidazole-like rings, two pyrazole-amide units and a Boc-protected chain gives enormous lipophilic surface area well suited to the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6F70WBA38RAZ3ZSSN",
+      "reasoning": "An extended multi-ring system (pyridine, thienopyrimidine, methoxyphenyl, halophenyl, N-methylpiperazine) with two halogens is extremely lipophilic and rich in aromatic stacking and heteroatom donors.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4FFTQRA4N954ATEC0",
+      "reasoning": "N-methylindole and pyridyl ether are moderately aromatic, but the methanesulfonamide is acidic/polar and lowers overall lipophilicity, limiting deep pocket binding.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT1V4ENGGV1NKJAM4H5",
+      "reasoning": "Contains both a 1,2,4-triazole and an oxadiazole on an aromatic scaffold with a morpholine-like ring, giving multiple heme-coordinating azole nitrogens with moderate lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSWGM2P0VK3YD7RFSZ4",
+      "reasoning": "A bis-trifluoromethyl, chlorophenyl-substituted aminobenzimidazole is heavily halogenated and lipophilic with an accessible imidazole-type nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCYKE1J2CDWCYKARVH",
+      "reasoning": "A tricyclic diaminopyrimidine-indole system is large and aromatic, but the oxetanol and hydroxyl/amine substituents add polarity that partially offsets the lipophilic pharmacophore.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT71G0C1EEPZYSJZ6CV",
+      "reasoning": "A halogenated pyridine-amidine scaffold bearing two trifluoromethyl groups and a chloro substituent is highly lipophilic with an amidine/pyridine nitrogen available for iron coordination.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1P8PXE1HC027FE87C",
+      "reasoning": "Bears both a 1,2,4-triazole and an oxadiazole plus a morpholine-fused ring on a dimethylphenyl/fluorophenyl scaffold, giving multiple heme-coordinating azole nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3DXDJZVEXY9Z0KT57",
+      "reasoning": "A pyridylmethylamine linked to a tetrahydroisoquinoline-piperazine has basic amine and pyridine nitrogens but only modest aromatic surface and lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTBHD0D3BW1GGF9RH62",
+      "reasoning": "A fused pyrazole-naphthyridine-amine bearing an additional N-methyltriazole ring supplies several azole-type nitrogens capable of heme ligation despite modest overall size.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV79BASE552HJX6TZ1",
+      "reasoning": "A chlorophenyl-pyrimidinylacetamide linked to a piperazinyl-trifluoromethylpyridine is moderately lipophilic with a pyrimidine nitrogen available for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXHXEGZ2316VP18DP0",
+      "reasoning": "A dimethoxyphenyl-substituted fluorolactam with a trifluoromethoxybenzyl group is fairly lipophilic but the only nitrogen is an amide nitrogen with no free lone pair for heme binding.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSYD7JH72F1GHJ2X9KA",
+      "reasoning": "A benzimidazole core bearing a tert-butylphenylamino group and a pyridyl ether to a phenylimidazole gives a very large, lipophilic, multi-heteroaromatic system with strong heme-coordination potential.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNGQRMQDMAYPRDZZM0",
+      "reasoning": "A methyltriazole fused to a chlorophenylcyclobutane and linked to a phenyl-pyrazine gives multiple azole/pyrazine nitrogens plus notable aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXRA1DGSQ8SDKBYAZR",
+      "reasoning": "Nearly identical to a related fluorolactam analog but with a hydroxyl instead of fluorine, adding polarity while still lacking any heme-coordinating nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 20,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSV7F06M4J4AB9W15Q5",
+      "reasoning": "A large flexible peptidomimetic bearing thiazole rings (heme-coordinating N), a benzyl group, and a carbamate gives high lipophilicity and multiple sp2 N lone pairs suited to the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC7B98G7XMBG7WY5KH",
+      "reasoning": "A fused polyheteroaromatic pyrrolopyrimidine core decorated with morpholine, piperazine, and a difluorophenyl group is exactly the extended planar, lipophilic, multi-N kinase-inhibitor-like architecture associated with CYP3A4 inhibition.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6FTMKA7YMMYRP3BDV",
+      "reasoning": "Two aromatic rings (methoxyphenyl, tetralin) joined by alkyl chains give moderate lipophilicity, but the only nitrogen is an aliphatic primary amine far from any aromatic system, so heme-coordination potential is weak.",
+      "prediction": "non_inhibitor",
+      "probability": 28,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WST40PWDMG53RT1ENK7",
+      "reasoning": "A dichlorophenyl-substituted fused pyridine/lactam core plus an oxazole ring adds both halogen-driven lipophilicity and a weak heme-coordinating oxazole nitrogen, favoring moderate inhibition risk.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE6QJCYWJ1A7KPRVSV",
+      "reasoning": "The 2,4-diaminopyrimidine head group is quite polar (two NH2 donors) despite the fused benzoxazinone lipophilic tail, so aromatic-N heme coordination is present but overall polarity likely limits potency.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSVW7A5RGFRSBW1VR6C",
+      "reasoning": "A pyridine substituent directly attached to a fused tetrahydroisoquinoline, plus a pyrimidinone-morpholine amide, provides a classic heme-coordinating pyridine nitrogen alongside an extended aromatic system.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSC0B1RJT6YWRKPXV0R",
+      "reasoning": "This is a triazolobenzodiazepine-like scaffold (chlorophenyl-fused imidazole with a fluorophenyl imine), structurally very close to classic CYP3A4-interacting benzodiazepines with an imidazole-type heme-coordinating nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSZQBD3AZVC4JSG9J8",
+      "reasoning": "A large, highly lipophilic indole-based scaffold with a chlorophenyl group, cyclopentyl and cyclobutane spiro rings, and a cinnamic acid tail is bulky enough to fill the large CYP3A4 cavity even without a strong azole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSX13DVPTM92ABZ0MY5",
+      "reasoning": "A fused triazole ring combined with a pyridine and a thiophene-bearing benzamide gives multiple sp2 heteroatom lone pairs plus extended aromatic surface, a strong classic azole-type inhibition signal.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQECR941CJX1MZNZGM",
+      "reasoning": "A chlorinated quinazolinone fused bicyclic core with an additional benzyl and tolyl-amide group provides extended planar aromatics and an amidine-like nitrogen capable of heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDV1T8EW6PD1KTYD4X",
+      "reasoning": "A simple cinnamamide with a single phenylmorpholine group has modest aromatic surface and only an aliphatic morpholine oxygen/amine (weak heme ligand), giving low overall inhibition risk.",
+      "prediction": "non_inhibitor",
+      "probability": 24,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSJTEAKCAAVDQ13RXRY",
+      "reasoning": "A heavily fused naphthyridine/triazole/isothiazole polyheteroaromatic system packs numerous sp2 nitrogens and a large planar stacking surface, a textbook strong CYP3A4 inhibition pharmacophore.",
+      "prediction": "inhibitor",
+      "probability": 87,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXWMQ6GJ63D8XC38KW",
+      "reasoning": "This is an avermectin/milbemycin-like polycyclic macrolide with a spiroketal and sugar-like ether linkages -- fully saturated with no aromatic rings, but its very large size and high lipophilicity (like ivermectin) still favor binding in the big CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSR656EEQ8ACECDYH4G",
+      "reasoning": "A peptidomimetic bearing both a thiazole and a fused pyridine-like ether ring supplies two heme-coordinating aromatic nitrogens on a moderately large, lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 63,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN6ABR25PHWF6QTTCM",
+      "reasoning": "A hydroxamic acid warhead (very polar H-bond donor/acceptor) is attached to a pyrimidine and a fluorinated fused quinoline-like ring; the polar hydroxamate likely lowers logP enough to offset the aromatic nitrogen content.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSMCWD40NY2Q7BCPF94",
+      "reasoning": "A pyridylmethyl group attached to a fused tricyclic indoline-lactam ether system, plus an isopropylpiperidine, gives a classic heme-coordinating pyridine nitrogen on an extended aromatic, lipophilic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 73,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTC8ERT41CCF8QQSGB6",
+      "reasoning": "A fused aminoquinoline core bearing a CF3-pyridine and a pyrimidine substituent stacks multiple aromatic heterocycles with several heme-coordinating nitrogens and halogen-driven lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 77,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTA9EDC7H6D7B2QDHE6",
+      "reasoning": "A CF3-pyridine linked through a triazole to a diphenyl ether combines a classic azole heme-binding nitrogen with an extended lipophilic biaryl ether system.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSN3W8KYW95AA0D9GES",
+      "reasoning": "A triazole fused to a pyrazine, decorated with two chlorophenyl rings and a fluorocyclobutane, is azole-rich and halogen-heavy -- closely resembling the pharmacophore of azole antifungal CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXSN1FE9JJA6CYSMSV",
+      "reasoning": "A conjugated styryl-pyrazole fused to a spiro-oxindole aromatic system with a dimethylaminomethylbenzyl group gives large planar stacking surface plus a weakly coordinating pyrazole nitrogen and tertiary amine.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE0357VGJXBY65VK1Q",
+      "reasoning": "Fused benzimidazole (heme-coordinating sp2 N) linked to a thienopyrimidinedione core with an isopropyl group and amide substituent gives a large, multi-ring, moderately lipophilic scaffold well-suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSTB1H17WHS6F4D2HMD",
+      "reasoning": "A fused pyridine-type bicyclic core bearing a dichlorophenyl group and a piperidine amide combines an aromatic heme-coordinating nitrogen with substantial halogenated lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0YC95E3A8NSZPCFKZ",
+      "reasoning": "A large, flexible, multi-aromatic-ring peptidomimetic with indole, morpholine, and multiple amide/urea linkages presents high molecular bulk and lipophilicity ideal for the promiscuous CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXCAN2X663AWPJR94V",
+      "reasoning": "Quercetin-like flavonoid: highly polar with four phenolic OH groups, but its fully planar, extended tricyclic aromatic system is known to stack effectively in the CYP3A4 active site despite the polarity.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1R0M7DV8EJ5ZV45P2",
+      "reasoning": "Contains a thiazole and a triazole (both classic azole heme-iron-coordinating heterocycles) alongside a biphenyl-morpholine-like core with moderate lipophilicity, a strong type II inhibition signal.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRZ0P9BHEA15MDXPXS",
+      "reasoning": "Fused triazolopyridine aromatic system with a tertiary N-methylpiperazine and a sulfonyl-aryl group gives extended planar aromatics plus multiple coordinating nitrogens typical of kinase-inhibitor-like CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXH0WVTQ8BYHBDHJ37",
+      "reasoning": "A rigid tricyclic pyridinone/pyranone fused system (integrase-inhibitor-like) with a difluorobenzylamide is moderately lipophilic but conformationally constrained with polar hydroxyl/carbonyl groups, tempering inhibition risk.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2WTVTR5VRBGB52R3N",
+      "reasoning": "Two small pyridine rings linked by an ether and an amide to a fluoropyridine carry heme-coordinating aromatic nitrogens but the overall molecule is compact and only modestly lipophilic.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSGPP51WT21AY34M47E",
+      "reasoning": "A dihydroxy-dimethoxy isoflavone (chromone) is a planar, extended aromatic tricyclic system capable of active-site stacking, similar to known flavonoid CYP3A4 inhibitors, despite polar substituents.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSMYFH54V1WH19RM5Y8",
+      "reasoning": "A pyridinone core substituted with a trifluoromethylphenyl and fused to an indazole bearing a pyrrolidinylethyl chain gives extended aromatics, multiple heterocyclic nitrogens, and high lipophilicity (CF3).",
+      "prediction": "inhibitor",
+      "probability": 73,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP6PY2WYT1CAEJHRMY",
+      "reasoning": "A urea linking a fluorobenzyl group to a phenyl-fused imidazopyridine (purine-like) system provides a strong heme-iron-coordinating fused N-heterocycle plus decent aromatic bulk.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSD8SE33QJHYMT8WKX7",
+      "reasoning": "A small thiophene-pyridine biaryl has a heme-coordinating pyridine nitrogen but very low molecular weight and limited lipophilic/aromatic surface, unlikely to reach potent inhibition.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSSH3HG6X2EQ0VJ6Y87",
+      "reasoning": "A naphthalene-amide scaffold with a pyridine ring, a polar sulfoxide/sulfonium-ylide moiety, and a tetrahydropyranylmethyl amide balances aromatic bulk against considerable polarity from the charged sulfoxide.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT64BJF4X4GNAT1R9MJ",
+      "reasoning": "A brominated quinoline fused bicyclic aromatic core bearing a phenyl substituent and a chlorophenyl-carboxylic acid side chain is large, halogen-rich, and highly lipophilic with a heme-coordinating quinoline nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 71,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3852EDNRFMK5AXA0D",
+      "reasoning": "An imidazole (classic azole heme ligand) tethered via an amide to a fused isoxazole-naphthalene tricyclic aromatic system is a strong structural match for type II CYP3A4 inhibition.",
+      "prediction": "inhibitor",
+      "probability": 76,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WST4E82G5CFF9JC0AEG",
+      "reasoning": "Two trifluoromethyl-substituted aromatic heterocycles (a pyrimidine and a pyridine) bridged through a piperidine give very high lipophilicity plus multiple heme-coordinating ring nitrogens, a classic high-risk pattern.",
+      "prediction": "inhibitor",
+      "probability": 79,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM4GXZ0N8Z8VNTNA0P",
+      "reasoning": "A fused imidazobenzothiophene core bearing an aminopyridine and a trifluoromethylphenyl group packs multiple aromatic N-heterocycles, high lipophilicity, and extended planarity into one large molecule.",
+      "prediction": "inhibitor",
+      "probability": 77,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTB8225A3E4FAPQDS2K",
+      "reasoning": "A biphenyl sulfonamide with a cyclopropylmethyl amide and a terminal aminoethanol has flexible aromatic rings but lacks a clear heme-coordinating nitrogen and carries polar sulfonamide/hydroxyl groups that reduce risk.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV768DCVCQDXJWM2NH",
+      "reasoning": "A large peptidomimetic with two thiazole rings, two benzyl groups, and a carbamate closely resembles protease-inhibitor-class CYP3A4 substrates/inhibitors, combining high flexibility, bulk, and lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEDA4N02V7DNCB71ZN",
+      "reasoning": "An indole (tryptamine-like) bearing a sulfonyl linkage to a chlorinated fused thiazolopyrimidine gives an extended, halogenated, multi-nitrogen aromatic system consistent with active-site binding.",
+      "prediction": "inhibitor",
+      "probability": 64,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSNGNQDYBWDGFFAKMHS",
+      "reasoning": "Pyrimidine core bearing both a pyridyl substituent (heme-coordinating N) and a furyl group gives an extended, moderately lipophilic tri-heterocyclic system typical of azole/pyridine-type CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGEJ6Q0Y8MH8WX348F",
+      "reasoning": "A curcumin-like bis-arylidene cyclopentanone with three methoxy/hydroxy aromatic rings in an extended cross-conjugated planar system is highly lipophilic and stackable despite lacking a heme-ligating N, mirroring known flavonoid/curcuminoid CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT694SNBTAQ1HTT6591",
+      "reasoning": "A large diaminopyrimidine linked to a pyrrolopyrimidine and an aryl-sulfone with an N-methylpiperidine substituent closely resembles kinase-inhibitor chemotypes (e.g. imatinib-like), combining high molecular bulk, multiple aromatic N atoms, and high lipophilicity strongly favoring CYP3A4 inhibition.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT670E3985ZEYYKM69G",
+      "reasoning": "A pyrazinone ring fused with an aryl ether and cyclopropanecarboxamide is moderately sized with a secondary methylamine but the ring nitrogens are largely amide-like rather than exposed pyridine-type lone pairs, giving only moderate heme-coordination potential.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT2B3E737F09G6T7J4Q",
+      "reasoning": "A small aminothiazole sulfonamide with a chloro/fluoro-substituted benzene and a piperidinylmethyl amine has modest lipophilicity and a thiazole N buried in a sulfonamide linkage, less available for strong heme coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSVWAM0E31489HKMYYH",
+      "reasoning": "A large peptidomimetic bearing thiazole, imidazole, and two phenyl rings plus a benzylic carbamate strongly resembles HIV-protease-inhibitor chemistry (ritonavir-class), combining very high lipophilicity, bulk, and multiple heteroaromatic nitrogens \u2014 the archetypal potent CYP3A4 inhibitor profile.",
+      "prediction": "inhibitor",
+      "probability": 90,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT10CSNRV5N67795YTY",
+      "reasoning": "Contains both a 1,2,3-triazole and an oxadiazole ring alongside a chlorophenyl, fluorophenyl and morpholine-like oxazinane, giving multiple azole nitrogens with heme-coordinating lone pairs plus halogen-driven lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT85TQ9F82HVV75A2Z9",
+      "reasoning": "An indazole fused to a 1,3,4-oxadiazole plus a phenethylpiperidine gives multiple azole/heteroaromatic nitrogens and an extended aromatic system with a large flexible lipophilic tail suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 66,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT60VS059F6Q3HWRPPA",
+      "reasoning": "A small aminopyridine fused to a triazole with only a single benzyl substituent is compact and moderately polar (free NH2, triazole NH), unlikely to fill the large CYP3A4 cavity despite the azole nitrogens.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1E26FWCCNYE1SBZBF",
+      "reasoning": "Combines a triazole and an oxadiazole with a biaryl (methoxyphenyl-oxadiazolylphenyl) system and a morpholine-like ring, giving multiple heme-coordinating azole nitrogens plus extended aromatic/lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 73,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSSKEZT5F16225264V0",
+      "reasoning": "A urea-linked pyrazole-aniline conjugated to a quinazoline strongly resembles kinase-inhibitor pharmacophores (quinazoline pyridine-type N plus tert-butyl and diaryl bulk), a classic high-risk CYP3A4 inhibitor pattern.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCQKVM72NS30SVFZ2X",
+      "reasoning": "A large fused diaminopyrimido-indole (purine-like) core with multiple ring nitrogens, a tetrahydrofuran and secondary amine substituents gives a bulky, multi-heteroaromatic-N, moderately lipophilic scaffold favoring CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 64,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT64YYZKRMR4VWTN0BF",
+      "reasoning": "A chlorinated benzimidazole linked via a cyclohexane to a trifluoromethyl-quinoline combines two pyridine-type heteroaromatic nitrogens with substantial halogen-driven lipophilicity and ring bulk, a strong CYP3A4 inhibition signal.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ7BVCPTPCZA67KD02",
+      "reasoning": "A polycyclic fused quinazolinone/pyridine system bearing an isoxazole, phenyl and methoxy substituents is large, planar, and richly aromatic with multiple ring nitrogens, favoring the large hydrophobic CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYZ6N50MKEQGVR5PCY",
+      "reasoning": "An imidazo[1,2-a]pyridine bearing a fused bicyclic tertiary amine and an amide-linked isopropyl group has a pyridine-type fused heteroaromatic N but is otherwise fairly small and moderately polar (tertiary alcohol), giving moderate inhibition risk.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSSQTA0WX6FJT90NTYN",
+      "reasoning": "A largely saturated bicyclic/tetrahydropyran scaffold with a secondary amine linkage to a trifluoromethylpyridine amide has one heme-coordinating pyridine N but otherwise limited aromatic bulk, tempering inhibition likelihood.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTAEMVAJ0XS10NFDM50",
+      "reasoning": "A pyrrolinone bearing a cyclopropylphenoxy vinyl group plus an azetidinol-terminated ether side chain has a biaryl-ether lipophilic core but no exposed pyridine/azole nitrogen for heme coordination, only moderate CYP3A4 risk.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSFC2JMPY9B83SRHHBW",
+      "reasoning": "A tetrahydroisoquinoline-carboxamide linked through a piperazine to an indazole gives moderate size with basic amines and an indazole ring, but the indazole NH and piperazine nitrogens are weaker heme ligands than a pyridine, so moderate lipophilicity keeps risk intermediate.",
+      "prediction": "non_inhibitor",
+      "probability": 50,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSYJQWE5B1XC9F3T944",
+      "reasoning": "Same imidazo[1,2-a]pyridine/bicyclic amine scaffold as a closely related analog, with a fluorinated neopentyl group increasing lipophilicity slightly versus the alcohol analog but still fairly compact overall.",
+      "prediction": "non_inhibitor",
+      "probability": 50,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT9A9EC0TERC8REVMT6",
+      "reasoning": "An azetidine-carboxamide bearing an anisole and an ortho-isopropylphenyl group lacks any aromatic heme-coordinating nitrogen (only an aliphatic azetidine NH) and has moderate lipophilicity, making strong CYP3A4 inhibition unlikely.",
+      "prediction": "non_inhibitor",
+      "probability": 28,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSHQYEBE8RYXGW4WTT",
+      "reasoning": "A dichlorophenyl urea bearing pyrrolidine/azetidine tertiary amines is moderately lipophilic and bulky with weak amine heme-donor potential but no classic azole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYSJ60BWCYY3ZZVKWK",
+      "reasoning": "Contains a fused benzimidazole plus a separate 1,2,4-triazole ring alongside dichloro- and fluorophenyl groups, giving two strong heme-coordinating azole nitrogens on an extended lipophilic aromatic scaffold.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCKR78DJVN759KE9VW",
+      "reasoning": "A dense array of aromatic N-heterocycles (pyridine, two pyrazoles, fused pyrazolotriazine) makes this a highly planar, azole-rich system strongly resembling classic CYP3A4 heme-ligating inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHSJAA61D9DT4XATB6",
+      "reasoning": "A bulky biphenyl-amide linked to a chloroaniline-piperidine with an additional dimethylpiperazine is large and lipophilic with tertiary amine nitrogens capable of weak heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1E1X1F9YCMJB131DT",
+      "reasoning": "Bears both an oxadiazole and a triazole ring fused onto an aromatic/morpholine-containing scaffold, giving multiple sp2 heme-coordinating nitrogens despite moderate overall size.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCQ7B5TDCY8P0Q8PD7",
+      "reasoning": "A bulky bicyclic-amide/cyclopentyl/diphenyl structure with an N-substituted pyrazole is highly lipophilic and flexible, with a pyridine-type pyrazole nitrogen available for weak heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMM57JP8YZ9QMED718",
+      "reasoning": "A thiazole carboxamide attached to a biaryl system bearing a lipophilic OCF3 group provides both a heme-coordinating heteroaromatic nitrogen and extended planar aromatic surface.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2VS7MNFRVCW8NED1Z",
+      "reasoning": "A thiazole-sulfonamide on a chloro/fluorophenyl with a small polar azetidinylmethylamine is only moderately lipophilic, tempering its otherwise present thiazole heme-donor nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT6W2WVAYQ6F0XBAXX2",
+      "reasoning": "Two pyridine rings bridged by a piperazine, appended to a polar hydroxy-adamantane cage, combine heme-coordinating aromatic nitrogens with substantial lipophilic bulk despite polar OH groups.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3AMPHDEBWXBVHAZJA",
+      "reasoning": "A flexible allylic diamine chain connects a difluorocyclohexyl group to a fused tetrahydroquinoline-pyridine system, giving a lipophilic, conformationally flexible molecule with a pyridine heme-ligand nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSW6YJG3S4JDRMDZT8",
+      "reasoning": "A pyridine-containing diaryl ether bearing three chlorine substituents and a sulfonamide is highly halogenated and lipophilic with a pyridine nitrogen available for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9MYBQJC6TDS4E1F1X",
+      "reasoning": "A piperidine sulfonamide substituted with both an oxazole and a fused chlorotriazolopyridine presents multiple azole-type nitrogens, a strong classic CYP3A4 heme-binding signal.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT9AXJ4TATAS9BD1NYR",
+      "reasoning": "Nearly identical scaffold to a fused chlorotriazolopyridine and oxazole on a piperidine sulfonamide, again giving multiple heme-coordinating azole nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSE482X91BC42XD0JY4",
+      "reasoning": "An oxazolidinone bearing a triazolylmethyl group plus a separate fluorophenyl-pyridine gives two heme-coordinating nitrogens, though the molecule is otherwise fairly compact and moderately polar.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY4TXMDZX4855XZ8G9",
+      "reasoning": "A large dimethoxy/isopropoxy-fused benzolactam bearing a chlorophenyl and a dimethylaminomethyl-cyclohexyl-aniline is very bulky and lipophilic with tertiary amine nitrogens for weak heme donation.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN0D56G9FQTQ4JSZVS",
+      "reasoning": "An extended planar trihydroxy-terphenyl/naphthalene system offers good aromatic stacking surface for the CYP3A4 pocket but lacks any heme-coordinating nitrogen and carries three polar phenols that reduce lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT6D7319AQWJ4PFD7DA",
+      "reasoning": "A large polycyclic terpenoid/steroid-like scaffold with a diethylaminoethylthioester side chain is extremely lipophilic and bulky, fitting the large hydrophobic CYP3A4 pocket even without an aromatic azole nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5NCAPPK5SP0X23ZYK",
+      "reasoning": "A brominated fused naphthalene-phenyl amide linked to a fluorobenzoic acid is highly aromatic and halogenated, but the ionizable carboxylic acid disfavors deep hydrophobic pocket binding.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSX8V51R3SVM0R71SS0",
+      "reasoning": "A methoxyphenyl-aminopyrazolopyridine fused heteroaromatic bearing another methoxyphenyl provides a fused-ring heme-coordinating nitrogen and extended biaryl surface, partly offset by polar hydroxyethyl/piperidinol substituents.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSNAYEKCQK7M4PJ12CF",
+      "reasoning": "A 1,2,4-triazole attached to a quaternary ester carbon adjacent to a diarylamine linking phenyl to naphthalene combines a classic azole heme-donor nitrogen with an extended lipophilic aromatic diarylamine system.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSPXDGDYXYS6NBC4QEX",
+      "reasoning": "Large, highly lipophilic multi-ring structure with a chlorinated benzene core, difluorobenzofused spiro system, sulfone-piperidine, and cyclopropylamide, offering ample bulk for the hydrophobic pocket though no classic pyridine/imidazole heme-ligating nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3KGWXQBTZVR7Z11QD",
+      "reasoning": "Fused bicyclic diazaheterocycle bearing a pendant pyridine ring provides a heme-iron-coordinating nitrogen plus an extended planar aromatic system well suited to stacking in the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5PG4FCBYP3MZZ6960",
+      "reasoning": "A diarylurea bearing a piperidine-linked pyrrolopyrimidine (purine-like) heterocycle and a pyrrolidine-substituted aniline gives multiple sp2 ring nitrogens and considerable aromatic bulk/lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0E4Y26VFRJY2CW011",
+      "reasoning": "Despite large size and an indole-like fused ring, the molecule is dominated by polar amide/urea linkages and a morpholine, diluting lipophilicity and lacking a strong heme-coordinating aromatic nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTAGPQK1SZ31E5E2BGJ",
+      "reasoning": "A pyridylmethyl-aniline linked to an isoxazole bearing a thiophene gives a heme-iron-coordinating pyridine nitrogen plus a biaryl-like conjugated aromatic system.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTAC0H6MX7AX07P78Y5",
+      "reasoning": "Moderately sized tri-aromatic ether/lactam with a cyclopropylphenoxy group but only amide and azetidine nitrogens (not aromatic heme-coordinating types), giving moderate but not strong inhibition potential.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYPPEJSQRZGJ1Q0HTR",
+      "reasoning": "Contains two 1,2,4-triazole rings, a piperazine, and a dichlorophenyl-dioxolane motif closely resembling the classic azole-antifungal (itraconazole-like) pharmacophore, a textbook type II CYP3A4 heme-ligating inhibitor scaffold.",
+      "prediction": "inhibitor",
+      "probability": 95,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY8VZ2X3VYDNY2Q9VN",
+      "reasoning": "Identical structure to the previous entry: two triazole rings, piperazine, and dichlorophenyl-dioxolane forming an itraconazole-like azole antifungal pharmacophore, a strong heme-coordinating CYP3A4 inhibitor signal.",
+      "prediction": "inhibitor",
+      "probability": 95,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSG4256AP49EAR2G502",
+      "reasoning": "A polyhydroxylated isoflavone (flavonoid) with an extended planar tricyclic aromatic chromone core capable of active-site stacking, though the multiple phenolic OH groups add polarity and there is no heme-coordinating nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT487HD7E9C61Y0EYS1",
+      "reasoning": "An isoquinoline sulfonamide (aromatic N available for heme coordination) linked through a pyrrolidine/ethylene-piperazine chain to a benzisothiazole, giving multiple aromatic nitrogen heterocycles and substantial lipophilic bulk.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGB5HDC84DSKMM1HVE",
+      "reasoning": "A symmetric bis-phenolic diethyl-substituted cross-conjugated cyclopentanone (probucol/curcuminoid-like) is large and lipophilic but contains no nitrogen at all, removing the classic heme-coordination mechanism.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSS4HP76DWQ3FXWWDEN",
+      "reasoning": "A complex fused aminopyridine-furan bearing a pyrazole-piperidine and a dichlorofluorophenyl group combines multiple heteroaromatic nitrogens with heavy halogenation and high lipophilicity, favoring CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSF0DG4MZKH8Z9R5Q0T",
+      "reasoning": "An isoxazole-linked bicyclic sulfonamide with a chlorophenyl group and cyclopropyl substituent is moderately lipophilic, but the isoxazole N-O is a weaker heme ligand than pyridine/imidazole, limiting inhibition potential.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT467MADVFJVRPJS96P",
+      "reasoning": "A fluorinated aminobenzamide bearing a sulfonamide-piperidinol and a trifluorophenyl amide is relatively small and polar (free NH2, OH, sulfonamide) without an aromatic heme-coordinating nitrogen, disfavoring strong inhibition.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTAEQSSFKVWJ9N0ZMD5",
+      "reasoning": "An ethoxy-benzamide linked to an indazole and a fluorophenyl gives three aromatic rings and moderate lipophilicity, though the indazole NH is a weaker heme ligand than a pyridine-type nitrogen.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT2EA9BJH4TDRAHQV6C",
+      "reasoning": "A trimethoxyphenyl amide bearing a thiazole (aromatic heme-coordinating N/S heterocycle) further linked to a benzophenone-like diaryl ketone gives four+ aromatic rings and substantial lipophilic bulk, a strong CYP3A4 risk profile.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHQBEDBWPRT3RD2GVR",
+      "reasoning": "A biaryl carbamate bearing a morpholine and a dichlorinated fused quinoxalinone-like heterocycle offers extended aromatic/planar character, halogenation, and a tertiary morpholine nitrogen contributing to a fairly lipophilic, bulky scaffold.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCRT7CEACKD32XT2JB",
+      "reasoning": "A diaminopyrimidine-fused tricyclic (pyrimido-indole/purine-like) aromatic core with multiple ring nitrogens and appended tetrahydrofuranylmethylamine gives an extended planar heteroaromatic system typical of kinase-inhibitor-like CYP3A4 binders.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2V9YDBQ1GPE5NN7BZ",
+      "reasoning": "Bears two separate 1,2,4-triazole rings attached to aryl groups flanking a piperidine amide, providing multiple azole-type heme-iron-coordinating nitrogens reminiscent of triazole antifungal CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ1T7M4TBW66CRBH8R",
+      "reasoning": "A methoxy-substituted tricyclic fused quinazolinone-like aromatic system bearing an isoxazole and benzyl group presents an extended planar polyheteroaromatic scaffold favorable for stacking in the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WST7N6JV7K93E29S6P9",
+      "reasoning": "Combines an N-aryl imidazole, a pyridine, and a thiazole in one moderately lipophilic scaffold, giving multiple sp2 nitrogens available for heme-iron coordination.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT39D9KBASA12Z5ZSHQ",
+      "reasoning": "A pyridine ring plus a chlorinated diaryl ether and cyclopropylmethoxy group give a lipophilic, halogenated scaffold with one heme-coordinating nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHA0HSH44S0HPTS0VT",
+      "reasoning": "A large, high-MW polycyclic system fusing a benzimidazole-type bicycle with a pyridinone and a chlorophenyl group offers several heteroaromatic nitrogens and ample bulk for the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1FMMQ7SEPAXH765A2",
+      "reasoning": "Peptidomimetic scaffold (protease-inhibitor-like) bearing a thiazole, three phenyl/benzyl rings and a hydroxypyrrolidine urea is large and lipophilic with an azole nitrogen for heme contact.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1XM2XHXW0ERA9AWSA",
+      "reasoning": "Identical peptidomimetic structure to the previous entry (thiazole plus multiple benzyl/phenyl groups), giving the same bulky lipophilic profile favorable for CYP3A4 binding.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCWKMC50Q7F2NRV59S",
+      "reasoning": "A bicyclic aliphatic core carrying two phenyl rings and an isoxazole is moderately lipophilic, but the isoxazole oxygen/nitrogen is a weak heme ligand compared to pyridine or imidazole.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT608XR8D5VZ9GJBK9N",
+      "reasoning": "Fused pyrazole/indazole tricycle linked to a pyridine plus a trifluoroethyl-substituted saturated amine gives multiple aromatic nitrogens and notable lipophilicity from the CF3/fluoropropyl groups.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYFMMAYWWB3GEQYN5X",
+      "reasoning": "Sulfonamide/sulfone-linked cyclohexane with difluorophenyl and chlorophenyl rings is lipophilic and halogenated but contains no pyridine/imidazole-type nitrogen for heme coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT6TGGGXFTZVR576VE0",
+      "reasoning": "An extended planar system fusing a benzimidazole with an imidazo-pyridine and a biaryl linkage provides several stacking aromatic rings and multiple heme-coordinating nitrogens, a strong CYP3A4 risk signal.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCARSEM8BK05075M6T",
+      "reasoning": "A pyrazole, a pyridine, and a chloroimidazole are all present on a biaryl ether scaffold, giving several classic azole/pyridine heme-iron ligands.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2D3HEKSSEN2RNPMAX",
+      "reasoning": "An aminothiazole sulfonamide with a chloro/fluoro-substituted aniline and a basic piperidine has one weakly available azole nitrogen and moderate lipophilicity, putting it near the borderline.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5JX6VJPC87HJ0CGC8",
+      "reasoning": "Boc-protected diamino thioether flanked by two benzyl groups and a pyridylethyl amide is lipophilic with a pyridine nitrogen available for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT51XZ0N1YRS678ANX6",
+      "reasoning": "Identical structure to the previous Boc-thioether-pyridine peptidomimetic, retaining the same pyridine ligand and lipophilic benzyl-rich profile.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3BHKFKWNYNM2ZYPNK",
+      "reasoning": "A fused pyrido-thiazole (quinoline-like) core linked through a CF2 bridge to a pyrimidine gives an extended planar polyheteroaromatic system with multiple nitrogens for heme binding and pi-stacking.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVPPX7NFNKGW4V9BW7",
+      "reasoning": "Another large peptidomimetic bearing a thiazole, a benzyloxy group, and three additional phenyl/benzyl rings, matching the bulky lipophilic profile seen in related analogs.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYPZ3DE8TQMRTK9TCF",
+      "reasoning": "A difluoro-substituted fused benzimidazole-pyridine system with a cyclopropyl N-substituent is compact but planar and carries two heteroaromatic nitrogens capable of heme engagement.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSJ77PSQ9N9SSAJ9R0R",
+      "reasoning": "An isoxazole amide flanked by a chlorophenyl and a chlorotolyl group is moderately lipophilic and halogenated, but the isoxazole nitrogen is sterically/electronically a poor heme ligand.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSKBTA42KTHQKXYDFQ3",
+      "reasoning": "This sulfone-linked difluorobenzofused cyclic ketone with a chlorophenyl group contains no nitrogen atom at all, removing the classic heme-coordination handle despite reasonable lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSFWN8N0YWGN6H52VNN",
+      "reasoning": "An oxazole-containing lactam bears a free carboxylic acid that adds ionizable polarity, which along with the oxazole's weak heme-donor ability lowers CYP3A4 binding likelihood despite two phenyl rings.",
+      "prediction": "non_inhibitor",
+      "probability": 35,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKM8SKC37W45Q1803H",
+      "reasoning": "A sulfone-substituted, hydroxylated tricyclic difluorobenzofuran-type system with a chlorophenyl group is lipophilic and halogenated but entirely lacks nitrogen for heme-iron coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 22,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1SH79CMCAD39K9SJ9",
+      "reasoning": "Bears both a triazole and an oxadiazole ring (heme-coordinating sp2 N heterocycles) on a fluorophenyl/morpholine scaffold with substantial aromatic bulk, matching the azole-antifungal pharmacophore.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKHNKEE4SWYW1B9EMS",
+      "reasoning": "Contains furan, pyridine, indole, and a fused pyrazolopyrimidine all in one flexible lipophilic scaffold, giving multiple candidate heme-iron ligands and extended aromatic stacking surface.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3CT50BP3K9A5FST1K",
+      "reasoning": "A large macrocyclic bis-aryl ether with chlorophenyl and CF3-phenyl rings is lipophilic and bulky, but the only nitrogen-bearing group is a nitrile/amide with no true lone-pair heme ligand, limiting inhibition potential.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSFEWY8JZBP380RW5KS",
+      "reasoning": "A triaryl pyrimidine core flanked by a 4-pyridyl group and phenyl ring is planar, moderately lipophilic, and presents an accessible pyridine nitrogen well-suited to heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBRV1NYCXKVBJJZ72N",
+      "reasoning": "A large, bulky macrocycle combining a CF3-pyrimidine, fused indole-like ring, phosphine oxide and tertiary amines is highly lipophilic with several aromatic/sp3 nitrogens capable of occupying the CYP3A4 pocket and coordinating heme.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRMNVRX6RAZGBGMG21",
+      "reasoning": "A chloro-benzoxazine sulfonamide with methoxyphenyl and N-methylpiperidine is moderately lipophilic and aromatic but lacks a strong azole/pyridine-type heme ligand, keeping inhibition risk borderline.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSN8MV9RS1GFA3T44Q9",
+      "reasoning": "A fused triazolopyridine/pyrazolopyridine system linked through anilines to a piperazine and a sulfonamide-substituted phenyl gives an extended planar heteroaromatic core typical of kinase-inhibitor-like CYP3A4 inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSK4AM6J54NQ3XWEBEN",
+      "reasoning": "Combines a pyridine-like core, furan, fused pyrazolopyrimidine, and indole in one molecule, providing multiple aromatic nitrogens and substantial planar surface for the CYP3A4 active site.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9ZPHG52ZWMZCZRDN8",
+      "reasoning": "A biphenyl-oxadiazole with a pendant 3-pyridylmethyl amine offers both oxadiazole and pyridine nitrogens as potential heme ligands, though the molecule is relatively small and moderately lipophilic.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3ECW742EAHQRZAKM4",
+      "reasoning": "A trimethoxyphenyl-pyrimidine bearing a thioether-linked pyridylurea and a chlorophenylamine is large, halogenated, and rich in ring nitrogens (pyrimidine, pyridine), favoring both lipophilic pocket binding and heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 74,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJ9KVBJ07VDTAMPV68",
+      "reasoning": "A methoxy-fused quinoline/naphthyridine linked to a triazolo-pyridazine-phenyl system is highly planar and polyaromatic with several ring nitrogens, consistent with strong CYP3A4 active-site stacking and coordination.",
+      "prediction": "inhibitor",
+      "probability": 70,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSZNT80JZEWWCW28C58",
+      "reasoning": "Dioxolane bearing an imidazole and a 2,4-dichlorophenyl group directly mirrors the itraconazole/ketoconazole azole-antifungal pharmacophore, the archetypal type II heme-coordinating CYP3A4 inhibitor motif.",
+      "prediction": "inhibitor",
+      "probability": 92,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWJCAVQYY57DA4H7TG",
+      "reasoning": "A methoxy-fused bicyclic/cyclopropane system conjugated through a vinyl linker to a pyridine-piperazine is large, extensively aromatic, and lipophilic with an accessible pyridine nitrogen for heme binding.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKQY3A9QEG51W7BJD1",
+      "reasoning": "Furan, an aminopyridine core, a chlorinated indole, and a fused pyrazolopyrimidine together give a nitrogen-rich, halogenated, highly aromatic scaffold favoring CYP3A4 binding and heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSR1QP3EQEQR9543N7Z",
+      "reasoning": "A peptide-like molecule with indazole, two piperidine rings and a benzimidazolone connected by polar amide bonds is moderately sized but its high amide/polar content and lack of a strong heme-coordinating aromatic nitrogen lower inhibition likelihood.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKMVTV32S4CS3XP61E",
+      "reasoning": "Indazole, pyridine, indole and furan rings combine in one flexible scaffold, offering several nitrogen lone pairs and extensive aromatic surface for the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 73,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRA1F2EXT85C544VMV",
+      "reasoning": "A methoxyphenyl sulfonamide fused to a chlorinated pyrrolopyridine with an N-methylpiperidine substituent provides ring nitrogen and halogen-driven lipophilicity, giving borderline but positive inhibition potential.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSF4PW6V3PVQ2KWY4S8",
+      "reasoning": "Although it carries an oxazole nitrogen and a lipophilic tert-butylphenyl/phenyl system, the free carboxylic acid group ionizes at physiological pH and disfavors deep hydrophobic pocket binding, lowering inhibition risk.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5JYBMNKNVB9TX29VT",
+      "reasoning": "A brominated quinoline bearing a phenyl substituent and a methoxyphenyl-propylamide tail is a planar, lipophilic polyaromatic system with an accessible quinoline nitrogen for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKZHKC2K2WDQ52XGB0",
+      "reasoning": "A Boc-piperidine linked benzimidazole/pyridinone bearing a chlorophenyl-hydroxyethylamine has aromatic nitrogen-rich rings, but the carbamate and free hydroxyl add polarity that partially offsets the lipophilic aromatic core.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT4YXPPRYR7CX357DAN",
+      "reasoning": "A large kinase-inhibitor-like scaffold with a diphenyl ether, an aminopyrazolopyrimidine bearing multiple sp2 N lone pairs, and an acrylamide warhead gives high lipophilicity and heme-coordinating potential.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXFMGEKXW8TAW65BYK",
+      "reasoning": "A naphthalenylmethylamino-pyrrolidine linked to a dimethoxyphenyl ether chain is moderately lipophilic with a free secondary amine that can weakly engage the heme iron, plus an extended naphthalene for pocket stacking.",
+      "prediction": "inhibitor",
+      "probability": 60,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5T311W1FF3TXQ45ZX",
+      "reasoning": "A difluorophenyl-pyrrolopyridine core bearing an exocyclic pyridin-4-ylamino group presents a classic planar heteroaromatic system with an accessible pyridine nitrogen for heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC35YE7JCBKR3Y4BQM",
+      "reasoning": "A fused pyridopyrimidine core carrying a piperazine-linked difluorophenethyl chain and a pyridinylamide is large, lipophilic, and rich in sp2/sp3 nitrogens well suited to the CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6KJ5SZB1QEFAYCXY7",
+      "reasoning": "A small diarylamide with a sulfonamide-linked hydroxypiperidine is fairly polar and lacks any azole/pyridine-type nitrogen positioned for heme coordination, limiting inhibition potential.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT4M1181BAK5QXV6A5H",
+      "reasoning": "An extended cinnamonitrile-dimethylphenyl system bridged through a diaminopyrimidine to a cyanoaniline offers a planar conjugated aromatic surface with pyrimidine nitrogens capable of weak heme engagement.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEW2QSXFJKEZ87TPTG",
+      "reasoning": "A dimethylphenyl-substituted triazolopyridazine linked to a pyrrolidinylethoxyaniline is a bulky biaryl heteroaromatic with several ring nitrogens, favoring the large lipophilic CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGDW2WTCXJ2SMQWY73",
+      "reasoning": "A bis(diisopropylphenol) cyclopentanone (BHT/curcuminoid-like) is highly lipophilic and planar but contains no nitrogen capable of heme coordination, so binding would rely on hydrophobic stacking alone.",
+      "prediction": "non_inhibitor",
+      "probability": 40,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTADPPJB5N03R0G72AM",
+      "reasoning": "A fused imidazopyrimidinone bearing a trifluoromethylbenzyl group and a chlorobenzyl tertiary amine combines an imidazole-type heme-coordinating nitrogen with substantial halogen-driven lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT7AVM83SF142PG6615",
+      "reasoning": "A fluorophenyl-cyclopentyl core fused to a cyanoimidazole-amidine system linked via amide to a chloropyridine provides multiple sp2 nitrogens and halogens giving reasonable heme-coordination and lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM077M87DQRZRTBG77",
+      "reasoning": "A chlorophenylsulfonamide-oxazolidine fused to a hydroxymethylpiperidine carbamate is dominated by polar carbamate/sulfonamide/hydroxyl groups with only one small aromatic ring, disfavoring the hydrophobic pocket.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT47DB0FEAWS2022FDP",
+      "reasoning": "A methylphenyl-methylpyrazole linked via ether to an amino-fused pyrazolotriazine has several ring nitrogens but the fused triazole/amino groups keep the molecule fairly small and polar, limiting the lipophilic driving force.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSHBZ85QPG0B0E8WJ2N",
+      "reasoning": "This large peptidomimetic bearing a dichloropyridine amide, cyclopropylaminopyrrolidine, and cyanophenylsulfonamide has a pyridine nitrogen and halogens but its many amide/ester/sulfonamide H-bonding groups make it more polar than a typical CYP3A4 inhibitor.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSGNTQNC498H3EJR7QD",
+      "reasoning": "A bis(4-hydroxybenzylidene)cyclopentanone is a planar, extensively conjugated diphenolic system (curcuminoid-like) that can stack in the CYP3A4 cavity despite lacking a coordinating nitrogen.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBNXDQ26V6A8V4ZS7B",
+      "reasoning": "A methyl benzoate ether ketone attached to a tetramethyl-tetrahydronaphthalene (retinoid-like) is very lipophilic and bulky but entirely nitrogen-free, so it lacks the classic heme-iron coordination handle.",
+      "prediction": "non_inhibitor",
+      "probability": 48,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5DS5S1G8KA22ERX5N",
+      "reasoning": "A methylpyridazinone bearing a chlorobenzylamide and a benzylhydrazine substituent is moderately sized with only isolated benzyl rings and a primary amine, giving limited aromatic stacking and weak heme affinity.",
+      "prediction": "non_inhibitor",
+      "probability": 30,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2AZTKJ0Z5ZXTZN88J",
+      "reasoning": "A thiophene carboxamide linked to an oxazolidinone-morpholinone (linezolid-like antibiotic scaffold) is small and polar with carbamate/amide groups dominating, characteristic of low CYP3A4 liability.",
+      "prediction": "non_inhibitor",
+      "probability": 20,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTAGBRHDDQSJV0Z7BT4",
+      "reasoning": "A Hantzsch dihydropyridine bearing nitrophenyl and bromophenyl substituents matches the nifedipine-class calcium-channel-blocker pharmacophore, a scaffold family with known CYP3A4 interaction plus added aromatic lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6BXZRGRZE6119V2B3",
+      "reasoning": "A bromo-substituted phenylquinoline amide bearing a difluorochlorophenyl carboxylic-acid side chain provides a pyridine-type quinoline nitrogen and a large halogenated biaryl surface, though the ionizable acid tempers overall lipophilicity.",
+      "prediction": "inhibitor",
+      "probability": 65,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP3G1Z32E07R8QZWFS",
+      "reasoning": "A diaryl urea connecting a pyridin-4-ylphenyl group to a phenyl-imidazopyridine (purine-like) system carries multiple accessible sp2 nitrogens on an extended planar aromatic scaffold reminiscent of known CYP3A4-inhibiting kinase inhibitors.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC1DY7QDSW4NKZBXGW",
+      "reasoning": "A fused imidazo-benzodiazepine core bearing a fluorophenyl and a chlorophenyl ring gives an extended halogenated aromatic system with an sp2 imidazole-type nitrogen positioned near the aromatic plane, a classic heme-coordination/pi-stacking combination.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTB2REGE36TK901N3PK",
+      "reasoning": "A bulky gem-dimethyl tetrahydronaphthalene linked through a ketone/ether to a benzoic acid is lipophilic and bulky but contains no pyridine/imidazole-type nitrogen for heme-iron coordination, and the free carboxylic acid adds polarity that disfavors deep pocket binding.",
+      "prediction": "non_inhibitor",
+      "probability": 25,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5MSA7VQ8QEP4SKXQV",
+      "reasoning": "This molecule has an aminopyridine, a fused pyridyl-benzimidazole-like diazine core, and a pyridine substituent all in one extended planar heteroaromatic system, giving multiple lone-pair nitrogens well positioned for heme-iron coordination plus large aromatic surface for pocket stacking.",
+      "prediction": "inhibitor",
+      "probability": 82,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1H1W42Y9HN86GVCBV",
+      "reasoning": "Contains both a 1,2,3-triazole and a thiazole ring attached to aromatic/benzylic scaffolds plus a morpholine amide, so two distinct azole-type heme-coordinating nitrogens combine with reasonable lipophilicity to strongly resemble the classic azole-inhibitor pharmacophore.",
+      "prediction": "inhibitor",
+      "probability": 80,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCD85R25MM49B6CRT0",
+      "reasoning": "A tricyclic aminopyrimidine-fused-indole (purine-like) core with an appended tetrahydrofuranylmethylamine is a large, nitrogen-rich planar heteroaromatic system typical of kinase-inhibitor-like scaffolds that dock well in CYP3A4's spacious pocket.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCCE0HAFAYCQT7NZEC",
+      "reasoning": "Identical structure to the previous compound: tricyclic aminopyrimidine-indole core with multiple ring nitrogens and a bulky lipophilic tetrahydrofuranylmethylamine substituent, favoring binding in the large CYP3A4 cavity.",
+      "prediction": "inhibitor",
+      "probability": 68,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSW890H6FV48YRTTGHB",
+      "reasoning": "An imidazo[1,2-a]pyridine fused ring bearing chlorine is linked via an amide to a piperazine that carries a trifluoromethoxyphenyl group, giving a large, halogenated, highly lipophilic molecule with an aromatic-embedded nitrogen capable of heme coordination.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKG12SBA5MTPMATD1B",
+      "reasoning": "Two amide-linked aromatic rings (methoxy-toluene and a dimethylaminomethyl aniline) are moderately lipophilic but the only basic nitrogen is a simple aliphatic dimethylamino group, not an azole/pyridine-type lone pair positioned for heme coordination, so inhibition risk is only modest.",
+      "prediction": "non_inhibitor",
+      "probability": 42,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT651SAX68RAQK87YW3",
+      "reasoning": "A brominated fused quinoline-type ring with a phenyl substituent and a chlorophenyl-bearing carboxylic acid tail gives an extended planar aromatic/heteroaromatic system with a ring nitrogen and heavy halogenation, moderately favoring pocket binding despite the polar acid group.",
+      "prediction": "inhibitor",
+      "probability": 58,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHPDK51ET60TQ10BZZ",
+      "reasoning": "A dimethylpiperazine linked through a biphenyl-amide to a piperidine bearing an aniline NH gives multiple aliphatic amines and an extended lipophilic biphenyl system, but lacks any azole/pyridine nitrogen for classic heme coordination.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "non_inhibitor",
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTCQAK63DW2FXPVD0P8",
+      "reasoning": "A pyrrolidine-amide-substituted thiazole core attached to a heavily halogenated aryl group bearing two trifluoromethyl substituents and two chlorines is extremely lipophilic and halogen-dense, with the thiazole nitrogen available for heme-iron coordination.",
+      "prediction": "inhibitor",
+      "probability": 78,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTC9FV0JGS4KPKG5TDB",
+      "reasoning": "A methyltriazole linked to a purine-like fused pyrimidine-pyrrole scaffold bearing a tetrahydronaphthalenylamine gives a nitrogen-dense, extended planar heteroaromatic system well suited for both heme coordination and pi-stacking in the large CYP3A4 pocket.",
+      "prediction": "inhibitor",
+      "probability": 75,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMRDD5RSBZ8S4YH696",
+      "reasoning": "An aminoimidazolone ring bears two halogenated aryl substituents (a difluoromethoxyphenyl and a fluorophenyl with a fluoroalkyl-alkyne chain), giving moderate lipophilicity and halogenation but the amidine-like ring nitrogen is less classically heme-coordinating than a pyridine/imidazole azole.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSR1Y0Q04HR0N83B50E",
+      "reasoning": "A peptidomimetic bearing an oxazole ring, a fused pyridine-spirocyclobutane ether system, and a neopentyl group closely resembles HIV-protease-inhibitor-class scaffolds, combining two distinct heteroaromatic nitrogens with a large lipophilic, multi-ring framework classically associated with potent CYP3A4 inhibition.",
+      "prediction": "inhibitor",
+      "probability": 72,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYC938E86N2VRPWDJA",
+      "reasoning": "A biphenyl-naphthalene scaffold bearing two phenolic OH groups and linked via an amide to a succinic acid is a large planar aromatic system capable of pocket stacking, but it has no heteroaromatic heme-coordinating nitrogen and carries polar acid/phenol groups that reduce net lipophilicity.",
+      "prediction": "non_inhibitor",
+      "probability": 45,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT75TA8QQZ4KBP7SATP",
+      "reasoning": "A methylquinazoline core linked through an N-methylaniline to a methoxyphenyl bearing an isopropyl hydroxamic acid combines a heme-coordinating quinazoline nitrogen with a sizeable aromatic bicyclic system, though the hydroxamic acid adds notable polarity.",
+      "prediction": "inhibitor",
+      "probability": 55,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSNZGF46PQMAZDQFBBB",
+      "reasoning": "A phenanthrene-like fused ring system substituted with two phenolic hydroxyls is a purely carbocyclic, extended planar aromatic hydrocarbon with no nitrogen at all, so it lacks any heme-coordination handle despite reasonable lipophilic surface for stacking.",
+      "prediction": "non_inhibitor",
+      "probability": 38,
+      "true_label": "inhibitor",
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSVX2WMANRT94M0N5N2",
+      "reasoning": "This large peptidomimetic contains an isopropylthiazole and a second thiazolylmethyl carbamate flanking multiple amide bonds and two benzyl groups, a scaffold architecture closely paralleling classic potent CYP3A4-inhibiting HIV protease inhibitors (e.g., ritonavir-like), with high lipophilicity and dual azole nitrogens.",
+      "prediction": "inhibitor",
+      "probability": 85,
+      "true_label": "inhibitor",
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5XSMJJYT3S2TQ5WD5",
+      "reasoning": "An indazole fused heteroaromatic core bearing a fluoropyridine substituent, connected via a urea to a phenethylamine, provides multiple aromatic nitrogens (indazole N-N and fluoropyridine) capable of heme coordination alongside a moderately sized aromatic/lipophilic framework.",
+      "prediction": "inhibitor",
+      "probability": 62,
+      "true_label": "non_inhibitor",
+      "outcome": "FP"
+    }
+  ]
+}

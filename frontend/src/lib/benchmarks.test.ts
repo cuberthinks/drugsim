@@ -6,6 +6,7 @@ import cypEvaluationReport from "../../../models/admet/cyp3a4_inhibition/evaluat
 import cypExternalValidationReport from "../../../models/admet/cyp3a4_inhibition/external_validation_report.json";
 import registryYaml from "../../../datasets/registry.yaml?raw";
 import claudeSubsetReport from "../../../models/admet/herg_inhibition/claude_informal_subset_evaluation.json";
+import cypClaudeFullEvaluation from "../../../models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json";
 import { BENCHMARKS, CLAUDE_HERG_SUBSET_EVALUATION, EXAMPLE_CASE_PREDICTIONS, OVERALL_DATABASE_SCALE } from "./benchmarks";
 
 /**
@@ -95,22 +96,59 @@ describe("benchmark registry matches the real evaluation reports on disk", () =>
 });
 
 describe("no fabricated AI comparison data", () => {
-  it("GPT and Claude results are null on every benchmark -- no evaluation has been run", () => {
+  it("GPT is null on every benchmark -- no API access, no evaluation has been run", () => {
     for (const benchmark of BENCHMARKS) {
       expect(benchmark.aiComparison.gpt.rocAuc).toBeNull();
       expect(benchmark.aiComparison.gpt.accuracy).toBeNull();
       expect(benchmark.aiComparison.gpt.f1).toBeNull();
-      expect(benchmark.aiComparison.claude.rocAuc).toBeNull();
-      expect(benchmark.aiComparison.claude.accuracy).toBeNull();
-      expect(benchmark.aiComparison.claude.f1).toBeNull();
+      expect(benchmark.aiComparison.gpt.notEvaluatedReason?.length ?? 0).toBeGreaterThan(20);
     }
   });
 
-  it("every 'not evaluated' entry states why, rather than a bare null with no explanation", () => {
+  it("Claude is null except where a real evaluation exists, and a real one carries full reproducibility metadata", () => {
     for (const benchmark of BENCHMARKS) {
-      expect(benchmark.aiComparison.gpt.notEvaluatedReason.length).toBeGreaterThan(20);
-      expect(benchmark.aiComparison.claude.notEvaluatedReason.length).toBeGreaterThan(20);
+      const claude = benchmark.aiComparison.claude;
+      const isEvaluated = claude.notEvaluatedReason === null;
+      if (!isEvaluated) {
+        expect(claude.rocAuc).toBeNull();
+        expect(claude.accuracy).toBeNull();
+        expect(claude.f1).toBeNull();
+        expect(claude.notEvaluatedReason!.length).toBeGreaterThan(20);
+      } else {
+        // A real result must never silently look like a "Not evaluated" cell,
+        // and must always carry enough to audit where it came from.
+        expect(claude.rocAuc).not.toBeNull();
+        expect(claude.accuracy).not.toBeNull();
+        expect(claude.f1).not.toBeNull();
+        expect(claude.n).toBeGreaterThan(0);
+        expect(claude.modelIdentifier).toBeTruthy();
+        expect(claude.evaluatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(claude.sourceFile).toMatch(/^models\//);
+        expect(claude.methodologyNote?.length ?? 0).toBeGreaterThan(50);
+      }
     }
+  });
+
+  it("CYP3A4's real Claude evaluation matches the source file exactly", () => {
+    const cyp = BENCHMARKS.find((b) => b.endpointId === "cyp3a4_inhibition")!;
+    const report = cypClaudeFullEvaluation as unknown as {
+      n: number;
+      roc_auc: number;
+      balanced_accuracy: number;
+      f1: number;
+      compounds: unknown[];
+    };
+    expect(cyp.aiComparison.claude.rocAuc).toBe(report.roc_auc);
+    expect(cyp.aiComparison.claude.accuracy).toBe(report.balanced_accuracy);
+    expect(cyp.aiComparison.claude.f1).toBe(report.f1);
+    expect(cyp.aiComparison.claude.n).toBe(report.n);
+    expect(report.compounds).toHaveLength(459);
+  });
+
+  it("hERG's Claude aggregate result stays 'Not evaluated' -- only the 4/30-compound informal sections cover hERG", () => {
+    const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
+    expect(herg.aiComparison.claude.notEvaluatedReason).not.toBeNull();
+    expect(herg.aiComparison.claude.rocAuc).toBeNull();
   });
 });
 
@@ -185,6 +223,7 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
     fp: number;
     fn: number;
     tn: number;
+    roc_auc: number;
     accuracy: number;
     balanced_accuracy: number;
     precision: number;
@@ -192,7 +231,7 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
     specificity: number;
     f1: number;
     seed: number;
-    compounds: { true_label: string; claude_prediction: string; outcome: string }[];
+    compounds: { true_label: string; claude_prediction: string; outcome: string; probability: number }[];
   };
 
   it("displayed confusion matrix and metrics match the source report exactly", () => {
@@ -204,12 +243,20 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
       fn: report.fn,
       tn: report.tn,
     });
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.rocAuc).toBe(report.roc_auc);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.accuracy).toBe(report.accuracy);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.balancedAccuracy).toBe(report.balanced_accuracy);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.precision).toBe(report.precision);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.recall).toBe(report.recall);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.specificity).toBe(report.specificity);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.f1).toBe(report.f1);
+  });
+
+  it("every compound's probability score is directionally consistent with its binary verdict -- the follow-up scoring pass didn't contradict the original reasoning", () => {
+    for (const c of report.compounds) {
+      const predictedBlocker = c.claude_prediction === "blocker";
+      expect(c.probability >= 50).toBe(predictedBlocker);
+    }
   });
 
   it("the 30 raw per-compound outcomes independently recompute to the same confusion matrix -- catches drift between the raw results and the summary numbers", () => {

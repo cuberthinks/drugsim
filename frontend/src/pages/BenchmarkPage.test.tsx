@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { BenchmarkPage } from "./BenchmarkPage";
@@ -29,26 +29,41 @@ describe("BenchmarkPage", () => {
     expect(screen.getAllByText(/\(v1\)/).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("never renders a numeric score for GPT or Claude in the validated AI-comparison table -- only 'Not evaluated'", () => {
+  it("GPT is always 'Not evaluated' in the validated AI-comparison table, on every benchmark", () => {
     setup();
-    const notEvaluated = screen.getAllByText(/not evaluated/i);
-    // 2 benchmarks x 2 models x 3 metric rows = 12 "Not evaluated" badges minimum
-    // in the aggregate table, plus "GPT: not evaluated" once per example-case card.
-    expect(notEvaluated.length).toBeGreaterThanOrEqual(12);
-
-    // Scope specifically to each benchmark's aggregate comparison table -- the
-    // one requiring the documented protocol against DrugSim's own held-out test
-    // set -- and assert no digit ever appears in a GPT/Claude cell there.
     const headings = screen.getAllByRole("heading", { name: /DrugSim vs\. general-purpose AI/i });
-    expect(headings.length).toBeGreaterThan(0);
+    expect(headings.length).toBe(2); // hERG, CYP3A4
+
     for (const heading of headings) {
       const card = heading.closest(".card");
       expect(card).not.toBeNull();
-      const gptClaudeCells = Array.from(card!.querySelectorAll("div")).filter(
+      const notEvaluatedCells = Array.from(card!.querySelectorAll("div")).filter(
         (el) => el.textContent === "Not evaluated",
       );
-      expect(gptClaudeCells.length).toBe(6); // 2 models x 3 metric rows, every one a badge, never a number
+      // GPT has no API access on any benchmark: 3 metric rows, always a badge, never a number.
+      expect(notEvaluatedCells.length).toBeGreaterThanOrEqual(3);
     }
+  });
+
+  it("hERG's Claude column in the aggregate table is 'Not evaluated' -- only the informal sections cover hERG", () => {
+    setup();
+    const heading = screen.getByRole("heading", { name: /^hERG \(KCNH2\/Kv11\.1\) cardiac channel inhibition$/i });
+    const card = heading.closest(".card")!.parentElement!;
+    const notEvaluatedCells = Array.from(card.querySelectorAll("div")).filter((el) => el.textContent === "Not evaluated");
+    // GPT + Claude, 3 metric rows each = 6, since neither has a real hERG-full-test-set evaluation.
+    expect(notEvaluatedCells.length).toBe(6);
+  });
+
+  it("CYP3A4's Claude column shows the real, unflattering result -- not 'Not evaluated', not fabricated", () => {
+    setup();
+    const heading = screen.getByRole("heading", { name: /^CYP3A4 metabolic inhibition$/i });
+    const card = heading.closest(".card")!.parentElement!;
+    const notEvaluatedCells = Array.from(card.querySelectorAll("div")).filter((el) => el.textContent === "Not evaluated");
+    // GPT only: 3 metric rows. Claude's 3 cells are real numbers now.
+    expect(notEvaluatedCells.length).toBe(3);
+    expect(within(card).getByText("56.0%")).toBeInTheDocument(); // ROC-AUC, barely above chance
+    expect(within(card).getByText("53.6%")).toBeInTheDocument(); // balanced accuracy
+    expect(within(card).getByText("72.2%")).toBeInTheDocument(); // F1
   });
 
   it("labels the individual-case Claude spot-check as an informal, single-run estimate -- never a validated metric", () => {
@@ -93,8 +108,9 @@ describe("BenchmarkPage", () => {
     expect(
       screen.getAllByText((_, element) => /is\s+not\s+the documented protocol/i.test(element?.textContent ?? "")).length,
     ).toBeGreaterThan(0);
-    expect(screen.getByText(/ROC-AUC is not computable/i)).toBeInTheDocument();
+    expect(screen.getByText(/asking each already-dispatched subagent for a 0-100 probability/i)).toBeInTheDocument();
     // The real, unflattering result -- lower than DrugSim's own, and shown as such.
+    expect(screen.getByText(/67\.6%/)).toBeInTheDocument(); // ROC-AUC
     expect(screen.getByText(/56\.9%/)).toBeInTheDocument(); // balanced accuracy
     expect(screen.getByText(/68\.4%/)).toBeInTheDocument(); // F1
     expect(screen.getByText(/not a claim about DrugSim being "better,"/i)).toBeInTheDocument();
