@@ -128,12 +128,18 @@ describe("no fabricated AI comparison data", () => {
       roc_auc: number;
       balanced_accuracy: number;
       f1: number;
+      model_identifier: string;
+      evaluated_at: string;
       compounds: unknown[];
     };
     expect(cyp.aiComparison.claude.rocAuc).toBe(report.roc_auc);
     expect(cyp.aiComparison.claude.accuracy).toBe(report.balanced_accuracy);
     expect(cyp.aiComparison.claude.f1).toBe(report.f1);
     expect(cyp.aiComparison.claude.n).toBe(report.n);
+    // Provenance (model id, run date) lives in the source JSON, not just
+    // hardcoded in benchmarks.ts -- this catches the two drifting apart.
+    expect(cyp.aiComparison.claude.modelIdentifier).toBe(report.model_identifier);
+    expect(cyp.aiComparison.claude.evaluatedAt).toBe(report.evaluated_at);
     expect(report.compounds).toHaveLength(459);
   });
 
@@ -144,12 +150,16 @@ describe("no fabricated AI comparison data", () => {
       roc_auc: number;
       balanced_accuracy: number;
       f1: number;
+      model_identifier: string;
+      evaluated_at: string;
       compounds: unknown[];
     };
     expect(herg.aiComparison.claude.rocAuc).toBe(report.roc_auc);
     expect(herg.aiComparison.claude.accuracy).toBe(report.balanced_accuracy);
     expect(herg.aiComparison.claude.f1).toBe(report.f1);
     expect(herg.aiComparison.claude.n).toBe(report.n);
+    expect(herg.aiComparison.claude.modelIdentifier).toBe(report.model_identifier);
+    expect(herg.aiComparison.claude.evaluatedAt).toBe(report.evaluated_at);
     expect(report.compounds).toHaveLength(800);
   });
 
@@ -267,6 +277,8 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
     specificity: number;
     f1: number;
     seed: number;
+    model_identifier: string;
+    evaluated_at: string;
     compounds: { true_label: string; claude_prediction: string; outcome: string; probability: number }[];
   };
 
@@ -286,6 +298,15 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
     expect(CLAUDE_HERG_SUBSET_EVALUATION.recall).toBe(report.recall);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.specificity).toBe(report.specificity);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.f1).toBe(report.f1);
+    // Provenance (model id, run date) lives in the source JSON, not just
+    // hardcoded in benchmarks.ts -- this catches the two drifting apart.
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.modelIdentifier).toBe(report.model_identifier);
+    expect(CLAUDE_HERG_SUBSET_EVALUATION.runDate).toBe(report.evaluated_at);
+  });
+
+  it("self-reported confidence is coarse -- only 9 distinct values across 30 compounds, the fact behind the page's calibration caveat", () => {
+    const distinctProbabilities = new Set(report.compounds.map((c) => c.probability));
+    expect(distinctProbabilities.size).toBe(9);
   });
 
   it("every compound's probability score is directionally consistent with its binary verdict -- the follow-up scoring pass didn't contradict the original reasoning", () => {

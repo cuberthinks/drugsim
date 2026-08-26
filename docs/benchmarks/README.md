@@ -51,12 +51,28 @@ test result.
 
 ## AI comparison status
 
-**Not evaluated**, for both GPT and Claude, on both benchmarks. DrugSim has
-no API access configured for either service. See
-`docs/benchmarks/ai-comparison-protocol.md` for the full protocol that would
-need to be followed and recorded before any comparison could be shown here —
-running an informal, undocumented comparison would be exactly the kind of
-fabrication this page exists to avoid, so none was attempted.
+**GPT: not evaluated**, on either benchmark. DrugSim has no API access
+configured for it. See `docs/benchmarks/ai-comparison-protocol.md` for the
+full protocol that would need to be followed and recorded before any GPT
+comparison could be shown here.
+
+**Claude: evaluated, but not via that documented protocol.** On 2026-08-25,
+Claude was run against the complete real held-out test set for both
+endpoints — all 800 hERG compounds and all 459 CYP3A4 compounds
+(`split_group 9`) — via SMILES-only subagent dispatches, each producing a
+genuine per-compound verdict plus a self-reported 0-100 confidence value.
+This is a real, disclosed deviation from the documented protocol (3
+independent runs per compound in fresh sessions; this was a single run,
+batched for tractability) and fills the "DrugSim vs. general-purpose AI"
+table on the Benchmark page for both endpoints. Its ROC-AUC is not
+like-for-like with DrugSim's: the number comes from self-reported confidence,
+not a calibrated `predict_proba` output. A smaller 30-compound informal
+subset and a 4-compound spot-check are also shown on the page, both clearly
+labelled as lower-rigor supplements to these two full-set results, not
+substitutes for the documented protocol. Full per-compound results and the
+complete methodology (including a caught-and-discarded systematic bug and a
+session-limit failure/recovery) are in
+`docs/benchmarks/dataset-registry.md`.
 
 ## Individual molecule explorer
 

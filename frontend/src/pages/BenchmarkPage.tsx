@@ -391,16 +391,24 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
             — not an informal comparison, and not a number inferred from general knowledge of how these models perform.
           </p>
         ) : (
-          <p className="mt-4 text-xs leading-relaxed text-ink-soft">
-            Claude's numbers here are real (n = {benchmark.aiComparison.claude.n}, evaluated{" "}
-            {benchmark.aiComparison.claude.evaluatedAt}, hover a bar for the full methodology note) but are{" "}
-            <strong>not</strong> the documented protocol at{" "}
-            <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
-              docs/benchmarks/ai-comparison-protocol.md
-            </Link>
-            , which specifies 3 independent runs per compound in fresh sessions — not achievable for Claude within a
-            single conversation.
-          </p>
+          <>
+            <p className="mt-4 text-xs leading-relaxed text-ink-soft">
+              Claude's numbers here are real (n = {benchmark.aiComparison.claude.n}, evaluated{" "}
+              {benchmark.aiComparison.claude.evaluatedAt}, hover a bar for the full methodology note) but are{" "}
+              <strong>not</strong> the documented protocol at{" "}
+              <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
+                docs/benchmarks/ai-comparison-protocol.md
+              </Link>
+              , which specifies 3 independent runs per compound in fresh sessions — not achievable for Claude within a
+              single conversation.
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-ink-soft">
+              The ROC-AUC bars above are not strictly like-for-like, either: DrugSim's score comes from a calibrated{" "}
+              <span className="font-mono text-[11px]">predict_proba</span> output, while Claude's comes from a
+              self-reported 0-100 confidence value it was asked to state alongside its verdict — a different kind of
+              number placed on the same bar for comparison, not a shared measurement.
+            </p>
+          </>
         )}
       </div>
     </div>
@@ -575,6 +583,12 @@ export function BenchmarkPage() {
           asking each already-dispatched subagent for a 0-100 probability consistent with its own prior verdict, not
           a fresh run. This is a smaller, less rigorous supplement to the full 800-compound result already shown
           above, not a substitute for the documented protocol run.
+        </p>
+        <p className="mt-2 text-xs leading-relaxed text-ink-soft">
+          Its ROC-AUC is not directly comparable to DrugSim's, either: it's computed from a self-reported 0-100
+          confidence value that only took 9 distinct values across these 30 compounds, not a calibrated{" "}
+          <span className="font-mono text-[11px]">predict_proba</span> output like DrugSim's own score. Same metric
+          name, different kind of number underneath it.
         </p>
         <dl className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
           <div>

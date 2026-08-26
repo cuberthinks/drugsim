@@ -11,6 +11,8 @@
   "specificity": 0.4167,
   "f1": 0.6842,
   "seed": 42,
+  "model_identifier": "claude-sonnet-5",
+  "evaluated_at": "2026-08-25",
   "compounds": [
     {
       "id": "01KZJ4C1XPY07HB6R3SP726KY7",

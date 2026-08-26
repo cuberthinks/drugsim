@@ -117,6 +117,18 @@ describe("BenchmarkPage", () => {
     expect(screen.getByText(/56\.9%/)).toBeInTheDocument(); // balanced accuracy
     expect(screen.getByText(/68\.4%/)).toBeInTheDocument(); // F1
     expect(screen.getByText(/not a claim about DrugSim being "better,"/i)).toBeInTheDocument();
+    // The subset's self-reported confidence is coarse (9 distinct values across
+    // 30 compounds) and not a calibrated score -- this must be disclosed, not
+    // just implied by the small sample size.
+    expect(screen.getByText(/9 distinct values across these 30 compounds/i)).toBeInTheDocument();
+  });
+
+  it("discloses that Claude's ROC-AUC (self-reported confidence) is not like-for-like with DrugSim's calibrated predict_proba, on every AI-comparison card that has a real result", () => {
+    setup();
+    // hERG card, CYP3A4 card, and the 30-compound subset section each carry
+    // this caveat independently -- at least 3 matches across the page.
+    expect(screen.getAllByText(/predict_proba/).length).toBeGreaterThanOrEqual(3);
+    expect(screen.getAllByText(/self-reported 0-100 confidence/i).length).toBeGreaterThanOrEqual(2);
   });
 
   it("distinguishes the overall ChEMBL database scale from either endpoint's own training set", () => {
