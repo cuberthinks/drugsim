@@ -37,27 +37,6 @@ function NotEvaluated({ reason }: { reason: string }) {
   );
 }
 
-function AiMetricCell({ result, metric }: { result: AiComparisonResult; metric: "rocAuc" | "accuracy" | "f1" }) {
-  const value = result[metric];
-  if (value === null) {
-    return <NotEvaluated reason={result.notEvaluatedReason ?? "Not evaluated."} />;
-  }
-  const title = [
-    result.methodologyNote,
-    result.n !== undefined ? `n = ${result.n}` : null,
-    result.modelIdentifier ? `model: ${result.modelIdentifier}` : null,
-    result.evaluatedAt ? `evaluated ${result.evaluatedAt}` : null,
-    result.sourceFile ? `source: ${result.sourceFile}` : null,
-  ]
-    .filter(Boolean)
-    .join(" — ");
-  return (
-    <span className="font-mono text-ink" title={title}>
-      {pct(value)}
-    </span>
-  );
-}
-
 function ClaudeSpotCheckNote({ spotCheck }: { spotCheck: ClaudeSpotCheckResult }) {
   if (spotCheck.predictedLabel === null) {
     return (
@@ -112,6 +91,57 @@ function BarRow({ label, value, max, highlight = false }: { label: string; value
         )}
       </div>
       <p className="w-14 shrink-0 text-right font-mono text-xs text-ink">{value === null ? "n/a" : value.toFixed(3)}</p>
+    </div>
+  );
+}
+
+/** DrugSim-vs-Claude comparison as paired bars, reusing BarRow's visual
+ * grammar from the baselines section above rather than introducing a second
+ * table format on the same page. Falls back to the NotEvaluated badge in
+ * place of a bar whenever this metric genuinely wasn't evaluated. */
+function AiCompareBars({ label, drugsimValue, aiResult, metric }: { label: string; drugsimValue: number; aiResult: AiComparisonResult; metric: "rocAuc" | "accuracy" | "f1" }) {
+  const aiValue = aiResult[metric];
+  const max = Math.max(drugsimValue, aiValue ?? 0, 0.01);
+  const widthPct = (v: number) => Math.max(2, (v / max) * 100);
+  const title = [
+    aiResult.methodologyNote,
+    aiResult.n !== undefined ? `n = ${aiResult.n}` : null,
+    aiResult.modelIdentifier ? `model: ${aiResult.modelIdentifier}` : null,
+    aiResult.evaluatedAt ? `evaluated ${aiResult.evaluatedAt}` : null,
+    aiResult.sourceFile ? `source: ${aiResult.sourceFile}` : null,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+
+  return (
+    <div>
+      <p className="text-xs font-medium tracking-wide text-ink-soft uppercase">{label}</p>
+      <div className="mt-1.5 flex flex-col gap-1.5">
+        <div className="flex items-center gap-3">
+          <p className="w-16 shrink-0 text-xs text-ink-soft">DrugSim</p>
+          <div className="h-4 flex-1 overflow-hidden rounded bg-paper-alt">
+            <div className="h-full rounded bg-signal" style={{ width: `${widthPct(drugsimValue)}%` }} />
+          </div>
+          <p className="w-14 shrink-0 text-right font-mono text-xs text-ink">{pct(drugsimValue)}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <p className="w-16 shrink-0 text-xs text-ink-soft">Claude</p>
+          {aiValue === null ? (
+            <div className="flex-1">
+              <NotEvaluated reason={aiResult.notEvaluatedReason ?? "Not evaluated."} />
+            </div>
+          ) : (
+            <>
+              <div className="h-4 flex-1 overflow-hidden rounded bg-paper-alt" title={title}>
+                <div className="h-full rounded bg-ink-soft/50" style={{ width: `${widthPct(aiValue)}%` }} />
+              </div>
+              <p className="w-14 shrink-0 text-right font-mono text-xs text-ink" title={title}>
+                {pct(aiValue)}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -346,52 +376,75 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
         <h3 className="font-display text-base font-semibold text-ink">
           {ENDPOINT_SHORT_LABEL[benchmark.endpointId] ?? benchmark.endpointId} — DrugSim vs. general-purpose AI
         </h3>
-        <div className="mt-3 overflow-x-auto">
-          <div className="grid min-w-[480px] grid-cols-4 gap-2 text-sm">
-            <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">Metric</div>
-            <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">DrugSim</div>
-            <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">GPT</div>
-            <div className="text-xs font-medium tracking-wide text-ink-soft uppercase">Claude</div>
-
-            <div className="text-ink-soft">ROC-AUC</div>
-            <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.rocAuc)}</div>
-            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="rocAuc" /></div>
-            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="rocAuc" /></div>
-
-            <div className="text-ink-soft">Balanced accuracy</div>
-            <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.balancedAccuracy)}</div>
-            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="accuracy" /></div>
-            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="accuracy" /></div>
-
-            <div className="text-ink-soft">F1</div>
-            <div className="font-mono text-ink">{pct(benchmark.scaffoldSplitTest.f1)}</div>
-            <div><AiMetricCell result={benchmark.aiComparison.gpt} metric="f1" /></div>
-            <div><AiMetricCell result={benchmark.aiComparison.claude} metric="f1" /></div>
-          </div>
+        <div className="mt-4 flex flex-col gap-4">
+          <AiCompareBars label="ROC-AUC" drugsimValue={benchmark.scaffoldSplitTest.rocAuc} aiResult={benchmark.aiComparison.claude} metric="rocAuc" />
+          <AiCompareBars label="Balanced accuracy" drugsimValue={benchmark.scaffoldSplitTest.balancedAccuracy} aiResult={benchmark.aiComparison.claude} metric="accuracy" />
+          <AiCompareBars label="F1" drugsimValue={benchmark.scaffoldSplitTest.f1} aiResult={benchmark.aiComparison.claude} metric="f1" />
         </div>
-        {benchmark.aiComparison.gpt.notEvaluatedReason !== null && benchmark.aiComparison.claude.notEvaluatedReason !== null && (
-          <p className="mt-3 text-xs leading-relaxed text-ink-soft">
-            No GPT or Claude evaluation has been run against this benchmark yet. Running one requires the documented,
+        {benchmark.aiComparison.claude.notEvaluatedReason !== null ? (
+          <p className="mt-4 text-xs leading-relaxed text-ink-soft">
+            No evaluation has been run against this benchmark yet. Running one requires the documented,
             identical-inputs protocol at{" "}
             <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
               docs/benchmarks/ai-comparison-protocol.md
             </Link>{" "}
             — not an informal comparison, and not a number inferred from general knowledge of how these models perform.
           </p>
-        )}
-        {benchmark.aiComparison.claude.notEvaluatedReason === null && (
-          <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+        ) : (
+          <p className="mt-4 text-xs leading-relaxed text-ink-soft">
             Claude's numbers here are real (n = {benchmark.aiComparison.claude.n}, evaluated{" "}
-            {benchmark.aiComparison.claude.evaluatedAt}, hover a value for the full methodology note) but are{" "}
+            {benchmark.aiComparison.claude.evaluatedAt}, hover a bar for the full methodology note) but are{" "}
             <strong>not</strong> the documented protocol at{" "}
             <Link to="/benchmarks" className="underline underline-offset-2 hover:text-ink">
               docs/benchmarks/ai-comparison-protocol.md
             </Link>
             , which specifies 3 independent runs per compound in fresh sessions — not achievable for Claude within a
-            single conversation. GPT remains not evaluated: no API access.
+            single conversation.
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Endpoint order is genuinely sequential (each is "N of M validated
+ * endpoints"), so a numbered banner encodes real information here, unlike a
+ * cosmetic 01/02/03 marker on unordered content. */
+const JUMP_LINKS: { href: string; label: string }[] = [
+  { href: "#overview", label: "Overview" },
+  ...BENCHMARKS.map((b) => ({ href: `#${b.endpointId}`, label: ENDPOINT_SHORT_LABEL[b.endpointId] ?? b.endpointName })),
+  { href: "#individual-cases", label: "Individual cases" },
+  { href: "#subset-evaluation", label: "Subset check" },
+  { href: "#methodology", label: "Methodology" },
+  { href: "#limitations", label: "Limitations" },
+];
+
+function JumpNav() {
+  return (
+    <nav aria-label="Jump to section" className="flex flex-wrap gap-2">
+      {JUMP_LINKS.map((link) => (
+        <a
+          key={link.href}
+          href={link.href}
+          className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-ink-soft uppercase transition-colors hover:border-signal/40 hover:bg-signal-soft hover:text-ink"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function EndpointBanner({ index, total, benchmark }: { index: number; total: number; benchmark: Benchmark }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="shrink-0 font-mono text-[11px] font-medium tracking-wide text-ink-soft uppercase">
+        Validated endpoint {index} of {total}
+      </span>
+      <div className="h-px flex-1 bg-line" />
+      <span className="shrink-0 font-mono text-[11px] tracking-wide text-ink-soft uppercase">
+        {ENDPOINT_SHORT_LABEL[benchmark.endpointId] ?? benchmark.endpointId}
+      </span>
     </div>
   );
 }
@@ -409,9 +462,12 @@ export function BenchmarkPage() {
           traces to a specific report already in the repository; see{" "}
           <span className="font-mono text-xs">docs/benchmarks/dataset-registry.md</span> for the full citation trail.
         </p>
+        <div className="mt-5">
+          <JumpNav />
+        </div>
       </header>
 
-      <section className="card p-6">
+      <section id="overview" className="card scroll-mt-6 p-6">
         <h2 className="font-display text-lg font-semibold text-ink">Overall scientific database</h2>
         <p className="mt-1 text-xs leading-relaxed text-ink-soft">
           The scale of ChEMBL, the source database. This is <strong>not</strong> the size of either endpoint's own
@@ -441,14 +497,15 @@ export function BenchmarkPage() {
         </p>
       </section>
 
-      {BENCHMARKS.map((benchmark) => (
-        <section key={benchmark.benchmarkId} className="flex flex-col gap-6">
+      {BENCHMARKS.map((benchmark, index) => (
+        <section key={benchmark.benchmarkId} id={benchmark.endpointId} className="flex scroll-mt-6 flex-col gap-6">
+          <EndpointBanner index={index + 1} total={BENCHMARKS.length} benchmark={benchmark} />
           <BenchmarkSection benchmark={benchmark} />
         </section>
       ))}
 
       {/* Individual molecule explorer */}
-      <section className="flex flex-col gap-4">
+      <section id="individual-cases" className="flex scroll-mt-6 flex-col gap-4">
         <div>
           <h2 className="font-display text-lg font-semibold text-ink">Explore individual cases</h2>
           <p className="mt-1 text-sm leading-relaxed text-ink-soft">
@@ -459,8 +516,8 @@ export function BenchmarkPage() {
           <p className="mt-2 text-xs leading-relaxed text-ink-soft">
             Each card also shows a single Claude prediction made directly in a development session — SMILES only,
             compound name withheld until after the answer was recorded. This is <strong>not</strong> the documented
-            AI-comparison protocol (one run, not three; no temperature control) and does not fill in the "Not
-            evaluated" cells above, which require a full run against DrugSim's own held-out test set. It's an
+            AI-comparison protocol (one run, not three; no temperature control), and is far smaller and less rigorous
+            than the full 459-/800-compound results already shown in each endpoint's comparison above. It's an
             informal spot-check on four illustrative compounds, shown for transparency, not a validated result.
           </p>
         </div>
@@ -497,8 +554,6 @@ export function BenchmarkPage() {
             </dl>
             <p className="mt-2 text-xs leading-relaxed text-ink-soft">{c.groundTruthSource}</p>
             <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1 font-mono text-[10px] text-ink-soft">
-              <span>GPT: not evaluated</span>
-              <span>·</span>
               <ClaudeSpotCheckNote spotCheck={c.claudeSpotCheck} />
               <span>·</span>
               <span>live prediction captured {c.evaluatedAt}</span>
@@ -508,7 +563,7 @@ export function BenchmarkPage() {
       </section>
 
       {/* Claude informal subset evaluation -- 30 of 800, not the protocol */}
-      <section className="card p-6">
+      <section id="subset-evaluation" className="card scroll-mt-6 p-6">
         <h2 className="font-display text-lg font-semibold text-ink">Claude — informal subset evaluation</h2>
         <p className="mt-1 text-sm leading-relaxed text-ink-soft">
           {CLAUDE_HERG_SUBSET_EVALUATION.n} of DrugSim's real 800-compound held-out hERG test set (stratified sample,
@@ -518,7 +573,8 @@ export function BenchmarkPage() {
           independent across compounds. It is <strong>not</strong> the documented protocol: one run per compound, not
           three fresh-session repeats, and it is 30 of 800 compounds, not the full set. ROC-AUC was added afterward by
           asking each already-dispatched subagent for a 0-100 probability consistent with its own prior verdict, not
-          a fresh run. This does not fill in the "Not evaluated" cells above.
+          a fresh run. This is a smaller, less rigorous supplement to the full 800-compound result already shown
+          above, not a substitute for the documented protocol run.
         </p>
         <dl className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
           <div>
@@ -575,18 +631,18 @@ export function BenchmarkPage() {
       </section>
 
       {/* Methodology */}
-      <section className="card p-6">
+      <section id="methodology" className="card scroll-mt-6 p-6">
         <h2 className="font-display text-lg font-semibold text-ink">Methodology</h2>
         <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-soft">
           <li>Splits are scaffold-based (ADR-009), never random — structurally related compounds cannot appear in both train and test.</li>
           <li>Every reported number comes from a report already checked into the repository; none is recomputed for this page.</li>
           <li>External validation uses a dataset from a different lab and assay technology than training, never used for training, feature selection, hyperparameter tuning, or calibration.</li>
-          <li>GPT and Claude have not been evaluated. The comparison protocol is fully specified before any run, so the same inputs reach every system.</li>
+          <li>AI comparisons follow a protocol fully specified before any run, so the same inputs reach every system evaluated; any result shown that deviates from that exact protocol says so inline, rather than being presented as equivalent.</li>
         </ul>
       </section>
 
       {/* Limitations */}
-      <section className="rounded-lg border border-concern/30 bg-concern-soft p-6">
+      <section id="limitations" className="scroll-mt-6 rounded-lg border border-concern/30 bg-concern-soft p-6">
         <h2 className="font-display text-lg font-semibold text-ink">Limitations</h2>
         <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-soft">
           <li>Test sets are small (hundreds of compounds, not the millions in the overall ChEMBL database) — individual metrics carry real sampling uncertainty.</li>

@@ -97,15 +97,6 @@ describe("benchmark registry matches the real evaluation reports on disk", () =>
 });
 
 describe("no fabricated AI comparison data", () => {
-  it("GPT is null on every benchmark -- no API access, no evaluation has been run", () => {
-    for (const benchmark of BENCHMARKS) {
-      expect(benchmark.aiComparison.gpt.rocAuc).toBeNull();
-      expect(benchmark.aiComparison.gpt.accuracy).toBeNull();
-      expect(benchmark.aiComparison.gpt.f1).toBeNull();
-      expect(benchmark.aiComparison.gpt.notEvaluatedReason?.length ?? 0).toBeGreaterThan(20);
-    }
-  });
-
   it("Claude is null except where a real evaluation exists, and a real one carries full reproducibility metadata", () => {
     for (const benchmark of BENCHMARKS) {
       const claude = benchmark.aiComparison.claude;

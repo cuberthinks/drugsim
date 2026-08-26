@@ -29,20 +29,9 @@ describe("BenchmarkPage", () => {
     expect(screen.getAllByText(/\(v1\)/).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("GPT is always 'Not evaluated' in the validated AI-comparison table, on every benchmark", () => {
+  it("has no GPT column anywhere -- the comparison is DrugSim vs. Claude only, GPT was removed rather than left permanently 'Not evaluated'", () => {
     setup();
-    const headings = screen.getAllByRole("heading", { name: /DrugSim vs\. general-purpose AI/i });
-    expect(headings.length).toBe(2); // hERG, CYP3A4
-
-    for (const heading of headings) {
-      const card = heading.closest(".card");
-      expect(card).not.toBeNull();
-      const notEvaluatedCells = Array.from(card!.querySelectorAll("div")).filter(
-        (el) => el.textContent === "Not evaluated",
-      );
-      // GPT has no API access on any benchmark: 3 metric rows, always a badge, never a number.
-      expect(notEvaluatedCells.length).toBeGreaterThanOrEqual(3);
-    }
+    expect(screen.queryByText(/gpt/i)).not.toBeInTheDocument();
   });
 
   it("each benchmark's AI-comparison table is labeled with its own endpoint, not two identically-titled sections", () => {
@@ -56,8 +45,8 @@ describe("BenchmarkPage", () => {
     const heading = screen.getByRole("heading", { name: /^hERG \(KCNH2\/Kv11\.1\) cardiac channel inhibition$/i });
     const card = heading.closest(".card")!.parentElement!;
     const notEvaluatedCells = Array.from(card.querySelectorAll("div")).filter((el) => el.textContent === "Not evaluated");
-    // GPT only: 3 metric rows. Claude's 3 cells are real numbers now.
-    expect(notEvaluatedCells.length).toBe(3);
+    // GPT column was removed entirely and Claude has a real result: no "Not evaluated" cells at all here.
+    expect(notEvaluatedCells.length).toBe(0);
     expect(within(card).getByText("65.4%")).toBeInTheDocument(); // ROC-AUC
     expect(within(card).getByText("61.5%")).toBeInTheDocument(); // balanced accuracy
     expect(within(card).getByText("59.4%")).toBeInTheDocument(); // F1
@@ -68,8 +57,8 @@ describe("BenchmarkPage", () => {
     const heading = screen.getByRole("heading", { name: /^CYP3A4 metabolic inhibition$/i });
     const card = heading.closest(".card")!.parentElement!;
     const notEvaluatedCells = Array.from(card.querySelectorAll("div")).filter((el) => el.textContent === "Not evaluated");
-    // GPT only: 3 metric rows. Claude's 3 cells are real numbers now.
-    expect(notEvaluatedCells.length).toBe(3);
+    // GPT column was removed entirely and Claude has a real result: no "Not evaluated" cells at all here.
+    expect(notEvaluatedCells.length).toBe(0);
     expect(within(card).getByText("56.0%")).toBeInTheDocument(); // ROC-AUC, barely above chance
     expect(within(card).getByText("53.6%")).toBeInTheDocument(); // balanced accuracy
     expect(within(card).getByText("72.2%")).toBeInTheDocument(); // F1
@@ -87,10 +76,15 @@ describe("BenchmarkPage", () => {
     expect(screen.getByText(/Claude \(claude-sonnet-5\): no blind estimate available/)).toBeInTheDocument();
     // The section-level disclosure must be present, not just a per-card tooltip
     // -- both the 4-compound spot-check section and the 30-compound subset
-    // evaluation section say this, independently, so at least 2 matches.
+    // evaluation section must independently disclose that they're smaller and
+    // less rigorous than the full-set results already shown above, so at
+    // least 2 matches.
     expect(
-      screen.getAllByText(/does not fill in the .Not evaluated. cells above/i).length,
-    ).toBeGreaterThanOrEqual(2);
+      screen.getAllByText(/less rigorous than the full/i).length,
+    ).toBeGreaterThanOrEqual(1);
+    expect(
+      screen.getAllByText(/less rigorous supplement to the full/i).length,
+    ).toBeGreaterThanOrEqual(1);
   });
 
   it("displays uncertainty and applicability domain for individual example cases", () => {

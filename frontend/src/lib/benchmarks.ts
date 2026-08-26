@@ -7,8 +7,8 @@
  * produced.
  *
  * Nothing here is fabricated, rounded up, or estimated. Where a comparison
- * (GPT, Claude) has not actually been run, its value is `null` and the UI
- * must render "Not evaluated" -- never a placeholder number.
+ * has not actually been run, its value is `null` and the UI must render
+ * "Not evaluated" -- never a placeholder number.
  */
 
 export type TaskType = "classification";
@@ -131,13 +131,9 @@ export interface Benchmark {
     externalN: number | null;
   };
   aiComparison: {
-    gpt: AiComparisonResult;
     claude: AiComparisonResult;
   };
 }
-
-const NOT_EVALUATED_REASON =
-  "No GPT or Claude evaluation has been run against this benchmark. DrugSim has no API access configured for either service, and running one requires the documented protocol in docs/benchmarks/ai-comparison-protocol.md to be followed and recorded, not an informal comparison.";
 
 export const BENCHMARKS: Benchmark[] = [
   {
@@ -236,7 +232,6 @@ export const BENCHMARKS: Benchmark[] = [
       externalN: 3956,
     },
     aiComparison: {
-      gpt: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
       claude: {
         rocAuc: 0.6539,
         accuracy: 0.6146,
@@ -352,7 +347,6 @@ export const BENCHMARKS: Benchmark[] = [
       externalN: null,
     },
     aiComparison: {
-      gpt: { rocAuc: null, accuracy: null, f1: null, notEvaluatedReason: NOT_EVALUATED_REASON },
       claude: {
         rocAuc: 0.5602,
         accuracy: 0.5359,
