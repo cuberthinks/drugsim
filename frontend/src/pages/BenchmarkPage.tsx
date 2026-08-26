@@ -8,6 +8,7 @@ import {
   type ApplicabilityDomainTier,
   type Benchmark,
   type ClaudeSpotCheckResult,
+  type EstablishedToolResult,
 } from "../lib/benchmarks";
 
 function pct(x: number | null | undefined, digits = 1): string {
@@ -29,10 +30,10 @@ function num3(x: number | null | undefined): string {
   return x.toFixed(3);
 }
 
-function NotEvaluated({ reason }: { reason: string }) {
+function NotEvaluated({ reason, label = "Not evaluated" }: { reason: string; label?: string }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-paper-alt px-2.5 py-0.5 font-mono text-[11px] font-medium tracking-wide text-ink-soft uppercase" title={reason}>
-      Not evaluated
+      {label}
     </span>
   );
 }
@@ -137,6 +138,57 @@ function AiCompareBars({ label, drugsimValue, aiResult, metric }: { label: strin
               </div>
               <p className="w-14 shrink-0 text-right font-mono text-xs text-ink" title={title}>
                 {pct(aiValue)}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** DrugSim-vs-established-tool comparison, same paired-bar grammar as
+ * AiCompareBars. A null value here always means "structurally not
+ * computable" (e.g. the tool only outputs Yes/No, never a probability),
+ * never "not evaluated" -- the tool genuinely was run. */
+function EstablishedToolBar({ label, drugsimValue, toolLabel, result, metric }: { label: string; drugsimValue: number; toolLabel: string; result: EstablishedToolResult; metric: "rocAuc" | "accuracy" | "f1" }) {
+  const value = result[metric];
+  const max = Math.max(drugsimValue, value ?? 0, 0.01);
+  const widthPct = (v: number) => Math.max(2, (v / max) * 100);
+  const title = [
+    result.methodologyNote,
+    `n = ${result.n}`,
+    `tool: ${result.toolIdentifier}`,
+    `evaluated ${result.evaluatedAt}`,
+    `source: ${result.sourceFile}`,
+  ]
+    .filter(Boolean)
+    .join(" — ");
+
+  return (
+    <div>
+      <p className="text-xs font-medium tracking-wide text-ink-soft uppercase">{label}</p>
+      <div className="mt-1.5 flex flex-col gap-1.5">
+        <div className="flex items-center gap-3">
+          <p className="w-24 shrink-0 text-xs text-ink-soft">DrugSim</p>
+          <div className="h-4 flex-1 overflow-hidden rounded bg-paper-alt">
+            <div className="h-full rounded bg-signal" style={{ width: `${widthPct(drugsimValue)}%` }} />
+          </div>
+          <p className="w-14 shrink-0 text-right font-mono text-xs text-ink">{pct(drugsimValue)}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <p className="w-24 shrink-0 text-xs text-ink-soft">{toolLabel}</p>
+          {value === null ? (
+            <div className="flex-1">
+              <NotEvaluated reason={result.rocAucNotComputableReason ?? "Not computable."} label="Not computable" />
+            </div>
+          ) : (
+            <>
+              <div className="h-4 flex-1 overflow-hidden rounded bg-paper-alt" title={title}>
+                <div className="h-full rounded bg-ink-soft/50" style={{ width: `${widthPct(value)}%` }} />
+              </div>
+              <p className="w-14 shrink-0 text-right font-mono text-xs text-ink" title={title}>
+                {pct(value)}
               </p>
             </>
           )}
@@ -410,6 +462,60 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
             </p>
           </>
         )}
+      </div>
+
+      {/* Established ADMET tool comparison */}
+      <div className="card min-w-0 p-6">
+        <h3 className="font-display text-base font-semibold text-ink">
+          {ENDPOINT_SHORT_LABEL[benchmark.endpointId] ?? benchmark.endpointId} — DrugSim vs. established ADMET tools
+        </h3>
+        <p className="mt-1 text-xs leading-relaxed text-ink-soft">
+          Purpose-built ADMET prediction tools, not general-purpose AI — arguably a fairer comparison than the LLMs
+          above, since both sides are narrow models trained for exactly this kind of task. SwissADME was considered
+          and excluded: its Terms of Use explicitly prohibit automated access, so running it here would violate the
+          tool's own stated terms rather than work around a technical limit.
+        </p>
+        <div className="mt-4 flex flex-col gap-4">
+          <EstablishedToolBar label="ROC-AUC" toolLabel="ADMETlab 2.0" drugsimValue={benchmark.scaffoldSplitTest.rocAuc} result={benchmark.establishedToolComparison.admetlab2} metric="rocAuc" />
+          <EstablishedToolBar label="Balanced accuracy" toolLabel="ADMETlab 2.0" drugsimValue={benchmark.scaffoldSplitTest.balancedAccuracy} result={benchmark.establishedToolComparison.admetlab2} metric="accuracy" />
+          <EstablishedToolBar label="F1" toolLabel="ADMETlab 2.0" drugsimValue={benchmark.scaffoldSplitTest.f1} result={benchmark.establishedToolComparison.admetlab2} metric="f1" />
+        </div>
+        <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+          ADMETlab 2.0's numbers are real (n = {benchmark.establishedToolComparison.admetlab2.n}, evaluated{" "}
+          {benchmark.establishedToolComparison.admetlab2.evaluatedAt}, hover a bar for the full methodology note) —
+          the complete real held-out test set, submitted directly to its own batch-screening tool, not an informal
+          sample.
+        </p>
+
+        <div className="mt-6 border-t border-line pt-4">
+          <p className="text-xs font-medium text-ink">
+            pkCSM — informal spot-check (n = 5 per submodel, <strong>not</strong> a validated comparison)
+          </p>
+          <div className="mt-3 flex flex-col gap-4">
+            {Object.entries(benchmark.establishedToolComparison.pkcsm).map(([submodelName, result]) => (
+              <div key={submodelName}>
+                <p className="font-mono text-[11px] tracking-wide text-ink-soft uppercase">{submodelName}</p>
+                <div className="mt-1.5 flex flex-col gap-3">
+                  <EstablishedToolBar
+                    label="Balanced accuracy"
+                    toolLabel="pkCSM"
+                    drugsimValue={benchmark.scaffoldSplitTest.balancedAccuracy}
+                    result={result}
+                    metric="accuracy"
+                  />
+                  <EstablishedToolBar label="F1" toolLabel="pkCSM" drugsimValue={benchmark.scaffoldSplitTest.f1} result={result} metric="f1" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+            ROC-AUC is not shown for pkCSM: it returns only a categorical Yes/No verdict, never a probability, so
+            there is no score to compute it from — not a gap that will fill in later. Submitted one compound at a
+            time through pkCSM's single-molecule web form, since its true batch mode needs a file upload that isn't
+            automatable here; n = 5 is far too small to conclude anything general about pkCSM's real-world accuracy,
+            hover a bar for the full methodology note.
+          </p>
+        </div>
       </div>
     </div>
   );

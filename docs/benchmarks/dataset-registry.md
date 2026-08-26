@@ -262,3 +262,93 @@ than DrugSim's own 78.8% / 65.0% / 79.2% on the identical 800 compounds.
 Recall is the specific weak point: 49.3% — Claude missed nearly half of the
 true blockers at this scale, a real and disclosed finding, not smoothed into
 the aggregate numbers.
+
+## SwissADME, ADMETlab 2.0, and pkCSM — established ADMET tool comparison
+
+Requested separately from the AI comparison above: how DrugSim compares to
+purpose-built ADMET prediction web tools, not general-purpose LLMs. Real
+data: `establishedToolComparison` on both benchmark entries in
+`frontend/src/lib/benchmarks.ts`.
+
+**SwissADME (swissadme.ch) was investigated and excluded, not silently
+skipped.** Its Terms of Use state verbatim: "not to use any form of web
+crawler or other data retrieval tool or service to access SwissADME in any
+automated manner, including for the purpose of automatically collecting
+[...]". Automating either held-out set through it would be a direct
+violation of that clause. No data was collected from SwissADME for this
+comparison.
+
+**ADMETlab 2.0 (admetmesh.scbdd.com) was run against the complete real
+held-out test set for both endpoints — 800 hERG compounds, 459 CYP3A4
+compounds (`split_group 9`), the identical compounds used for DrugSim's own
+evaluation and Claude's full-set runs.** Its "ADMET Screening" batch mode
+supports up to 500 SMILES per submission via a plain textarea, so this was
+submitted as a direct HTTP POST to its own form endpoint
+(`/service/screening/cal`) rather than through slower browser automation —
+reproducing exactly what the web form itself sends, not a scraping
+workaround. One real methodological discovery along the way: the endpoint
+silently truncates to the first line unless SMILES are joined with `\r\n`
+(standard HTML `<textarea>` line-ending convention) rather than a bare `\n`
+— confirmed by a controlled 3-line test before trusting any real submission.
+hERG was split into 2 batches of 400 (both succeeded). CYP3A4's first
+attempt (all 459 at once) was disconnected by the server after a long
+processing time with no response; retried successfully as 2 sub-batches of
+229 and 230 with a 3-retry backoff wrapper. Results were fetched directly
+from the CSV URLs the tool itself returns (`/static/files/filter/result/tmp/*.csv`).
+
+**Verified before scoring**: exact row counts matched the input counts on
+both endpoints (800 and 459), zero invalid molecules reported by the tool
+itself. A small number of rows (83/800 for hERG, 47/459 for CYP3A4) had a
+different-looking output SMILES string than the input — checked with RDKit
+and confirmed every one was the same molecule (identical molecular formula
+once charge/isotope annotations are stripped), just RDKit's own tautomer or
+stereo-descriptor normalization on the way back out, not a positional
+misalignment.
+
+Each molecule is scored independently by ADMETlab's underlying multi-task
+graph-attention model. Unlike Claude's batched subagent dispatch, batching
+here carries no cross-compound conditioning risk: this is deterministic
+per-molecule ML inference, not an LLM context window where earlier
+compounds in a batch could influence later ones.
+
+**Results**: hERG ROC-AUC 72.8%, balanced accuracy 60.0%, F1 77.8% (n=800) —
+recall 93.3% but specificity only 26.7%, meaning it predicts "blocker" for
+most compounds. CYP3A4 ROC-AUC 62.7%, balanced accuracy 55.6%, F1 75.6%
+(n=459) — the same pattern, recall 82.4% but specificity only 28.8%. Both
+shown as real findings, not smoothed toward DrugSim's own higher numbers
+(hERG 78.8%/65.0%/79.2%, CYP3A4 80.0%/65.2%/81.8%).
+
+**pkCSM (biosig.lab.uq.edu.au/pkcsm) is an informal n=5-per-endpoint
+spot-check only, explicitly not presented as a validated comparison.** Its
+real batch mode needs a SMILES file upload (capped at 100 molecules) that
+isn't automatable with the browser tools available here — there is no way
+to programmatically attach a file to a native OS file picker through this
+session's tooling. Its only scriptable input is a single-molecule text
+field (`<input type="text" name="smiles_str">`), confirmed via DOM
+inspection, not assumed. Looping dozens or hundreds of individual automated
+submissions against a free academic server to reach the full 800/459 would
+be the same kind of behavior SwissADME's own terms explicitly prohibit, even
+though pkCSM has no equivalent written clause — so rather than do that, only
+5 compounds per endpoint (a class-balanced sample: 3/2 split matching each
+endpoint's real held-out class ratio) were submitted one at a time in
+"ADMET" full-panel mode, reading both the relevant Toxicity (hERG) and
+Metabolism (CYP3A4) rows from each result page.
+
+hERG has two independent pkCSM submodels, hERG I and hERG II inhibitor —
+never collapsed into a single number, since they disagreed completely on
+this n=5: hERG I inhibitor predicted "No" for every single compound (a
+constant predictor, balanced accuracy exactly 50% and F1 0.0% by
+construction), hERG II inhibitor predicted "Yes" for every single compound
+(also balanced accuracy exactly 50%, but F1 75.0% since it happened to catch
+all 3 true blockers in this tiny sample). CYP3A4 inhibitor scored balanced
+accuracy 16.7%, F1 33.3% on its own n=5 — worse than a coin flip, a real and
+disclosed result, not smoothed over. ROC-AUC is not reported for any pkCSM
+result: it returns only a categorical Yes/No verdict per property, never a
+probability, so there is no score to compute a ranking metric from — the
+same structural limitation as GPT's original bare Yes/No protocol, not a gap
+that will be filled in later.
+
+Raw per-compound results: `models/admet/herg_inhibition/admetlab2_full_test_set_evaluation.json`,
+`models/admet/cyp3a4_inhibition/admetlab2_full_test_set_evaluation.json`,
+`models/admet/herg_inhibition/pkcsm_spot_check_evaluation.json`,
+`models/admet/cyp3a4_inhibition/pkcsm_spot_check_evaluation.json`.

@@ -1,0 +1,48 @@
+{
+  "model_identifier": "pkCSM",
+  "evaluated_at": "2026-08-26",
+  "method": "single-molecule ADMET submission via biosig.lab.uq.edu.au/pkcsm, one compound per request",
+  "n": 5,
+  "tp": 1,
+  "fp": 2,
+  "fn": 2,
+  "tn": 0,
+  "accuracy": 0.2,
+  "balanced_accuracy": 0.1667,
+  "precision": 0.3333,
+  "recall": 0.3333,
+  "specificity": 0.0,
+  "f1": 0.3333,
+  "compounds": [
+    {
+      "id": "01KZPB9WSS639P6EY902PKS4BN",
+      "endpoint": "cyp3a4",
+      "true_label": "inhibitor",
+      "pkcsm_cyp3a4inh": "No"
+    },
+    {
+      "id": "01KZPB9WSHXCRNNEV98YWHQTE6",
+      "endpoint": "cyp3a4",
+      "true_label": "inhibitor",
+      "pkcsm_cyp3a4inh": "No"
+    },
+    {
+      "id": "01KZPB9WTC3F9W3FCKBCZDEE62",
+      "endpoint": "cyp3a4",
+      "true_label": "inhibitor",
+      "pkcsm_cyp3a4inh": "Yes"
+    },
+    {
+      "id": "01KZPB9WT71G0C1EEPZYSJZ6CV",
+      "endpoint": "cyp3a4",
+      "true_label": "non_inhibitor",
+      "pkcsm_cyp3a4inh": "Yes"
+    },
+    {
+      "id": "01KZPB9WSRZ0P9BHEA15MDXPXS",
+      "endpoint": "cyp3a4",
+      "true_label": "non_inhibitor",
+      "pkcsm_cyp3a4inh": "Yes"
+    }
+  ]
+}

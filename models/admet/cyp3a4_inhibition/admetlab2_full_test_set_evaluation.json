@@ -1,0 +1,2772 @@
+{
+  "n": 459,
+  "tp": 252,
+  "fp": 109,
+  "fn": 54,
+  "tn": 44,
+  "roc_auc": 0.6268,
+  "accuracy": 0.6449,
+  "balanced_accuracy": 0.5556,
+  "precision": 0.6981,
+  "recall": 0.8235,
+  "specificity": 0.2876,
+  "f1": 0.7556,
+  "model_identifier": "ADMETlab2.0",
+  "evaluated_at": "2026-08-26",
+  "compounds": [
+    {
+      "id": "01KZPB9WSVSH1B7CY0CBWGNG69",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.986,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKQW7JDTXTBY12NBK8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.872,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBMBY6J8TCBC8C4XYC",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSEZEJ3Z2KB1D1EZH3D",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.017,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSWWPR2QYHC9FKWJDBW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.165,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSXHA5F3GYVJT72JH42",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.797,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTC3F9W3FCKBCZDEE62",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.261,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSRJSRN64P8N09ERTRX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.323,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSM0AC6XV3QMEW803F0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.955,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT70TM60XYAVGZB1PBA",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.951,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5RKH9V8332CV3N3JS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEDR8MVR43F9NJ5ERW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.287,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSRCP8R7VT3BATFW4R1",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.016,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSHVYXMRE5120V9SQ2Q",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.903,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT266289CPBNMMM3HK7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.906,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJZBW44JEZ6V2VMGT8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.862,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZHE4YY9H2TEYEQJ2V",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3439XB7S1NSSJYRVC",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.236,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYDG6CHVZ7Z9KPP1X8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.89,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZY70X26NCYCNY2GQY",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.962,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV6C1TFS2P285WRBQH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.894,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1MJQSAQ8BZ4DRPKB8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.93,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSS24AW9EBMZ41T2FXB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.961,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWWET8WC4DNPBQY1YT",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.914,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSH8VEXWC7QYK2PKJES",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.127,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT14CVKNZSHRSZR6MJA",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.909,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2JYN9CVC3FD3T5VHK",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.146,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT9A8F9CJ9KVVRVN8J2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.677,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZ9E4DTMWTCZ5ZVETS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.674,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYX0M4PJ9EVV24MAF8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.781,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSR0F5MJTTDD7J449VN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.306,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSNMM6NKJXAWPN7SKRN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.741,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT93Q7PTDB6EMP8VT6Y",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.96,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSD1T2V3FP1AFE1EHX9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.118,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSNX17FZ4QXH3DBW947",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.213,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSD0D7XTJ1VVYKNFVQN",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.104,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT8FC6HCSSAF2QWGGPX",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.598,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2E16HCEGS4X01J3F6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.867,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT77KARWQWEVZVW3RC4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.976,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT13W5ST3BSZ24CSV2E",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.929,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSTQDHE99W03P8B972C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.931,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1FFN704YFRQGMP14Z",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.99,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQAMB4ATBJEB7JQ8XA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.977,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY2Y7XP812TGTG6J5D",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4ZXNNVYP5ER79NPFB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.984,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT99GEWPBEM11PBFMQS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.838,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYE1SSX2SBBX6GH6Z8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.768,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSE8CABMP9JWKVWSZJT",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.568,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSK57HT9BRWXD3PART6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.888,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1SW2TKNAW23XJ9WDC",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.95,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4DQ6KBHCBTTTBTVT3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.975,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWBQ5MW8QGSTYRESWZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.886,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8520T6G484Z0E41R6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.825,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6S62JD3DSKCQN13TE",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.923,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6Y7SNPDXZ6NZ7VB95",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.74,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5M6P4SP6BZ0K50AW4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.963,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT7E91Z8KKHQ6VEZQV4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.886,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4G603ENCZDK0XZ0RZ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.853,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQEENWN96505RM9QJH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.756,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT16HR2GJ6J4HKMY883",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.913,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT009QW9TT50ET9GM0B",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.924,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXSYZN1MTNH3N7ATN4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.902,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZTB72NHWK27SCFH18",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.953,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1K6Z10F18ER6QVD3R",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.915,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1JAME735PBBQ7B4VR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.919,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT146EZQQ3MF29WWXKR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.922,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2J75EM5BW1M5YXAFR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.882,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC5DAW0JS3MXYGV6YJ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.947,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYV3EGVB4KMHBA4N72",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.935,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVV8MBQVHQD8T9GCPT",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.989,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSX5YHT8N2G4ZWKQWQX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.901,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT255X2N21YRYA9PD19",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.2,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSNR5PR8J7BZREDAVGX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.824,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP4GYS15CHX1SC9NDE",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.907,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8SVZQQEVCZWCSVMD2",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.788,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSM8A8T26GHAR2VB8RZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.837,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT55TV94CQDQ9PC8FK1",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.925,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4PD92ZXG4NX4N66SE",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.947,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZXZ755GTDE8B9E4P3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.978,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHZB04XBYZTVPWDA4D",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.928,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3RSHF69RHV4FPFJ2G",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.168,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV148PKA3WPN5B8NVG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.978,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZXFKFDTNJGE8JXNYQ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.729,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2SAHY1AGXFS55XBYW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.892,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3YA008XM4AD8Y7WJV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.007,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT3K8BFM1THXPJTKZCJ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.979,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDP0C5VNWQM7Q6N658",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.9,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT19B5PMF3AE7QVCR3Y",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.9,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4TRET49XHJZSFAG8W",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3DW061HECTYVMCXT6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.371,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSP3R0XY83V92SW7BWP",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.947,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSD7N1XAVK852EEZ653",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.847,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYFV5A7GE3DAZVN8Q3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.949,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHHZSFN6KDJ74EC01W",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.35,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSKPB9YJ19Q6MCD5N87",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.845,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2MC6XPXQ1W3FQRB8C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.183,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1VV7Q63PHHRZN009P",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.93,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2XP9VT800W352SX1C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.786,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCR0G3RC7VXCQMY91Z",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.885,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMJZXMRAP86JDDE4FM",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.959,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM0VQZDMAABZQQJFKZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.805,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6GQGTQ7BB0TS9V3YP",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.482,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT26HR4Y37RS2P0BVSD",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.691,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCDWG6NNR5S86S2P4Y",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.448,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5B7ESBV4G48BB6QMB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.917,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXXC97Y4HDEV28W6E1",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.93,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYWYT6PHAPQS3C9MEG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.941,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS10HVHY1PTNE70KT3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.926,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDS0504CGWT521CZ3H",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.599,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT83SRPGKW6KAPT9NNE",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.642,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKZMDRC8N3TMDYFGD2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.897,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEH0QKSPJPXZGQAY06",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.965,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT17DCYRM15EJT9Y6CV",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.861,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCZR9X996TRWK03AM8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.114,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTC3DR6N0RY07WXPAK0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.078,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT2QJBWJ1RJA2S3ZK5Y",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.927,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2P5BBGVR59AAZYHZW",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.927,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHRTFB4EFZQA5V5WK6",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.942,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSSZ7ZRCK7ZZGNK05XJ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.937,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6YA3FGMBP8X20W4PX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.361,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1KP1QDHJT4F1EQBPT",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.987,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYPQH5DBW7J41NZZE2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.873,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT424F6QDJS4WN8WFND",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.515,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSP05GNKJEK7Y37G3E",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.961,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS3FAG1VZYAPXWYVTS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.952,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM7NFCFZ26JNBNFEJC",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.804,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSJ3CXTYDJWRZTT8JAB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.922,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSK6DX7SXMVCZWNZ5B4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.989,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHNV3Y06TFZJHXP0XK",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.843,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRES7ATJEY80MK74A9",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.307,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV7AYEA22X8ZZQ4ASW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.908,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV1NPFWG49E70MYXDS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.9,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSFJJKHGE8KPGSBZWW2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.992,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5RPJ36PVVAFVMG7GN",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.293,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5B7K02TVRCW01C0RR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.981,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZF6SNW18GQ9MAYVBQ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVDXXKM243ACA9682C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8C9ZXBW6QV8PW8CZC",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.868,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSER525CSBPE54AA64E",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.781,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1XH11Q9J9628VCMT1",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP4XR9WW6K143WN5EN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.67,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1GTW8WAAC6Y4H76BG",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.914,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3PMNR5NKZC5SW7QCS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.376,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSFNMG9WHJEWK9PXVNH",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.295,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2WXVG44BCK3XC4X45",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.755,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT7KGECACQHC9CW8ESJ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.628,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5DF09GDTBDP56ECBD",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.918,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSEH0N72KVVZB5A18G",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.917,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1K3GSQ3YPJ3Z1EKKS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.909,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5RZVP08GMV1XQC7A2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.971,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS8XZ37DG6FTSY71F8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.932,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSJ8MZVS589GAJ9JPY6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.937,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMEK46CJV10FMPN3TS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.926,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJPCHDWCNWA6AA6JE7",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.374,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTCYTHC0BGA1KWCVB1F",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.184,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTADY7AZAM8RMZFD5M2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.919,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHN0TQ8AR58C131A7J",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.858,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT50S7R0QPRPQMXGGKF",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.97,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9ZQZARH3NR0BYB5FM",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.375,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTAV8H597HD3SBC1AH2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.913,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE6H3C3W47P1AMMDP9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.841,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5X6C32X3D9E50WA4J",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.745,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCC5QZ0CD4W7JJ86P2",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.477,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYCBT4TDYG16PRZKKN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.424,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5NFC0X6K21C2KDX13",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.753,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCWR4KD32KSAEJQ3H2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.209,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSN2S4QQMWXJXVQBCRG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.801,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHXCRNNEV98YWHQTE6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.106,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WST2PQSXX6T5PRJTGA7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.002,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSQTMHEQB34JE6RBQCH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.883,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQQCP7KX0XRPRBE818",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.888,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYFZ37G5K3Y9RDG1AE",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.94,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDXX6D3AHFCG2CQDT9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.907,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSPAJBH7JP3ZGTKPKJ0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.813,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVEP4G8XNEXCQ8SR0G",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.893,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6KF4H2THSSXRJKWD5",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.866,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6PWCCY7KJPN5RW08V",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.117,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSH6ZX76TNJV0KTP24V",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.286,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSWP43FQ22ZF04JA9CQ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.462,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSXT44MF4Z3B44GMAM8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.902,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV90B9M57WC6W38GW2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.983,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDME6AHQRDQ34Y2KTY",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.211,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSVPDZZX3APAA7N14A4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1HG90R1VDS4A19ZS7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.921,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSFQVY9R88CZM6XQWK2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.63,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXCX7ZTRF17GWKJEKM",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1Q1Q9WC56KW3EVFFC",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.989,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWM00XNNQKSGHH9W1C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.891,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2N1FKZW83RG8K4SS7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.649,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKSJ3HY2JFKDCJHV86",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.801,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNKD7Q7KRT93YNYNZH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.101,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5MSXT4ZZQ95XTT9GV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.889,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSCY9QDVRS39EEGY9NA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.981,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS7BXN87RPJ24QGSPS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.952,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT50VJX65Y318FYXGFV",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.947,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKKPX6YSS0KJRRCKG4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.812,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNW1Y56W0RFRHX1SQ0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.429,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT65QZ58SZDH02W0W07",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.659,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3PMPP33PD0TC4TEJ8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.909,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCS7WBVKHWT64WF6AA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.95,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWVY2JVXQDNWZPXR7H",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.932,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE4GA2ZM3AF9ZV2Q8M",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.904,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9P0NAS35GXVXX0TZZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.956,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1CKXDMZ2TJ521N3KG",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.919,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1HBWDAWDS6Y29G4YP",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.989,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT584KDQD6VVCQ5SP1B",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.977,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT263T3YF5J5J8916RH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.841,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVERRPYCEXDVVY2MJ9",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.954,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSZ55MGMH16M5B4V5M",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.971,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSK6E6DAKZ01B1AQ6TA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHQWBRGCHNF8QZAKPB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.904,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSH214V0CXTXCXCMW4Y",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.906,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT68MTM3C0JJJAX7K25",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.567,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKDB8C55KG1RCZGSAR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.693,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV0W2N32NFR3GGXC6Q",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.933,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSZT9XK96DRBAQEQJTQ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.874,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVFAAN8QY30XCWHDVN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.974,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT06KWJ0DKHS2E85WHG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.974,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTAX1QFS2MQJVB6EN8P",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.035,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT6ZPFAFK0QH8N79CPC",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.939,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT99QTWB92P9THW05V7",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.968,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8JCASX6EW0H5GG6CK",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.813,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHKZWK5J0YG3M6RMB6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.912,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSR8CDBBA7ZN49531H5",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.221,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTBXZD0DXYW1B1N0DRN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.833,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSJ204XTANA2Q8WHYM",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKP803ZZ6Q9NWYZS6F",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.654,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMHR9THBBDAXST8QW0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.686,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNXN3NP4Q6V16P1Y0S",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.956,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSYWKT78HKRBV9997HV",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.951,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT7487RYZ0X5064SNCZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.984,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMVCV9NS5SZBWXKCQR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.559,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSFZM4GNKCGKY9YY87H",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.972,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0WY338H7J9QE0R18H",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.978,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2SS0A5RN50JNM2R9B",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.729,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSJ0S5HZWYFT6BSVX3R",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.92,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSS639P6EY902PKS4BN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.663,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEV69RR9QF70FJ8A44",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.916,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSGR2JKK2YR5MSTYFX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.023,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT40KQ2R9H9Z805A2YR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.961,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXA521ZM2S3PQR8EM3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.888,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSGZ81F0Z1RM3QH0CE0",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.644,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2YX542SMYY78VS1KR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVN2PZ4YPZ062K2WV1",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQVHJQMRXPSK4R21GR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.938,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSW6D1C17JB5BD09CZ3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.937,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXYM8CDQT9J91WNGKE",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.89,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHR9XNMZX9F0WTA50W",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.933,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNQY2R6YWR5JNN59X2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.909,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1CDK81D3SHN339ED4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.967,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHZ0HJB0RPYQQVY363",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.927,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKMD9ZGR1ZSHM4X4D4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.617,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT718TRSN4VQCVY98DA",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.794,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSETJSZVEK8DGBNHSAR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.483,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT018GJ9CSW429ANEZ0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.984,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNHM89A1A7E4DJYA4V",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.347,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSH5929X86JY1JPG31K",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.953,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSCGN7F1CKRWWET8Y6F",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.954,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT76KT7D6YGTZMSGGTX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.66,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSX08ACG3EZQC3NSD5K",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.913,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ21ZYPQ3Y442RCPDZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.973,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8DKKB444AHGQH8N1F",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.974,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKPK2R6GQEGSW45K0R",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8KJ0QK33FAAJ1JRJ2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.095,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV49XNGDKJEAGF12XW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.682,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT8YJGREQEA5QZ30N9Q",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.795,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6F70WBA38RAZ3ZSSN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.754,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT4FFTQRA4N954ATEC0",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.079,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT1V4ENGGV1NKJAM4H5",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.926,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSWGM2P0VK3YD7RFSZ4",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.874,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCYKE1J2CDWCYKARVH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.094,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT71G0C1EEPZYSJZ6CV",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.492,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT1P8PXE1HC027FE87C",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.878,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3DXDJZVEXY9Z0KT57",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.086,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTBHD0D3BW1GGF9RH62",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.023,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSV79BASE552HJX6TZ1",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.97,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXHXEGZ2316VP18DP0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.907,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYD7JH72F1GHJ2X9KA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.947,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSNGQRMQDMAYPRDZZM0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.92,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXRA1DGSQ8SDKBYAZR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.306,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSV7F06M4J4AB9W15Q5",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.98,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC7B98G7XMBG7WY5KH",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.69,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6FTMKA7YMMYRP3BDV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.951,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WST40PWDMG53RT1ENK7",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.449,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSE6QJCYWJ1A7KPRVSV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.173,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSVW7A5RGFRSBW1VR6C",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.929,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSC0B1RJT6YWRKPXV0R",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.331,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSZQBD3AZVC4JSG9J8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.056,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSX13DVPTM92ABZ0MY5",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.92,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSQECR941CJX1MZNZGM",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.925,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSDV1T8EW6PD1KTYD4X",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.722,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJTEAKCAAVDQ13RXRY",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.905,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXWMQ6GJ63D8XC38KW",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.722,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSR656EEQ8ACECDYH4G",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.946,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN6ABR25PHWF6QTTCM",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.245,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSMCWD40NY2Q7BCPF94",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.919,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTC8ERT41CCF8QQSGB6",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.682,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTA9EDC7H6D7B2QDHE6",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.742,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSN3W8KYW95AA0D9GES",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.924,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXSN1FE9JJA6CYSMSV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.903,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSE0357VGJXBY65VK1Q",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.918,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSTB1H17WHS6F4D2HMD",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.505,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0YC95E3A8NSZPCFKZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.964,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSXCAN2X663AWPJR94V",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.348,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1R0M7DV8EJ5ZV45P2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.949,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRZ0P9BHEA15MDXPXS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.755,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXH0WVTQ8BYHBDHJ37",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.093,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2WTVTR5VRBGB52R3N",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.877,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGPP51WT21AY34M47E",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.769,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSMYFH54V1WH19RM5Y8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.627,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSP6PY2WYT1CAEJHRMY",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.89,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSD8SE33QJHYMT8WKX7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.894,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSSH3HG6X2EQ0VJ6Y87",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.923,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT64BJF4X4GNAT1R9MJ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.229,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT3852EDNRFMK5AXA0D",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.94,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WST4E82G5CFF9JC0AEG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.969,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM4GXZ0N8Z8VNTNA0P",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.926,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTB8225A3E4FAPQDS2K",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.889,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSV768DCVCQDXJWM2NH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.975,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEDA4N02V7DNCB71ZN",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.667,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSNGNQDYBWDGFFAKMHS",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.905,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGEJ6Q0Y8MH8WX348F",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.441,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT694SNBTAQ1HTT6591",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.444,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT670E3985ZEYYKM69G",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.679,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2B3E737F09G6T7J4Q",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.836,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSVWAM0E31489HKMYYH",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT10CSNRV5N67795YTY",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.887,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT85TQ9F82HVV75A2Z9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.164,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT60VS059F6Q3HWRPPA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.141,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1E26FWCCNYE1SBZBF",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.929,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSSKEZT5F16225264V0",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.972,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCQKVM72NS30SVFZ2X",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.359,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT64YYZKRMR4VWTN0BF",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.648,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ7BVCPTPCZA67KD02",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.844,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYZ6N50MKEQGVR5PCY",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.093,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSSQTA0WX6FJT90NTYN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.717,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTAEMVAJ0XS10NFDM50",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.089,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSFC2JMPY9B83SRHHBW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.915,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYJQWE5B1XC9F3T944",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.244,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT9A9EC0TERC8REVMT6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.921,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSSHQYEBE8RYXGW4WTT",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.028,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYSJ60BWCYY3ZZVKWK",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.858,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCKR78DJVN759KE9VW",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.9,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHSJAA61D9DT4XATB6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.238,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT1E1X1F9YCMJB131DT",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.943,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTCQ7B5TDCY8P0Q8PD7",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.813,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSMM57JP8YZ9QMED718",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.078,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT2VS7MNFRVCW8NED1Z",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.726,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6W2WVAYQ6F0XBAXX2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.749,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3AMPHDEBWXBVHAZJA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.157,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSSW6YJG3S4JDRMDZT8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9MYBQJC6TDS4E1F1X",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.723,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT9AXJ4TATAS9BD1NYR",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.114,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSE482X91BC42XD0JY4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.916,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY4TXMDZX4855XZ8G9",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.55,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN0D56G9FQTQ4JSZVS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.797,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6D7319AQWJ4PFD7DA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.899,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5NCAPPK5SP0X23ZYK",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.067,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSX8V51R3SVM0R71SS0",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.581,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSNAYEKCQK7M4PJ12CF",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.97,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSPXDGDYXYS6NBC4QEX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.858,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3KGWXQBTZVR7Z11QD",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.925,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5PG4FCBYP3MZZ6960",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.883,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT0E4Y26VFRJY2CW011",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.969,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTAGPQK1SZ31E5E2BGJ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.965,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTAC0H6MX7AX07P78Y5",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.142,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSYPPEJSQRZGJ1Q0HTR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.975,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSY8VZ2X3VYDNY2Q9VN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.976,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSG4256AP49EAR2G502",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.769,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT487HD7E9C61Y0EYS1",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.973,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSGB5HDC84DSKMM1HVE",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.229,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSS4HP76DWQ3FXWWDEN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.547,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSF0DG4MZKH8Z9R5Q0T",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.955,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT467MADVFJVRPJS96P",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.442,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTAEQSSFKVWJ9N0ZMD5",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.931,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2EA9BJH4TDRAHQV6C",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.939,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSHQBEDBWPRT3RD2GVR",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.951,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCRT7CEACKD32XT2JB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.196,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT2V9YDBQ1GPE5NN7BZ",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.953,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSQ1T7M4TBW66CRBH8R",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.857,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WST7N6JV7K93E29S6P9",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.946,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT39D9KBASA12Z5ZSHQ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.761,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSHA0HSH44S0HPTS0VT",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.92,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1FMMQ7SEPAXH765A2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.987,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1XM2XHXW0ERA9AWSA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.988,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCWKMC50Q7F2NRV59S",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.933,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT608XR8D5VZ9GJBK9N",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.793,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYFMMAYWWB3GEQYN5X",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.878,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT6TGGGXFTZVR576VE0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.606,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCARSEM8BK05075M6T",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.935,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT2D3HEKSSEN2RNPMAX",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.752,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT5JX6VJPC87HJ0CGC8",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.981,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT51XZ0N1YRS678ANX6",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.981,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3BHKFKWNYNM2ZYPNK",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.97,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVPPX7NFNKGW4V9BW7",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.991,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYPZ3DE8TQMRTK9TCF",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.918,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSJ77PSQ9N9SSAJ9R0R",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.637,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKBTA42KTHQKXYDFQ3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.795,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSFWN8N0YWGN6H52VNN",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.441,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKM8SKC37W45Q1803H",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.757,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT1SH79CMCAD39K9SJ9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.894,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKHNKEE4SWYW1B9EMS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.902,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT3CT50BP3K9A5FST1K",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.927,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSFEWY8JZBP380RW5KS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.961,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBRV1NYCXKVBJJZ72N",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.821,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRMNVRX6RAZGBGMG21",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.807,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSN8MV9RS1GFA3T44Q9",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.774,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSK4AM6J54NQ3XWEBEN",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.885,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT9ZPHG52ZWMZCZRDN8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.93,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT3ECW742EAHQRZAKM4",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.942,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSJ9KVBJ07VDTAMPV68",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.902,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSZNT80JZEWWCW28C58",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.972,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSWJCAVQYY57DA4H7TG",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.902,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKQY3A9QEG51W7BJD1",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.886,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSR1QP3EQEQR9543N7Z",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.785,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSKMVTV32S4CS3XP61E",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.945,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSRA1F2EXT85C544VMV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.281,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSF4PW6V3PVQ2KWY4S8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.439,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT5JYBMNKNVB9TX29VT",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.863,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSKZHKC2K2WDQ52XGB0",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.936,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT4YXPPRYR7CX357DAN",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.883,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WSXFMGEKXW8TAW65BYK",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.854,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5T311W1FF3TXQ45ZX",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.966,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC35YE7JCBKR3Y4BQM",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.951,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6KJ5SZB1QEFAYCXY7",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.459,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WT4M1181BAK5QXV6A5H",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.88,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSEW2QSXFJKEZ87TPTG",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.153,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSGDW2WTCXJ2SMQWY73",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.188,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTADPPJB5N03R0G72AM",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.641,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT7AVM83SF142PG6615",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.752,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSM077M87DQRZRTBG77",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.814,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT47DB0FEAWS2022FDP",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.256,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSHBZ85QPG0B0E8WJ2N",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.977,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSGNTQNC498H3EJR7QD",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.852,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTBNXDQ26V6A8V4ZS7B",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.497,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5DS5S1G8KA22ERX5N",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.936,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT2AZTKJ0Z5ZXTZN88J",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.479,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTAGBRHDDQSJV0Z7BT4",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.925,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT6BXZRGRZE6119V2B3",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.128,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSP3G1Z32E07R8QZWFS",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.934,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSC1DY7QDSW4NKZBXGW",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.911,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTB2REGE36TK901N3PK",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.048,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WT5MSA7VQ8QEP4SKXQV",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.837,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT1H1W42Y9HN86GVCBV",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.944,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WTCD85R25MM49B6CRT0",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.131,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WTCCE0HAFAYCQT7NZEC",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.12,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSW890H6FV48YRTTGHB",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.292,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSKG12SBA5MTPMATD1B",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.696,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WT651SAX68RAQK87YW3",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.218,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSHPDK51ET60TQ10BZZ",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.283,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WTCQAK63DW2FXPVD0P8",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.917,
+      "outcome": "FP"
+    },
+    {
+      "id": "01KZPB9WTC9FV0JGS4KPKG5TDB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.308,
+      "outcome": "FN"
+    },
+    {
+      "id": "01KZPB9WSMRDD5RSBZ8S4YH696",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.77,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSR1Y0Q04HR0N83B50E",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.863,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSYC938E86N2VRPWDJA",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.577,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT75TA8QQZ4KBP7SATP",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.106,
+      "outcome": "TN"
+    },
+    {
+      "id": "01KZPB9WSNZGF46PQMAZDQFBBB",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.537,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WSVX2WMANRT94M0N5N2",
+      "true_label": "inhibitor",
+      "admetlab_probability": 0.985,
+      "outcome": "TP"
+    },
+    {
+      "id": "01KZPB9WT5XSMJJYT3S2TQ5WD5",
+      "true_label": "non_inhibitor",
+      "admetlab_probability": 0.924,
+      "outcome": "FP"
+    }
+  ]
+}

@@ -8,6 +8,10 @@ import registryYaml from "../../../datasets/registry.yaml?raw";
 import claudeSubsetReport from "../../../models/admet/herg_inhibition/claude_informal_subset_evaluation.json";
 import cypClaudeFullEvaluation from "../../../models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json";
 import hergClaudeFullEvaluation from "../../../models/admet/herg_inhibition/claude_full_test_set_evaluation.json";
+import hergAdmetlab2Full from "../../../models/admet/herg_inhibition/admetlab2_full_test_set_evaluation.json";
+import cypAdmetlab2Full from "../../../models/admet/cyp3a4_inhibition/admetlab2_full_test_set_evaluation.json";
+import hergPkcsmSpotCheck from "../../../models/admet/herg_inhibition/pkcsm_spot_check_evaluation.json";
+import cypPkcsmSpotCheck from "../../../models/admet/cyp3a4_inhibition/pkcsm_spot_check_evaluation.json";
 import { BENCHMARKS, CLAUDE_HERG_SUBSET_EVALUATION, EXAMPLE_CASE_PREDICTIONS, OVERALL_DATABASE_SCALE } from "./benchmarks";
 
 /**
@@ -341,5 +345,106 @@ describe("Claude's 30-compound subset evaluation matches the real per-compound s
   it("sample size is real and small -- 30, not fabricated as if it were the full 800", () => {
     expect(CLAUDE_HERG_SUBSET_EVALUATION.n).toBe(30);
     expect(CLAUDE_HERG_SUBSET_EVALUATION.n).toBeLessThan(800);
+  });
+});
+
+describe("established ADMET tool comparison matches the real source files exactly", () => {
+  it("ADMETlab 2.0's full hERG (800) and CYP3A4 (459) results match their source files exactly", () => {
+    const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
+    const cyp = BENCHMARKS.find((b) => b.endpointId === "cyp3a4_inhibition")!;
+    const hergReport = hergAdmetlab2Full as unknown as { n: number; roc_auc: number; balanced_accuracy: number; f1: number; compounds: unknown[] };
+    const cypReport = cypAdmetlab2Full as unknown as { n: number; roc_auc: number; balanced_accuracy: number; f1: number; compounds: unknown[] };
+
+    expect(herg.establishedToolComparison.admetlab2.rocAuc).toBe(hergReport.roc_auc);
+    expect(herg.establishedToolComparison.admetlab2.accuracy).toBe(hergReport.balanced_accuracy);
+    expect(herg.establishedToolComparison.admetlab2.f1).toBe(hergReport.f1);
+    expect(herg.establishedToolComparison.admetlab2.n).toBe(hergReport.n);
+    expect(hergReport.compounds).toHaveLength(800);
+
+    expect(cyp.establishedToolComparison.admetlab2.rocAuc).toBe(cypReport.roc_auc);
+    expect(cyp.establishedToolComparison.admetlab2.accuracy).toBe(cypReport.balanced_accuracy);
+    expect(cyp.establishedToolComparison.admetlab2.f1).toBe(cypReport.f1);
+    expect(cyp.establishedToolComparison.admetlab2.n).toBe(cypReport.n);
+    expect(cypReport.compounds).toHaveLength(459);
+  });
+
+  it.each([
+    ["hERG (800)", hergAdmetlab2Full, "blocker", "hERG"],
+    ["CYP3A4 (459)", cypAdmetlab2Full, "inhibitor", "CYP3A4-inh"],
+  ])(
+    "%s: ADMETlab 2.0's raw per-compound outcomes independently recompute to the same confusion matrix",
+    (_label, reportRaw) => {
+      const report = reportRaw as unknown as {
+        n: number; tp: number; fp: number; fn: number; tn: number;
+        compounds: { true_label: string; outcome: string; admetlab_probability: number }[];
+      };
+      expect(report.compounds).toHaveLength(report.n);
+      const counts = { TP: 0, FP: 0, FN: 0, TN: 0 };
+      for (const c of report.compounds) {
+        expect(c.admetlab_probability).toBeGreaterThanOrEqual(0);
+        expect(c.admetlab_probability).toBeLessThanOrEqual(1);
+        counts[c.outcome as keyof typeof counts]++;
+      }
+      expect(counts).toEqual({ TP: report.tp, FP: report.fp, FN: report.fn, TN: report.tn });
+    },
+  );
+
+  it("pkCSM's hERG spot-check (n=5 per submodel) matches its source file exactly, including the two disagreeing submodels", () => {
+    const herg = BENCHMARKS.find((b) => b.endpointId === "herg_inhibition")!;
+    const report = hergPkcsmSpotCheck as unknown as {
+      hergI: { n: number; balanced_accuracy: number; f1: number; compounds: unknown[] };
+      hergII: { n: number; balanced_accuracy: number; f1: number; compounds: unknown[] };
+    };
+    const hergI = herg.establishedToolComparison.pkcsm["hERG I inhibitor"];
+    const hergII = herg.establishedToolComparison.pkcsm["hERG II inhibitor"];
+    expect(hergI).toBeDefined();
+    expect(hergII).toBeDefined();
+    expect(hergI.accuracy).toBe(report.hergI.balanced_accuracy);
+    expect(hergI.f1).toBe(report.hergI.f1);
+    expect(hergI.n).toBe(report.hergI.n);
+    expect(hergII.accuracy).toBe(report.hergII.balanced_accuracy);
+    expect(hergII.f1).toBe(report.hergII.f1);
+    expect(hergII.n).toBe(report.hergII.n);
+    expect(report.hergI.compounds).toHaveLength(5);
+    // The real, disclosed finding: hERG I and hERG II are constant predictors
+    // in opposite directions on this tiny sample -- their F1 scores must
+    // stay genuinely different, not converge to a single "official" number.
+    expect(hergI.f1).not.toBe(hergII.f1);
+  });
+
+  it("pkCSM's CYP3A4 spot-check (n=5) matches its source file exactly", () => {
+    const cyp = BENCHMARKS.find((b) => b.endpointId === "cyp3a4_inhibition")!;
+    const report = cypPkcsmSpotCheck as unknown as { n: number; balanced_accuracy: number; f1: number; compounds: unknown[] };
+    const result = cyp.establishedToolComparison.pkcsm["CYP3A4 inhibitor"];
+    expect(result).toBeDefined();
+    expect(result.accuracy).toBe(report.balanced_accuracy);
+    expect(result.f1).toBe(report.f1);
+    expect(result.n).toBe(report.n);
+    expect(report.compounds).toHaveLength(5);
+  });
+
+  it("pkCSM's ROC-AUC is null everywhere with a real not-computable reason -- never a fabricated number, and never confused with 'not evaluated'", () => {
+    for (const benchmark of BENCHMARKS) {
+      for (const result of Object.values(benchmark.establishedToolComparison.pkcsm)) {
+        expect(result.rocAuc).toBeNull();
+        expect(result.rocAucNotComputableReason?.length ?? 0).toBeGreaterThan(20);
+        // Unlike AiComparisonResult's notEvaluatedReason, accuracy/f1 must be
+        // real here -- pkCSM genuinely ran, it just can't produce a ROC-AUC.
+        expect(typeof result.accuracy).toBe("number");
+        expect(typeof result.f1).toBe("number");
+      }
+    }
+  });
+
+  it("ADMETlab 2.0 always has a real, non-null ROC-AUC -- it was actually run against the full held-out set on both endpoints", () => {
+    for (const benchmark of BENCHMARKS) {
+      const result = benchmark.establishedToolComparison.admetlab2;
+      expect(result.rocAuc).not.toBeNull();
+      expect(result.n).toBeGreaterThan(400);
+      expect(result.toolIdentifier).toBe("ADMETlab2.0");
+      expect(result.evaluatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(result.sourceFile).toMatch(/^models\//);
+      expect(result.methodologyNote.length).toBeGreaterThan(50);
+    }
   });
 });

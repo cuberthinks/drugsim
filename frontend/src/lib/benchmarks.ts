@@ -101,6 +101,28 @@ export interface AiComparisonResult {
   batchSize?: number;
 }
 
+/**
+ * A purpose-built ADMET prediction tool (not a general-purpose AI) run
+ * against the same real held-out test set. Unlike AiComparisonResult,
+ * `rocAuc` being null here never means "not evaluated" -- both tools below
+ * were genuinely run. It means the tool's own output format makes ROC-AUC
+ * structurally uncomputable (a categorical Yes/No verdict carries no
+ * probability to rank compounds by), which `rocAucNotComputableReason`
+ * explains. `accuracy` and `f1` are always real when the tool was run.
+ */
+export interface EstablishedToolResult {
+  rocAuc: number | null;
+  rocAucNotComputableReason?: string;
+  /** Balanced accuracy. */
+  accuracy: number;
+  f1: number;
+  n: number;
+  toolIdentifier: string;
+  evaluatedAt: string;
+  sourceFile: string;
+  methodologyNote: string;
+}
+
 export interface Benchmark {
   benchmarkId: string;
   endpointId: string;
@@ -132,6 +154,18 @@ export interface Benchmark {
   };
   aiComparison: {
     claude: AiComparisonResult;
+  };
+  /** SwissADME was considered and excluded: its Terms of Use explicitly
+   * prohibit "any form of web crawler or other data retrieval tool ... to
+   * access SwissADME in any automated manner", so it cannot be run without
+   * violating the tool's own stated terms. Not included, not silently
+   * skipped -- see docs/benchmarks/dataset-registry.md. */
+  establishedToolComparison: {
+    admetlab2: EstablishedToolResult;
+    /** Keyed by pkCSM's own model name (e.g. "hERG I inhibitor") -- hERG
+     * has two independent pkCSM submodels with genuinely different
+     * behavior, so they are never collapsed into one number. */
+    pkcsm: Record<string, EstablishedToolResult>;
   };
 }
 
@@ -244,6 +278,47 @@ export const BENCHMARKS: Benchmark[] = [
         evaluatedAt: "2026-08-25",
         sourceFile: "models/admet/herg_inhibition/claude_full_test_set_evaluation.json",
         batchSize: 50,
+      },
+    },
+    establishedToolComparison: {
+      admetlab2: {
+        rocAuc: 0.7283,
+        accuracy: 0.5997,
+        f1: 0.7775,
+        n: 800,
+        toolIdentifier: "ADMETlab2.0",
+        evaluatedAt: "2026-08-26",
+        sourceFile: "models/admet/herg_inhibition/admetlab2_full_test_set_evaluation.json",
+        methodologyNote:
+          "Full real 800-compound held-out test set (split_group 9), submitted directly to ADMETlab 2.0's batch screening endpoint (admetmesh.scbdd.com) in 2 HTTP submissions of 400 compounds each -- its own batch mode, not an improvised workaround. Each molecule is scored independently by ADMETlab's graph-attention model: unlike Claude's batched subagent dispatch, there is no cross-compound conditioning risk here, since this is deterministic per-molecule inference, not an LLM context window that could let compounds influence each other. High recall (93.3%) but low specificity (26.7%) -- it predicts blocker for most compounds, a real finding shown as-is, not smoothed over.",
+      },
+      pkcsm: {
+        "hERG I inhibitor": {
+          rocAuc: null,
+          rocAucNotComputableReason:
+            "pkCSM returns a categorical Yes/No verdict, not a continuous probability -- there is no score to rank compounds by, so ROC-AUC cannot be computed.",
+          accuracy: 0.5,
+          f1: 0.0,
+          n: 5,
+          toolIdentifier: "pkCSM",
+          evaluatedAt: "2026-08-26",
+          sourceFile: "models/admet/herg_inhibition/pkcsm_spot_check_evaluation.json",
+          methodologyNote:
+            "Informal spot-check only, not a validated comparison: 5 compounds (3 blockers, 2 non-blockers) submitted one at a time through pkCSM's single-molecule web form -- its true batch mode needs a file upload that isn't automatable here. hERG I inhibitor predicted 'No' for every single compound in this tiny sample, a constant predictor discriminating nothing (balanced accuracy is exactly 50% by construction for any constant predictor, not a meaningful score). n=5 is far too small to conclude the model doesn't work in general; it could easily be this specific tiny sample.",
+        },
+        "hERG II inhibitor": {
+          rocAuc: null,
+          rocAucNotComputableReason:
+            "pkCSM returns a categorical Yes/No verdict, not a continuous probability -- there is no score to rank compounds by, so ROC-AUC cannot be computed.",
+          accuracy: 0.5,
+          f1: 0.75,
+          n: 5,
+          toolIdentifier: "pkCSM",
+          evaluatedAt: "2026-08-26",
+          sourceFile: "models/admet/herg_inhibition/pkcsm_spot_check_evaluation.json",
+          methodologyNote:
+            "Same 5-compound spot-check as hERG I, same compounds. hERG II inhibitor predicted 'Yes' for every single compound in this tiny sample -- the opposite constant-predictor pattern from hERG I. Two submodels of the same tool disagreeing this completely on n=5 is itself a real, disclosed finding, not resolved by picking one as 'the' pkCSM answer.",
+        },
       },
     },
   },
@@ -359,6 +434,34 @@ export const BENCHMARKS: Benchmark[] = [
         evaluatedAt: "2026-08-25",
         sourceFile: "models/admet/cyp3a4_inhibition/claude_full_test_set_evaluation.json",
         batchSize: 20,
+      },
+    },
+    establishedToolComparison: {
+      admetlab2: {
+        rocAuc: 0.6268,
+        accuracy: 0.5556,
+        f1: 0.7556,
+        n: 459,
+        toolIdentifier: "ADMETlab2.0",
+        evaluatedAt: "2026-08-26",
+        sourceFile: "models/admet/cyp3a4_inhibition/admetlab2_full_test_set_evaluation.json",
+        methodologyNote:
+          "Full real 459-compound held-out test set (split_group 9), submitted directly to ADMETlab 2.0's batch screening endpoint. The first single-request attempt (all 459 at once) was disconnected server-side after a long processing time; split into 2 sub-batches of 229 and 230 and resubmitted successfully -- a real operational hiccup, disclosed rather than silently retried and hidden. Each molecule is scored independently by ADMETlab's graph-attention model, so batch size carries no cross-compound conditioning risk (unlike an LLM's context window). High recall (82.4%) but low specificity (28.8%) -- it predicts inhibitor for most compounds, a real finding shown as-is.",
+      },
+      pkcsm: {
+        "CYP3A4 inhibitor": {
+          rocAuc: null,
+          rocAucNotComputableReason:
+            "pkCSM returns a categorical Yes/No verdict, not a continuous probability -- there is no score to rank compounds by, so ROC-AUC cannot be computed.",
+          accuracy: 0.1667,
+          f1: 0.3333,
+          n: 5,
+          toolIdentifier: "pkCSM",
+          evaluatedAt: "2026-08-26",
+          sourceFile: "models/admet/cyp3a4_inhibition/pkcsm_spot_check_evaluation.json",
+          methodologyNote:
+            "Informal spot-check only, not a validated comparison: 5 compounds (3 inhibitors, 2 non-inhibitors) submitted one at a time through pkCSM's single-molecule web form. Balanced accuracy 16.7% -- worse than a coin flip on this tiny sample, a real, disclosed finding, not smoothed over. n=5 is far too small to conclude anything about pkCSM's real-world CYP3A4 performance; it could easily be this specific tiny sample.",
+        },
       },
     },
   },

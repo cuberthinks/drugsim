@@ -74,6 +74,48 @@ complete methodology (including a caught-and-discarded systematic bug and a
 session-limit failure/recovery) are in
 `docs/benchmarks/dataset-registry.md`.
 
+## Established ADMET tool comparison status
+
+Separate from the AI comparison above: purpose-built ADMET prediction tools,
+arguably a fairer comparison than an LLM since both sides are narrow models
+trained for exactly this kind of task.
+
+**SwissADME: excluded, not evaluated.** Its Terms of Use explicitly state
+users must "not use any form of web crawler or other data retrieval tool or
+service to access SwissADME in any automated manner." Running the held-out
+sets through it would violate that clause directly, so it was not attempted —
+this is a deliberate exclusion on legal/ToS grounds, not a technical gap.
+
+**ADMETlab 2.0: evaluated against the complete real held-out test set.** On
+2026-08-26, both the full 800-compound hERG set and the full 459-compound
+CYP3A4 set were submitted directly to ADMETlab 2.0's own batch-screening
+endpoint (`admetmesh.scbdd.com/service/screening/cal`) via a direct HTTP POST
+matching its published form (discovered the hard way: the endpoint silently
+drops all but the first line unless SMILES are joined with `\r\n`, not `\n`).
+hERG was split into 2 submissions of 400; CYP3A4's first single-request
+attempt was disconnected server-side after a long processing time and was
+retried successfully as 2 sub-batches of 229 and 230. Every molecule is
+scored independently by ADMETlab's underlying graph-attention model, so
+unlike Claude's batched subagent dispatch, batch size carries no
+cross-compound conditioning risk. This fills the "DrugSim vs. established
+ADMET tools" table for both endpoints.
+
+**pkCSM: an informal n=5 spot-check only, not a validated comparison.**
+pkCSM's true batch mode requires a file upload that isn't automatable with
+the tools available here; its scriptable path (a plain single-molecule text
+field) only ever accepts one compound per submission. Rather than loop
+dozens of automated one-at-a-time requests against a free academic server —
+the same kind of behavior SwissADME's terms explicitly ban, even though
+pkCSM has no equivalent written clause — only 5 compounds per endpoint were
+submitted, by hand-driven single-molecule requests. hERG has two independent
+pkCSM submodels (hERG I and hERG II inhibitor); on this n=5 they disagreed
+completely — hERG I predicted "No" for every compound, hERG II predicted
+"Yes" for every compound — both are shown separately, never collapsed into
+one number. ROC-AUC is not shown for any pkCSM result: it returns only a
+categorical Yes/No verdict, never a probability. Full per-compound results
+and methodology for all three tools are in
+`docs/benchmarks/dataset-registry.md`.
+
 ## Individual molecule explorer
 
 Four public, well-known compounds (Aspirin, Terfenadine, Dofetilide,

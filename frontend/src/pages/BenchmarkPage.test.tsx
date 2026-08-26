@@ -163,4 +163,48 @@ describe("BenchmarkPage", () => {
       expect(screen.getByRole("heading", { name })).toBeInTheDocument();
     }
   });
+
+  it("shows a DrugSim vs. established ADMET tools comparison for each endpoint, labeled distinctly from the general-purpose AI comparison", () => {
+    setup();
+    expect(screen.getByRole("heading", { name: /^hERG — DrugSim vs\. established ADMET tools$/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^CYP3A4 — DrugSim vs\. established ADMET tools$/i })).toBeInTheDocument();
+  });
+
+  it("discloses that SwissADME was excluded because its own Terms of Use ban automated access -- not silently skipped", () => {
+    setup();
+    expect(screen.getAllByText(/SwissADME was considered and excluded/i).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText(/Terms of Use explicitly prohibit automated access/i).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("shows ADMETlab 2.0's real full-set results for both endpoints", () => {
+    setup();
+    const hergHeading = screen.getByRole("heading", { name: /^hERG — DrugSim vs\. established ADMET tools$/i });
+    const hergCard = hergHeading.closest(".card")! as HTMLElement;
+    expect(within(hergCard).getByText("72.8%")).toBeInTheDocument(); // ROC-AUC
+    expect(within(hergCard).getByText("60.0%")).toBeInTheDocument(); // balanced accuracy
+    expect(within(hergCard).getByText("77.8%")).toBeInTheDocument(); // F1
+
+    const cypHeading = screen.getByRole("heading", { name: /^CYP3A4 — DrugSim vs\. established ADMET tools$/i });
+    const cypCard = cypHeading.closest(".card")! as HTMLElement;
+    expect(within(cypCard).getByText("62.7%")).toBeInTheDocument(); // ROC-AUC
+    expect(within(cypCard).getByText("55.6%")).toBeInTheDocument(); // balanced accuracy
+    expect(within(cypCard).getByText("75.6%")).toBeInTheDocument(); // F1
+  });
+
+  it("shows pkCSM's n=5 spot-check as 'Not computable' for ROC-AUC, never 'Not evaluated' -- the tool genuinely ran, it just has no continuous score", () => {
+    setup();
+    const hergHeading = screen.getByRole("heading", { name: /^hERG — DrugSim vs\. established ADMET tools$/i });
+    const hergCard = hergHeading.closest(".card")! as HTMLElement;
+    expect(within(hergCard).getByText(/hERG I inhibitor/i)).toBeInTheDocument();
+    expect(within(hergCard).getByText(/hERG II inhibitor/i)).toBeInTheDocument();
+    // Two submodels disagreeing completely on this tiny sample -- both real F1s must appear distinctly.
+    expect(within(hergCard).getByText("0.0%")).toBeInTheDocument(); // hERG I's F1
+    expect(within(hergCard).getByText("75.0%")).toBeInTheDocument(); // hERG II's F1
+    expect(within(hergCard).queryByText("Not evaluated")).not.toBeInTheDocument();
+
+    const cypHeading = screen.getByRole("heading", { name: /^CYP3A4 — DrugSim vs\. established ADMET tools$/i });
+    const cypCard = cypHeading.closest(".card")! as HTMLElement;
+    expect(within(cypCard).getByText("16.7%")).toBeInTheDocument(); // pkCSM CYP3A4 balanced accuracy
+    expect(within(cypCard).queryByText("Not evaluated")).not.toBeInTheDocument();
+  });
 });
