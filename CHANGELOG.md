@@ -7,6 +7,47 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Added — Phase 12: Curated-Data Retraining Comparison
+
+- Retrained hERG/CYP3A4 on Phase 11's curated dataset using the exact
+  production training/evaluation procedure, then cross-evaluated against
+  the live models.
+- Result: curated training population, labels, and split assignment are
+  identical to production for both endpoints; retrained models match
+  production on every metric. No deployment — nothing different to
+  promote yet.
+- Surfaced and documented a pre-existing detail along the way: hERG's
+  deployed model is a 200-tree truncation of the original 500-tree
+  ensemble (a memory-limit workaround); added an equal-tree-count
+  comparison so that isn't conflated with a data-quality effect.
+- Docs: `docs/model-retraining/`.
+
+### Added — Phase 11: Scientific Data Curation Engine
+
+- New `drugsim_curation` package: a per-measurement ledger and
+  curated-compound view that retains and tags discordant, excluded,
+  unit-unresolved, and licence-unresolved measurements instead of
+  silently dropping them, with full provenance back to raw ChEMBL
+  records.
+- Purely additive — `datasets/processed/`, `build_dataset.py`, and
+  `prepare_features.py` verified byte-identical before/after; new output
+  lives under `datasets/curated/`.
+- Golden fixture and regression suite covering duplicates, discordance,
+  invalid structures, mixtures, and known toxic/safe controls.
+- Docs: `docs/data-curation/`.
+
+### Added — Benchmarks Page & Real ADMET Tool Comparison
+
+- Removed the permanently-stuck GPT column from `/benchmarks` and
+  redesigned the page for scannability.
+- Ran a real evaluation against ADMETlab 2.0 (full held-out test sets) and
+  pkCSM (spot check) — established ADMET tools, distinct from the
+  general-purpose AI comparison already on the page.
+- Disclosed a methodology gap directly on the page: Claude's ROC-AUC
+  comes from self-reported confidence, not a calibrated `predict_proba`.
+- Moved provenance (model identifier, evaluation date) into the source
+  JSON reports.
+
 ### Added — Sprint 2.2: Database Foundation
 
 - **Canonical DDL** (`database/ddl/`, 10 files, 64 CREATE statements) implementing
