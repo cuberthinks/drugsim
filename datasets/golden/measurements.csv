@@ -1,0 +1,14 @@
+activity_id,molecule_chembl_id,molecule_pref_name,canonical_smiles,standard_value,standard_units,standard_relation,pchembl_value,assay_type,assay_chembl_id,data_validity_comment,document_chembl_id,document_year,compound_name,scenario
+G001,CHEMBLG_ASPIRIN,Aspirin,CC(=O)Oc1ccccc1C(=O)O,100,nM,=,7.0,B,CHEMBLG_A1,,CHEMBLG_D1,2020,aspirin,exact_duplicate
+G002,CHEMBLG_ASPIRIN,Aspirin,CC(=O)Oc1ccccc1C(=O)O,100,nM,=,7.0,B,CHEMBLG_A1,,CHEMBLG_D1,2020,aspirin,exact_duplicate
+G003,CHEMBLG_IBU_A,Ibuprofen,CC(C)Cc1ccc(cc1)C(C)C(=O)O,50,nM,=,7.3,B,CHEMBLG_A2,,CHEMBLG_D2,2019,ibuprofen,structural_duplicate_different_chembl_id
+G004,CHEMBLG_IBU_B,Ibuprofen,CC(C)Cc1ccc(cc1)C(C)C(=O)O,60,nM,=,7.2,B,CHEMBLG_A3,,CHEMBLG_D3,2021,ibuprofen,structural_duplicate_different_chembl_id
+G005,CHEMBLG_TEA_SALT,Triethylamine hydrochloride,CCN(CC)CC.Cl,200,nM,=,6.7,F,CHEMBLG_A4,,CHEMBLG_D4,2018,triethylamine_hcl,salt_equivalent_duplicate
+G006,CHEMBLG_TEA_FREE,Triethylamine,CCN(CC)CC,210,nM,=,6.7,F,CHEMBLG_A5,,CHEMBLG_D5,2018,triethylamine_free_base,salt_equivalent_duplicate
+G007,CHEMBLG_CAFFEINE,Caffeine,CN1C=NC2=C1C(=O)N(C)C(=O)N2C,10,nM,=,8.0,B,CHEMBLG_A6,,CHEMBLG_D6,2017,caffeine,discordant_pair
+G008,CHEMBLG_CAFFEINE,Caffeine,CN1C=NC2=C1C(=O)N(C)C(=O)N2C,150,nM,=,6.8,B,CHEMBLG_A7,,CHEMBLG_D7,2022,caffeine,discordant_pair
+G009,CHEMBLG_IMATINIB,Imatinib-like,Cc1ccc(NC(=O)c2ccc(CN3CCN(C)CC3)cc2)cc1Nc1nccc(-c2cccnc2)n1,5,ug.disc-1,=,,F,CHEMBLG_A8,,CHEMBLG_D8,2023,imatinib_like,unresolvable_unit
+G010,CHEMBLG_TERFENADINE,Terfenadine,CC(C)(C)c1ccc(cc1)C(O)CCCN1CCC(CC1)C(O)(c1ccccc1)c1ccccc1,50,nM,=,7.3,F,CHEMBLG_A9,,CHEMBLG_D9,2015,terfenadine,known_toxic_control
+G011,CHEMBLG_PARACETAMOL,Paracetamol,CC(=O)Nc1ccc(O)cc1,50000,nM,=,4.3,F,CHEMBLG_A10,,CHEMBLG_D10,2016,paracetamol,known_safe_control
+G012,CHEMBLG_INVALID,Invalid structure,not_a_valid_smiles(((,100,nM,=,,B,CHEMBLG_A11,,CHEMBLG_D11,2020,invalid_structure_case,invalid_structure
+G013,CHEMBLG_MIXTURE,Genuine mixture,CCO.CCN,100,nM,=,,B,CHEMBLG_A12,,CHEMBLG_D12,2020,genuine_mixture_case,genuine_mixture

@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+build/
+dist/
+
+# Environments
+.venv/
+.venv-verify/
+venv/
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+
+# Local runtime state -- e.g. the prediction-engine's SQLite provenance log
+# (drugsim_predict.settings.PredictSettings.prediction_db_path). Never
+# committed: it is per-deployment runtime data, not a versioned artefact.
+var/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Data — NEVER committed.
+# The lake is authoritative; git holds definitions (registry.yaml, DDL, pipeline
+# code), not data. Committing data would break provenance and bloat the repository
+# irrecoverably (Phase 1 Step 11 §1).
+datasets/raw/*
+!datasets/raw/.gitkeep
+datasets/processed/*
+!datasets/processed/.gitkeep
+
+# Same principle for the Phase 11 curation-engine output: a new, additive
+# artifact derived entirely from datasets/raw/ (itself uncommitted) --
+# regenerable by re-running models/admet/*/curate_measurements.py, not a
+# definition. The curation *report* schema (docs/data-curation/quality-
+# report.md) and its reconciled counts are what's checked in for audit
+# purposes; the multi-MB CSV/JSON output itself follows raw/processed.
+datasets/curated/*
+!datasets/curated/.gitkeep
+
+# ChEMBL assay-metadata cache (drugsim_curation.assay_context) -- a
+# re-fetchable performance cache, not a source of truth; same reasoning
+# as raw/processed, and large enough (multi-MB per endpoint) to matter.
+datasets/reference/*
+!datasets/reference/.gitkeep
+
+# Golden set IS committed — it is a test fixture, not data (Phase 1 Step 11 §3).
+!datasets/golden/
+
+# Model artefacts live in object storage, referenced by sha256.
+models/**/*.pkl
+models/**/*.pt
+models/**/*.onnx
+models/**/*.joblib
+models/**/artifact/
+
+# Notebook outputs are stripped on commit; strays excluded anyway.
+notebooks/**/*.ipynb_checkpoints
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp

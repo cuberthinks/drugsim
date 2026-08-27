@@ -11,8 +11,8 @@ packages = [
     { include = "drugsim_db", from = "src" },
     { include = "drugsim_features", from = "src" },
     { include = "drugsim_quality", from = "src" },
+    { include = "drugsim_curation", from = "src" },
     { include = "drugsim_predict", from = "src" },
-    { include = "drugsim_ingest", from = "src" },
 ]
 
 # ---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ convention = "google"
 [tool.ruff.lint.isort]
 known-first-party = [
     "drugsim_core", "drugsim_chem", "drugsim_db",
-    "drugsim_features", "drugsim_quality",
+    "drugsim_features", "drugsim_quality", "drugsim_curation",
 ]
 
 [tool.ruff.format]
