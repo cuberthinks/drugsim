@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-08-27T04:25:17+00:00",
+  "algorithm": "random_forest",
+  "global_split": {
+    "n_test": 459,
+    "positive_fraction": 0.6667,
+    "roc_auc": 0.7995,
+    "average_precision_pr_auc": 0.8922,
+    "balanced_accuracy": 0.652,
+    "f1": 0.8185,
+    "precision": 0.7514,
+    "recall": 0.8987,
+    "matthews_corrcoef": 0.3564,
+    "sensitivity_recall_positive": 0.8987,
+    "specificity_recall_negative": 0.4052,
+    "brier_score": 0.168,
+    "confusion_matrix": {
+      "tn": 62,
+      "fp": 91,
+      "fn": 31,
+      "tp": 275
+    },
+    "confidence_interval_95pct": {
+      "roc_auc_ci_lower_2.5pct": 0.7593,
+      "roc_auc_ci_upper_97.5pct": 0.8382,
+      "n_bootstrap_replicates": 1000
+    },
+    "description": "Scaffold-level split_group 9 of the curated, training_eligible=True population."
+  },
+  "note": "No random-split benchmark-proxy retrain here -- that ablation is already reported once against production data in evaluate.py's own evaluation_report.json and answers a different question (the cost of scaffold splitting itself, not the effect of curation)."
+}

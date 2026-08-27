@@ -1,0 +1,37 @@
+{
+  "algorithm": "random_forest",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null
+  },
+  "random_seed": 42,
+  "requires_scaling": false,
+  "train_groups": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "validation_group": 8,
+  "n_train": 3767,
+  "n_validation": 604,
+  "train_positive_fraction": 0.6695,
+  "validation_metrics": {
+    "roc_auc": 0.787,
+    "average_precision": 0.888,
+    "balanced_accuracy_at_0.5": 0.6506
+  },
+  "candidate_comparison": {
+    "random_forest": 0.787,
+    "gradient_boosting": 0.7298,
+    "logistic_regression": 0.6866
+  },
+  "trained_at": "2026-08-27T04:24:27+00:00",
+  "model_artifact": "models/admet/cyp3a4_inhibition/experiments/curated_v1/artifact/model.joblib",
+  "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+  "data_source": "datasets/curated/cyp3a4_inhibition_features_curated.npz",
+  "note": "Phase 12 experiment -- trained on datasets/curated/, never promoted or deployed."
+}

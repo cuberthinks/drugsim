@@ -1,0 +1,122 @@
+{
+  "generated_at": "2026-08-27T04:22:30+00:00",
+  "test_populations": {
+    "production_test_n": 800,
+    "curated_test_n": 800,
+    "identical_test_populations": true
+  },
+  "tree_count_caveat": "The deployed artifact/model.joblib is a 200-tree truncation of an originally-trained 500-tree ensemble, kept that way for a Render memory limit (see models/registry/herg_inhibition_v1.json's deployment_variant block -- a pre-existing, disclosed fact, not introduced by this comparison). train_curated.py's hyperparameter search independently selected 500 trees for the curated model. Cells involving 'production_model' (not 'production_model_full_500trees') therefore differ in both data source AND ensemble size from the curated model -- use the 'production_model_full_500trees' cells for a same-tree-count, data-only comparison.",
+  "cells": {
+    "production_model_x_production_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7843,
+      "average_precision": 0.8402,
+      "balanced_accuracy": 0.6384,
+      "f1": 0.7851,
+      "precision": 0.6939,
+      "recall": 0.9039,
+      "brier_score": 0.1876,
+      "confusion_matrix": {
+        "tn": 116,
+        "fp": 195,
+        "fn": 47,
+        "tp": 442
+      },
+      "description": "Deployed (200-tree) production model, scored on production's own held-out test group 9 -- what's actually live today. Differs from evaluate.py's committed evaluation_report.json (0.7875) because that report was generated from the full 500-tree model before truncation."
+    },
+    "production_model_x_curated_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7843,
+      "average_precision": 0.8402,
+      "balanced_accuracy": 0.6384,
+      "f1": 0.7851,
+      "precision": 0.6939,
+      "recall": 0.9039,
+      "brier_score": 0.1876,
+      "confusion_matrix": {
+        "tn": 116,
+        "fp": 195,
+        "fn": 47,
+        "tp": 442
+      },
+      "description": "Deployed (200-tree) production model, scored on the curated pipeline's held-out test group 9 -- does the deployed model generalise to the curated-eligible population?"
+    },
+    "production_model_full_500trees_x_production_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7875,
+      "average_precision": 0.8446,
+      "balanced_accuracy": 0.6495,
+      "f1": 0.7918,
+      "precision": 0.7008,
+      "recall": 0.91,
+      "brier_score": 0.1864,
+      "confusion_matrix": {
+        "tn": 121,
+        "fp": 190,
+        "fn": 44,
+        "tp": 445
+      },
+      "description": "Full 500-tree production model (pre-truncation backup), scored on production's own held-out test group 9 -- reproduces evaluate.py's committed 0.7875 exactly."
+    },
+    "production_model_full_500trees_x_curated_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7875,
+      "average_precision": 0.8446,
+      "balanced_accuracy": 0.6495,
+      "f1": 0.7918,
+      "precision": 0.7008,
+      "recall": 0.91,
+      "brier_score": 0.1864,
+      "confusion_matrix": {
+        "tn": 121,
+        "fp": 190,
+        "fn": 44,
+        "tp": 445
+      },
+      "description": "Full 500-tree production model (pre-truncation backup), scored on the curated pipeline's held-out test group 9."
+    },
+    "curated_model_x_production_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7875,
+      "average_precision": 0.8446,
+      "balanced_accuracy": 0.6495,
+      "f1": 0.7918,
+      "precision": 0.7008,
+      "recall": 0.91,
+      "brier_score": 0.1864,
+      "confusion_matrix": {
+        "tn": 121,
+        "fp": 190,
+        "fn": 44,
+        "tp": 445
+      },
+      "description": "Curated-data-trained model (500 trees), scored on production's held-out test group 9 -- does training on curated data hurt or help generalisation back onto the full original population, including compounds curation would exclude from training?"
+    },
+    "curated_model_x_curated_test": {
+      "n_test": 800,
+      "positive_fraction": 0.6112,
+      "roc_auc": 0.7875,
+      "average_precision": 0.8446,
+      "balanced_accuracy": 0.6495,
+      "f1": 0.7918,
+      "precision": 0.7008,
+      "recall": 0.91,
+      "brier_score": 0.1864,
+      "confusion_matrix": {
+        "tn": 121,
+        "fp": 190,
+        "fn": 44,
+        "tp": 445
+      },
+      "description": "Curated-data-trained model (500 trees), scored on the curated pipeline's own held-out test group 9 -- this model's native holdout, and the fair comparison point against production_model_full_500trees_x_production_test."
+    }
+  },
+  "headline_roc_auc_delta_equal_tree_count": 0.0,
+  "headline_roc_auc_delta_as_deployed": 0.0032,
+  "headline_delta_explanation": "Equal-tree-count (500 vs 500) delta: curated_model_x_curated_test minus production_model_full_500trees_x_production_test = +0.0000. As-deployed delta: curated_model_x_curated_test minus production_model_x_production_test (200 trees) = +0.0032. The two test populations are identical for hERG (same compounds, same labels, same split assignment), so the equal-tree-count delta isolates pure training/evaluation noise (e.g. RandomForestClassifier's parallel-fit nondeterminism) rather than any real difference in what data the models saw -- curation reproduced the exact same training-eligible population for hERG."
+}
