@@ -7,6 +7,26 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Strategy
+
+- Evaluated DrugSim's potential scientific focus areas using only the
+  repository's own existing data, models, validation reports, and
+  benchmarks — no new data or models introduced.
+- Selected **early-stage cardiac liability (hERG-mediated cardiotoxicity)
+  screening** as the recommended initial focus, based on it having the
+  deepest validation of anything in the repository (leakage checks,
+  y-scrambling, external validation, distribution-shift calibration
+  testing) and the strongest independently-corroborated performance
+  number (external ROC-AUC 0.8696).
+- Documented **CYP3A4-mediated metabolic drug-drug-interaction risk** as
+  the secondary option — real and competitive, but not yet validated to
+  the same depth.
+- Existing non-focus capabilities (CYP3A4 prediction, the benchmarks
+  page, the full API surface) remain available as supporting
+  functionality; nothing was removed or gated.
+- This is a strategic decision, not a validated market or scientific
+  claim. See `docs/strategy/drugsim-focus-decision.md`.
+
 ### Added — Phase 12: Curated-Data Retraining Comparison
 
 - Retrained hERG/CYP3A4 on Phase 11's curated dataset using the exact
