@@ -19,3 +19,5 @@ compounds:
     note: "Terfenadine -- DrugSim example compound, not in datasets/golden/compounds.csv"
   - smiles: "CS(=O)(=O)Nc1ccc(cc1)CCN(C)CCOc1ccc(NS(C)(=O)=O)cc1"
     note: "Dofetilide -- DrugSim example compound, not in datasets/golden/compounds.csv"
+  - smiles: "CCO"
+    note: "Ethanol -- already in datasets/golden/compounds.csv but tagged category=simple, not category=drug, so the automatic golden-fixture inclusion above does not pick it up. Common and well-known enough to deserve identity resolution like any drug fixture."

@@ -14443,6 +14443,102 @@
         "7HY6IMH87S",
         "Rly 4008"
       ]
+    },
+    {
+      "description": "Ethyl alcohol in alcoholic beverages can cause developmental toxicity according to an independent committee of scientific and health experts.",
+      "description_source": "PubChem",
+      "inchikey_full": "LFQSCWFLJHTTHZ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Ethanol",
+      "pubchem_cid": "702",
+      "retrieved_at": "2026-08-30T09:34:26+00:00",
+      "synonyms": [
+        "ethyl alcohol",
+        "alcohol",
+        "64-17-5",
+        "grain alcohol",
+        "Methylcarbinol"
+      ]
+    },
+    {
+      "description": "Nitrendipine is a dihydropyridine that is 1,4-dihydropyridine substituted by methyl groups at positions 2 and 6, a 3-nitrophenyl group at position 4, a ethoxycarbonyl group at position 3 and a methoxycarbonyl group at position 5. It is a calcium-channel blocker used in the treatment of hypertension. It has a role as a geroprotector, a vasodilator agent, an antihypertensive agent and a calcium channel blocker. It is a member of dicarboxylic acids and O-substituted derivatives, an ethyl ester, a methyl ester, a C-nitro compound, a dihydropyridine and a diester.",
+      "description_source": "PubChem",
+      "inchikey_full": "PVHUJELLJLJGLN-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Nitrendipine",
+      "pubchem_cid": "4507",
+      "retrieved_at": "2026-08-30T09:34:33+00:00",
+      "synonyms": [
+        "39562-70-4",
+        "Bayotensin",
+        "Baypress",
+        "Nidrel",
+        "Deiten"
+      ]
+    },
+    {
+      "description": "Everolimus is a macrocyclic lactone that is rapamycin in which the hydroxy group attached to the cyclohexyl moiety has been converted into the corresponding 2-hydroxyethyl ether. It is an immunosuppressant and antineoplastic agent. It has a role as an anticoronaviral agent, a geroprotector, an antineoplastic agent, an immunosuppressive agent and a mTOR inhibitor. It is a macrolide lactam, a primary alcohol, an ether, a secondary alcohol, a cyclic ketone and a cyclic acetal. It is functionally related to a member of sirolimus.",
+      "description_source": "PubChem",
+      "inchikey_full": "HKVAMNSJSFKALM-GKUWKFKPSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Everolimus",
+      "pubchem_cid": "6442177",
+      "retrieved_at": "2026-08-30T09:34:44+00:00",
+      "synonyms": [
+        "Afinitor",
+        "Certican",
+        "159351-69-6",
+        "Zortress",
+        "SDZ-RAD"
+      ]
+    },
+    {
+      "description": "lysine specific demethylase 1 inhibitor",
+      "description_source": "PubChem",
+      "inchikey_full": "AWZCBGWZNHQCIZ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Pulrodemstat besilate",
+      "pubchem_cid": "129096972",
+      "retrieved_at": "2026-08-30T09:35:04+00:00",
+      "synonyms": [
+        "2097523-60-7",
+        "Pulrodemstat benzenesulfonate",
+        "LH20W7B0Q8",
+        "Cc 90011",
+        "RefChem:177222"
+      ]
+    },
+    {
+      "description": "ATM Kinase Inhibitor AZD1390 is an orally bioavailable inhibitor of ataxia telangiectasia mutated (ATM) kinase, with potential antineoplastic activity. Upon oral administration, AZD1390 targets and binds to ATM, thereby inhibiting the kinase activity of ATM and ATM-mediated signaling. This prevents DNA damage checkpoint activation, disrupts DNA damage repair, induces tumor cell apoptosis, and leads to cell death in ATM-overexpressing tumor cells. AZD1390 hypersensitizes tumors to chemo/radiotherapy. In addition, AZD1390 is able to cross the blood-brain barrier (BBB). ATM, a serine/threonine protein kinase belonging to the phosphatidylinositol 3-kinase-related kinase (PIKK) family of protein kinases, is upregulated in a variety of cancer cell types. It is activated in response to DNA double-strand breaks (DSB) and plays a key role in DNA repair.",
+      "description_source": "PubChem",
+      "inchikey_full": "VQSZIPCGAGVRRP-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Azd-1390",
+      "pubchem_cid": "126689157",
+      "retrieved_at": "2026-08-30T09:35:09+00:00",
+      "synonyms": [
+        "AZD1390",
+        "2089288-03-7",
+        "CI43QFE22O",
+        "Azd 1390",
+        "7-fluoro-3-methyl-8-[6-(3-piperidin-1-ylpropoxy)pyridin-3-yl]-1-propan-2-ylimidazo[4,5-c]quinolin-2-one"
+      ]
+    },
+    {
+      "description": null,
+      "description_source": null,
+      "inchikey_full": "VGRLXWFIXGZRMS-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Vanin-1-IN-1",
+      "pubchem_cid": "134177597",
+      "retrieved_at": "2026-08-30T09:35:12+00:00",
+      "synonyms": [
+        "2173134-00-2",
+        "PFI-653",
+        "Vanin-1 inhibitor 1",
+        "Vanin-1-IN-1 /PFI-653",
+        "VUN34002"
+      ]
     }
   ]
 }

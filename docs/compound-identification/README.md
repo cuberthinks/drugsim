@@ -74,11 +74,15 @@ verbatim with its own citation where PubChem provides one (e.g.
   `molecule_pref_name` column) — ChEMBL only sets this field for
   compounds it considers notable (approved drugs, well-known reference
   compounds), so this is a large, already-ingested, already-licensed
-  source, not a new external dependency. As of the last build: 956
-  distinct named compounds identified across both files, 904 resolved to
-  a real PubChem entry (39 had no PubChem match, correctly skipped rather
-  than guessed at — mostly internal pharma-company codenames PubChem
-  doesn't carry under that identity).
+  source, not a new external dependency. As of the last build: 910
+  compounds resolved to a real PubChem entry (34 had no PubChem match,
+  correctly skipped rather than guessed at — mostly internal
+  pharma-company codenames PubChem doesn't carry under that identity).
+- **Common, well-known compounds not otherwise covered** — e.g. ethanol
+  (`datasets/golden/compounds.csv` tags it `category=simple`, not
+  `category=drug`, so the automatic golden-fixture inclusion misses it)
+  — added explicitly to `seed_compounds.yaml` when a real user-facing
+  gap like this is found.
 
 This is a **scoping list only** — it says which compounds are worth a
 lookup, never what the answer is. Extending coverage means adding a
