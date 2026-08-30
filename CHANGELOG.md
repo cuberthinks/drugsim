@@ -7,6 +7,57 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Added — Psychiatric Compound Screening Pipeline (offline research tool)
+
+- New multi-objective screening pipeline covering DRD2 (therapeutic
+  target), HRH1 (off-target/weight-gain liability), CYP2D6 (metabolic
+  liability), BBB (CNS exposure), and hERG (cardiac liability, reused
+  unchanged from the existing validated model) — combined via a
+  direction-correct DRD2/HRH1 selectivity index
+  (`selectivity_index_log10 = pki_drd2 - pki_hrh1`), replacing the
+  originally-proposed `SI = H1/D2` ratio, which was ambiguous about
+  potency-vs-inverted-value direction.
+- Real datasets built and evaluated for all four new endpoints: DRD2
+  (8,204 compounds, R²=0.555), HRH1 (1,395 compounds, R²=0.767),
+  CYP2D6 (2,915 compounds, ROC-AUC=0.833), BBB (1,909 compounds,
+  ROC-AUC=0.962) — each with split-conformal uncertainty and an
+  exclude-self-corrected Tanimoto/k-NN applicability domain check.
+- Found and corrected a real error inherited from Phase 9: CYP2D6 had
+  been rejected for insufficient data using the wrong ChEMBL target ID
+  (CHEMBL2035, actually the muscarinic M5 receptor). The real target
+  (CHEMBL289) has 3,349 usable records — reopened and built. See
+  `docs/phase9/endpoint-selection.md`'s erratum.
+- CYP2D6 and BBB are registered (`models/registry/`) into the same
+  generic model-loading/applicability-domain/conformal machinery hERG
+  and CYP3A4 already use in production, as `EXPERIMENTAL` — loadable,
+  checksum-verified, but correctly refused by the live promotion gate
+  (`run_inference`) until an explicit promotion review happens.
+- `models/psychiatric/screening_profile.py` combines all six signals
+  into one structured, per-endpoint-honest report — every result
+  carries its own real reliability tier (`validated_live` for hERG,
+  `registered_experimental_offline_only` for CYP2D6/BBB,
+  `offline_research_only_no_regression_serving_path` for DRD2/HRH1)
+  rather than presenting all six as equally trustworthy. Verified
+  end-to-end on Haloperidol and Diphenhydramine — all six signals for
+  both compounds independently matched their well-documented, opposite
+  real-world pharmacology (including haloperidol's known hERG/QT
+  liability and CYP2D6 interaction).
+- Every new model benchmarked against real majority-class and
+  descriptor-only baselines (`models/psychiatric/benchmarking.py`) —
+  all four clear their baseline; BBB's descriptor-only model comes
+  close to its champion (consistent with lipophilicity/TPSA already
+  carrying most of the real BBB-permeability signal).
+- **Offline research tool only** — not wired into the live
+  `drugsim-predict-api` service and no frontend UI exists for it yet,
+  a deliberate decision (every push to `main` auto-deploys both live
+  Render services, so a new public prediction endpoint is live-behavior
+  change, not an additive commit). See
+  `docs/psychiatric-pipeline/api-integration.md`.
+- Full documentation set: `docs/psychiatric-pipeline/{README,
+  scientific-foundation, data-sources, selectivity-methodology,
+  benchmarking, api-integration, validation, limitations}.md`. 26 new
+  unit tests, all passing.
+
 ### Added — Compound Identity Coverage Expansion
 
 - Expanded the compound-identity snapshot from 6 to 904 real, named
