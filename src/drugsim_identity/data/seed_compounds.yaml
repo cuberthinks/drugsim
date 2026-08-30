@@ -1,0 +1,21 @@
+# Which compounds the offline snapshot builder enriches with real PubChem
+# data. This is a SCOPING list only -- it says which compounds are worth
+# spending a lookup on, never what the answer is. The actual name,
+# synonyms, and description always come from PubChem's real response at
+# build time (scripts/build_compound_identity_snapshot.py), never written
+# here by hand.
+#
+# `datasets/golden/compounds.csv`'s category=="drug" rows are included
+# automatically by the build script (aspirin, caffeine, ibuprofen,
+# paracetamol) and do not need to be repeated here. `imatinib_like` is
+# deliberately excluded there and here -- its own name says it is a
+# similar-shaped test structure, not literally imatinib.
+#
+# Entries below are the two DrugSim example compounds
+# (frontend/src/lib/exampleCompounds.ts) that are NOT already covered by
+# the golden fixture set, so all four examples end up identifiable.
+compounds:
+  - smiles: "CC(C)(C)c1ccc(cc1)C(O)CCCN1CCC(CC1)C(O)(c1ccccc1)c1ccccc1"
+    note: "Terfenadine -- DrugSim example compound, not in datasets/golden/compounds.csv"
+  - smiles: "CS(=O)(=O)Nc1ccc(cc1)CCN(C)CCOc1ccc(NS(C)(=O)=O)cc1"
+    note: "Dofetilide -- DrugSim example compound, not in datasets/golden/compounds.csv"

@@ -12,6 +12,7 @@ packages = [
     { include = "drugsim_features", from = "src" },
     { include = "drugsim_quality", from = "src" },
     { include = "drugsim_curation", from = "src" },
+    { include = "drugsim_identity", from = "src" },
     { include = "drugsim_predict", from = "src" },
 ]
 
@@ -128,6 +129,7 @@ convention = "google"
 known-first-party = [
     "drugsim_core", "drugsim_chem", "drugsim_db",
     "drugsim_features", "drugsim_quality", "drugsim_curation",
+    "drugsim_identity",
 ]
 
 [tool.ruff.format]

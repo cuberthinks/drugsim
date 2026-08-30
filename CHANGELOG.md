@@ -7,6 +7,28 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Added — Dynamic Compound Identification
+
+- `/predict` responses now include a `compound_identity` block (name,
+  synonyms, database identifiers, a verified description, source,
+  retrieval date) resolved from the submitted structure's InChIKey — no
+  more hardcoded per-compound metadata.
+- Identity data is fetched from PubChem (already licensed in
+  `datasets/registry.yaml` as the "identity spine") entirely **offline**,
+  by a new `scripts/build_compound_identity_snapshot.py`, and committed
+  as `src/drugsim_identity/data/compound_identity_snapshot.json`. The
+  live service only does a local dictionary lookup — this preserves the
+  existing, tested guarantee that no third-party service ever receives a
+  submitted structure.
+- A compound outside the snapshot is honestly reported as
+  `identity_status: "unidentified"` and prediction proceeds unaffected —
+  a novel molecule was never treated as invalid.
+- Also exposes `molecular_weight` on the molecule response (RDKit-computed,
+  previously internal-only).
+- New frontend `CompoundIdentity` panel shown alongside the molecule
+  preview, distinct from the user's own free-text compound-name label.
+- Docs: `docs/compound-identification/README.md`.
+
 ### Strategy
 
 - Evaluated DrugSim's potential scientific focus areas using only the

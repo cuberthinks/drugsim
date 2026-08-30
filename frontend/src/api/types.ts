@@ -34,6 +34,29 @@ export interface MoleculeInfo {
   standardized_smiles: string;
   inchikey_full: string;
   molecular_formula: string;
+  /** Da, RDKit-computed -- always present, independent of identification. */
+  molecular_weight: number;
+}
+
+export type IdentityStatus = "identified" | "unidentified";
+
+/**
+ * Verified compound identity, resolved offline against a committed
+ * PubChem snapshot -- never invented, never a live lookup. When
+ * `identity_status` is "unidentified" every other field is null; this is
+ * the normal outcome for a novel compound, not an error.
+ */
+export interface CompoundIdentity {
+  identity_status: IdentityStatus;
+  compound_name: string | null;
+  synonyms: string[] | null;
+  identifiers: Record<string, string> | null;
+  /** A verified, sourced description, or the literal string "Verified
+   * description unavailable." Null only when unidentified. */
+  description: string | null;
+  description_source: string | null;
+  source: string | null;
+  retrieved_at: string | null;
 }
 
 // Phase 9: widened from a hERG-only "blocker" | "non_blocker" union to a
@@ -98,6 +121,7 @@ export interface PredictionResponse {
   id: string;
   request_id: string;
   molecule: MoleculeInfo;
+  compound_identity: CompoundIdentity;
   estimate: Estimate;
   reliability: Reliability;
   provenance: Provenance;

@@ -189,6 +189,7 @@ def _fake_result(**overrides):
     against the current model. What real molecules land where is the
     regression suite's job (docs/phase7); this is only testing "does the
     API pass an out-of-domain/error verdict through correctly."""
+    from drugsim_identity import CompoundIdentityResult
     from drugsim_predict.applicability_domain import ApplicabilityDomainResult
     from drugsim_predict.conformal import ConformalResult
     from drugsim_predict.pipeline import InferenceWarning, PredictionResult
@@ -201,6 +202,8 @@ def _fake_result(**overrides):
         standardized_smiles="C1CC1",
         inchikey_full="LVZWSLJZHVFIQJ-UHFFFAOYSA-N",
         molecular_formula="C3H6",
+        molecular_weight=42.08,
+        identity=CompoundIdentityResult(identity_status="unidentified"),
         predicted_label="non_blocker",
         predicted_probability_blocker=0.1,
         predicted_probability=0.1,

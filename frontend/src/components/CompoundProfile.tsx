@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ApiError, predict } from "../api/client";
 import type { EndpointListItem, PredictionResponse } from "../api/types";
+import { CompoundIdentity } from "./CompoundIdentity";
 import { EndpointProfileCard } from "./EndpointProfileCard";
 
 type CardState =
@@ -60,6 +61,11 @@ export function CompoundProfile({ structureValue, endpoints, compoundName }: Pro
 
   const servable = endpoints.filter((e) => e.servable);
   const categories = Array.from(new Set(servable.map((e) => e.category ?? "Other")));
+  // Every card predicts the same molecule, so identity is identical across
+  // them -- shown once here rather than repeated per card. The first
+  // completed card is enough; a later one finishing does not change it.
+  const firstDone = Object.values(cardStates).find((s) => s.status === "done");
+  const identity = firstDone?.status === "done" ? firstDone.prediction.compound_identity : null;
 
   return (
     <section aria-labelledby="compound-profile-heading" className="flex flex-col gap-6">
@@ -74,6 +80,8 @@ export function CompoundProfile({ structureValue, endpoints, compoundName }: Pro
           prediction with its own uncertainty and reliability.
         </p>
       </div>
+
+      {identity && <CompoundIdentity identity={identity} />}
 
       {categories.map((category) => (
         <div key={category}>

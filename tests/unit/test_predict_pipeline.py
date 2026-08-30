@@ -136,6 +136,52 @@ class TestFeatureGenerationConsistency:
         assert result.predicted_probability_blocker == round(float(expected_prob), 4)
 
 
+class TestCompoundIdentity:
+    """Real end-to-end resolution against the committed offline snapshot --
+    no mocking, since the snapshot itself is the whole point of the
+    request-time-safety design (a plain dict lookup, not a network call)."""
+
+    def test_a_compound_in_the_snapshot_is_identified(self, bundle) -> None:
+        result = run_inference(ASPIRIN, bundle=bundle)
+        assert result.identity.identity_status == "identified"
+        assert result.identity.compound_name == "Aspirin"
+        assert result.identity.identifiers == {"pubchem_cid": "2244"}
+        assert result.identity.source == "PubChem"
+
+    def test_caffeine_is_identified(self, bundle) -> None:
+        """Explicit brief requirement: verify caffeine specifically, via the
+        real dynamic system -- caffeine is not, and never was, a special
+        case anywhere in the resolution code."""
+        caffeine_smiles = "CN1C=NC2=C1C(=O)N(C)C(=O)N2C"
+        result = run_inference(caffeine_smiles, bundle=bundle)
+        assert result.identity.identity_status == "identified"
+        assert result.identity.compound_name == "Caffeine"
+
+    def test_a_novel_molecule_outside_the_snapshot_is_unidentified_but_still_predicted(self, bundle) -> None:
+        # A structurally valid but obscure/synthetic-looking molecule
+        # essentially guaranteed not to be in the snapshot.
+        novel = "C1CC2CC1C1(CC2)CCN(C(=O)c2ccc(F)cc2)CC1"
+        result = run_inference(novel, bundle=bundle)
+        assert result.identity.identity_status == "unidentified"
+        assert result.identity.compound_name is None
+        # Unidentified must never prevent prediction.
+        assert result.predicted_label in ("blocker", "non_blocker")
+
+    def test_two_smiles_for_the_same_compound_resolve_to_the_same_identity(self, bundle) -> None:
+        canonical = run_inference(ASPIRIN, bundle=bundle)
+        # A different, equivalent SMILES string for aspirin (same molecule,
+        # atoms written in a different order).
+        equivalent = run_inference("O=C(C)Oc1ccccc1C(=O)O", bundle=bundle)
+        assert canonical.inchikey_full == equivalent.inchikey_full
+        assert canonical.identity.compound_name == equivalent.identity.compound_name == "Aspirin"
+
+    def test_invalid_structure_never_reaches_identity_resolution(self, bundle) -> None:
+        # A malformed structure is rejected before process_structure() even
+        # succeeds -- there is no inchikey to resolve identity against.
+        with pytest.raises(StructureError):
+            run_inference("C(C(C(", bundle=bundle)
+
+
 class TestRegressionAgainstKnownMolecules:
     """Pinned expectations for two well-characterised reference compounds.
     A change to these values on an unrelated commit is a regression, not

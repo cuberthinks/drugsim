@@ -36,6 +36,10 @@ export function MoleculePreview({ molecule, name }: Props) {
             <dd className="mt-1 font-mono text-sm text-ink">{molecule.molecular_formula}</dd>
           </div>
           <div>
+            <dt className="text-xs font-medium tracking-wide text-ink-soft uppercase">Molecular weight</dt>
+            <dd className="mt-1 font-mono text-sm text-ink">{molecule.molecular_weight.toFixed(2)} Da</dd>
+          </div>
+          <div>
             <dt className="text-xs font-medium tracking-wide text-ink-soft uppercase">InChIKey</dt>
             <dd className="mt-1 font-mono text-sm break-all text-ink">{molecule.inchikey_full}</dd>
           </div>

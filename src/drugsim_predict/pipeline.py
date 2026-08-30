@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from functools import lru_cache
 from typing import Literal, Optional
 
 import numpy as np
@@ -30,6 +31,7 @@ from drugsim_chem.parsing import StructureFormat, parse_molecule
 from drugsim_core.errors import EndpointNotAvailableError, ReproducibilityError, StructureError
 from drugsim_core.version import get_rdkit_version
 from drugsim_features import compute_feature_set_id
+from drugsim_identity import CompoundIdentityResult, load_identity_snapshot, resolve_identity
 
 from drugsim_predict.applicability_domain import ApplicabilityDomainResult, assess_applicability_domain
 from drugsim_predict.conformal import ConformalResult, compute_conformal_set
@@ -74,6 +76,8 @@ class PredictionResult:
     standardized_smiles: str
     inchikey_full: str
     molecular_formula: str
+    molecular_weight: float
+    identity: CompoundIdentityResult
     predicted_label: str
     predicted_probability_blocker: float
     predicted_probability: float
@@ -87,6 +91,17 @@ class PredictionResult:
     feature_set_id: str = ""
     training_set_size: int = 0
     inference_timestamp: str = ""
+
+
+@lru_cache(maxsize=1)
+def _get_identity_snapshot() -> dict:
+    """Load the offline compound-identity snapshot once per process.
+
+    Mirrors :func:`get_model_bundle`'s load-once-and-reuse pattern. A
+    missing snapshot file resolves to an empty dict (every compound
+    "unidentified"), never a startup failure.
+    """
+    return load_identity_snapshot(get_predict_settings().compound_identity_snapshot_path)
 
 
 def _check_feature_set_id(bundle: ModelBundle) -> None:
@@ -194,6 +209,14 @@ def run_inference(
         msg = f"molecular weight {processed.descriptors.mw_g_mol:.1f} Da exceeds the {settings.max_molecular_weight:.0f} Da limit"
         raise StructureError(msg, fmt=fmt)
 
+    # Identity resolution: a local, in-memory dict lookup only (see
+    # drugsim_identity's module docstring for why this is never a live
+    # third-party call). Runs only once a structure has passed every
+    # rejection gate above, and never blocks or fails prediction -- a
+    # compound outside the snapshot resolves as "unidentified", the
+    # expected outcome for a novel molecule, not an error.
+    identity_result = resolve_identity(processed.identity.inchikey_full, _get_identity_snapshot())
+
     warnings: list[InferenceWarning] = []
     if processed.stereo_completeness in ("undefined", "partially_defined"):
         warnings.append(
@@ -297,6 +320,8 @@ def run_inference(
         standardized_smiles=processed.standardized_smiles,
         inchikey_full=processed.identity.inchikey_full,
         molecular_formula=processed.identity.molecular_formula,
+        molecular_weight=round(float(processed.descriptors.mw_g_mol), 2),
+        identity=identity_result,
         predicted_label=predicted_label,
         predicted_probability_blocker=round(float(class_probabilities[1]), 4),
         predicted_probability=round(float(class_probabilities[1]), 4),

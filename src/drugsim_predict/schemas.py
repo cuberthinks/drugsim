@@ -26,6 +26,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 __all__ = [
     "ApplicabilityDomainSchema",
+    "CompoundIdentitySchema",
     "ConformalSchema",
     "EndpointListItem",
     "EndpointsResponse",
@@ -46,6 +47,7 @@ __all__ = [
 StructureFormatLiteral = Literal["smiles", "molblock", "inchi"]
 ADVerdictLiteral = Literal["in_domain", "borderline", "out_of_domain", "undeterminable"]
 SeverityLiteral = Literal["low", "medium", "high"]
+IdentityStatusLiteral = Literal["identified", "unidentified"]
 
 
 class StructureInput(BaseModel):
@@ -99,6 +101,31 @@ class MoleculeSchema(BaseModel):
     standardized_smiles: str
     inchikey_full: str
     molecular_formula: str
+    molecular_weight: float = Field(description="Da, RDKit-computed (drugsim_chem.descriptors) -- always present, independent of compound identification.")
+
+
+class CompoundIdentitySchema(BaseModel):
+    """Verified compound identity, resolved offline against a committed
+    PubChem snapshot (see ``src/drugsim_identity``) -- never a live
+    lookup, never invented. ``identity_status == "unidentified"`` is the
+    normal, expected outcome for a novel compound outside the snapshot;
+    every other field is ``None`` in that case."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    identity_status: IdentityStatusLiteral
+    compound_name: Optional[str] = None
+    synonyms: Optional[list[str]] = None
+    identifiers: Optional[dict[str, str]] = Field(default=None, description="e.g. {'pubchem_cid': '2519'}")
+    description: Optional[str] = Field(
+        default=None,
+        description="A verified, sourced description, or the literal string 'Verified description "
+        "unavailable.' when the compound is identified but PubChem has no description on record. "
+        "Null only when identity_status == 'unidentified'.",
+    )
+    description_source: Optional[str] = None
+    source: Optional[str] = Field(default=None, description="e.g. 'PubChem'.")
+    retrieved_at: Optional[str] = Field(default=None, description="ISO-8601 timestamp of the offline snapshot build that resolved this compound.")
 
 
 class EstimateSchema(BaseModel):
@@ -222,6 +249,7 @@ class PredictionResponse(BaseModel):
     id: str = Field(description="Prediction public ID, e.g. 'prd_01J8XK...'")
     request_id: str
     molecule: MoleculeSchema
+    compound_identity: CompoundIdentitySchema
     estimate: EstimateSchema
     reliability: ReliabilitySchema
     provenance: ProvenanceSchema

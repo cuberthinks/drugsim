@@ -51,6 +51,13 @@ class PredictSettings(BaseSettings):
     # exactly the file they always did -- this is purely additive.
     registry_dir: Path = Path(__file__).resolve().parents[2] / "models" / "registry"
     prediction_db_path: Path = _project_root() / "var" / "predictions.sqlite3"
+    # Offline-built, committed snapshot (see scripts/build_compound_identity_
+    # snapshot.py) -- the live service only ever reads this file, never
+    # PubChem directly, preserving the "no third party receives a submitted
+    # structure" guarantee (docs/privacy/confidentiality-audit.md Sec 8).
+    compound_identity_snapshot_path: Path = (
+        Path(__file__).resolve().parents[2] / "src" / "drugsim_identity" / "data" / "compound_identity_snapshot.json"
+    )
     max_smiles_length: int = 5000
     max_molecular_weight: float = 2000.0
     request_timeout_seconds: float = 10.0

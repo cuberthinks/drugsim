@@ -48,8 +48,9 @@ class TestReliabilityIsMandatory:
                     "molecule": {
                         "canonical_smiles": "CCO", "isomeric_smiles": "CCO",
                         "standardized_smiles": "CCO", "inchikey_full": "LFQSCWFLJHTTHZ-UHFFFAOYSA-N",
-                        "molecular_formula": "C2H6O",
+                        "molecular_formula": "C2H6O", "molecular_weight": 46.07,
                     },
+                    "compound_identity": {"identity_status": "unidentified"},
                     "estimate": {"endpoint": "herg_inhibition", "predicted_label": "non_blocker", "predicted_probability_blocker": 0.1, "predicted_probability": 0.1},
                     "provenance": {
                         "model_id": "herg_inhibition", "model_version": "0.1.0", "dataset_version": "v1",
@@ -85,6 +86,13 @@ class TestSchemaValidation:
             molecule={
                 "canonical_smiles": "CCO", "isomeric_smiles": "CCO", "standardized_smiles": "CCO",
                 "inchikey_full": "LFQSCWFLJHTTHZ-UHFFFAOYSA-N", "molecular_formula": "C2H6O",
+                "molecular_weight": 46.07,
+            },
+            compound_identity={
+                "identity_status": "identified", "compound_name": "Ethanol",
+                "synonyms": ["Ethyl alcohol"], "identifiers": {"pubchem_cid": "702"},
+                "description": "Verified description unavailable.", "description_source": None,
+                "source": "PubChem", "retrieved_at": "2026-01-01T00:00:00+00:00",
             },
             estimate={"endpoint": "herg_inhibition", "predicted_label": "non_blocker", "predicted_probability_blocker": 0.1, "predicted_probability": 0.1},
             reliability=_make_reliability(),

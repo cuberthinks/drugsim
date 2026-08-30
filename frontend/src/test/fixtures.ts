@@ -10,6 +10,17 @@ export function makePrediction(overrides: Partial<PredictionResponse> = {}): Pre
       standardized_smiles: "CC(=O)Oc1ccccc1C(=O)O",
       inchikey_full: "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
       molecular_formula: "C9H8O4",
+      molecular_weight: 180.16,
+    },
+    compound_identity: {
+      identity_status: "identified",
+      compound_name: "Aspirin",
+      synonyms: ["Acetylsalicylic acid"],
+      identifiers: { pubchem_cid: "2244" },
+      description: "A monocarboxylic acid used as a non-steroidal anti-inflammatory drug.",
+      description_source: "PubChem",
+      source: "PubChem",
+      retrieved_at: "2026-08-30T00:00:00Z",
     },
     estimate: {
       endpoint: "herg_inhibition",

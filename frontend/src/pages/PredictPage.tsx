@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ApiError, getEndpoints, predict } from "../api/client";
 import type { EndpointListItem, PredictionResponse } from "../api/types";
+import { CompoundIdentity } from "../components/CompoundIdentity";
 import { CompoundProfile } from "../components/CompoundProfile";
 import { EndpointSelector } from "../components/EndpointSelector";
 import { ErrorPanel } from "../components/ErrorPanel";
@@ -172,6 +173,7 @@ export function PredictPage() {
       {prediction && (stage === "validated" || stage === "complete") && (
         <>
           <MoleculePreview molecule={prediction.molecule} name={compoundName} />
+          <CompoundIdentity identity={prediction.compound_identity} />
           {endpoints.filter((e) => e.servable).length > 1 && (
             <div className="flex flex-wrap gap-3">
               <button

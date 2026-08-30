@@ -56,6 +56,7 @@ from drugsim_predict.model_registry import DEFAULT_MODEL_ID, ModelBundle, get_mo
 from drugsim_predict.pipeline import SERVABLE_STATUSES, PredictionResult, run_inference
 from drugsim_predict.schemas import (
     ApplicabilityDomainSchema,
+    CompoundIdentitySchema,
     ConformalSchema,
     EndpointListItem,
     EndpointsResponse,
@@ -171,6 +172,17 @@ def _result_to_response(prediction_id: str, request_id: str, result: PredictionR
             standardized_smiles=result.standardized_smiles,
             inchikey_full=result.inchikey_full,
             molecular_formula=result.molecular_formula,
+            molecular_weight=result.molecular_weight,
+        ),
+        compound_identity=CompoundIdentitySchema(
+            identity_status=result.identity.identity_status,
+            compound_name=result.identity.compound_name,
+            synonyms=list(result.identity.synonyms) if result.identity.synonyms else None,
+            identifiers=result.identity.identifiers,
+            description=result.identity.description,
+            description_source=result.identity.description_source,
+            source=result.identity.source,
+            retrieved_at=result.identity.retrieved_at,
         ),
         estimate=EstimateSchema(
             endpoint=result.model_id,
