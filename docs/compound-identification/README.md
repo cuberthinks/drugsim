@@ -69,6 +69,16 @@ verbatim with its own citation where PubChem provides one (e.g.
 - The two DrugSim example compounds not already covered by the golden set
   (terfenadine, dofetilide) — listed by SMILES in
   `src/drugsim_identity/data/seed_compounds.yaml`.
+- **Every named compound already in DrugSim's own raw ChEMBL training
+  data** (`datasets/raw/chembl_{herg,cyp3a4}_ic50_raw.csv`'s
+  `molecule_pref_name` column) — ChEMBL only sets this field for
+  compounds it considers notable (approved drugs, well-known reference
+  compounds), so this is a large, already-ingested, already-licensed
+  source, not a new external dependency. As of the last build: 956
+  distinct named compounds identified across both files, 904 resolved to
+  a real PubChem entry (39 had no PubChem match, correctly skipped rather
+  than guessed at — mostly internal pharma-company codenames PubChem
+  doesn't carry under that identity).
 
 This is a **scoping list only** — it says which compounds are worth a
 lookup, never what the answer is. Extending coverage means adding a

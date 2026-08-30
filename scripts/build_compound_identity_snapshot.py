@@ -46,6 +46,17 @@ SEED_YAML = ROOT / "src" / "drugsim_identity" / "data" / "seed_compounds.yaml"
 GOLDEN_COMPOUNDS_CSV = ROOT / "datasets" / "golden" / "compounds.csv"
 OUTPUT_SNAPSHOT = ROOT / "src" / "drugsim_identity" / "data" / "compound_identity_snapshot.json"
 REGISTRY_PATH = ROOT / "datasets" / "registry.yaml"
+# Real ChEMBL data already ingested and licensed for the hERG/CYP3A4
+# training pipelines. ChEMBL only sets molecule_pref_name for compounds it
+# considers notable (approved drugs, well-known reference compounds), so
+# this is a large, already-approved, mostly-real-drug-name source sitting
+# unused for identity purposes -- not a new external dependency, and not
+# "arbitrary user data": these are DrugSim's own already-public training
+# inputs, the same files build_dataset.py reads.
+RAW_CHEMBL_CSVS = [
+    ROOT / "datasets" / "raw" / "chembl_herg_ic50_raw.csv",
+    ROOT / "datasets" / "raw" / "chembl_cyp3a4_ic50_raw.csv",
+]
 
 PUBCHEM_BASE = "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
 PUBCHEM_VIEW_BASE = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view"
@@ -59,7 +70,9 @@ GOLDEN_EXCLUDE_NAMES = frozenset({"imatinib_like"})
 
 
 def _load_seed_smiles() -> list[str]:
-    """Every SMILES worth enriching: golden's real-drug fixtures + the seed YAML."""
+    """Every SMILES worth enriching: golden's real-drug fixtures, the seed
+    YAML, and every named compound already in DrugSim's own raw ChEMBL
+    training data."""
     smiles_list: list[str] = []
 
     with GOLDEN_COMPOUNDS_CSV.open(encoding="utf-8") as f:
@@ -70,6 +83,20 @@ def _load_seed_smiles() -> list[str]:
     seed = yaml.safe_load(SEED_YAML.read_text(encoding="utf-8"))
     for entry in seed.get("compounds", []):
         smiles_list.append(entry["smiles"])
+
+    seen_chembl_ids: set[str] = set()
+    for csv_path in RAW_CHEMBL_CSVS:
+        if not csv_path.exists():
+            print(f"  note: {csv_path} not found, skipping", file=sys.stderr)
+            continue
+        with csv_path.open(encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                chembl_id = row.get("molecule_chembl_id", "").strip()
+                name = row.get("molecule_pref_name", "").strip()
+                smi = row.get("canonical_smiles", "").strip()
+                if name and smi and chembl_id not in seen_chembl_ids:
+                    seen_chembl_ids.add(chembl_id)
+                    smiles_list.append(smi)
 
     return smiles_list
 

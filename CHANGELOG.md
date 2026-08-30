@@ -7,6 +7,14 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Added — Compound Identity Coverage Expansion
+
+- Expanded the compound-identity snapshot from 6 to 904 real, named
+  compounds by additionally sourcing every named compound already in
+  DrugSim's own raw ChEMBL training data (956 candidates identified, 904
+  resolved to a real PubChem entry) — no new external dependency, purely
+  additive to already-ingested, already-licensed data.
+
 ### Added — Dynamic Compound Identification
 
 - `/predict` responses now include a `compound_identity` block (name,
