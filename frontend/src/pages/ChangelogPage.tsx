@@ -7,10 +7,12 @@ interface Entry {
 const ENTRIES: Entry[] = [
   {
     date: "2026-08-30",
-    title: "Compound recognition fixes",
+    title: "Compound recognition fixes and expansion",
     items: [
       "Ethanol, water, methane, and benzene were incorrectly showing as \"not identified\" despite being some of the most well-known compounds there are — fixed. All four now resolve to their real name, synonyms, and a sourced description.",
-      "DrugSim can now recognize 913 named compounds by structure, up from 904.",
+      "Added around 50 common lab and industrial chemicals to the reference list — solvents (acetone, methanol, isopropanol, THF, DMSO, and others), everyday acids and bases, common gases, simple aromatics, and more.",
+      "Compound recognition covers a curated reference list, not arbitrary chemistry — a compound outside that list is honestly labeled \"not identified\" rather than guessed at. If a compound you'd expect to be recognized isn't, that's worth reporting.",
+      "DrugSim can now recognize 960 named compounds by structure, up from 904 at the start of today.",
     ],
   },
   {
