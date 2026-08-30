@@ -1,0 +1,15 @@
+{
+  "built_at": "2026-08-30T09:15:26+00:00",
+  "source_model_sha256": "5d1c17630342beef5a48db0a790bb519b734a66887af48f917fa69233367b76b",
+  "n_calibration": 307,
+  "n_train": 2077,
+  "n_train_scaffolds": 1189,
+  "nominal_confidence": 0.9,
+  "knn_k": 5,
+  "knn_distance_threshold_p95": 2.23596,
+  "output_npz": "models/psychiatric/cyp2d6_activity/artifact/inference_support.npz",
+  "output_npz_sha256": "2a3777098551a73acb059604d8df9e81c04e00caf9a33dc74ddf0f96e4c7e919",
+  "output_scaler": "models/psychiatric/cyp2d6_activity/artifact/descriptor_ad_scaler.joblib",
+  "output_scaler_sha256": "06fcbf4a620183335c8f9e31208faa48d7af3dc9e91ee39cb29f5b214be24501",
+  "note": "Frozen from the SAME calibration/train split used in evaluate.py. Never recomputed at inference time."
+}

@@ -1,0 +1,128 @@
+{
+  "_comment": "Psychiatric-pipeline endpoint. Follows the exact registry shape established for herg_inhibition_v1.json / cyp3a4_inhibition_v1.json -- registering this makes BBB loadable through the SAME generic drugsim_predict.model_registry/pipeline.run_inference machinery those two already use, no new serving-path code required. NOT YET wired into the live deployment (deployment/docker/Dockerfile.predict-api and render.yaml still list only hERG/CYP3A4's GitHub Release assets) -- that is a separate, deliberate deploy step, not done in this pass.",
+  "model_id": "bbb_permeability",
+  "model_version": "0.1.0",
+  "status": "challenger",
+  "final_report_status": "EXPERIMENTAL",
+  "final_report_status_history": [
+    {
+      "status": "EXPERIMENTAL",
+      "as_of": "2026-08-30T09:15:42+00:00",
+      "report": "docs/psychiatric-pipeline/data-sources.md",
+      "note": "Registered offline for local/offline multi-objective screening use. Not promoted to VALIDATED FOR INTERNAL RESEARCH -- no external validation performed yet."
+    }
+  ],
+  "registered_at": "2026-08-30T09:15:42+00:00",
+  "status_updated_at": "2026-08-30T09:15:42+00:00",
+  "endpoint": {
+    "name": "Blood-brain-barrier permeability",
+    "task_type": "binary classification",
+    "definition": "label=1 (BBB-permeant) / label=0 (BBB-non-permeant), as published by Martins et al. 2012 (already binary at the source)",
+    "target": "N/A -- whole-organism passive/measured brain-plasma partitioning, not a single-protein target",
+    "category": "Distribution (ADMET) / psychiatric-pipeline",
+    "positive_class_label": "bbb_permeant",
+    "negative_class_label": "bbb_non_permeant",
+    "scientific_caveat": "A binary passive/measured brain-plasma partitioning call, not CNS efficacy or exposure at a therapeutic dose. 'BBB-permeant' does not mean 'clinically active in the CNS.' See docs/psychiatric-pipeline/scientific-foundation.md's BBB-lipophilicity section."
+  },
+  "dataset": {
+    "dataset_id": "bbb_permeability",
+    "dataset_version": "v1",
+    "source": "TDC (Therapeutics Data Commons), Martins et al. 2012 BBB dataset, complete population as published (2,039 raw compounds)",
+    "final_compound_count": 1909,
+    "label_distribution": {
+      "bbb_permeant": 1455,
+      "bbb_non_permeant": 454,
+      "positive_fraction": 0.7622
+    },
+    "quarantined_structures": 1,
+    "mixtures_excluded": 46,
+    "note": "PyTDC's own downloader returned HTTP 403 in this environment (no User-Agent set); fetched directly via httpx against the same public Dataverse file ID with an explicit User-Agent instead -- see fetch_tdc_data.py's docstring. Not B3DB -- see docs/psychiatric-pipeline/data-sources.md's substitution reasoning."
+  },
+  "features": {
+    "feature_set_id": "a3ee2afe06243a9c3eca4e1d3f74393e900c0961f915609ac29b07e4d9919b30",
+    "descriptor_spec_version": "v1",
+    "standardization_pipeline_version": "v1",
+    "rdkit_version": "2025.03.3",
+    "layout": "concat(physicochemical_descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+    "descriptor_fields": [
+      "mw_g_mol", "exact_mass_g_mol", "logp_crippen", "molar_refractivity", "tpsa_a2",
+      "rotatable_bonds", "aromatic_rings", "ring_count", "heavy_atom_count", "formal_charge",
+      "hbd_lipinski", "hba_lipinski", "hbd_strict", "hba_strict", "heteroatom_count",
+      "fraction_csp3", "num_stereocentres", "largest_ring_size"
+    ],
+    "fingerprint": "Morgan/ECFP4-equivalent, radius=2, 2048 bits, chirality-aware (include_chirality=True)",
+    "note": "feature_set_id is IDENTICAL to hERG/CYP3A4/DRD2/HRH1/CYP2D6's -- a content address over the shared descriptor/fingerprint/standardisation/RDKit-version toolchain (ADR-005), not a per-dataset identifier."
+  },
+  "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null,
+    "class_weight": "balanced"
+  },
+  "random_seed": 42,
+  "compared_against": {
+    "gradient_boosting": 0.8706,
+    "logistic_regression": 0.836,
+    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.9025"
+  },
+  "validation_strategy": {
+    "split_method": "Global scaffold-level split_group (ADR-009), split_salt='bbb_permeability_v1'",
+    "split_roles": {
+      "train": "groups 0-6 (n=1350)",
+      "calibration": "group 7 (n=195, reserved, conformal only)",
+      "validation": "group 8 (n=214, hyperparameter selection)",
+      "test": "group 9 (n=150, touched once)"
+    }
+  },
+  "metrics": {
+    "global_split_test_group_9": {
+      "n_test": 150,
+      "roc_auc": 0.9615,
+      "average_precision_pr_auc": 0.9861,
+      "balanced_accuracy": 0.8917,
+      "matthews_corrcoef": 0.796,
+      "sensitivity": 0.9541,
+      "specificity": 0.8293,
+      "f1": 0.9455,
+      "precision": 0.9369,
+      "recall": 0.9541,
+      "brier_score": 0.0722,
+      "confusion_matrix": {"tn": 34, "fp": 7, "fn": 5, "tp": 104}
+    },
+    "conformal": {
+      "empirical_coverage": 0.9133,
+      "nominal_confidence": 0.9,
+      "accuracy_when_singleton": 0.9384,
+      "singleton_fraction": 0.9733
+    },
+    "applicability_domain": {
+      "fraction_in_domain": 0.7133,
+      "in_domain_accuracy": 0.9533,
+      "out_of_domain_accuracy": 0.8372
+    }
+  },
+  "external_validation": {
+    "performed": false,
+    "reason": "No independent second-source BBB dataset identified in this pass."
+  },
+  "artifact": {
+    "path": "models/psychiatric/bbb_permeability/artifact/model.joblib",
+    "sha256": "83e181228f028db57e870484d3d25601bd6a19ab43dd7cc65f9b46a9cce2a0cc",
+    "note": "gitignored binary, not committed, same convention as hERG/CYP3A4's artifacts.",
+    "reproducibility": "regenerate via: fetch_tdc_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, RANDOM_SEED=42 fixed throughout."
+  },
+  "inference_support": {
+    "_comment": "Frozen conformal calibration + AD reference data exported by models/psychiatric/bbb_permeability/10_export_inference_support.py -- never recomputed at inference time.",
+    "npz_path": "models/psychiatric/bbb_permeability/artifact/inference_support.npz",
+    "npz_sha256": "46a152f13f569ba4b22321bcd1aa945d8c7a0dc5479abc9119cf33ce0e221592",
+    "scaler_path": "models/psychiatric/bbb_permeability/artifact/descriptor_ad_scaler.joblib",
+    "scaler_sha256": "972f2fa34a2c7813e062da67fc63038936deb4d51d443c8484cf7b77258b44ee",
+    "manifest_path": "models/psychiatric/bbb_permeability/inference_support_manifest.json",
+    "manifest_sha256": "e4a0e24d16d23cf2ba311bee9801a914649d9ce2c36475682ca343f06cd26de3"
+  },
+  "deployment_status": {
+    "loadable_via_local_registry": true,
+    "wired_into_live_predict_api": false,
+    "note": "Not referenced by deployment/docker/Dockerfile.predict-api or render.yaml's MODEL_RELEASE_URL_BASE assets -- the live drugsim-predict-api service does not serve this model_id yet. Loadable today only from a local checkout with the local artifact files present (e.g. for the psychiatric-pipeline's offline multi-objective screening script)."
+  }
+}

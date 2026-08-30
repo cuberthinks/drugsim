@@ -1,0 +1,129 @@
+{
+  "_comment": "Psychiatric-pipeline endpoint. Follows the exact registry shape established for herg_inhibition_v1.json / cyp3a4_inhibition_v1.json -- registering this makes CYP2D6 loadable through the SAME generic drugsim_predict.model_registry/pipeline.run_inference machinery those two already use, no new serving-path code required. NOT YET wired into the live deployment (deployment/docker/Dockerfile.predict-api and render.yaml still list only hERG/CYP3A4's GitHub Release assets) -- that is a separate, deliberate deploy step, not done in this pass.",
+  "model_id": "cyp2d6_activity",
+  "model_version": "0.1.0",
+  "status": "challenger",
+  "final_report_status": "EXPERIMENTAL",
+  "final_report_status_history": [
+    {
+      "status": "EXPERIMENTAL",
+      "as_of": "2026-08-30T09:15:26+00:00",
+      "report": "docs/psychiatric-pipeline/data-sources.md",
+      "note": "Registered offline for local/offline multi-objective screening use. Not promoted to VALIDATED FOR INTERNAL RESEARCH -- no external validation performed yet, and this endpoint has not been through the same multi-report review CYP3A4 received before its own promotion."
+    }
+  ],
+  "registered_at": "2026-08-30T09:15:26+00:00",
+  "status_updated_at": "2026-08-30T09:15:26+00:00",
+  "endpoint": {
+    "name": "CYP2D6 inhibition",
+    "task_type": "binary classification",
+    "definition": "label=1 (inhibitor) if aggregated IC50 <= 10000 nM (10 uM), else label=0 (non-inhibitor)",
+    "threshold_note": "10 uM is a literature convention for a binary CYP-inhibition-risk call, not a universal biological constant -- same convention class already used for hERG/CYP3A4.",
+    "target": "ChEMBL CHEMBL289, Cytochrome P450 2D6, Homo sapiens, SINGLE PROTEIN, UniProt P10635",
+    "category": "Metabolism (ADMET) / psychiatric-pipeline",
+    "positive_class_label": "inhibitor",
+    "negative_class_label": "non_inhibitor",
+    "scientific_caveat": "This is a CYP2D6-inhibition-liability flag ONLY -- it cannot infer a patient's own CYP2D6 genotype/phenotype (poor/intermediate/extensive/ultrarapid metabolizer status). 'Not an inhibitor' does not mean 'safe for poor metabolizers.' See docs/psychiatric-pipeline/scientific-foundation.md."
+  },
+  "dataset": {
+    "dataset_id": "cyp2d6_activity",
+    "dataset_version": "v1",
+    "source": "ChEMBL REST API (direct), CHEMBL289 IC50/nM activities, complete population not a sample (7,587 raw records)",
+    "final_compound_count": 2915,
+    "label_distribution": {
+      "inhibitor": 1876,
+      "non_inhibitor": 1039,
+      "positive_fraction": 0.6436
+    },
+    "quarantined_structures": 0,
+    "mixtures_excluded": 6,
+    "note": "docs/phase9/endpoint-selection.md originally rejected CYP2D6 on sample size using the WRONG ChEMBL target (CHEMBL2035, actually the muscarinic M5 receptor) -- see that document's erratum and docs/psychiatric-pipeline/data-sources.md's CYP2D6 section."
+  },
+  "features": {
+    "feature_set_id": "a3ee2afe06243a9c3eca4e1d3f74393e900c0961f915609ac29b07e4d9919b30",
+    "descriptor_spec_version": "v1",
+    "standardization_pipeline_version": "v1",
+    "rdkit_version": "2025.03.3",
+    "layout": "concat(physicochemical_descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+    "descriptor_fields": [
+      "mw_g_mol", "exact_mass_g_mol", "logp_crippen", "molar_refractivity", "tpsa_a2",
+      "rotatable_bonds", "aromatic_rings", "ring_count", "heavy_atom_count", "formal_charge",
+      "hbd_lipinski", "hba_lipinski", "hbd_strict", "hba_strict", "heteroatom_count",
+      "fraction_csp3", "num_stereocentres", "largest_ring_size"
+    ],
+    "fingerprint": "Morgan/ECFP4-equivalent, radius=2, 2048 bits, chirality-aware (include_chirality=True)",
+    "note": "feature_set_id is IDENTICAL to hERG/CYP3A4/DRD2/HRH1's -- a content address over the shared descriptor/fingerprint/standardisation/RDKit-version toolchain (ADR-005), not a per-dataset identifier."
+  },
+  "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
+  "hyperparameters": {
+    "n_estimators": 500,
+    "max_depth": null,
+    "class_weight": "balanced"
+  },
+  "random_seed": 42,
+  "compared_against": {
+    "gradient_boosting": 0.7529,
+    "logistic_regression": 0.6813,
+    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.8178"
+  },
+  "validation_strategy": {
+    "split_method": "Global scaffold-level split_group (ADR-009), split_salt='cyp2d6_activity_v1'",
+    "split_roles": {
+      "train": "groups 0-6 (n=2077)",
+      "calibration": "group 7 (n=307, reserved, conformal only)",
+      "validation": "group 8 (n=239, hyperparameter selection)",
+      "test": "group 9 (n=292, touched once)"
+    }
+  },
+  "metrics": {
+    "global_split_test_group_9": {
+      "n_test": 292,
+      "roc_auc": 0.8333,
+      "average_precision_pr_auc": 0.937,
+      "balanced_accuracy": 0.7283,
+      "matthews_corrcoef": 0.4495,
+      "sensitivity": 0.8411,
+      "specificity": 0.6154,
+      "f1": 0.8491,
+      "precision": 0.8571,
+      "recall": 0.8411,
+      "brier_score": 0.1516,
+      "confusion_matrix": {"tn": 48, "fp": 30, "fn": 34, "tp": 180}
+    },
+    "conformal": {
+      "empirical_coverage": 0.9418,
+      "nominal_confidence": 0.9,
+      "accuracy_when_singleton": 0.9,
+      "accuracy_when_uncertain_both_classes": 0.6148
+    },
+    "applicability_domain": {
+      "fraction_in_domain": 0.7432,
+      "in_domain_accuracy": 0.8111,
+      "out_of_domain_accuracy": 0.6933
+    }
+  },
+  "external_validation": {
+    "performed": false,
+    "reason": "No independent second-source CYP2D6 dataset identified in this pass."
+  },
+  "artifact": {
+    "path": "models/psychiatric/cyp2d6_activity/artifact/model.joblib",
+    "sha256": "5d1c17630342beef5a48db0a790bb519b734a66887af48f917fa69233367b76b",
+    "note": "gitignored binary, not committed, same convention as hERG/CYP3A4's artifacts.",
+    "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, RANDOM_SEED=42 fixed throughout."
+  },
+  "inference_support": {
+    "_comment": "Frozen conformal calibration + AD reference data exported by models/psychiatric/cyp2d6_activity/10_export_inference_support.py -- never recomputed at inference time.",
+    "npz_path": "models/psychiatric/cyp2d6_activity/artifact/inference_support.npz",
+    "npz_sha256": "2a3777098551a73acb059604d8df9e81c04e00caf9a33dc74ddf0f96e4c7e919",
+    "scaler_path": "models/psychiatric/cyp2d6_activity/artifact/descriptor_ad_scaler.joblib",
+    "scaler_sha256": "06fcbf4a620183335c8f9e31208faa48d7af3dc9e91ee39cb29f5b214be24501",
+    "manifest_path": "models/psychiatric/cyp2d6_activity/inference_support_manifest.json",
+    "manifest_sha256": "65f9f0201b23c23661abcb86f14efb4b2cae0edfe32c5fc01a3f360ee0422b66"
+  },
+  "deployment_status": {
+    "loadable_via_local_registry": true,
+    "wired_into_live_predict_api": false,
+    "note": "Not referenced by deployment/docker/Dockerfile.predict-api or render.yaml's MODEL_RELEASE_URL_BASE assets -- the live drugsim-predict-api service does not serve this model_id yet. Loadable today only from a local checkout with the local artifact files present (e.g. for the psychiatric-pipeline's offline multi-objective screening script)."
+  }
+}
