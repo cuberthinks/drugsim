@@ -14539,6 +14539,54 @@
         "Vanin-1-IN-1 /PFI-653",
         "VUN34002"
       ]
+    },
+    {
+      "description": "Water appears as a clear, nontoxic liquid composed of hydrogen and oxygen, essential for life and the most widely used solvent. Include water in a mixture to learn how it could react with other chemicals in the mixture.",
+      "description_source": "PubChem",
+      "inchikey_full": "XLYOFNOQVPJJNP-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Water",
+      "pubchem_cid": "962",
+      "retrieved_at": "2026-08-30T13:07:59+00:00",
+      "synonyms": [
+        "7732-18-5",
+        "Distilled water",
+        "Dihydrogen oxide",
+        "Purified water",
+        "Sterile water"
+      ]
+    },
+    {
+      "description": "Methane is a colorless odorless gas. It is also known as marsh gas or methyl hydride. It is easily ignited. The vapors are lighter than air. Under prolonged exposure to fire or intense heat the containers may rupture violently and rocket. It is used in making other chemicals and as a constituent of the fuel, natural gas.",
+      "description_source": "PubChem",
+      "inchikey_full": "VNWKTOKETHGBQD-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Methane",
+      "pubchem_cid": "297",
+      "retrieved_at": "2026-08-30T13:08:06+00:00",
+      "synonyms": [
+        "Marsh gas",
+        "Methyl hydride",
+        "Fire Damp",
+        "Biogas",
+        "74-82-8"
+      ]
+    },
+    {
+      "description": "Benzene is a colorless liquid with a sweet odor. It evaporates into the air very quickly and dissolves slightly in water. It is highly flammable and is formed from both natural processes and human activities. Benzene is widely used in the United States; it ranks in the top 20 chemicals for production volume. Some industries use benzene to make other chemicals which are used to make plastics, resins, and nylon and synthetic fibers. Benzene is also used to make some types of rubbers, lubricants, dyes, detergents, drugs, and pesticides. Natural sources of benzene include volcanoes and forest fires. Benzene is also a natural part of crude oil, gasoline, and cigarette smoke.",
+      "description_source": "PubChem",
+      "inchikey_full": "UHOVQNZJYSORNB-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Benzene",
+      "pubchem_cid": "241",
+      "retrieved_at": "2026-08-30T13:08:10+00:00",
+      "synonyms": [
+        "71-43-2",
+        "benzol",
+        "Cyclohexatriene",
+        "benzole",
+        "Pyrobenzole"
+      ]
     }
   ]
 }
