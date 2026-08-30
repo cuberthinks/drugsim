@@ -6,6 +6,24 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    date: "2026-08-30",
+    title: "Compound recognition fixes",
+    items: [
+      "Ethanol, water, methane, and benzene were incorrectly showing as \"not identified\" despite being some of the most well-known compounds there are — fixed. All four now resolve to their real name, synonyms, and a sourced description.",
+      "DrugSim can now recognize 913 named compounds by structure, up from 904.",
+    ],
+  },
+  {
+    date: "2026-08-27",
+    title: "Compound identification",
+    items: [
+      "A prediction now includes a verified compound-identity panel — name, common synonyms, database identifiers, and a sourced description — whenever the submitted structure matches one of DrugSim's own reference compounds.",
+      "This is resolved entirely offline, from a snapshot built in advance: a submitted structure is never sent to any third party to look up its identity, the same guarantee already in place for predictions themselves.",
+      "A structure outside that reference set is now honestly labeled \"not identified\" rather than showing nothing — the prediction itself proceeds exactly the same either way.",
+      "Molecular weight is now shown directly on every result.",
+    ],
+  },
+  {
     date: "2026-08-22",
     title: "Confidentiality hardening",
     items: [
