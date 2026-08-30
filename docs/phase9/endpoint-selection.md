@@ -72,6 +72,24 @@ methodology already validated for hERG. Full definition in
   reproduce hERG's train/calibration/test scaffold-split protocol
   credibly) and human bioavailability (small *and* units-ambiguous).
 
+## Erratum (found 2026-08-30, during the psychiatric-pipeline audit)
+
+The **CYP2D6 row above cites the wrong ChEMBL target**. `CHEMBL2035` is
+not CYP2D6 — it is the **muscarinic acetylcholine receptor M5 (CHRM5)**,
+confirmed live via `target_search`. The real CYP2D6 target is
+**`CHEMBL289`** ("Cytochrome P450 2D6," SINGLE PROTEIN, Homo sapiens,
+UniProt P10635), which carries **8,684 raw IC50 records, 3,349 after
+`standard_units='nM'` + `pchembl_value` present** (live-verified
+2026-08-30) — not 1,394. This means CYP2D6 was never actually the
+smallest CYP isoform checked; the number rejected in this table belongs
+to an unrelated GPCR, not to any CYP. The rejection verdict in the table
+above is therefore **wrong as stated** and should not be relied on —
+see `docs/psychiatric-pipeline/data-sources.md`'s CYP2D6 section for the
+corrected assessment. The original table row is left unedited above
+(rather than silently rewritten) so this document still accurately
+records what Phase 9 actually did and believed at the time; treat the
+CYP2D6 line in that table as superseded by this note.
+
 ## What was explicitly NOT done
 
 No endpoint was selected before checking real data availability. No

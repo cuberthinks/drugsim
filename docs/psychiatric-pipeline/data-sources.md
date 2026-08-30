@@ -15,7 +15,7 @@ exact quote from the existing Phase 9 audit, never invented.
 |---|---|---|---|
 | DRD2 | ChEMBL (CHEMBL217) | 14,842 Ki / 2,480 IC50 | **Strong candidate** — proceed to quality-gated dataset build |
 | HRH1 | ChEMBL (CHEMBL231) | 2,893 Ki / 1,334 IC50 | **Moderate candidate** — proceed, but expect a noisier/smaller model than DRD2 |
-| CYP2D6 | ChEMBL (CHEMBL2035) | 1,394 IC50 (Phase 9, live-verified 2026-08-09) | **INSUFFICIENT DATA** — already rejected by Phase 9 on sample size; nothing has changed |
+| CYP2D6 | ChEMBL (CHEMBL289) | 8,684 IC50 raw / 3,349 after nM+pChEMBL filtering (live-verified 2026-08-30) | **Moderate candidate** — Phase 9's rejection was based on the wrong target ID; the real target has real, usable data |
 | BBB | TDC (Martins et al.), via the already-registered `tdc` source | ~2,030 compounds (registry-cited, not yet independently downloaded) | **Deferred candidate, real** — usable, but needs an actual download + quality gate before a model can be built; not yet done |
 | hERG | Existing DrugSim model (`herg_inhibition_v1`) | 9,589 training-eligible compounds (already validated) | **Reuse as-is** — no new data, no retraining |
 
@@ -68,22 +68,46 @@ exact quote from the existing Phase 9 audit, never invented.
   should be stated plainly if/when a model is actually trained, not
   glossed over.
 
-## CYP2D6 — already evaluated, still insufficient
+## CYP2D6 — Phase 9's rejection was based on the wrong target; corrected here
 
-Exact quote, `docs/phase9/endpoint-selection.md`: *"CYP2D6 inhibition |
-Metabolism | ChEMBL CHEMBL2035 | 1,394 IC50 records (live-verified) |
-IC50, nM | No | Clinically important (genetic polymorphism), but the
-smallest of the CYP isoforms checked — rejected for this phase on
-sample size."* That verification was live (2026-08-09), same rigor this
-audit is applying to DRD2/HRH1 today. Nothing in this repo, or in
-public data availability, has changed since — no new CYP2D6 source has
-appeared. Per the brief's own §24 instruction, this stays marked
-**INSUFFICIENT DATA** rather than forced into the pipeline. A cheap,
-worthwhile step *when this endpoint's phase actually starts* (not
-before) is a fresh live re-check, since ChEMBL is a continuously
-updated source — this audit does not claim the number is still exactly
-1,394 today, only that nothing suggests it has grown enough to change
-the verdict.
+The cheap live re-check flagged as worthwhile "when this endpoint's
+phase actually starts" turned up a real error, not just a size update.
+Phase 9's `docs/phase9/endpoint-selection.md` cites CYP2D6's ChEMBL
+target as `CHEMBL2035` with 1,394 IC50 records. **`CHEMBL2035` is not
+CYP2D6** — live `target_search` confirms it is the **muscarinic
+acetylcholine receptor M5 (CHRM5)**, an unrelated GPCR. The actual
+CYP2D6 target is **`CHEMBL289`** ("Cytochrome P450 2D6," SINGLE
+PROTEIN, Homo sapiens, UniProt P10635), confirmed live today
+(2026-08-30).
+
+**Real record counts for the correct target**: **8,684 raw IC50
+records; 3,349 after restricting to `standard_units='nM'` with a
+`pchembl_value` present** (the same style of filter CYP3A4 used, which
+went from 13,887 raw to 6,755 filtered). 3,349 is larger than Pgp
+(2,654, Phase 9's own "deferred, real candidate" tier) and CYP2C9
+(2,609), and more than double HRH1's entire *final, already-built*
+dataset (1,395 compounds). CYP2D6 was never actually the smallest CYP
+isoform checked — the number that earned it a rejection belongs to a
+different protein entirely.
+
+**Corrected verdict**: CYP2D6 is a **moderate, real candidate**, not
+insufficient data. Phase 9's own erratum note has been added at
+`docs/phase9/endpoint-selection.md` rather than silently rewriting that
+table. Per the brief's own §3 instruction (dataset-quality gate first),
+this endpoint is now cleared to proceed to an actual quality-gated
+dataset build, following the identical `fetch_chembl_data.py` →
+`build_dataset.py` → `prepare_features.py` → `train.py` → `evaluate.py`
+pipeline already used for DRD2 and HRH1 — subject to the usual
+discordance/duplicate/quarantine filtering actually landing in a usable
+final compound count once real curation is applied (3,349 is the raw
+filtered ceiling, not the guaranteed final size).
+
+**One remaining, separate concern this does not resolve**: even with
+real binding data, a CYP2D6 *inhibition* model still cannot infer a
+patient's CYP2D6 *genotype/phenotype* — that scientific distinction
+(already classified in `scientific-foundation.md`) is about what the
+model can claim, not about data availability, and stands regardless of
+this correction.
 
 ## BBB — blood-brain-barrier permeability
 
@@ -157,9 +181,9 @@ CYP3A4 did.
 - **HRH1**: proceed alongside DRD2, with its smaller size disclosed
   plainly in every downstream artifact (model card, applicability
   domain reporting, uncertainty).
-- **CYP2D6**: do not build. Mark `INSUFFICIENT DATA` and stop there for
-  this endpoint, per the brief's own instruction, unless a future fresh
-  check finds real growth.
+- **CYP2D6**: proceed to a real, quality-gated dataset build — Phase 9's
+  rejection was based on the wrong ChEMBL target and does not apply to
+  the real one (`CHEMBL289`), which has real, usable data.
 - **BBB**: real and viable via TDC, but requires an actual download and
   quality gate that has not happened yet — a separate, later step, not
   bundled into this audit.
