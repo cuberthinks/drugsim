@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-08-30T09:24:40+00:00",
+  "method": "Mirrors models/admet/cyp3a4_inhibition/baselines.py's methodology (majority-class + descriptor-only baselines), applied fresh to DRD2/HRH1/CYP2D6/BBB, computed on each endpoint's own real held-out test group (split_group 9) -- never estimated.",
+  "results": {
+    "cyp2d6_activity": {
+      "task_type": "classification",
+      "n_test": 292,
+      "champion_roc_auc": 0.8333,
+      "majority_class_balanced_accuracy": 0.5,
+      "majority_class_roc_auc": 0.5,
+      "descriptor_only_random_forest_roc_auc": 0.7753,
+      "improvement_over_descriptor_only_roc_auc": 0.058,
+      "fingerprint_adds_real_signal": true,
+      "meaningfully_beats_majority_baseline": true
+    },
+    "bbb_permeability": {
+      "task_type": "classification",
+      "n_test": 150,
+      "champion_roc_auc": 0.9615,
+      "majority_class_balanced_accuracy": 0.5,
+      "majority_class_roc_auc": 0.5,
+      "descriptor_only_random_forest_roc_auc": 0.9469,
+      "improvement_over_descriptor_only_roc_auc": 0.0146,
+      "fingerprint_adds_real_signal": true,
+      "meaningfully_beats_majority_baseline": true
+    },
+    "drd2_activity": {
+      "task_type": "regression",
+      "n_test": 839,
+      "champion_r2": 0.555,
+      "predict_mean_baseline_r2": -0.0051,
+      "descriptor_only_random_forest_r2": 0.3581,
+      "improvement_over_descriptor_only_r2": 0.1969,
+      "fingerprint_adds_real_signal": true,
+      "meaningfully_beats_predict_mean_baseline": true
+    },
+    "hrh1_activity": {
+      "task_type": "regression",
+      "n_test": 146,
+      "champion_r2": 0.7672,
+      "predict_mean_baseline_r2": -0.0001,
+      "descriptor_only_random_forest_r2": 0.0734,
+      "improvement_over_descriptor_only_r2": 0.6938,
+      "fingerprint_adds_real_signal": true,
+      "meaningfully_beats_predict_mean_baseline": true
+    }
+  },
+  "hERG_and_CYP3A4_reference": {
+    "note": "Not recomputed here -- both already have their own baseline_comparison in models/admet/cyp3a4_inhibition/baselines_report.json and models/registry/herg_inhibition_v1.json. Included as context only."
+  },
+  "summary": {
+    "cyp2d6_activity": {
+      "fingerprint_adds_real_signal": true
+    },
+    "bbb_permeability": {
+      "fingerprint_adds_real_signal": true
+    },
+    "drd2_activity": {
+      "fingerprint_adds_real_signal": true
+    },
+    "hrh1_activity": {
+      "fingerprint_adds_real_signal": true
+    }
+  }
+}
