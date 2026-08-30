@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-08-30T08:39:02+00:00",
+  "algorithm": "gradient_boosting",
+  "label": "pki (continuous, higher = stronger predicted HRH1 binding)",
+  "global_split": {
+    "n_test": 146,
+    "r2": 0.7672,
+    "mae": 0.5852,
+    "rmse": 0.7634,
+    "description": "Scaffold-level split_group 9, per ADR-009. Touched once, here."
+  },
+  "conformal": {
+    "method": "split_conformal_prediction_regression",
+    "nominal_confidence": 0.9,
+    "calibration_group": 7,
+    "n_calibration": 189,
+    "interval_half_width_pki_units": 1.0746,
+    "empirical_coverage_on_test": 0.8493,
+    "caveat": "n_calibration=189 is small -- the calibrated interval width itself carries meaningful sampling noise, on top of what it reports."
+  },
+  "applicability_domain": {
+    "method": "tanimoto_max_similarity_and_knn_descriptor_distance",
+    "thresholds": {
+      "tanimoto_min_for_in_domain": 0.4364,
+      "knn_distance_max_for_in_domain": 1.9927,
+      "derivation": "10th/90th percentile of the TRAINING population's own self-similarity/self-distance, excluding each compound's guaranteed match to itself."
+    },
+    "scaffold_seen_signal": "not available in this pass, same as drd2_activity.",
+    "fraction_in_domain": 0.8562,
+    "in_domain": {
+      "n": 125,
+      "r2": 0.8324,
+      "caveat": null
+    },
+    "out_of_domain": {
+      "n": 21,
+      "r2": 0.0834,
+      "caveat": null
+    }
+  },
+  "external_validation": {
+    "performed": false,
+    "reason": "No independent second-source HRH1 dataset identified in this pass -- same situation as DRD2."
+  },
+  "limitations": [
+    "Dataset is small (1,395 compounds total, 916 for training) -- comparable in size to CYP2D6's 1,394 records, which Phase 9 already rejected as too small for a robust scaffold-split protocol in that context. HRH1 proceeds here anyway because, unlike CYP2D6 (which was competing against a larger alternative, CYP3A4, for one endpoint slot), HRH1 has no substitute for this feature's own selectivity requirement -- but every metric below should be read with that size firmly in mind, not treated as equivalent in reliability to DRD2's.",
+    "Classical models only in this pass; no GNN benchmark (dataset is far too small for one).",
+    "Applicability domain's scaffold-seen signal is not available in this pass.",
+    "No external validation performed in this pass.",
+    "This model is not integrated into the live /predict API -- offline evaluation only."
+  ]
+}

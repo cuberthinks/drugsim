@@ -1,0 +1,56 @@
+{
+  "algorithm": "gradient_boosting",
+  "hyperparameters": {
+    "alpha": 0.9,
+    "ccp_alpha": 0.0,
+    "criterion": "friedman_mse",
+    "init": null,
+    "learning_rate": 0.1,
+    "loss": "squared_error",
+    "max_depth": 3,
+    "max_features": null,
+    "max_leaf_nodes": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "n_estimators": 100,
+    "n_iter_no_change": null,
+    "random_state": 42,
+    "subsample": 1.0,
+    "tol": 0.0001,
+    "validation_fraction": 0.1,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "random_seed": 42,
+  "requires_scaling": false,
+  "train_groups": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "validation_group": 8,
+  "n_train": 916,
+  "n_validation": 144,
+  "train_pki_mean": 6.3891,
+  "validation_metrics": {
+    "r2": 0.5706,
+    "mae": 0.8986,
+    "rmse": 1.587
+  },
+  "candidate_comparison": {
+    "random_forest": 0.5266,
+    "gradient_boosting": 0.5706,
+    "ridge_regression": -0.1355
+  },
+  "gnn_benchmark": "Not implemented in this pass -- see drd2_activity/train_manifest.json's identical note. Even more true here: 916 training compounds is far too small for a deep architecture.",
+  "trained_at": "2026-08-30T08:37:37+00:00",
+  "model_artifact": "models/psychiatric/hrh1_activity/artifact/model.joblib",
+  "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
+  "label": "pki (continuous, higher = stronger predicted HRH1 binding)"
+}
