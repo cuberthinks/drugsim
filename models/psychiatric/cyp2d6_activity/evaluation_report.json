@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-08-30T09:02:31+00:00",
+  "algorithm": "random_forest",
+  "label": "binary CYP2D6-inhibitor liability (1=inhibitor, aggregated IC50 <= 10 uM)",
+  "global_split": {
+    "n_test": 292,
+    "positive_fraction": 0.7329,
+    "roc_auc": 0.8333,
+    "average_precision_pr_auc": 0.937,
+    "balanced_accuracy": 0.7283,
+    "matthews_corrcoef": 0.4495,
+    "sensitivity_recall_positive": 0.8411,
+    "specificity_recall_negative": 0.6154,
+    "f1": 0.8491,
+    "precision": 0.8571,
+    "recall": 0.8411,
+    "brier_score": 0.1516,
+    "confusion_matrix": {
+      "tn": 48,
+      "fp": 30,
+      "fn": 34,
+      "tp": 180
+    },
+    "description": "Scaffold-level split_group 9, per ADR-009. Touched once, here."
+  },
+  "conformal": {
+    "method": "split_conformal_prediction_classification",
+    "nominal_confidence": 0.9,
+    "n_calibration": 307,
+    "n_test": 292,
+    "empirical_coverage": 0.9418,
+    "coverage_within_tolerance": true,
+    "prediction_set_sizes": {
+      "singleton_confident": 170,
+      "both_classes_uncertain": 122,
+      "empty_anomalous": 0
+    },
+    "singleton_fraction": 0.5822,
+    "accuracy_when_singleton": 0.9,
+    "accuracy_when_uncertain_both_classes": 0.6148
+  },
+  "applicability_domain": {
+    "method": "tanimoto_max_similarity_and_knn_descriptor_distance",
+    "thresholds": {
+      "tanimoto_min_for_in_domain": 0.3156,
+      "knn_distance_max_for_in_domain": 1.9112,
+      "derivation": "10th/90th percentile of the TRAINING population's own self-similarity/self-distance, excluding each compound's guaranteed match to itself."
+    },
+    "fraction_in_domain": 0.7432,
+    "in_domain": {
+      "n": 217,
+      "accuracy": 0.8111,
+      "roc_auc": 0.858
+    },
+    "out_of_domain": {
+      "n": 75,
+      "accuracy": 0.6933,
+      "roc_auc": 0.7274
+    }
+  },
+  "external_validation": {
+    "performed": false,
+    "reason": "No independent second-source CYP2D6 dataset identified in this pass, same situation as DRD2/HRH1."
+  },
+  "limitations": [
+    "This is a CYP2D6-inhibition-liability flag only -- it cannot infer a patient's own CYP2D6 genotype/phenotype (poor/intermediate/extensive/ultrarapid metabolizer status). 'Not a CYP2D6 inhibitor' does not mean 'safe for poor metabolizers' -- those are distinct concepts, per scientific-foundation.md.",
+    "10 uM inhibitor threshold is a literature screening convention, not a universal biological constant -- same convention class already used for hERG and CYP3A4.",
+    "Classical models only in this pass; no GNN benchmark (small-data regime, no existing GNN infrastructure in this repository).",
+    "No external validation performed in this pass.",
+    "This model is not integrated into the live /predict API -- offline evaluation only."
+  ]
+}
