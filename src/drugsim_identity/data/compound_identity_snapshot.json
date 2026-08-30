@@ -14587,6 +14587,758 @@
         "benzole",
         "Pyrobenzole"
       ]
+    },
+    {
+      "description": "Phthalimide is a white to light tan powder. Slightly acidic. (NTP, 1992)",
+      "description_source": "PubChem (National Toxicology Program, Institute of Environmental Health Sciences, National Institutes of Health (NTP). 1992. National Toxicology Program Chemical Repository Database. Research Triangle Park, North Carolina.)",
+      "inchikey_full": "XKJCHHZQLQNZHY-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Phthalimide",
+      "pubchem_cid": "6809",
+      "retrieved_at": "2026-08-30T13:30:11+00:00",
+      "synonyms": [
+        "85-41-6",
+        "Isoindole-1,3-dione",
+        "1H-Isoindole-1,3(2H)-dione",
+        "o-Phthalic imide",
+        "Benzoimide"
+      ]
+    },
+    {
+      "description": "Acetone is a manufactured chemical that is also found naturally in the environment. It is a colorless liquid with a distinct smell and taste. It evaporates easily, is flammable, and dissolves in water. It is also called dimethyl ketone, 2-propanone, and beta-ketopropane. Acetone is used to make plastic, fibers, drugs, and other chemicals. It is also used to dissolve other substances. It occurs naturally in plants, trees, volcanic gases, forest fires, and as a product of the breakdown of body fat. It is present in vehicle exhaust, tobacco smoke, and landfill sites. Industrial processes contribute more acetone to the environment than natural processes.",
+      "description_source": "PubChem",
+      "inchikey_full": "CSCPPACGZOOCGX-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Acetone",
+      "pubchem_cid": "180",
+      "retrieved_at": "2026-08-30T13:30:14+00:00",
+      "synonyms": [
+        "2-propanone",
+        "67-64-1",
+        "propanone",
+        "propan-2-one",
+        "Dimethyl ketone"
+      ]
+    },
+    {
+      "description": "Methanol can cause developmental toxicity according to The National Toxicology Program.",
+      "description_source": "PubChem",
+      "inchikey_full": "OKKJLVBELUTLKV-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Methanol",
+      "pubchem_cid": "887",
+      "retrieved_at": "2026-08-30T13:30:17+00:00",
+      "synonyms": [
+        "methyl alcohol",
+        "67-56-1",
+        "wood alcohol",
+        "Methylol",
+        "Wood naphtha"
+      ]
+    },
+    {
+      "description": "Volatile, colorless liquid with a sharp musty odor like rubbing alcohol. Flash point of 53 \u00b0F. Vapors are heavier than air and mildly irritating to the eyes, nose, and throat. Density approximately 6.5 lb / gal. Used in making cosmetics, skin and hair preparations, pharmaceuticals, perfumes, lacquer formulations, dye solutions, antifreezes, soaps, window cleaners. Sold in 70% aqueous solution as rubbing alcohol.",
+      "description_source": "PubChem",
+      "inchikey_full": "KFZMGEQAYNKOFK-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Isopropanol",
+      "pubchem_cid": "3776",
+      "retrieved_at": "2026-08-30T13:30:21+00:00",
+      "synonyms": [
+        "Isopropyl alcohol",
+        "2-Propanol",
+        "Propan-2-ol",
+        "67-63-0",
+        "2-Hydroxypropane"
+      ]
+    },
+    {
+      "description": "Dimethyl sulfoxide appears as a clear liquid, essentially odorless. Closed cup flash point 192 \u00b0F. Vapors are heavier than air. Contact with the skin may cause stinging and burning and lead to an odor of garlic on the breath. An excellent solvent that can transport toxic solutes through the skin. High vapor concentrations may cause headache, dizziness, and sedation.",
+      "description_source": "PubChem",
+      "inchikey_full": "IAZDPXIOMUYVGZ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Dimethyl Sulfoxide",
+      "pubchem_cid": "679",
+      "retrieved_at": "2026-08-30T13:30:25+00:00",
+      "synonyms": [
+        "67-68-5",
+        "DMSO",
+        "Methylsulfinylmethane",
+        "Methyl sulfoxide",
+        "Dimethyl sulphoxide"
+      ]
+    },
+    {
+      "description": "N,N-Dimethylformamide can cause cancer according to California Labor Code and the World Health Organization's International Agency for Research on Cancer (IARC).",
+      "description_source": "PubChem",
+      "inchikey_full": "ZMXDDKWLCZADIW-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Dimethylformamide",
+      "pubchem_cid": "6228",
+      "retrieved_at": "2026-08-30T13:30:31+00:00",
+      "synonyms": [
+        "N,N-DIMETHYLFORMAMIDE",
+        "68-12-2",
+        "Dimethyl formamide",
+        "N-Formyldimethylamine",
+        "Formamide, N,N-dimethyl-"
+      ]
+    },
+    {
+      "description": "Tetrahydrofuran can cause cancer according to California Labor Code and the World Health Organization's International Agency for Research on Cancer (IARC).",
+      "description_source": "PubChem",
+      "inchikey_full": "WYURNTSHIVDZCO-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Tetrahydrofuran",
+      "pubchem_cid": "8028",
+      "retrieved_at": "2026-08-30T13:30:34+00:00",
+      "synonyms": [
+        "Oxolane",
+        "109-99-9",
+        "Furanidine",
+        "Furan, tetrahydro-",
+        "Tetramethylene oxide"
+      ]
+    },
+    {
+      "description": "Methylene chloride is a colorless liquid with a mild, sweet odor. Another name for it is dichloromethane. Methylene chloride does not occur naturally in the environment.Methylene chloride is used as an industrial solvent and as a paint stripper. It may also be found in some aerosol and pesticide products and is used in the manufacture of photographic film.",
+      "description_source": "PubChem",
+      "inchikey_full": "YMWUJEATGCHHMB-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Dichloromethane",
+      "pubchem_cid": "6344",
+      "retrieved_at": "2026-08-30T13:30:37+00:00",
+      "synonyms": [
+        "Methylene chloride",
+        "75-09-2",
+        "Methylene dichloride",
+        "Methane, dichloro-",
+        "Methylene bichloride"
+      ]
+    },
+    {
+      "description": "Chloroform is a colorless liquid with a pleasant, nonirritating odor and a slightly sweet taste. It will burn only when it reaches very high temperatures. In the past, chloroform was used as an inhaled anesthetic during surgery, but it isn't used that way today. Today, chloroform is used to make other chemicals and can also be formed in small amounts when chlorine is added to water. Other names for chloroform aretrichloromethaneandmethyl trichloride.",
+      "description_source": "PubChem",
+      "inchikey_full": "HEDRZPFGACZZDS-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Chloroform",
+      "pubchem_cid": "6212",
+      "retrieved_at": "2026-08-30T13:30:39+00:00",
+      "synonyms": [
+        "Trichloromethane",
+        "67-66-3",
+        "Trichlormethan",
+        "Trichloroform",
+        "Formyl trichloride"
+      ]
+    },
+    {
+      "description": "Ethyl acetate appears as a clear colorless liquid with a fruity odor. Flash point 24 \u00b0F. Less dense than water. Vapors heavier than air.",
+      "description_source": "PubChem",
+      "inchikey_full": "XEKOWRVHYACXOJ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Ethyl Acetate",
+      "pubchem_cid": "8857",
+      "retrieved_at": "2026-08-30T13:30:41+00:00",
+      "synonyms": [
+        "141-78-6",
+        "Ethyl ethanoate",
+        "Acetic acid ethyl ester",
+        "Vinegar naphtha",
+        "Acetoxyethane"
+      ]
+    },
+    {
+      "description": "Toluene is a clear, colorless liquid with a distinctive smell. Toluene occurs naturally in crude oil and in the tolu tree. It is also produced in the process of making gasoline and other fuels from crude oil and making coke from coal. Toluene is used in making paints, paint thinners, fingernail polish, lacquers, adhesives, and rubber and in some printing and leather tanning processes.",
+      "description_source": "PubChem",
+      "inchikey_full": "YXFVVABEGXRONW-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Toluene",
+      "pubchem_cid": "1140",
+      "retrieved_at": "2026-08-30T13:30:45+00:00",
+      "synonyms": [
+        "methylbenzene",
+        "toluol",
+        "108-88-3",
+        "Phenylmethane",
+        "methacide"
+      ]
+    },
+    {
+      "description": "n-Hexane is a chemical made from crude oil. Pure n-Hexane is a colorless liquid with a slightly disagreeable odor. It is highly flammable, and its vapors can be explosive. Puren-Hexane is used in laboratories. Most of then-Hexane used in industry is mixed with similar chemicals called solvents. The major use for solvents containing n-Hexane is to extract vegetable oils from crops such as soybeans. These solvents are also used as cleaning agents in the printing, textile, furniture, and shoemaking industries. Certain kinds of special glues used in the roofing and shoe and leather industries also contain n-Hexane. Several consumer products containn-Hexane, such as gasoline, quick-drying glues used in various hobbies, and rubber cement. .",
+      "description_source": "PubChem",
+      "inchikey_full": "VLKZOEOYAKHREP-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Hexane",
+      "pubchem_cid": "8058",
+      "retrieved_at": "2026-08-30T13:30:48+00:00",
+      "synonyms": [
+        "n-Hexane",
+        "110-54-3",
+        "Skellysolve B",
+        "Esani",
+        "Gettysolve-B"
+      ]
+    },
+    {
+      "description": "Diethyl ether appears as a clear colorless liquid with an anesthetic odor. Flash point -49 \u00b0F. Less dense than water and slightly soluble in water. Hence floats on water. Vapors are heavier than air. Used as a solvent and to make other chemicals.",
+      "description_source": "PubChem",
+      "inchikey_full": "RTZKZFJDLAIYFH-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Diethyl Ether",
+      "pubchem_cid": "3283",
+      "retrieved_at": "2026-08-30T13:30:54+00:00",
+      "synonyms": [
+        "ether",
+        "Ethyl ether",
+        "Ethoxyethane",
+        "60-29-7",
+        "Ethyl oxide"
+      ]
+    },
+    {
+      "description": "Acetonitrile appears as a colorless limpid liquid with an aromatic odor. Flash point 42 \u00b0F. Density 0.783 g / cm3. Toxic by skin absorption. Less dense than water. Vapors are denser than air.",
+      "description_source": "PubChem",
+      "inchikey_full": "WEVYAHXRMPXWCK-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Acetonitrile",
+      "pubchem_cid": "6342",
+      "retrieved_at": "2026-08-30T13:30:58+00:00",
+      "synonyms": [
+        "75-05-8",
+        "Methyl cyanide",
+        "Cyanomethane",
+        "Ethanenitrile",
+        "Ethyl nitrile"
+      ]
+    },
+    {
+      "description": "Acetic acid, glacial appears as a clear colorless liquid with a strong odor of vinegar. Flash point 104 \u00b0F. Density 8.8 lb / gal. Corrosive to metals and tissue. Used to make other chemicals, as a food additive, and in petroleum production.",
+      "description_source": "PubChem",
+      "inchikey_full": "QTBSBXVTEAMEQO-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Acetic Acid",
+      "pubchem_cid": "176",
+      "retrieved_at": "2026-08-30T13:31:07+00:00",
+      "synonyms": [
+        "64-19-7",
+        "ethanoic acid",
+        "Ethylic acid",
+        "Vinegar acid",
+        "Acetic acid glacial"
+      ]
+    },
+    {
+      "description": "At room temperature, hydrogen chloride is a colorless to slightly yellow, corrosive, nonflammable gas that is heavier than air and has a strong irritating odor. On exposure to air, hydrogen chloride forms dense white corrosive vapors. Hydrogen chloride can be released from volcanoes. Hydrogen chloride has many uses, including cleaning, pickling, electroplating metals, tanning leather, and refining and producing a wide variety of products. Hydrogen chloride can be formed during the burning of many plastics. Upon contact with water, it forms hydrochloric acid. Both hydrogen chloride and hydrochloric acid are corrosive.",
+      "description_source": "PubChem",
+      "inchikey_full": "VEXZGXHMUGYJMC-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Hydrochloric Acid",
+      "pubchem_cid": "313",
+      "retrieved_at": "2026-08-30T13:31:10+00:00",
+      "synonyms": [
+        "hydrogen chloride",
+        "7647-01-0",
+        "Muriatic acid",
+        "chlorane",
+        "Chlorohydric acid"
+      ]
+    },
+    {
+      "description": "Sulfuric acid is a colorless oily liquid. It is soluble in water with release of heat. It is corrosive to metals and tissue. It will char wood and most other organic matter on contact, but is unlikely to cause a fire. Density 15 lb / gal. Long term exposure to low concentrations or short term exposure to high concentrations can result in adverse health effects from inhalation. It is used to make fertilizers and other chemicals, in petroleum refining, in iron and steel production, and for many other uses.   Rate of onset: Immediate  Persistence: Hours, days  Odor threshold:   Source/use/other hazard: Battery/dyes/paper/glue/metals industries; volcanic gas; toxic fumes when heated.",
+      "description_source": "PubChem",
+      "inchikey_full": "QAOWNCQODCNURD-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Sulfuric Acid",
+      "pubchem_cid": "1118",
+      "retrieved_at": "2026-08-30T13:31:13+00:00",
+      "synonyms": [
+        "Sulphuric acid",
+        "7664-93-9",
+        "Dihydrogen sulfate",
+        "Dipping acid",
+        "Mattling acid"
+      ]
+    },
+    {
+      "description": "At room temperature, sodium hydroxide is a white crystalline odorless solid that absorbs moisture from the air. It is a manufactured substance. When dissolved in water or neutralized with acid it liberates substantial heat, which may be sufficient to ignite combustible materials. Sodium hydroxide is very corrosive. It is generally used as a solid or a 50% solution. Other common names include caustic soda and lye. Sodium hydroxide is used to manufacture soaps, rayon, paper, explosives, dyestuffs, and petroleum products. It is also used in processing cotton fabric, laundering and bleaching, metal cleaning and processing, oxide coating, electroplating, and electrolytic extracting. It is commonly present in commercial drain and oven cleaners.",
+      "description_source": "PubChem",
+      "inchikey_full": "HEMHJVSKTPXQMS-UHFFFAOYSA-M",
+      "license_spdx": "US-PD",
+      "preferred_name": "Sodium Hydroxide",
+      "pubchem_cid": "14798",
+      "retrieved_at": "2026-08-30T13:31:15+00:00",
+      "synonyms": [
+        "1310-73-2",
+        "Caustic soda",
+        "Sodium hydrate",
+        "Aetznatron",
+        "Soda lye"
+      ]
+    },
+    {
+      "description": "Ammonia occurs naturally and is produced by human activity. It is an important source of nitrogen which is needed by plants and animals. Bacteria found in the intestines can produce ammonia. Ammonia is a colorless gas with a very distinct odor. This odor is familiar to many people because ammonia is used in smelling salts, many household and industrial cleaners, and window-cleaning products. Ammonia gas can be dissolved in water. This kind of ammonia is called liquid ammonia or aqueous ammonia. Once exposed to open air, liquid ammonia quickly turns into a gas. Ammonia is applied directly into soil on farm fields, and is used to make fertilizers for farm crops, lawns, and plants. Many household and industrial cleaners contain ammonia.",
+      "description_source": "PubChem",
+      "inchikey_full": "QGZKDVFQNNGYKY-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Ammonia",
+      "pubchem_cid": "222",
+      "retrieved_at": "2026-08-30T13:31:18+00:00",
+      "synonyms": [
+        "azane",
+        "7664-41-7",
+        "Ammonia gas",
+        "Nitro-sil",
+        "Ammonia anhydrous"
+      ]
+    },
+    {
+      "description": "Formic acid appears as a colorless liquid with a pungent odor. Flash point 156 \u00b0F. Density 10.2 lb / gal. Corrosive to metals and tissue.",
+      "description_source": "PubChem",
+      "inchikey_full": "BDAGIHXWWSANSR-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Formic Acid",
+      "pubchem_cid": "284",
+      "retrieved_at": "2026-08-30T13:31:20+00:00",
+      "synonyms": [
+        "64-18-6",
+        "Methanoic acid",
+        "Formylic acid",
+        "Aminic acid",
+        "Bilorin"
+      ]
+    },
+    {
+      "description": "Borane is the simplest borane, consisting of a single boron atom carrying three hydrogens. It is a member of boranes and a mononuclear parent hydride.",
+      "description_source": "PubChem",
+      "inchikey_full": "UORVGPXVDQYIDP-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Borane",
+      "pubchem_cid": "6331",
+      "retrieved_at": "2026-08-30T13:31:23+00:00",
+      "synonyms": [
+        "trihydridoboron",
+        "boron trihydride",
+        "13283-31-3",
+        "Borane(3)",
+        "CHEBI:30149"
+      ]
+    },
+    {
+      "description": "Triethylamine appears as a clear colorless liquid with a strong ammonia to fish-like odor. Flash point 20 \u00b0F. Vapors irritate the eyes and mucous membranes. Less dense (6.1 lb / gal) than water. Vapors heavier than air. Produces toxic oxides of nitrogen when burned.",
+      "description_source": "PubChem",
+      "inchikey_full": "ZMANZCXQSJIPKH-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Triethylamine",
+      "pubchem_cid": "8471",
+      "retrieved_at": "2026-08-30T13:31:26+00:00",
+      "synonyms": [
+        "121-44-8",
+        "N,N-Diethylethanamine",
+        "(Diethylamino)ethane",
+        "Ethanamine, N,N-diethyl-",
+        "Triaethylamin"
+      ]
+    },
+    {
+      "description": "Urea appears as solid odorless white crystals or pellets. Density 1.335 g /cc. Noncombustible.",
+      "description_source": "PubChem",
+      "inchikey_full": "XSQUKJJJFZCRTK-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Urea",
+      "pubchem_cid": "1176",
+      "retrieved_at": "2026-08-30T13:31:34+00:00",
+      "synonyms": [
+        "57-13-6",
+        "carbamide",
+        "Carbonyldiamide",
+        "Ureophil",
+        "Carbonyldiamine"
+      ]
+    },
+    {
+      "description": "Carbonic acid is a carbon oxoacid and a chalcocarbonic acid. It has a role as a mouse metabolite. It is a conjugate acid of a hydrogencarbonate.",
+      "description_source": "PubChem",
+      "inchikey_full": "BVKZGUZCCUSVTD-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Carbonic Acid",
+      "pubchem_cid": "767",
+      "retrieved_at": "2026-08-30T13:31:38+00:00",
+      "synonyms": [
+        "463-79-6",
+        "Dihydrogen carbonate",
+        "H2CO3",
+        "DTXSID9043801",
+        "CHEBI:28976"
+      ]
+    },
+    {
+      "description": "Hydrogen peroxide is a colorless liquid at room temperature with a bitter taste. Small amounts of gaseous hydrogen peroxide occur naturally in the air. Hydrogen peroxide is unstable, decomposing readily to oxygen and water with release of heat. Although nonflammable, it is a powerful oxidizing agent that can cause spontaneous combustion when it comes in contact with organic material. Hydrogen peroxide is found in many households at low concentrations (3-9%) for medicinal applications and as a clothes and hair bleach. In industry, hydrogen peroxide in higher concentrations is used as a bleach for textiles and paper, as a component of rocket fuels, and for producing foam rubber and organic chemicals.",
+      "description_source": "PubChem",
+      "inchikey_full": "MHAJPDPJQMAIIY-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Hydrogen Peroxide",
+      "pubchem_cid": "784",
+      "retrieved_at": "2026-08-30T13:31:41+00:00",
+      "synonyms": [
+        "7722-84-1",
+        "oxydol",
+        "perhydrol",
+        "Superoxol",
+        "Interox"
+      ]
+    },
+    {
+      "description": "Carbon dioxide appears as a colorless odorless gas at atmospheric temperatures and pressures. Relatively nontoxic and noncombustible. Heavier than air and may asphyxiate by the displacement of air. Soluble in water. Forms carbonic acid, a mild acid. Under prolonged exposure to heat or fire the container may rupture violently and rocket. Used to freeze food, to control chemical reactions, and as a fire extinguishing agent.",
+      "description_source": "PubChem",
+      "inchikey_full": "CURLTUGMZLYLDI-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Carbon Dioxide",
+      "pubchem_cid": "280",
+      "retrieved_at": "2026-08-30T13:31:44+00:00",
+      "synonyms": [
+        "carbonic anhydride",
+        "124-38-9",
+        "carbonic acid gas",
+        "Carbonic acid anhydride",
+        "methanedione"
+      ]
+    },
+    {
+      "description": "Nitrogen appears as a colorless odorless gas. Noncombustible and nontoxic. Makes up the major portion of the atmosphere, but will not support life by itself. Used in food processing, in purging air conditioning and refrigeration systems, and in pressurizing aircraft tires. May cause asphyxiation by displacement of air. Under prolonged exposure to fire or heat containers may rupture violently and rocket.",
+      "description_source": "PubChem",
+      "inchikey_full": "IJGRMHOSHXDMSA-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Nitrogen",
+      "pubchem_cid": "947",
+      "retrieved_at": "2026-08-30T13:31:47+00:00",
+      "synonyms": [
+        "Nitrogen gas",
+        "Molecular nitrogen",
+        "Dinitrogen",
+        "7727-37-9",
+        "MOL Nitrogen"
+      ]
+    },
+    {
+      "description": "Oxygen is a colorless, odorless and tasteless gas. It will support life. It is noncombustible, but will actively support the burning of combustible materials. Some materials that will not burn in air will burn in oxygen. Materials that burn in air will burn more vigorously in oxygen. As a non-liquid gas it is shipped at pressures of 2000 psig or above. Pure oxygen is nonflammable. Under prolonged exposure to fire or intense heat the containers may rupture violently and rocket. Oxygen is used in the production of synthesis gas from coal, for resuscitation and as an inhalant.",
+      "description_source": "PubChem",
+      "inchikey_full": "MYMOFIZGZYHOMD-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Oxygen",
+      "pubchem_cid": "977",
+      "retrieved_at": "2026-08-30T13:31:50+00:00",
+      "synonyms": [
+        "Molecular oxygen",
+        "oxygen molecule",
+        "Dioxygen",
+        "7782-44-7",
+        "Pure oxygen"
+      ]
+    },
+    {
+      "description": "Carbon monoxide is a colorless, nonirritating, odorless, and tasteless gas. It is found in both outdoor and indoor air.",
+      "description_source": "PubChem",
+      "inchikey_full": "UGFAIRIUMAVXCW-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Carbon Monoxide",
+      "pubchem_cid": "281",
+      "retrieved_at": "2026-08-30T13:31:54+00:00",
+      "synonyms": [
+        "carbon monooxide",
+        "Carbonic oxide",
+        "630-08-0",
+        "Carbon oxide (CO)",
+        "carbon(II) oxide"
+      ]
+    },
+    {
+      "description": "Vanillin appears as white or very slightly yellow needles.",
+      "description_source": "PubChem",
+      "inchikey_full": "MWOOGOJBHIARFG-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Vanillin",
+      "pubchem_cid": "1183",
+      "retrieved_at": "2026-08-30T13:32:01+00:00",
+      "synonyms": [
+        "4-Hydroxy-3-methoxybenzaldehyde",
+        "121-33-5",
+        "Vanillic aldehyde",
+        "Vanillaldehyde",
+        "p-Vanillin"
+      ]
+    },
+    {
+      "description": "Glycerine appears as a colorless to brown colored liquid. Combustible but may require some effort to ignite.",
+      "description_source": "PubChem",
+      "inchikey_full": "PEDCQBHIVMGVHV-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Glycerol",
+      "pubchem_cid": "753",
+      "retrieved_at": "2026-08-30T13:32:05+00:00",
+      "synonyms": [
+        "glycerin",
+        "56-81-5",
+        "Glycerine",
+        "1,2,3-Propanetriol",
+        "Glycyl alcohol"
+      ]
+    },
+    {
+      "description": "Ethylene glycol is a synthetic liquid substance that absorbs water. It is odorless, but has a sweet taste. Ethylene glycol is used to make antifreeze and de-icing solutions for cars, airplanes, and boats. It is also used in hydraulic brake fluids and inks used in stamp pads, ballpoint pens, and print shops.",
+      "description_source": "PubChem",
+      "inchikey_full": "LYCAIKOWRPUZTN-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Ethylene Glycol",
+      "pubchem_cid": "174",
+      "retrieved_at": "2026-08-30T13:32:09+00:00",
+      "synonyms": [
+        "Ethane-1,2-diol",
+        "107-21-1",
+        "1,2-ethanediol",
+        "glycol",
+        "monoethylene glycol"
+      ]
+    },
+    {
+      "description": "At room temperature, formaldehyde is a colorless, flammable gas that has a distinct, pungent smell. It is also known as methanal, methylene oxide, oxymethyline, methylaldehyde, and oxomethane. Formaldehyde is naturally produced in small amounts in our bodies. It is used in the production of fertilizer, paper, plywood, and urea-formaldehyde resins. It is also used as a preservative in some foods and in many products used around the house, such as antiseptics, medicines, and cosmetics.",
+      "description_source": "PubChem",
+      "inchikey_full": "WSFSSNUMVMOOMR-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Formaldehyde",
+      "pubchem_cid": "712",
+      "retrieved_at": "2026-08-30T13:32:15+00:00",
+      "synonyms": [
+        "formalin",
+        "methanal",
+        "50-00-0",
+        "formol",
+        "Formic aldehyde"
+      ]
+    },
+    {
+      "description": "Acetaldehyde can cause cancer according to an independent committee of scientific and health experts.",
+      "description_source": "PubChem",
+      "inchikey_full": "IKHGUXGNUITLKF-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Acetaldehyde",
+      "pubchem_cid": "177",
+      "retrieved_at": "2026-08-30T13:32:20+00:00",
+      "synonyms": [
+        "ethanal",
+        "75-07-0",
+        "acetic aldehyde",
+        "ethyl aldehyde",
+        "Acetylaldehyde"
+      ]
+    },
+    {
+      "description": "Phenol is both a manufactured chemical and a natural substance. It is a colorless-to-white solid when pure. The commercial product is a liquid. Phenol has a distinct odor that is sickeningly sweet and tarry. You can taste and smell phenol at levels lower than those that are associated with harmful effects. Phenol evaporates more slowly than water, and a moderate amount can form a solution with water. Phenol can catch fire. Phenol is used primarily in the production of phenolic resins and in the manufacture of nylon and other synthetic fibers. It is also used in slimicides (chemicals that kill bacteria and fungi in slimes), as a disinfectant and antiseptic, and in medicinal preparations such as mouthwash and sore throat lozenges.",
+      "description_source": "PubChem",
+      "inchikey_full": "ISWSIDIOOBJBQZ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Phenol",
+      "pubchem_cid": "996",
+      "retrieved_at": "2026-08-30T13:32:26+00:00",
+      "synonyms": [
+        "108-95-2",
+        "carbolic acid",
+        "Hydroxybenzene",
+        "Phenic acid",
+        "Oxybenzene"
+      ]
+    },
+    {
+      "description": "Naphthalene can cause cancer according to The National Toxicology Program.",
+      "description_source": "PubChem",
+      "inchikey_full": "UFWIBTONFRDIAS-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Naphthalene",
+      "pubchem_cid": "931",
+      "retrieved_at": "2026-08-30T13:32:33+00:00",
+      "synonyms": [
+        "91-20-3",
+        "Naphthalin",
+        "Tar camphor",
+        "White tar",
+        "Albocarbon"
+      ]
+    },
+    {
+      "description": "1H-indole is an indole and a polycyclic heteroarene. It has a role as an Escherichia coli metabolite. It is a tautomer of a 3H-indole.",
+      "description_source": "PubChem",
+      "inchikey_full": "SIKJAQJRHWYJAI-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Indole",
+      "pubchem_cid": "798",
+      "retrieved_at": "2026-08-30T13:32:40+00:00",
+      "synonyms": [
+        "1H-Indole",
+        "120-72-9",
+        "2,3-Benzopyrrole",
+        "Indol",
+        "1-Azaindene"
+      ]
+    },
+    {
+      "description": "Furan can cause cancer according to The National Toxicology Program.",
+      "description_source": "PubChem",
+      "inchikey_full": "YLQBMQCUIZJEEH-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Furan",
+      "pubchem_cid": "8029",
+      "retrieved_at": "2026-08-30T13:32:44+00:00",
+      "synonyms": [
+        "110-00-9",
+        "Divinylene oxide",
+        "Tetrole",
+        "Furfuran",
+        "Oxacyclopentadiene"
+      ]
+    },
+    {
+      "description": "1H-pyrrole is a tautomer of pyrrole that has the double bonds at positions 2 and 4. It is a secondary amine and a pyrrole. It is a tautomer of a 3H-pyrrole and a 2H-pyrrole.",
+      "description_source": "PubChem",
+      "inchikey_full": "KAESVJOAVNADME-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Pyrrole",
+      "pubchem_cid": "8027",
+      "retrieved_at": "2026-08-30T13:32:47+00:00",
+      "synonyms": [
+        "1H-Pyrrole",
+        "109-97-7",
+        "Azole",
+        "Divinylenimine",
+        "Imidole"
+      ]
+    },
+    {
+      "description": "Guanidine is an aminocarboxamidine, the parent compound of the guanidines. It is a member of guanidines, a carboxamidine and a one-carbon compound. It is a conjugate base of a guanidinium.",
+      "description_source": "PubChem",
+      "inchikey_full": "ZRALSGWEFCBTJO-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Guanidine",
+      "pubchem_cid": "3520",
+      "retrieved_at": "2026-08-30T13:32:51+00:00",
+      "synonyms": [
+        "113-00-8",
+        "Iminourea",
+        "Carbamidine",
+        "Aminomethanamidine",
+        "Carbamamidine"
+      ]
+    },
+    {
+      "description": "Potassium chloride appears as white colorless cubic crystals. Strong saline taste. (NTP, 1992)",
+      "description_source": "PubChem (National Toxicology Program, Institute of Environmental Health Sciences, National Institutes of Health (NTP). 1992. National Toxicology Program Chemical Repository Database. Research Triangle Park, North Carolina.)",
+      "inchikey_full": "WCUXLLCKKVVCTQ-UHFFFAOYSA-M",
+      "license_spdx": "US-PD",
+      "preferred_name": "Potassium Chloride",
+      "pubchem_cid": "4873",
+      "retrieved_at": "2026-08-30T13:32:54+00:00",
+      "synonyms": [
+        "7447-40-7",
+        "Klotrix",
+        "Sylvite",
+        "Enseal",
+        "Slow-K"
+      ]
+    },
+    {
+      "description": "Sodium sulfate is an inorganic sodium salt.",
+      "description_source": "PubChem",
+      "inchikey_full": "PMZURENOXWZQFD-UHFFFAOYSA-L",
+      "license_spdx": "US-PD",
+      "preferred_name": "Sodium Sulfate",
+      "pubchem_cid": "24436",
+      "retrieved_at": "2026-08-30T13:32:58+00:00",
+      "synonyms": [
+        "7757-82-6",
+        "Disodium sulfate",
+        "Sodium sulfate anhydrous",
+        "Sodium sulfate, anhydrous",
+        "Salt cake"
+      ]
+    },
+    {
+      "description": "Magnesium sulfate is a magnesium salt having sulfate as the counterion. It has a role as a fertilizer, an analgesic, a cardiovascular drug, an anticonvulsant, an anti-arrhythmia drug, a calcium channel blocker, an anaesthetic and a tocolytic agent. It is an organic magnesium salt, a magnesium salt and a metal sulfate.",
+      "description_source": "PubChem",
+      "inchikey_full": "CSNNHWWHGAXBCP-UHFFFAOYSA-L",
+      "license_spdx": "US-PD",
+      "preferred_name": "Sulfuric acid magnesium salt (1:1)",
+      "pubchem_cid": "24083",
+      "retrieved_at": "2026-08-30T13:33:04+00:00",
+      "synonyms": [
+        "MAGNESIUM SULFATE",
+        "7487-88-9",
+        "Magnesium sulfate anhydrous",
+        "MgSO4",
+        "Magnesiumsulfat"
+      ]
+    },
+    {
+      "description": "Nicotinamide is a white powder. (NTP, 1992)",
+      "description_source": "PubChem (National Toxicology Program, Institute of Environmental Health Sciences, National Institutes of Health (NTP). 1992. National Toxicology Program Chemical Repository Database. Research Triangle Park, North Carolina.)",
+      "inchikey_full": "DFPAKSUCGFBDDF-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Nicotinamide",
+      "pubchem_cid": "936",
+      "retrieved_at": "2026-08-30T13:33:08+00:00",
+      "synonyms": [
+        "niacinamide",
+        "98-92-0",
+        "3-Pyridinecarboxamide",
+        "pyridine-3-carboxamide",
+        "Nicotinic acid amide"
+      ]
+    },
+    {
+      "description": "Aniline is a clear to slightly yellow liquid with a characteristic odor. It does not readily evaporate at room temperature. Aniline is slightly soluble in water and mixes readily with most organic solvents. Aniline is used to make a wide variety of products such as polyurethane foam, agricultural chemicals, synthetic dyes, antioxidants, stabilizers for the rubber industry, herbicides, varnishes and explosives",
+      "description_source": "PubChem",
+      "inchikey_full": "PAYRUJLWNCNPSJ-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Aniline",
+      "pubchem_cid": "6115",
+      "retrieved_at": "2026-08-30T13:33:14+00:00",
+      "synonyms": [
+        "Benzenamine",
+        "62-53-3",
+        "Phenylamine",
+        "Aminobenzene",
+        "Aminophen"
+      ]
+    },
+    {
+      "description": "Styrene is primarily a synthetic chemical. It is also known as vinylbenzene, ethenylbenzene, cinnamene, or phenylethylene. It's a colorless liquid that evaporates easily and has a sweet smell. It often contains other chemicals that give it a sharp, unpleasant smell. It dissolves in some liquids but doesn't dissolve easily in water. Billions of pounds are produced each year to make products such as rubber, plastic, insulation, fiberglass, pipes, automobile parts, food containers, and carpet backing. Most of these products contain styrene linked together in a long chain (polystyrene) as well as unlinked styrene. Low levels of styrene also occur naturally in a variety of foods such as fruits, vegetables, nuts, beverages, and meats.",
+      "description_source": "PubChem",
+      "inchikey_full": "PPBRXRYQALVLMV-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Styrene",
+      "pubchem_cid": "7501",
+      "retrieved_at": "2026-08-30T13:33:18+00:00",
+      "synonyms": [
+        "100-42-5",
+        "Ethenylbenzene",
+        "Phenylethylene",
+        "Vinylbenzene",
+        "Styrol"
+      ]
+    },
+    {
+      "description": "Acetamide can cause cancer according to The World Health Organization's International Agency for Research on Cancer (IARC).",
+      "description_source": "PubChem",
+      "inchikey_full": "DLFVBJFMPXGRIB-UHFFFAOYSA-N",
+      "license_spdx": "US-PD",
+      "preferred_name": "Acetamide",
+      "pubchem_cid": "178",
+      "retrieved_at": "2026-08-30T13:33:20+00:00",
+      "synonyms": [
+        "60-35-5",
+        "Ethanamide",
+        "Acetic acid amide",
+        "Methanecarboxamide",
+        "Acetimidic acid"
+      ]
     }
   ]
 }
