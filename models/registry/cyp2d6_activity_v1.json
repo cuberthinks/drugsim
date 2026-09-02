@@ -56,15 +56,16 @@
   },
   "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
   "hyperparameters": {
-    "n_estimators": 500,
-    "max_depth": null,
-    "class_weight": "balanced"
+    "n_estimators": 200,
+    "max_depth": 20,
+    "class_weight": "balanced",
+    "note": "Retrained from the original (500, None) config after loading all six psychiatric-pipeline models together crashed the live drugsim-predict-api service with an OOM restart. Real cost: 41.3MB -> 9.3MB model.joblib, validation ROC-AUC 0.8178 -> 0.8077. See docs/psychiatric-pipeline/api-integration.md."
   },
   "random_seed": 42,
   "compared_against": {
     "gradient_boosting": 0.7529,
     "logistic_regression": 0.6813,
-    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.8178"
+    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.8077"
   },
   "validation_strategy": {
     "split_method": "Global scaffold-level split_group (ADR-009), split_salt='cyp2d6_activity_v1'",
@@ -78,28 +79,28 @@
   "metrics": {
     "global_split_test_group_9": {
       "n_test": 292,
-      "roc_auc": 0.8333,
-      "average_precision_pr_auc": 0.937,
-      "balanced_accuracy": 0.7283,
-      "matthews_corrcoef": 0.4495,
-      "sensitivity": 0.8411,
-      "specificity": 0.6154,
-      "f1": 0.8491,
-      "precision": 0.8571,
-      "recall": 0.8411,
-      "brier_score": 0.1516,
-      "confusion_matrix": {"tn": 48, "fp": 30, "fn": 34, "tp": 180}
+      "roc_auc": 0.8251,
+      "average_precision_pr_auc": 0.9332,
+      "balanced_accuracy": 0.7731,
+      "matthews_corrcoef": 0.5046,
+      "sensitivity": 0.7897,
+      "specificity": 0.7564,
+      "f1": 0.8408,
+      "precision": 0.8989,
+      "recall": 0.7897,
+      "brier_score": 0.1647,
+      "confusion_matrix": {"tn": 59, "fp": 19, "fn": 45, "tp": 169}
     },
     "conformal": {
-      "empirical_coverage": 0.9418,
+      "empirical_coverage": 0.9041,
       "nominal_confidence": 0.9,
-      "accuracy_when_singleton": 0.9,
-      "accuracy_when_uncertain_both_classes": 0.6148
+      "accuracy_when_singleton": 0.8453,
+      "accuracy_when_uncertain_both_classes": 0.6757
     },
     "applicability_domain": {
       "fraction_in_domain": 0.7432,
-      "in_domain_accuracy": 0.8111,
-      "out_of_domain_accuracy": 0.6933
+      "in_domain_accuracy": 0.8157,
+      "out_of_domain_accuracy": 0.68
     }
   },
   "external_validation": {
@@ -108,18 +109,18 @@
   },
   "artifact": {
     "path": "models/psychiatric/cyp2d6_activity/artifact/model.joblib",
-    "sha256": "5d1c17630342beef5a48db0a790bb519b734a66887af48f917fa69233367b76b",
+    "sha256": "2ab05b6c90220436487fc6e52e2e9e4793bba94ef3853faf2387925b90754300",
     "note": "gitignored binary, not committed, same convention as hERG/CYP3A4's artifacts.",
     "reproducibility": "regenerate via: fetch_chembl_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, RANDOM_SEED=42 fixed throughout."
   },
   "inference_support": {
     "_comment": "Frozen conformal calibration + AD reference data exported by models/psychiatric/cyp2d6_activity/10_export_inference_support.py -- never recomputed at inference time.",
     "npz_path": "models/psychiatric/cyp2d6_activity/artifact/inference_support.npz",
-    "npz_sha256": "2a3777098551a73acb059604d8df9e81c04e00caf9a33dc74ddf0f96e4c7e919",
+    "npz_sha256": "818b9f4f5fd7719e00071fa989f9a31728ef07f9943fb879a3b5bf7d793e7675",
     "scaler_path": "models/psychiatric/cyp2d6_activity/artifact/descriptor_ad_scaler.joblib",
     "scaler_sha256": "06fcbf4a620183335c8f9e31208faa48d7af3dc9e91ee39cb29f5b214be24501",
     "manifest_path": "models/psychiatric/cyp2d6_activity/inference_support_manifest.json",
-    "manifest_sha256": "65f9f0201b23c23661abcb86f14efb4b2cae0edfe32c5fc01a3f360ee0422b66"
+    "manifest_sha256": "de95972dd856250cc0ea6ff83cc90371e44139e97d9db18963ec03b40f67be2d"
   },
   "deployment_status": {
     "loadable_via_local_registry": true,

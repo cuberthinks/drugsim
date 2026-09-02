@@ -27,8 +27,8 @@ CYP3A4, applied here to DRD2/HRH1/CYP2D6/BBB via
 
 | Endpoint | Task | Champion | Descriptor-only | Gap | Fingerprint adds real signal? |
 |---|---|---|---|---|---|
-| CYP2D6 | classification (ROC-AUC) | 0.8333 | 0.7753 | +0.058 | Yes |
-| BBB | classification (ROC-AUC) | 0.9615 | 0.9469 | +0.015 | Yes, but small |
+| CYP2D6 | classification (ROC-AUC) | 0.8251 | 0.7753 | +0.050 | Yes |
+| BBB | classification (ROC-AUC) | 0.9507 | 0.9469 | +0.004 | Yes, but small |
 | DRD2 | regression (R²) | 0.4980 | 0.3581 | +0.140 | Yes, substantial |
 | HRH1 | regression (R²) | 0.7672 | 0.0734 | +0.694 | Yes, overwhelming |
 

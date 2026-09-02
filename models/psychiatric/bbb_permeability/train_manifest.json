@@ -1,8 +1,8 @@
 {
   "algorithm": "random_forest",
   "hyperparameters": {
-    "n_estimators": 500,
-    "max_depth": 20
+    "n_estimators": 200,
+    "max_depth": null
   },
   "random_seed": 42,
   "requires_scaling": false,
@@ -20,17 +20,17 @@
   "n_validation": 214,
   "train_positive_fraction": 0.7481,
   "validation_metrics": {
-    "roc_auc": 0.9025,
-    "average_precision": 0.9767,
-    "balanced_accuracy_at_0.5": 0.7637
+    "roc_auc": 0.8962,
+    "average_precision": 0.9686,
+    "balanced_accuracy_at_0.5": 0.7776
   },
   "candidate_comparison": {
-    "random_forest": 0.9025,
+    "random_forest": 0.8962,
     "gradient_boosting": 0.8706,
     "logistic_regression": 0.836
   },
   "gnn_benchmark": "Not implemented in this pass -- classical models only, same reasoning already applied to DRD2/HRH1/CYP2D6/CYP3A4/hERG in this repository.",
-  "trained_at": "2026-08-30T09:11:00+00:00",
+  "trained_at": "2026-09-02T07:47:27+00:00",
   "model_artifact": "models/psychiatric/bbb_permeability/artifact/model.joblib",
   "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
   "label": "binary BBB permeability (1=BBB-permeant, 0=BBB-non-permeant, per Martins et al.)"

@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-02T05:55:00+00:00",
+  "generated_at": "2026-09-02T07:56:31+00:00",
   "method": "Mirrors models/admet/cyp3a4_inhibition/baselines.py's methodology (majority-class + descriptor-only baselines), applied fresh to DRD2/HRH1/CYP2D6/BBB, computed on each endpoint's own real held-out test group (split_group 9) -- never estimated.",
   "results": {
     "cyp2d6_activity": {
       "task_type": "classification",
       "n_test": 292,
-      "champion_roc_auc": 0.8333,
+      "champion_roc_auc": 0.8251,
       "majority_class_balanced_accuracy": 0.5,
       "majority_class_roc_auc": 0.5,
       "descriptor_only_random_forest_roc_auc": 0.7753,
-      "improvement_over_descriptor_only_roc_auc": 0.058,
+      "improvement_over_descriptor_only_roc_auc": 0.0498,
       "fingerprint_adds_real_signal": true,
       "meaningfully_beats_majority_baseline": true
     },
     "bbb_permeability": {
       "task_type": "classification",
       "n_test": 150,
-      "champion_roc_auc": 0.9615,
+      "champion_roc_auc": 0.9507,
       "majority_class_balanced_accuracy": 0.5,
       "majority_class_roc_auc": 0.5,
       "descriptor_only_random_forest_roc_auc": 0.9469,
-      "improvement_over_descriptor_only_roc_auc": 0.0146,
+      "improvement_over_descriptor_only_roc_auc": 0.0038,
       "fingerprint_adds_real_signal": true,
       "meaningfully_beats_majority_baseline": true
     },

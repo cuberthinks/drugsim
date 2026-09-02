@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-30T09:02:31+00:00",
+  "generated_at": "2026-09-02T07:45:59+00:00",
   "algorithm": "random_forest",
   "label": "binary CYP2D6-inhibitor liability (1=inhibitor, aggregated IC50 <= 10 uM)",
   "global_split": {
     "n_test": 292,
     "positive_fraction": 0.7329,
-    "roc_auc": 0.8333,
-    "average_precision_pr_auc": 0.937,
-    "balanced_accuracy": 0.7283,
-    "matthews_corrcoef": 0.4495,
-    "sensitivity_recall_positive": 0.8411,
-    "specificity_recall_negative": 0.6154,
-    "f1": 0.8491,
-    "precision": 0.8571,
-    "recall": 0.8411,
-    "brier_score": 0.1516,
+    "roc_auc": 0.8251,
+    "average_precision_pr_auc": 0.9332,
+    "balanced_accuracy": 0.7731,
+    "matthews_corrcoef": 0.5046,
+    "sensitivity_recall_positive": 0.7897,
+    "specificity_recall_negative": 0.7564,
+    "f1": 0.8408,
+    "precision": 0.8989,
+    "recall": 0.7897,
+    "brier_score": 0.1647,
     "confusion_matrix": {
-      "tn": 48,
-      "fp": 30,
-      "fn": 34,
-      "tp": 180
+      "tn": 59,
+      "fp": 19,
+      "fn": 45,
+      "tp": 169
     },
     "description": "Scaffold-level split_group 9, per ADR-009. Touched once, here."
   },
@@ -28,16 +28,16 @@
     "nominal_confidence": 0.9,
     "n_calibration": 307,
     "n_test": 292,
-    "empirical_coverage": 0.9418,
+    "empirical_coverage": 0.9041,
     "coverage_within_tolerance": true,
     "prediction_set_sizes": {
-      "singleton_confident": 170,
-      "both_classes_uncertain": 122,
+      "singleton_confident": 181,
+      "both_classes_uncertain": 111,
       "empty_anomalous": 0
     },
-    "singleton_fraction": 0.5822,
-    "accuracy_when_singleton": 0.9,
-    "accuracy_when_uncertain_both_classes": 0.6148
+    "singleton_fraction": 0.6199,
+    "accuracy_when_singleton": 0.8453,
+    "accuracy_when_uncertain_both_classes": 0.6757
   },
   "applicability_domain": {
     "method": "tanimoto_max_similarity_and_knn_descriptor_distance",
@@ -49,13 +49,13 @@
     "fraction_in_domain": 0.7432,
     "in_domain": {
       "n": 217,
-      "accuracy": 0.8111,
-      "roc_auc": 0.858
+      "accuracy": 0.8157,
+      "roc_auc": 0.8453
     },
     "out_of_domain": {
       "n": 75,
-      "accuracy": 0.6933,
-      "roc_auc": 0.7274
+      "accuracy": 0.68,
+      "roc_auc": 0.7281
     }
   },
   "external_validation": {

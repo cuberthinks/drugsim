@@ -54,24 +54,16 @@ otherwise. Consolidated here so nobody has to hunt for the caveats.
 
 ## Deployment / architecture limitations
 
-- **A live endpoint was attempted and reverted the same day.**
-  `POST /v1/psychiatric-screening` was built, deployed, and crashed the
-  live `drugsim-predict-api` service on a real test request (confirmed
-  OOM restart in Render's own logs — loading hERG + CYP2D6 together
-  was already enough to exceed the container's memory budget, before
-  BBB/DRD2/HRH1 were even touched). Reverted the same day; see
-  api-integration.md for the full incident.
-- **Nothing in this pipeline is currently wired into the live
-  `drugsim-predict-api` service.** CYP2D6 and BBB remain registered
-  (`models/registry/`) but their artifacts are not fetched into the
-  live Docker image; DRD2 and HRH1 have no live serving path at all.
-  All results in this pipeline come from running the pipeline's own
-  scripts locally, against local (or `models-v1` GitHub Release)
-  artifacts.
-- **DRD2's model was retrained for a smaller footprint** as part of
-  the live attempt above — kept even after reverting, since 41MB is
-  strictly better than the original 248MB for any future attempt. Real
-  R² cost: 0.5994 → 0.4980. See validation.md's "Deployment note."
+- **A first live attempt crashed the service and was reverted the same
+  day.** `POST /v1/psychiatric-screening` was built, deployed, and
+  crashed `drugsim-predict-api` on a real test request (confirmed OOM
+  restart in Render's own logs — hERG + CYP2D6 together already
+  exceeded the memory budget). DRD2, CYP2D6, and BBB were all then
+  retrained with bounded hyperparameter grids to shrink the combined
+  footprint substantially before attempting again (see validation.md's
+  "Deployment note" for the exact before/after sizes and accuracy
+  costs) — see api-integration.md for the full incident and current
+  live status.
 - **No frontend exists for this pipeline.**
 
 ## Process limitations, disclosed rather than hidden

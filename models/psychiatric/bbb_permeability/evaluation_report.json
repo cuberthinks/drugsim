@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-30T09:11:48+00:00",
+  "generated_at": "2026-09-02T07:47:43+00:00",
   "algorithm": "random_forest",
   "label": "binary BBB permeability (1=BBB-permeant, 0=BBB-non-permeant, per Martins et al.)",
   "global_split": {
     "n_test": 150,
     "positive_fraction": 0.7267,
-    "roc_auc": 0.9615,
-    "average_precision_pr_auc": 0.9861,
+    "roc_auc": 0.9507,
+    "average_precision_pr_auc": 0.9777,
     "balanced_accuracy": 0.8917,
     "matthews_corrcoef": 0.796,
     "sensitivity_recall_positive": 0.9541,
@@ -14,7 +14,7 @@
     "f1": 0.9455,
     "precision": 0.9369,
     "recall": 0.9541,
-    "brier_score": 0.0722,
+    "brier_score": 0.0721,
     "confusion_matrix": {
       "tn": 34,
       "fp": 7,
@@ -28,7 +28,7 @@
     "nominal_confidence": 0.9,
     "n_calibration": 195,
     "n_test": 150,
-    "empirical_coverage": 0.9133,
+    "empirical_coverage": 0.9067,
     "coverage_within_tolerance": true,
     "prediction_set_sizes": {
       "singleton_confident": 146,
@@ -36,7 +36,7 @@
       "empty_anomalous": 4
     },
     "singleton_fraction": 0.9733,
-    "accuracy_when_singleton": 0.9384,
+    "accuracy_when_singleton": 0.9315,
     "accuracy_when_uncertain_both_classes": null
   },
   "applicability_domain": {
@@ -50,12 +50,12 @@
     "in_domain": {
       "n": 107,
       "accuracy": 0.9533,
-      "roc_auc": 0.9766
+      "roc_auc": 0.9773
     },
     "out_of_domain": {
       "n": 43,
       "accuracy": 0.8372,
-      "roc_auc": 0.8835
+      "roc_auc": 0.8295
     }
   },
   "external_validation": {

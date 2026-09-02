@@ -1,8 +1,8 @@
 {
   "algorithm": "random_forest",
   "hyperparameters": {
-    "n_estimators": 500,
-    "max_depth": null
+    "n_estimators": 200,
+    "max_depth": 20
   },
   "random_seed": 42,
   "requires_scaling": false,
@@ -20,17 +20,17 @@
   "n_validation": 239,
   "train_positive_fraction": 0.6341,
   "validation_metrics": {
-    "roc_auc": 0.8178,
-    "average_precision": 0.8949,
-    "balanced_accuracy_at_0.5": 0.6797
+    "roc_auc": 0.8077,
+    "average_precision": 0.8881,
+    "balanced_accuracy_at_0.5": 0.6962
   },
   "candidate_comparison": {
-    "random_forest": 0.8178,
+    "random_forest": 0.8077,
     "gradient_boosting": 0.7529,
     "logistic_regression": 0.6813
   },
   "gnn_benchmark": "Not implemented in this pass -- classical models only, same reasoning already applied to DRD2/HRH1/CYP3A4/hERG in this repository.",
-  "trained_at": "2026-08-30T09:01:27+00:00",
+  "trained_at": "2026-09-02T07:45:30+00:00",
   "model_artifact": "models/psychiatric/cyp2d6_activity/artifact/model.joblib",
   "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
   "label": "binary CYP2D6-inhibitor liability (1=inhibitor, aggregated IC50 <= 10 uM)"

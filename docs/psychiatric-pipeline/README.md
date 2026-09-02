@@ -7,11 +7,13 @@ screening psychiatric drug candidates across five endpoints: DRD2
 liability, reused from the existing validated model) — combined with a
 direction-correct DRD2/HRH1 selectivity index.
 
-**Status: offline research tool.** A live `POST /v1/psychiatric-screening`
-endpoint was built, deployed, and then reverted the same day after a
-real test request crashed the live service (an OOM restart, confirmed
-in Render's own logs). See [api-integration.md](api-integration.md)
-for the full incident and what a real fix would need.
+**Status: live**, via `POST /v1/psychiatric-screening` on
+`drugsim-predict-api` — on its second attempt. The first attempt
+crashed the live service (an OOM restart, confirmed in Render's own
+logs) and was reverted the same day; DRD2, CYP2D6, and BBB were then
+all retrained with bounded hyperparameter grids to shrink the combined
+footprint substantially before trying again. See
+[api-integration.md](api-integration.md) for the full incident.
 
 ## Read these in order
 
@@ -44,12 +46,12 @@ for the full incident and what a real fix would need.
 
 | Endpoint | Type | Real dataset | Status |
 |---|---|---|---|
-| DRD2 | regression (pKi) | 8,204 compounds (ChEMBL) | Offline, evaluated (retrained smaller for a since-reverted live attempt) |
-| HRH1 | regression (pKi) | 1,395 compounds (ChEMBL) | Offline, evaluated |
-| Selectivity | derived (DRD2 - HRH1) | n/a | Offline, verified |
-| CYP2D6 | classification | 2,915 compounds (ChEMBL) | Offline, evaluated, registered EXPERIMENTAL |
-| BBB | classification | 1,909 compounds (TDC) | Offline, evaluated, registered EXPERIMENTAL |
-| hERG | classification | 9,589 compounds (ChEMBL, pre-existing) | Reused as-is, live-validated (unaffected by this pipeline) |
+| DRD2 | regression (pKi) | 8,204 compounds (ChEMBL) | Live, `reliability_tier: experimental` (retrained smaller: 248MB→41MB) |
+| HRH1 | regression (pKi) | 1,395 compounds (ChEMBL) | Live, `reliability_tier: experimental` |
+| Selectivity | derived (DRD2 - HRH1) | n/a | Live, verified |
+| CYP2D6 | classification | 2,915 compounds (ChEMBL) | Live, `reliability_tier: experimental` (retrained smaller: 41MB→9MB) |
+| BBB | classification | 1,909 compounds (TDC) | Live, `reliability_tier: experimental` (retrained smaller: 13MB→7MB) |
+| hERG | classification | 9,589 compounds (ChEMBL, pre-existing) | Live, `reliability_tier: validated` |
 
 ## Where the code lives
 
@@ -63,18 +65,20 @@ for the full incident and what a real fix would need.
 - `models/psychiatric/benchmarking.py` — the baseline comparisons.
 - `models/registry/{cyp2d6_activity,bbb_permeability}_v1.json` — registry
   entries for the two classification endpoints, loadable through the
-  existing `drugsim_predict.model_registry` machinery (not currently
-  fetched into the live Docker image).
-- `tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry}.py`
+  existing `drugsim_predict.model_registry` machinery, now fetched
+  into the live Docker image.
+- `src/drugsim_predict/psychiatric_pipeline.py` +
+  `psychiatric_schemas.py` — the live serving wrapper and response
+  schema for `POST /v1/psychiatric-screening`.
+- `tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry,screening_api}.py`
   — unit tests.
 
 ## What was explicitly not done
 
 - CYP2D6/BBB/DRD2/HRH1 are not promoted past `EXPERIMENTAL` — no
   external validation has been performed for any of the four.
-- Nothing in this pipeline is wired into the live `drugsim-predict-api`
-  service — a live endpoint was attempted and reverted the same day
-  after crashing the service (see api-integration.md).
-- No frontend UI exists for this pipeline.
+- No persisted history/audit-log surface for this endpoint (unlike
+  `/predict`'s `GET /predict/{id}`).
+- No frontend UI exists for this pipeline yet.
 - No GNN benchmark for any endpoint (small-data regime for all four
   new endpoints; no existing GNN infrastructure in this repository).

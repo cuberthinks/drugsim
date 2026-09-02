@@ -13,8 +13,8 @@ numbers do not claim.
 |---|---|---|---|---|---|
 | DRD2 | 839 | R² | 0.4980 | 0.9082 | 63.9% (in-domain R²=0.59 vs out 0.35) |
 | HRH1 | 146 | R² | 0.7672 | 0.8493 | 85.6% (in-domain R²=0.83 vs out 0.08, n=21 small-sample caveat) |
-| CYP2D6 | 292 | ROC-AUC | 0.8333 | 0.9418 | 74.3% (in-domain acc 0.81 vs out 0.69) |
-| BBB | 150 | ROC-AUC | 0.9615 | 0.9133 | 71.3% (in-domain acc 0.95 vs out 0.84) |
+| CYP2D6 | 292 | ROC-AUC | 0.8251 | 0.9041 | 74.3% (in-domain acc 0.82 vs out 0.68) |
+| BBB | 150 | ROC-AUC | 0.9507 | 0.9067 | 71.3% (in-domain acc 0.95 vs out 0.84) |
 
 hERG (pre-existing, reused unchanged): ROC-AUC 0.7875, already
 validated — see `models/registry/herg_inhibition_v1.json`.
@@ -78,20 +78,22 @@ formula's sign convention, not an illustrative example.
 `datasets/registry.yaml` bindingdb-tier issues, untouched by this
 pipeline).
 
-## Deployment note: DRD2 was retrained smaller, then the live attempt was reverted anyway
+## Deployment note: three models retrained smaller after a real crash
 
-A live `POST /v1/psychiatric-screening` endpoint was attempted. Before
-deploying, Render's own memory metrics showed the existing 2-model
-service already sitting near its 512MB limit -- DRD2's original
-model.joblib (`n_estimators=500, max_depth=None`) was 248MB, so it was
-retrained with a bounded grid (`n_estimators=200, max_depth=20`) to
-41MB, at a real R² cost (0.5994 → 0.4980). That fix wasn't enough on
-its own: a real test request still crashed the service with an OOM
-restart (loading hERG + CYP2D6 together already exceeded the memory
-budget). The endpoint was reverted the same day; see
-api-integration.md for the full incident. All DRD2 numbers on this
-page reflect the retrained (smaller) model, which was kept despite the
-revert.
+A live `POST /v1/psychiatric-screening` endpoint was attempted, crashed
+the service (OOM restart, confirmed in Render's logs), and was
+reverted the same day. DRD2 had already been retrained smaller before
+that first attempt (248MB → 41MB, R² 0.5994 → 0.4980) but that alone
+wasn't sufficient -- hERG + CYP2D6 together already exceeded the
+memory budget. Before attempting again, CYP2D6 and BBB were ALSO
+retrained with bounded grids: CYP2D6 41MB → 9MB (ROC-AUC 0.8333 →
+0.8251), BBB 13MB → 7MB (ROC-AUC 0.9615 → 0.9507, with an UNCHANGED
+test-set confusion matrix -- the actual classification decisions did
+not change). Combined, the four new models' local incremental memory
+cost dropped roughly 14x (from ~329MB to ~23MB in a local measurement)
+before the second deployment attempt. See api-integration.md for the
+full incident and the current live status. All DRD2/CYP2D6/BBB numbers
+on this page reflect the retrained (smaller) models.
 
 ## What was not performed
 

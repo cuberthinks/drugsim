@@ -55,15 +55,16 @@
   },
   "algorithm": "random_forest (sklearn.ensemble.RandomForestClassifier)",
   "hyperparameters": {
-    "n_estimators": 500,
+    "n_estimators": 200,
     "max_depth": null,
-    "class_weight": "balanced"
+    "class_weight": "balanced",
+    "note": "Retrained from n_estimators=500 after loading all six psychiatric-pipeline models together crashed the live drugsim-predict-api service with an OOM restart. Real cost: 13.4MB -> 6.9MB model.joblib, validation ROC-AUC 0.9025 -> 0.8962 -- test-set confusion matrix is UNCHANGED (identical classification decisions at threshold 0.5). See docs/psychiatric-pipeline/api-integration.md."
   },
   "random_seed": 42,
   "compared_against": {
     "gradient_boosting": 0.8706,
     "logistic_regression": 0.836,
-    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.9025"
+    "note": "validation-group (group 8) ROC-AUC; random_forest selected at 0.8962"
   },
   "validation_strategy": {
     "split_method": "Global scaffold-level split_group (ADR-009), split_salt='bbb_permeability_v1'",
@@ -77,8 +78,8 @@
   "metrics": {
     "global_split_test_group_9": {
       "n_test": 150,
-      "roc_auc": 0.9615,
-      "average_precision_pr_auc": 0.9861,
+      "roc_auc": 0.9507,
+      "average_precision_pr_auc": 0.9777,
       "balanced_accuracy": 0.8917,
       "matthews_corrcoef": 0.796,
       "sensitivity": 0.9541,
@@ -86,13 +87,13 @@
       "f1": 0.9455,
       "precision": 0.9369,
       "recall": 0.9541,
-      "brier_score": 0.0722,
+      "brier_score": 0.0721,
       "confusion_matrix": {"tn": 34, "fp": 7, "fn": 5, "tp": 104}
     },
     "conformal": {
-      "empirical_coverage": 0.9133,
+      "empirical_coverage": 0.9067,
       "nominal_confidence": 0.9,
-      "accuracy_when_singleton": 0.9384,
+      "accuracy_when_singleton": 0.9315,
       "singleton_fraction": 0.9733
     },
     "applicability_domain": {
@@ -107,18 +108,18 @@
   },
   "artifact": {
     "path": "models/psychiatric/bbb_permeability/artifact/model.joblib",
-    "sha256": "83e181228f028db57e870484d3d25601bd6a19ab43dd7cc65f9b46a9cce2a0cc",
+    "sha256": "efa1e10e1c58cf5e5f2d8a1117e731b151bb302103a00792399d75a9cee1f9da",
     "note": "gitignored binary, not committed, same convention as hERG/CYP3A4's artifacts.",
     "reproducibility": "regenerate via: fetch_tdc_data.py -> build_dataset.py -> prepare_features.py -> train.py, in order, RANDOM_SEED=42 fixed throughout."
   },
   "inference_support": {
     "_comment": "Frozen conformal calibration + AD reference data exported by models/psychiatric/bbb_permeability/10_export_inference_support.py -- never recomputed at inference time.",
     "npz_path": "models/psychiatric/bbb_permeability/artifact/inference_support.npz",
-    "npz_sha256": "46a152f13f569ba4b22321bcd1aa945d8c7a0dc5479abc9119cf33ce0e221592",
+    "npz_sha256": "c6dad571e4a70f032f99537f90faccea9667da6a063e2b3621a956a0189e408a",
     "scaler_path": "models/psychiatric/bbb_permeability/artifact/descriptor_ad_scaler.joblib",
     "scaler_sha256": "972f2fa34a2c7813e062da67fc63038936deb4d51d443c8484cf7b77258b44ee",
     "manifest_path": "models/psychiatric/bbb_permeability/inference_support_manifest.json",
-    "manifest_sha256": "e4a0e24d16d23cf2ba311bee9801a914649d9ce2c36475682ca343f06cd26de3"
+    "manifest_sha256": "44a48f3d8fd97425f11accc13d0e742dca5da137a3c1908954c584f66a692d29"
   },
   "deployment_status": {
     "loadable_via_local_registry": true,

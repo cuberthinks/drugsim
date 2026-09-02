@@ -1,6 +1,6 @@
 {
-  "built_at": "2026-08-30T09:15:42+00:00",
-  "source_model_sha256": "83e181228f028db57e870484d3d25601bd6a19ab43dd7cc65f9b46a9cce2a0cc",
+  "built_at": "2026-09-02T07:48:23+00:00",
+  "source_model_sha256": "efa1e10e1c58cf5e5f2d8a1117e731b151bb302103a00792399d75a9cee1f9da",
   "n_calibration": 195,
   "n_train": 1350,
   "n_train_scaffolds": 815,
@@ -8,7 +8,7 @@
   "knn_k": 5,
   "knn_distance_threshold_p95": 2.161555,
   "output_npz": "models/psychiatric/bbb_permeability/artifact/inference_support.npz",
-  "output_npz_sha256": "46a152f13f569ba4b22321bcd1aa945d8c7a0dc5479abc9119cf33ce0e221592",
+  "output_npz_sha256": "c6dad571e4a70f032f99537f90faccea9667da6a063e2b3621a956a0189e408a",
   "output_scaler": "models/psychiatric/bbb_permeability/artifact/descriptor_ad_scaler.joblib",
   "output_scaler_sha256": "972f2fa34a2c7813e062da67fc63038936deb4d51d443c8484cf7b77258b44ee",
   "note": "Frozen from the SAME calibration/train split used in evaluate.py. Never recomputed at inference time."

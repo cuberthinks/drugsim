@@ -68,7 +68,14 @@ def main() -> int:
     candidates = {}
 
     best_rf, best_rf_auc, best_rf_params = None, -1.0, None
-    for n_estimators in (200, 500):
+    # Fixed n_estimators=200 (was 200,500) -- same deployment-driven fix
+    # as drd2_activity/cyp2d6_activity: 500 trees won this grid at
+    # ROC-AUC=0.9025 and 12.8MB; 200 trees reaches 0.8923 (a small, real,
+    # disclosed cost) at 5.1MB. Every model in this pipeline needed to
+    # shrink after loading all six together crashed the live
+    # drugsim-predict-api service with an OOM restart -- see
+    # docs/psychiatric-pipeline/api-integration.md.
+    for n_estimators in (200,):
         for max_depth in (None, 20):
             rf = RandomForestClassifier(
                 n_estimators=n_estimators,

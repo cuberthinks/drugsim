@@ -50,14 +50,17 @@ models/admet/herg_inhibition/artifact/descriptor_ad_scaler.joblib|herg_descripto
 models/admet/cyp3a4_inhibition/artifact/model.joblib|cyp3a4_model.joblib
 models/admet/cyp3a4_inhibition/artifact/inference_support.npz|cyp3a4_inference_support.npz
 models/admet/cyp3a4_inhibition/artifact/descriptor_ad_scaler.joblib|cyp3a4_descriptor_ad_scaler.joblib
+models/psychiatric/cyp2d6_activity/artifact/model.joblib|cyp2d6_model.joblib
+models/psychiatric/cyp2d6_activity/artifact/inference_support.npz|cyp2d6_inference_support.npz
+models/psychiatric/cyp2d6_activity/artifact/descriptor_ad_scaler.joblib|cyp2d6_descriptor_ad_scaler.joblib
+models/psychiatric/bbb_permeability/artifact/model.joblib|bbb_model.joblib
+models/psychiatric/bbb_permeability/artifact/inference_support.npz|bbb_inference_support.npz
+models/psychiatric/bbb_permeability/artifact/descriptor_ad_scaler.joblib|bbb_descriptor_ad_scaler.joblib
+models/psychiatric/drd2_activity/artifact/model.joblib|drd2_model.joblib
+models/psychiatric/drd2_activity/artifact/inference_support.npz|drd2_inference_support.npz
+models/psychiatric/hrh1_activity/artifact/model.joblib|hrh1_model.joblib
+models/psychiatric/hrh1_activity/artifact/inference_support.npz|hrh1_inference_support.npz
 "
-# CYP2D6/BBB/DRD2/HRH1 artifacts were briefly added here for a live
-# psychiatric-screening endpoint, then reverted the same day after
-# loading all six models in one process crashed the service with an
-# OOM restart during real testing -- see Dockerfile.predict-api's own
-# comment and docs/psychiatric-pipeline/api-integration.md. The assets
-# themselves are still uploaded to the models-v1 GitHub Release
-# (cyp2d6_*, bbb_*, drd2_*, hrh1_*) for whenever this is revisited.
 
 echo "$FILES" | while IFS='|' read -r local_path asset_name; do
     [ -z "$local_path" ] && continue

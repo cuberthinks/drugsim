@@ -70,8 +70,15 @@ def main() -> int:
     candidates = {}
 
     best_rf, best_rf_auc, best_rf_params = None, -1.0, None
-    for n_estimators in (200, 500):
-        for max_depth in (None, 20):
+    # Bounded max_depth, fixed n_estimators=200 -- same deployment-driven
+    # fix as drd2_activity/train.py: the original max_depth=None config
+    # (41MB) was one of two models that together crashed the live
+    # drugsim-predict-api service with an OOM restart during a real
+    # deployment attempt (see docs/psychiatric-pipeline/api-integration.md).
+    # A bounded sweep found max_depth=20 nearly matches the original
+    # validation ROC-AUC (0.8077 vs 0.8178) at 8.8MB instead of 41MB.
+    for n_estimators in (200,):
+        for max_depth in (16, 20):
             rf = RandomForestClassifier(
                 n_estimators=n_estimators,
                 max_depth=max_depth,

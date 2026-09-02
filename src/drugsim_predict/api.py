@@ -54,6 +54,8 @@ from drugsim_core.redaction import structure_digest
 
 from drugsim_predict.model_registry import DEFAULT_MODEL_ID, ModelBundle, get_model_bundle, list_registered_endpoints
 from drugsim_predict.pipeline import SERVABLE_STATUSES, PredictionResult, run_inference
+from drugsim_predict.psychiatric_pipeline import run_psychiatric_screening
+from drugsim_predict.psychiatric_schemas import PsychiatricScreeningRequest, PsychiatricScreeningResponse
 from drugsim_predict.schemas import (
     ApplicabilityDomainSchema,
     CompoundIdentitySchema,
@@ -608,6 +610,69 @@ async def predict(body: PredictRequest, request: Request, store: PredictionStore
         canonical_digest=canonical_hash, applicability_domain=result.applicability_domain.verdict,
         predicted_label=result.predicted_label, duration_ms=_duration_ms(),
     )
+    return JSONResponse(status_code=200, content=response.model_dump())
+
+
+@app.post("/v1/psychiatric-screening", response_model=PsychiatricScreeningResponse, status_code=200)
+async def psychiatric_screening(body: PsychiatricScreeningRequest, request: Request) -> JSONResponse:
+    """Run the psychiatric compound screening research pipeline on one structure.
+
+    A separate, explicitly-labelled surface from `/predict` -- see
+    `drugsim_predict.psychiatric_pipeline`'s module docstring for why.
+    Combines six signals (DRD2, HRH1, a DRD2/HRH1 selectivity index,
+    CYP2D6, BBB, and the existing validated hERG model) into one
+    response; every signal carries its own honest `reliability_tier`
+    (`"validated"` for hERG only, `"experimental"` for the rest -- none
+    of the four experimental endpoints has independent external
+    validation). This is a non-clinical research tool: no output here is
+    a diagnosis, a treatment recommendation, or a substitute for
+    pharmacological or clinical judgment.
+
+    Not persisted to the prediction-history store `GET /predict/{id}`
+    serves -- this endpoint has no audit-log/history surface of its own
+    yet. Subject to the same API key, rate-limit, concurrency, and body-
+    size middleware as every other route (applied globally, not per-route).
+    """
+    request_id = request.state.request_id
+    start_time = time.monotonic()
+
+    def _duration_ms() -> float:
+        return round((time.monotonic() - start_time) * 1000, 1)
+
+    log.info("psychiatric_screening.request", request_id=request_id, input_digest=structure_digest(body.smiles))
+
+    try:
+        response = await asyncio.wait_for(
+            run_in_threadpool(run_psychiatric_screening, body.smiles),
+            timeout=get_predict_settings().request_timeout_seconds,
+        )
+    except asyncio.TimeoutError:
+        log.error("psychiatric_screening.timeout", request_id=request_id, duration_ms=_duration_ms())
+        return _problem(
+            503, "timeout", "Screening timed out",
+            "This structure could not be processed within the allotted time. This is not "
+            "necessarily a problem with your input -- please try again.",
+            request_id,
+        )
+    except StructureError as exc:
+        log.info("psychiatric_screening.rejected", request_id=request_id, reason=str(exc), duration_ms=_duration_ms())
+        return _problem(
+            422, "invalid-structure", "Molecular structure could not be processed", str(exc), request_id,
+            errors=[ErrorDetail(field="smiles", code="invalid_structure", message=str(exc))],
+        )
+    except Exception as exc:  # noqa: BLE001 -- last-resort safety net, same rationale as /predict's.
+        log.error(
+            "psychiatric_screening.unexpected_error", request_id=request_id,
+            error_type=type(exc).__name__, duration_ms=_duration_ms(),
+        )
+        return _problem(
+            500, "internal-error", "Screening could not be completed",
+            "An unexpected error occurred while processing this request. This has been logged for "
+            "investigation and is not the result of anything wrong with your input.",
+            request_id,
+        )
+
+    log.info("psychiatric_screening.complete", request_id=request_id, duration_ms=_duration_ms())
     return JSONResponse(status_code=200, content=response.model_dump())
 
 

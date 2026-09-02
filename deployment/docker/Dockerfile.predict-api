@@ -66,28 +66,32 @@ COPY scripts/ ./scripts/
 # below correctly refuse to build. Add a new registry file to this list
 # only when its artifact is also added to scripts/fetch_model_artifacts.sh
 # -- registering a model for the generic architecture and deploying it
-# live are separate decisions.
-#
-# CYP2D6/BBB/DRD2/HRH1 were briefly wired in here for a live
-# `POST /v1/psychiatric-screening` endpoint, then REVERTED the same day:
-# loading all six models in one process crashed this service with an
-# OOM restart during real testing (confirmed in Render's own logs -- the
-# instance restarted mid-request, right after the second model finished
-# loading), which would have broken hERG/CYP3A4's own /predict for any
-# concurrent real user during that window. The DRD2/HRH1/CYP2D6/BBB
-# training work itself is real and kept (see
-# docs/psychiatric-pipeline/) -- only the live-serving wiring was
-# reverted, pending either a bigger instance or a smaller combined
-# memory footprint. See docs/psychiatric-pipeline/api-integration.md.
+# live are separate decisions. CYP2D6/BBB moved into this list (and their
+# artifacts into the fetch step below) once the psychiatric-screening
+# endpoint went live; DRD2/HRH1 have no registry entry at all (they are
+# regression, scored directly by drugsim_predict.psychiatric_pipeline,
+# not through drugsim_predict.model_registry).
 COPY models/registry/herg_inhibition_v1.json ./models/registry/herg_inhibition_v1.json
 COPY models/registry/cyp3a4_inhibition_v1.json ./models/registry/cyp3a4_inhibition_v1.json
+COPY models/registry/cyp2d6_activity_v1.json ./models/registry/cyp2d6_activity_v1.json
+COPY models/registry/bbb_permeability_v1.json ./models/registry/bbb_permeability_v1.json
 
-# Fetches the six large artifact files this build does not otherwise have
-# (see header). ARG, not ENV: the URL is a build-time input, not something
-# that needs to persist into the running container. Defaulted to this repo's
-# real Release (Render's Blueprint format cannot pass build ARGs -- see
-# header) -- override with `--build-arg MODEL_RELEASE_URL_BASE=...` for a
-# local build against a different release.
+# The psychiatric-screening pipeline's own source + evaluation manifests
+# (small, committed -- not gitignored) -- drugsim_predict.psychiatric_pipeline
+# imports screening_profile.py/selectivity.py directly (see that module's
+# own docstring for why), and DRD2/HRH1's scoring reads each one's
+# evaluation_report.json for its frozen conformal/AD thresholds.
+COPY models/psychiatric/selectivity.py ./models/psychiatric/selectivity.py
+COPY models/psychiatric/screening_profile.py ./models/psychiatric/screening_profile.py
+COPY models/psychiatric/drd2_activity/evaluation_report.json ./models/psychiatric/drd2_activity/evaluation_report.json
+COPY models/psychiatric/hrh1_activity/evaluation_report.json ./models/psychiatric/hrh1_activity/evaluation_report.json
+
+# Fetches the sixteen large artifact files this build does not otherwise
+# have (see header). ARG, not ENV: the URL is a build-time input, not
+# something that needs to persist into the running container. Defaulted to
+# this repo's real Release (Render's Blueprint format cannot pass build
+# ARGs -- see header) -- override with `--build-arg
+# MODEL_RELEASE_URL_BASE=...` for a local build against a different release.
 ARG MODEL_RELEASE_URL_BASE=https://github.com/cuberthinks/drugsim/releases/download/models-v1
 RUN test -n "$MODEL_RELEASE_URL_BASE" || (echo "MODEL_RELEASE_URL_BASE build arg is required -- see this Dockerfile's header." >&2 && exit 1)
 RUN MODEL_RELEASE_URL_BASE="$MODEL_RELEASE_URL_BASE" bash scripts/fetch_model_artifacts.sh
@@ -96,6 +100,8 @@ RUN MODEL_RELEASE_URL_BASE="$MODEL_RELEASE_URL_BASE" bash scripts/fetch_model_ar
 # alongside (not inside) each artifact/ directory.
 COPY models/admet/herg_inhibition/inference_support_manifest.json ./models/admet/herg_inhibition/inference_support_manifest.json
 COPY models/admet/cyp3a4_inhibition/inference_support_manifest.json ./models/admet/cyp3a4_inhibition/inference_support_manifest.json
+COPY models/psychiatric/cyp2d6_activity/inference_support_manifest.json ./models/psychiatric/cyp2d6_activity/inference_support_manifest.json
+COPY models/psychiatric/bbb_permeability/inference_support_manifest.json ./models/psychiatric/bbb_permeability/inference_support_manifest.json
 
 # --------------------------------------------------------------------------
 FROM python:3.12-slim-bookworm AS runtime

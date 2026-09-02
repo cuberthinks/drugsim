@@ -4,17 +4,17 @@
 Combines every endpoint built in this pipeline into one structured,
 per-endpoint-honest report -- never a single blind pass/fail verdict.
 
-**Offline research tool, not a live API.** A live
-`POST /v1/psychiatric-screening` endpoint was briefly built and shipped,
-then reverted the same day: loading all six models in one process
-crashed the live `drugsim-predict-api` service with an OOM restart
-during real testing (confirmed in Render's own logs) -- the existing
-2-model service was already near its 512MB plan limit, and this
-pipeline's combined footprint pushed it over. See
-`docs/psychiatric-pipeline/api-integration.md` for the full incident and
-what a real fix would need (a bigger instance, or a smaller combined
-model footprint). The training/evaluation work itself is real and kept;
-only the live-serving wiring was reverted.
+**Served live via `POST /v1/psychiatric-screening`, on its second
+attempt.** The first attempt crashed the live `drugsim-predict-api`
+service with an OOM restart (confirmed in Render's own logs) -- the
+existing 2-model service was already near its 512MB plan limit, and
+this pipeline's combined footprint pushed it over. That attempt was
+reverted the same day. Before trying again, DRD2, CYP2D6, and BBB were
+ALL retrained with bounded hyperparameter grids to shrink their
+combined footprint substantially (DRD2 248MB->41MB, CYP2D6 41MB->9MB,
+BBB 13MB->7MB), each at a real, disclosed accuracy cost. See
+`docs/psychiatric-pipeline/api-integration.md` for the full incident
+and the retraining decisions.
 
 Three genuinely different reuse strategies are used here, by design,
 not by oversight:
