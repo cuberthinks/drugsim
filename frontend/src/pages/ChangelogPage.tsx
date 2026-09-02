@@ -16,6 +16,16 @@ const ENTRIES: Entry[] = [
     ],
   },
   {
+    date: "2026-08-30",
+    title: "Research pipeline: psychiatric compound screening",
+    items: [
+      "Built and evaluated a new research pipeline for screening psychiatric drug candidates across five signals: predicted binding to DRD2 (the primary therapeutic target for antipsychotics), predicted binding to HRH1 (the target most linked to antihistamine-driven weight gain), a direct selectivity comparison between the two, a metabolic-liability screen against CYP2D6, and blood-brain-barrier permeability — combined with the existing, already-validated hERG cardiac-risk model, reused unchanged rather than retrained.",
+      "Corrected a real data error inherited from earlier work: the CYP2D6 metabolic-liability endpoint had previously been marked \"insufficient data\" based on the wrong reference identifier — an unrelated protein, not CYP2D6 at all. Found, fixed, and rebuilt with the correct data.",
+      "Verified end-to-end on two real, well-documented drugs with opposite pharmacology (haloperidol and diphenhydramine) — every one of the five signals for both came back matching their known real-world behavior, including haloperidol's well-documented cardiac-rhythm risk.",
+      "This is offline research and evaluation work, not yet part of the live prediction tool on this site — there's no new button or page to try it out yet. See the full write-up in the project's documentation for the scientific reasoning, data sources, and every result in detail.",
+    ],
+  },
+  {
     date: "2026-08-27",
     title: "Compound identification",
     items: [
