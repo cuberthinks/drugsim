@@ -54,29 +54,25 @@ otherwise. Consolidated here so nobody has to hunt for the caveats.
 
 ## Deployment / architecture limitations
 
-- **CYP2D6 and BBB are live but still registered EXPERIMENTAL, not
-  promoted.** Both are served through `POST /v1/psychiatric-screening`
-  (`drugsim_predict.psychiatric_pipeline`), a separate, explicitly-
-  labelled surface from `/predict` -- `run_inference`'s own promotion
-  gate would still correctly refuse to serve either through `/predict`
-  itself. Every signal from these two carries `reliability_tier:
-  "experimental"` in the response; promotion to `VALIDATED FOR INTERNAL
-  RESEARCH` was not attempted -- that gate exists for a reason and
-  clearing it is a separate, real review step, not a checkbox.
-- **DRD2 and HRH1 have no `/predict`-shaped serving path** (no
-  classification schema fits a continuous value), but ARE served live
-  through the same `POST /v1/psychiatric-screening` endpoint, scored
-  directly against their own artifacts. Both also carry
-  `reliability_tier: "experimental"`.
-- **DRD2's model was retrained for a smaller footprint before going
-  live.** Real Render memory metrics showed the existing 2-model
-  service already near its 512MB limit; DRD2's original 248MB model
-  would very likely have crashed the whole service. Retrained
-  (`n_estimators=200, max_depth=20`) to 41MB, at a real, disclosed R²
-  cost (0.5994 → 0.4980). See validation.md's "Deployment note."
-- **No frontend audit-log/history surface exists for this endpoint
-  yet** — unlike `/predict`, results from `/v1/psychiatric-screening`
-  are not persisted or retrievable by ID.
+- **A live endpoint was attempted and reverted the same day.**
+  `POST /v1/psychiatric-screening` was built, deployed, and crashed the
+  live `drugsim-predict-api` service on a real test request (confirmed
+  OOM restart in Render's own logs — loading hERG + CYP2D6 together
+  was already enough to exceed the container's memory budget, before
+  BBB/DRD2/HRH1 were even touched). Reverted the same day; see
+  api-integration.md for the full incident.
+- **Nothing in this pipeline is currently wired into the live
+  `drugsim-predict-api` service.** CYP2D6 and BBB remain registered
+  (`models/registry/`) but their artifacts are not fetched into the
+  live Docker image; DRD2 and HRH1 have no live serving path at all.
+  All results in this pipeline come from running the pipeline's own
+  scripts locally, against local (or `models-v1` GitHub Release)
+  artifacts.
+- **DRD2's model was retrained for a smaller footprint** as part of
+  the live attempt above — kept even after reverting, since 41MB is
+  strictly better than the original 248MB for any future attempt. Real
+  R² cost: 0.5994 → 0.4980. See validation.md's "Deployment note."
+- **No frontend exists for this pipeline.**
 
 ## Process limitations, disclosed rather than hidden
 

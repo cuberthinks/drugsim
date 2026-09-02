@@ -72,23 +72,26 @@ formula's sign convention, not an illustrative example.
 
 ## Test suite
 
-`tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry,screening_api}.py`
-— 33 tests, all passing. Full unrelated-suite run: 660/671 passing (the
+`tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry}.py`
+— 26 tests, all passing. Full unrelated-suite run: 653/664 passing (the
 1 failure and 11 errors are pre-existing S3-fixture and
 `datasets/registry.yaml` bindingdb-tier issues, untouched by this
 pipeline).
 
-## Deployment note: DRD2 was retrained for a smaller model
+## Deployment note: DRD2 was retrained smaller, then the live attempt was reverted anyway
 
-Once this pipeline actually went live (`POST /v1/psychiatric-screening`),
-Render's own memory metrics showed the existing 2-model service already
-sitting near its 512MB limit -- DRD2's original model.joblib
-(`n_estimators=500, max_depth=None`) was 248MB, and would very likely
-have crashed the whole service on deploy, not just this endpoint.
-Retrained with a bounded grid (`n_estimators=200, max_depth=20`):
-model size dropped to 41MB, R² dropped from 0.5994 to 0.4980 (a real,
-disclosed ~17% relative accuracy cost, not a training bug). All DRD2
-numbers on this page reflect the retrained model.
+A live `POST /v1/psychiatric-screening` endpoint was attempted. Before
+deploying, Render's own memory metrics showed the existing 2-model
+service already sitting near its 512MB limit -- DRD2's original
+model.joblib (`n_estimators=500, max_depth=None`) was 248MB, so it was
+retrained with a bounded grid (`n_estimators=200, max_depth=20`) to
+41MB, at a real R² cost (0.5994 → 0.4980). That fix wasn't enough on
+its own: a real test request still crashed the service with an OOM
+restart (loading hERG + CYP2D6 together already exceeded the memory
+budget). The endpoint was reverted the same day; see
+api-integration.md for the full incident. All DRD2 numbers on this
+page reflect the retrained (smaller) model, which was kept despite the
+revert.
 
 ## What was not performed
 

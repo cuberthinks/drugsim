@@ -3,18 +3,27 @@
 
 Combines every endpoint built in this pipeline into one structured,
 per-endpoint-honest report -- never a single blind pass/fail verdict.
-Served live via `POST /v1/psychiatric-screening`
-(`drugsim_predict.psychiatric_pipeline`), deliberately OUTSIDE the
-promotion-gated `run_inference`/`/v1/predictions` path: this is an
-explicitly-labelled research/screening tool, not a claim that every
-signal in it has passed the same review hERG has. Three genuinely
-different reuse strategies are used, by design, not by oversight:
+
+**Offline research tool, not a live API.** A live
+`POST /v1/psychiatric-screening` endpoint was briefly built and shipped,
+then reverted the same day: loading all six models in one process
+crashed the live `drugsim-predict-api` service with an OOM restart
+during real testing (confirmed in Render's own logs) -- the existing
+2-model service was already near its 512MB plan limit, and this
+pipeline's combined footprint pushed it over. See
+`docs/psychiatric-pipeline/api-integration.md` for the full incident and
+what a real fix would need (a bigger instance, or a smaller combined
+model footprint). The training/evaluation work itself is real and kept;
+only the live-serving wiring was reverted.
+
+Three genuinely different reuse strategies are used here, by design,
+not by oversight:
 
 1. **hERG** ("reuse existing infrastructure, never retrain"): called
    through the REAL, already-validated production path,
-   `drugsim_predict.pipeline.run_inference`, exactly as `/v1/predictions`
-   already does. hERG's own applicability-domain, conformal, and
-   reliability output passes through unchanged -- this is the one
+   `drugsim_predict.pipeline.run_inference`, exactly as the live
+   `/predict` route does. hERG's own applicability-domain, conformal,
+   and reliability output passes through unchanged -- this is the one
    signal in the profile with `reliability_tier: "validated"`.
 
 2. **CYP2D6 and BBB**: both are classification endpoints, registered
@@ -23,12 +32,9 @@ different reuse strategies are used, by design, not by oversight:
    uses -- but their `final_report_status` is `EXPERIMENTAL`, so
    `run_inference`'s own promotion gate would correctly refuse to serve
    them as a *normal* prediction (verified: `EndpointNotAvailableError`).
-   That gate protects `/v1/predictions` from serving an unreviewed model
-   as if it were reviewed; it is not a reason to avoid the real,
-   validated AD/conformal *logic* in a tool that is explicit about being
-   experimental. This module therefore calls `model_registry.
-   load_model_bundle` (the loader, not the gated wrapper) and then the
-   exact same `applicability_domain.assess_applicability_domain` /
+   This module calls `model_registry.get_model_bundle` (the cached
+   loader `/predict` itself uses) and then the exact same
+   `applicability_domain.assess_applicability_domain` /
    `conformal.compute_conformal_set` functions `run_inference` would
    have called -- genuine reuse of validated logic, `reliability_tier:
    "experimental"`, never presented as equivalent to hERG's status.
@@ -36,16 +42,15 @@ different reuse strategies are used, by design, not by oversight:
 3. **DRD2 and HRH1**: continuous binding-affinity regressions. No
    classification-shaped schema fits these, so they are scored directly
    against their own artifacts (compact inference-support npz + frozen
-   conformal/AD thresholds from evaluation_report.json), also
-   `reliability_tier: "experimental"`.
+   conformal/AD thresholds from evaluation_report.json, cached per
+   process via `_load_regression_bundle`), also `reliability_tier:
+   "experimental"`.
 
 Usage (as a library):
     from models.psychiatric.screening_profile import screen_compound
     profile = screen_compound(smiles)
 
 Usage (CLI demo): see demo_screening_profile.py.
-Usage (live API): POST /v1/psychiatric-screening, see
-    src/drugsim_predict/psychiatric_pipeline.py.
 """
 
 from __future__ import annotations
