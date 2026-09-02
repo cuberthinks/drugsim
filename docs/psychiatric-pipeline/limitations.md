@@ -54,16 +54,21 @@ otherwise. Consolidated here so nobody has to hunt for the caveats.
 
 ## Deployment / architecture limitations
 
-- **A first live attempt crashed the service and was reverted the same
-  day.** `POST /v1/psychiatric-screening` was built, deployed, and
-  crashed `drugsim-predict-api` on a real test request (confirmed OOM
-  restart in Render's own logs — hERG + CYP2D6 together already
-  exceeded the memory budget). DRD2, CYP2D6, and BBB were all then
-  retrained with bounded hyperparameter grids to shrink the combined
-  footprint substantially before attempting again (see validation.md's
-  "Deployment note" for the exact before/after sizes and accuracy
-  costs) — see api-integration.md for the full incident and current
-  live status.
+- **Two live attempts both crashed the service and were reverted.**
+  `POST /v1/psychiatric-screening` was built and deployed twice; both
+  times a real test request crashed `drugsim-predict-api` (confirmed
+  OOM kills in Render's own logs). DRD2, then also CYP2D6 and BBB,
+  were retrained with bounded hyperparameter grids between attempts —
+  a real ~14x reduction in the four new models' local measured
+  footprint, which still wasn't enough (see validation.md's
+  "Deployment note" for exact sizes/accuracy costs). Currently
+  offline-only; see api-integration.md for the full two-incident story
+  and what an actual fix would need.
+- **Nothing in this pipeline is currently wired into the live
+  `drugsim-predict-api` service.** CYP2D6 and BBB remain registered
+  (`models/registry/`) but their artifacts are not fetched into the
+  live Docker image; DRD2 and HRH1 have no live serving path at all.
+  All results come from running the pipeline's own scripts locally.
 - **No frontend exists for this pipeline.**
 
 ## Process limitations, disclosed rather than hidden

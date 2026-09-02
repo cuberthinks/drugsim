@@ -7,10 +7,9 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
-### Added — Psychiatric Compound Screening Pipeline
+### Added — Psychiatric Compound Screening Pipeline (offline research tool)
 
-- New multi-objective screening pipeline, live via
-  `POST /v1/psychiatric-screening`, covering DRD2 (therapeutic
+- New multi-objective screening pipeline covering DRD2 (therapeutic
   target), HRH1 (off-target/weight-gain liability), CYP2D6 (metabolic
   liability), BBB (CNS exposure), and hERG (cardiac liability, reused
   unchanged from the existing validated model) — combined via a
@@ -30,10 +29,9 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
   `docs/phase9/endpoint-selection.md`'s erratum.
 - CYP2D6 and BBB are registered (`models/registry/`) into the same
   generic model-loading/applicability-domain/conformal machinery hERG
-  and CYP3A4 already use in production, as `EXPERIMENTAL`. Served via
-  a separate, explicitly-labelled endpoint from `/predict` -- the
-  promotion gate (`run_inference`) still correctly refuses to serve
-  either through `/predict` itself.
+  and CYP3A4 already use in production, as `EXPERIMENTAL` — loadable,
+  checksum-verified, but correctly refused by the live promotion gate
+  (`run_inference`) until an explicit promotion review happens.
 - `models/psychiatric/screening_profile.py` combines all six signals
   into one structured, per-endpoint-honest report — every result
   carries its own real `reliability_tier` (`"validated"` for hERG,
@@ -48,20 +46,21 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
   all four clear their baseline; BBB's descriptor-only model comes
   close to its champion (consistent with lipophilicity/TPSA already
   carrying most of the real BBB-permeability signal).
-- **A real production incident, found and fixed before this stayed
-  live.** The first deploy attempt crashed the live service on a real
-  test request (confirmed OOM restart in Render's own logs) — the
-  existing 2-model service was already near its 512MB plan limit, and
-  loading hERG + CYP2D6 together alone was enough to exceed it.
-  Reverted the same day. DRD2, CYP2D6, and BBB were then all retrained
-  with bounded hyperparameter grids (DRD2 248MB→41MB, CYP2D6 41MB→9MB,
-  BBB 13MB→7MB) — a real, disclosed accuracy cost on each, in exchange
-  for a ~14x reduction in the four new models' combined incremental
-  memory footprint — before redeploying. See `docs/psychiatric-pipeline/
-  api-integration.md` for the full incident.
+- **Two real production incidents, found the hard way.** A live
+  `POST /v1/psychiatric-screening` endpoint was attempted twice and
+  crashed the live service both times (confirmed OOM kills in Render's
+  own logs) — the existing 2-model service was already near its 512MB
+  plan limit. DRD2 was retrained smaller before the first attempt
+  (248MB→41MB); CYP2D6 and BBB were also retrained before the second
+  (41MB→9MB, 13MB→7MB) — a real, disclosed accuracy cost on each, for
+  a ~14x reduction in the four new models' combined incremental memory
+  footprint. Still crashed the second time. Reverted both times; this
+  pipeline is currently offline-only. See `docs/psychiatric-pipeline/
+  api-integration.md` for the full two-incident story and what an
+  actual fix would need.
 - Full documentation set: `docs/psychiatric-pipeline/{README,
   scientific-foundation, data-sources, selectivity-methodology,
-  benchmarking, api-integration, validation, limitations}.md`. 33
+  benchmarking, api-integration, validation, limitations}.md`. 26
   unit tests, all passing.
 
 ### Added — Compound Identity Coverage Expansion

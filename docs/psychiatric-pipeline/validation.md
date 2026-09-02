@@ -78,22 +78,20 @@ formula's sign convention, not an illustrative example.
 `datasets/registry.yaml` bindingdb-tier issues, untouched by this
 pipeline).
 
-## Deployment note: three models retrained smaller after a real crash
+## Deployment note: three models retrained smaller, crashed twice anyway
 
-A live `POST /v1/psychiatric-screening` endpoint was attempted, crashed
-the service (OOM restart, confirmed in Render's logs), and was
-reverted the same day. DRD2 had already been retrained smaller before
-that first attempt (248MB → 41MB, R² 0.5994 → 0.4980) but that alone
-wasn't sufficient -- hERG + CYP2D6 together already exceeded the
-memory budget. Before attempting again, CYP2D6 and BBB were ALSO
-retrained with bounded grids: CYP2D6 41MB → 9MB (ROC-AUC 0.8333 →
-0.8251), BBB 13MB → 7MB (ROC-AUC 0.9615 → 0.9507, with an UNCHANGED
-test-set confusion matrix -- the actual classification decisions did
-not change). Combined, the four new models' local incremental memory
-cost dropped roughly 14x (from ~329MB to ~23MB in a local measurement)
-before the second deployment attempt. See api-integration.md for the
-full incident and the current live status. All DRD2/CYP2D6/BBB numbers
-on this page reflect the retrained (smaller) models.
+A live `POST /v1/psychiatric-screening` endpoint was attempted TWICE,
+crashed the service both times (OOM kills, confirmed in Render's
+logs), and was reverted both times. DRD2 was retrained smaller before
+the first attempt (248MB → 41MB, R² 0.5994 → 0.4980); CYP2D6 and BBB
+were ALSO retrained before the second (CYP2D6 41MB → 9MB, ROC-AUC
+0.8333 → 0.8251; BBB 13MB → 7MB, ROC-AUC 0.9615 → 0.9507 with an
+UNCHANGED test-set confusion matrix). The four new models' combined
+local incremental memory cost dropped roughly 14x between attempts —
+not enough to prevent the second crash. See api-integration.md for the
+full two-incident story; this pipeline is currently offline-only. All
+DRD2/CYP2D6/BBB numbers on this page reflect the retrained (smaller)
+models, kept despite both reverts.
 
 ## What was not performed
 

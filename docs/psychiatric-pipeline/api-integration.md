@@ -1,4 +1,4 @@
-# API integration (Step 11) — crashed once, fixed, retried
+# API integration (Step 11) — crashed twice, currently offline
 
 ## What happened, in order
 
@@ -44,36 +44,72 @@
    TestClient, not identical to but indicative of the real container)
    dropped roughly 14x, from ~329MB to ~23MB, between the first and
    second attempt.
-7. **Redeployed.** See the result below.
+7. **Redeployed. Crashed a second time.** The build succeeded, health
+   checks passed on a fresh instance sitting at ~97MB baseline. A
+   single test request loaded CYP2D6, BBB, and hERG — all three logged
+   `model.loaded` successfully — and then the process restarted:
+   the exact same full boot sequence (`Started server process`,
+   `Application startup complete`, `Uvicorn running`) appeared in the
+   logs seconds later, with no exception, no traceback, and no
+   graceful-shutdown log line in between. That signature (a full
+   restart with nothing logged in between) is consistent with an
+   OS-level kill, not a Python-level error. Render's memory metric
+   (30-second resolution) never showed a spike above ~98MB across this
+   whole sequence — the likely explanation is that the actual memory
+   spike (e.g. during DRD2's `model.predict()` call, which was never
+   reached in the logs, or during response serialization) was brief
+   enough to fall entirely between two 30-second samples.
+8. **Reverted again, immediately**, back to the exact pre-attempt
+   state (hERG + CYP3A4 only). Confirmed stable afterward.
 
-## What this incident proves
+## What both incidents together prove
 
-The DRD2-only retraining fix was real and worth keeping, but wasn't
-sufficient on its own — the *combined* footprint of hERG + CYP2D6
-alone (before BBB, DRD2, or HRH1 were even touched) was enough to
-exceed the container's memory budget. This is a genuine capacity
-problem across the whole new-endpoint set, not a defect in any one
-model. It's also a reminder that **local memory measurements (this
-project's dev venv runs macOS/CPython 3.9) do not reliably predict a
-Linux/Docker container's real behavior** — Render's own `get_metrics`
-(memory_usage, memory_limit) was the only trustworthy signal used to
-decide whether the second attempt was safe enough to try.
+A ~14x reduction in the four new models' measured *local* incremental
+memory footprint (from the first fix) was not enough to prevent a
+second real crash. Two real, and now well-evidenced, findings:
 
-## What's live now
+1. **Local memory measurements (this project's dev venv runs
+   macOS/CPython 3.9) do not reliably predict a Linux/Docker
+   container's real behavior**, not just in absolute terms but
+   apparently in relative terms too — a measured 14x local improvement
+   did not translate into a safe real-world margin.
+2. **Render's 30-second metric resolution can miss the actual failure
+   mode.** A transient allocation spike (e.g. inside a single
+   `RandomForestRegressor.predict()` call across many trees, or during
+   JSON-serializing a large combined response) can exceed the memory
+   limit and get OS-killed faster than the metrics pipeline samples --
+   "no visible spike in the metrics" is not proof of safety.
 
-`POST /v1/psychiatric-screening`, combining DRD2, HRH1, selectivity,
-CYP2D6, BBB, and hERG, each with its own real `reliability_tier`.
-Registered the same way as before (CYP2D6/BBB into
-`drugsim_predict.model_registry`, DRD2/HRH1 scored directly), reusing
-the same `get_model_bundle`/`assess_applicability_domain`/
-`compute_conformal_set` machinery `/predict` itself uses for the two
-classification endpoints.
+Retraining the *models themselves* smaller was a real, correct thing
+to do (see validation.md's numbers — every accuracy cost was
+disclosed), but it is not, by itself, a reliable fix for this specific
+failure mode.
 
-## What a further fix would still need, if this recurs
+## Current status: offline, staying that way pending a different fix
 
-If real Render metrics after this deploy show the margin is still too
-thin for comfort, the remaining options are the same two named after
-the first incident: a bigger `drugsim-predict-api` instance (a real
-cost decision, never made unilaterally), or shrinking further still
-(BBB and HRH1 are already small; CYP2D6/DRD2 could in principle go
-smaller yet, at a growing accuracy cost each time).
+`POST /v1/psychiatric-screening` does not exist on the live service.
+Every result in this pipeline comes from running
+`models/psychiatric/screening_profile.py::screen_compound()` locally.
+All 16 model artifact files (current, retrained-smaller versions)
+remain uploaded to the `models-v1` GitHub Release for whenever this is
+revisited.
+
+## What an actual fix would need
+
+Two failed attempts at "just make the models smaller" is real evidence
+this specific approach has a low ceiling. Options going forward, in
+rough order of how directly each addresses what actually failed:
+
+- **A bigger `drugsim-predict-api` instance.** The most direct fix —
+  removes the constraint the last two attempts were fighting, rather
+  than trying to out-shrink it. A real recurring cost, never a
+  unilateral decision.
+- **Don't load all six models in the same process for one request.**
+  E.g. compute the six signals across multiple smaller calls, or cap
+  which subset of experimental models a single request can combine, so
+  the peak concurrent resident set is smaller even if the total
+  artifact footprint is unchanged.
+- **Shrinking further still.** Diminishing returns given what just
+  happened — CYP2D6/DRD2 could in principle go smaller yet, at a
+  growing, real accuracy cost, with no guarantee it clears whatever
+  the actual (still not fully understood) failure threshold is.
