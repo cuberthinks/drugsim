@@ -1,8 +1,8 @@
 {
   "algorithm": "random_forest",
   "hyperparameters": {
-    "n_estimators": 500,
-    "max_depth": null
+    "n_estimators": 200,
+    "max_depth": 20
   },
   "random_seed": 42,
   "requires_scaling": false,
@@ -20,17 +20,17 @@
   "n_validation": 977,
   "train_pki_mean": 6.7425,
   "validation_metrics": {
-    "r2": 0.5994,
-    "mae": 0.4735,
-    "rmse": 0.6421
+    "r2": 0.5462,
+    "mae": 0.5005,
+    "rmse": 0.6833
   },
   "candidate_comparison": {
-    "random_forest": 0.5994,
+    "random_forest": 0.5462,
     "gradient_boosting": 0.4514,
     "ridge_regression": 0.1598
   },
   "gnn_benchmark": "Not implemented in this pass -- classical models only. Rationale: ~5.6k training compounds is the same small-data regime the existing hERG/CYP3A4 models were built in (their own stated reasoning for not using deep architectures), and this repository has no existing GNN infrastructure. Per the feature brief's own instruction, a GNN is not mandatory; this is the classical half of the comparison it asks for.",
-  "trained_at": "2026-08-30T08:27:42+00:00",
+  "trained_at": "2026-09-02T05:53:27+00:00",
   "model_artifact": "models/psychiatric/drd2_activity/artifact/model.joblib",
   "feature_layout": "concat(descriptors[18], morgan_fp_r2_2048[2048]) = 2066 columns",
   "label": "pki (continuous, higher = stronger predicted DRD2 binding)"

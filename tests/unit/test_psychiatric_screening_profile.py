@@ -65,25 +65,25 @@ class TestProfileStructure:
         assert p.selectivity_index_log10 == pytest.approx(expected, abs=1e-3)
 
 
-class TestDeploymentStatusHonesty:
+class TestReliabilityTierHonesty:
     """The whole point of this module: never claim equal reliability across endpoints."""
 
-    def test_herg_is_reported_as_validated_live(self, haloperidol_profile) -> None:
-        assert haloperidol_profile.herg.deployment_status == "validated_live"
+    def test_herg_is_reported_as_validated(self, haloperidol_profile) -> None:
+        assert haloperidol_profile.herg.reliability_tier == "validated"
 
-    def test_cyp2d6_and_bbb_are_reported_as_experimental_offline_only(self, haloperidol_profile) -> None:
+    def test_cyp2d6_and_bbb_are_reported_as_experimental(self, haloperidol_profile) -> None:
         p = haloperidol_profile
-        assert p.cyp2d6.deployment_status == "registered_experimental_offline_only"
-        assert p.bbb.deployment_status == "registered_experimental_offline_only"
+        assert p.cyp2d6.reliability_tier == "experimental"
+        assert p.bbb.reliability_tier == "experimental"
 
-    def test_drd2_and_hrh1_are_reported_as_having_no_live_serving_path(self, haloperidol_profile) -> None:
+    def test_drd2_and_hrh1_are_reported_as_experimental(self, haloperidol_profile) -> None:
         p = haloperidol_profile
-        assert "no_regression_serving_path" in p.drd2.deployment_status
-        assert "no_regression_serving_path" in p.hrh1.deployment_status
+        assert p.drd2.reliability_tier == "experimental"
+        assert p.hrh1.reliability_tier == "experimental"
 
     def test_overall_caveats_warn_against_treating_signals_as_equally_reliable(self, haloperidol_profile) -> None:
         joined = " ".join(haloperidol_profile.overall_caveats).lower()
-        assert "not the same reliability tier" in joined or "not equally trustworthy" in joined
+        assert "do not treat all six signals as equally trustworthy" in joined
 
 
 class TestRealPharmacologyDirectionalSanity:

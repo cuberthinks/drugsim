@@ -1,0 +1,7 @@
+{
+  "built_at": "2026-09-02T05:54:38+00:00",
+  "n_train": 5611,
+  "output_npz": "models/psychiatric/drd2_activity/artifact/inference_support.npz",
+  "output_npz_sha256": "5f866f990f1ea89a9a3ca8235c8a0b27737750803982e958fa7e9b1ffdd17bea",
+  "note": "Training-split Morgan fingerprints only, for the Tanimoto applicability-domain check screening_profile.py runs at serving time. Conformal interval half-width and the Tanimoto in-domain threshold are read directly from evaluation_report.json, not duplicated here -- both are already frozen from the same train/calibration split."
+}

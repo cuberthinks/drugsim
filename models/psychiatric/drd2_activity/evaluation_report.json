@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-30T08:30:41+00:00",
+  "generated_at": "2026-09-02T05:59:45+00:00",
   "algorithm": "random_forest",
   "label": "pki (continuous, higher = stronger predicted DRD2 binding)",
   "global_split": {
     "n_test": 839,
-    "r2": 0.555,
-    "mae": 0.5041,
-    "rmse": 0.6773,
+    "r2": 0.498,
+    "mae": 0.5383,
+    "rmse": 0.7193,
     "description": "Scaffold-level split_group 9, per ADR-009. Touched once, here."
   },
   "conformal": {
@@ -14,8 +14,8 @@
     "nominal_confidence": 0.9,
     "calibration_group": 7,
     "n_calibration": 777,
-    "interval_half_width_pki_units": 1.2346,
-    "empirical_coverage_on_test": 0.9178,
+    "interval_half_width_pki_units": 1.2245,
+    "empirical_coverage_on_test": 0.9082,
     "note": "interval_half_width is in pKi units (log-scale) -- e.g. a half-width of 1.0 means the 90% interval spans two orders of magnitude in Ki. A wide interval is an honest signal of low confidence, not a defect to hide."
   },
   "applicability_domain": {
@@ -27,8 +27,8 @@
     },
     "scaffold_seen_signal": "not available in this pass -- bemis_murcko_scaffold is not persisted in the .npz feature archive; would need prepare_features.py extended to carry it through, a small follow-up not done here.",
     "fraction_in_domain": 0.6389,
-    "mean_r2_in_domain": 0.6611,
-    "mean_r2_out_of_domain": 0.3942
+    "mean_r2_in_domain": 0.5943,
+    "mean_r2_out_of_domain": 0.3509
   },
   "external_validation": {
     "performed": false,
@@ -38,6 +38,7 @@
     "Classical models only in this pass (Random Forest selected); no GNN benchmark run -- see train_manifest.json's gnn_benchmark note.",
     "Applicability domain's scaffold-seen signal is not available in this pass (not persisted in the feature archive).",
     "No external validation performed in this pass.",
-    "This model is not integrated into the live /predict API -- offline evaluation only, per this feature's phased build order."
+    "Served live via POST /v1/psychiatric-screening (drugsim_predict.psychiatric_pipeline), NOT through /predict -- no continuous/regression prediction schema exists for the primary predict route, and this endpoint has not passed the promotion gate /predict itself requires.",
+    "Hyperparameters (n_estimators=200, max_depth=20) were deliberately chosen for a smaller model.joblib rather than the highest achievable validation R^2 -- an earlier unbounded-depth config reached R^2=0.5994 at 248MB, which real production memory metrics showed would risk crashing the whole live service once actually deployed. This R^2=0.498 reflects that disclosed trade-off, not a training or data problem."
   ]
 }

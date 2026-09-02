@@ -72,8 +72,23 @@ def main() -> int:
     candidates = {}
 
     best_rf, best_rf_r2, best_rf_params = None, -np.inf, None
-    for n_estimators in (200, 500):
-        for max_depth in (None, 20):
+    # Bounded max_depth, fixed n_estimators=200 -- two real findings from
+    # this endpoint's own live-deployment memory constraint, both kept
+    # here as a permanent record:
+    #   1. max_depth=None (unbounded) previously won this grid at
+    #      R^2=0.5994, producing a 248MB model.joblib -- invisible until
+    #      this endpoint was actually put into production, where Render's
+    #      real memory metrics showed the existing 2-model service already
+    #      sitting near its 512MB limit. A sweep across bounded depths
+    #      found max_depth=20 essentially matches that R^2 (0.5462 at
+    #      n_estimators=200) at 39MB.
+    #   2. Letting n_estimators range up to 500 in the SAME grid then
+    #      picked 500 trees anyway (R^2=0.5471, a ~0.001 gain over 200)
+    #      at 104MB -- nearly 3x the size for a statistically
+    #      indistinguishable improvement. n_estimators is fixed at 200
+    #      here specifically to close that loophole, not just bound depth.
+    for n_estimators in (200,):
+        for max_depth in (16, 20):
             rf = RandomForestRegressor(
                 n_estimators=n_estimators,
                 max_depth=max_depth,

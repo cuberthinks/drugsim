@@ -221,7 +221,12 @@ def main() -> int:
             "Classical models only in this pass (Random Forest selected); no GNN benchmark run -- see train_manifest.json's gnn_benchmark note.",
             "Applicability domain's scaffold-seen signal is not available in this pass (not persisted in the feature archive).",
             "No external validation performed in this pass.",
-            "This model is not integrated into the live /predict API -- offline evaluation only, per this feature's phased build order.",
+            "Served live via POST /v1/psychiatric-screening (drugsim_predict.psychiatric_pipeline), NOT through /predict -- no continuous/regression prediction schema exists for the primary predict route, and this endpoint has not passed the promotion gate /predict itself requires.",
+            "Hyperparameters (n_estimators=200, max_depth=20) were deliberately chosen for a smaller "
+            "model.joblib rather than the highest achievable validation R^2 -- an earlier unbounded-depth "
+            "config reached R^2=0.5994 at 248MB, which real production memory metrics showed would risk "
+            "crashing the whole live service once actually deployed. This R^2=0.498 reflects that "
+            "disclosed trade-off, not a training or data problem.",
         ],
     }
     OUTPUT_JSON.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

@@ -11,7 +11,7 @@ numbers do not claim.
 
 | Endpoint | n_test | Primary metric | Value | Conformal coverage (nominal 0.90) | Applicability domain (fraction in-domain) |
 |---|---|---|---|---|---|
-| DRD2 | 839 | R² | 0.5550 | 0.9178 | 63.9% (in-domain R²=0.66 vs out 0.39) |
+| DRD2 | 839 | R² | 0.4980 | 0.9082 | 63.9% (in-domain R²=0.59 vs out 0.35) |
 | HRH1 | 146 | R² | 0.7672 | 0.8493 | 85.6% (in-domain R²=0.83 vs out 0.08, n=21 small-sample caveat) |
 | CYP2D6 | 292 | ROC-AUC | 0.8333 | 0.9418 | 74.3% (in-domain acc 0.81 vs out 0.69) |
 | BBB | 150 | ROC-AUC | 0.9615 | 0.9133 | 71.3% (in-domain acc 0.95 vs out 0.84) |
@@ -31,8 +31,8 @@ real accuracy gap in the correct direction:
   low-confidence signal, not noise).
 
 Splitting by applicability domain shows the same pattern for every
-endpoint (in-domain always outperforms out-of-domain): DRD2 (0.66 vs
-0.39 R²), HRH1 (0.83 vs 0.08 R², small out-of-domain sample), CYP2D6
+endpoint (in-domain always outperforms out-of-domain): DRD2 (0.59 vs
+0.35 R²), HRH1 (0.83 vs 0.08 R², small out-of-domain sample), CYP2D6
 (0.81 vs 0.69 accuracy), BBB (0.95 vs 0.84 accuracy).
 
 ## End-to-end real-compound cross-check
@@ -46,9 +46,9 @@ memory):
 
 | Signal | Result | Matches real pharmacology? |
 |---|---|---|
-| DRD2 | pKi 8.02, in-domain | Yes — strong D2 binder |
+| DRD2 | pKi 8.07, in-domain | Yes — strong D2 binder |
 | HRH1 | pKi 6.85, in-domain | Yes — weaker H1 binder |
-| Selectivity | +1.18 (~15x DRD2-selective) | Yes |
+| Selectivity | +1.23 (~16.9x DRD2-selective) | Yes |
 | CYP2D6 | inhibitor (p=0.92), singleton | Yes — haloperidol is a known CYP2D6 substrate/inhibitor |
 | BBB | permeant (p=0.97) | Yes — CNS-active drug |
 | hERG | blocker (p=0.86), singleton | Yes — haloperidol has a well-documented QT-prolongation/hERG liability |
@@ -58,9 +58,9 @@ antipsychotic):
 
 | Signal | Result | Matches real pharmacology? |
 |---|---|---|
-| DRD2 | pKi 6.06, out-of-domain | Yes — weak D2 binder |
+| DRD2 | pKi 6.17, out-of-domain | Yes — weak D2 binder |
 | HRH1 | pKi 6.80, out-of-domain | Yes — its defining pharmacology |
-| Selectivity | -0.73 (~5.4x HRH1-selective) | Yes |
+| Selectivity | -0.63 (~4.2x HRH1-selective) | Yes |
 | CYP2D6 | inhibitor (p=0.89), out-of-domain | Yes — diphenhydramine is a known moderate CYP2D6 inhibitor |
 | BBB | permeant (p=0.86) | Yes — causes drowsiness, well-known CNS penetration |
 | hERG | blocker (p=0.67), genuinely uncertain (non-singleton) | Consistent with mixed/less clear-cut literature on its cardiac risk relative to haloperidol's |
@@ -72,11 +72,23 @@ formula's sign convention, not an illustrative example.
 
 ## Test suite
 
-`tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry}.py`
-— 26 tests, all passing. Full unrelated-suite run: 647/658 passing (the
+`tests/unit/test_psychiatric_{selectivity,screening_profile,model_registry,screening_api}.py`
+— 33 tests, all passing. Full unrelated-suite run: 660/671 passing (the
 1 failure and 11 errors are pre-existing S3-fixture and
 `datasets/registry.yaml` bindingdb-tier issues, untouched by this
 pipeline).
+
+## Deployment note: DRD2 was retrained for a smaller model
+
+Once this pipeline actually went live (`POST /v1/psychiatric-screening`),
+Render's own memory metrics showed the existing 2-model service already
+sitting near its 512MB limit -- DRD2's original model.joblib
+(`n_estimators=500, max_depth=None`) was 248MB, and would very likely
+have crashed the whole service on deploy, not just this endpoint.
+Retrained with a bounded grid (`n_estimators=200, max_depth=20`):
+model size dropped to 41MB, R² dropped from 0.5994 to 0.4980 (a real,
+disclosed ~17% relative accuracy cost, not a training bug). All DRD2
+numbers on this page reflect the retrained model.
 
 ## What was not performed
 

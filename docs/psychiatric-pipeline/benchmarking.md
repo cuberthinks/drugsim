@@ -29,7 +29,7 @@ CYP3A4, applied here to DRD2/HRH1/CYP2D6/BBB via
 |---|---|---|---|---|---|
 | CYP2D6 | classification (ROC-AUC) | 0.8333 | 0.7753 | +0.058 | Yes |
 | BBB | classification (ROC-AUC) | 0.9615 | 0.9469 | +0.015 | Yes, but small |
-| DRD2 | regression (R²) | 0.5550 | 0.3581 | +0.197 | Yes, substantial |
+| DRD2 | regression (R²) | 0.4980 | 0.3581 | +0.140 | Yes, substantial |
 | HRH1 | regression (R²) | 0.7672 | 0.0734 | +0.694 | Yes, overwhelming |
 
 (hERG and CYP3A4 already have their own baseline comparisons —
@@ -58,10 +58,11 @@ recomputed here.)
   descriptors cannot represent), and it is a useful cross-check that
   HRH1's real R²=0.767 is not an artifact of some simpler correlation.
 - **DRD2 shows the same pattern less extremely** (0.358 descriptor-only
-  vs 0.555 champion) — descriptors carry some real signal (DRD2 ligands
+  vs 0.498 champion) — descriptors carry some real signal (DRD2 ligands
   share some recognizable physicochemical character), but the
   fingerprint still contributes the majority of the model's predictive
-  power.
+  power. (DRD2's champion R² was retrained down from an original 0.5994
+  to control model size for live deployment -- see limitations.md.)
 
 ## Limitations
 
