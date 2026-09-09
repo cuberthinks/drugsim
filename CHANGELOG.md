@@ -49,6 +49,21 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
   because the snapshot is seeded from compounds named in DrugSim's own
   hERG/CYP3A4 assay files. Doxorubicin is unidentifiable for this reason.
 
+### Confirmed — CYP3A4 independently reproduces the base-rate finding
+
+- Ran the same tier-stratified analysis on CYP3A4 against 12,161 genuinely
+  external TDC `CYP3A4_Veith` compounds. **MCC is higher externally than
+  internally (0.401 vs 0.356)** and specificity is again higher (0.612 vs
+  0.405).
+- The decisive comparison: precision loss scales with prevalence loss. hERG's
+  base rate falls 85% (0.611 → 0.094) and precision falls 69%; CYP3A4's falls
+  37% (0.667 → 0.419) and precision falls 21%. A degrading model would not
+  scale its precision loss to each dataset's prevalence shift -- this is the
+  signature of a base-rate effect.
+- The applicability domain is monotonic here too (PR-AUC 0.956 → 0.767 →
+  0.719 → 0.285; MCC 0.574 → 0.416 → 0.399 → 0.180), so the mechanism is now
+  validated on **both** production endpoints.
+
 ### Verified — database constraint tests finally executed
 
 - **The database constraint suite has been run for the first time: 75 tests,

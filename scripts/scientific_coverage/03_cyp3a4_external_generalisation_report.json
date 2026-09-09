@@ -1,0 +1,289 @@
+{
+  "generated_at": "2026-09-09T15:42:12.397644+00:00",
+  "endpoint": "cyp3a4_inhibition",
+  "scope": "Read-only. No model trained, retrained or modified.",
+  "method_provenance": {
+    "model_artifact": "models/admet/cyp3a4_inhibition/artifact/model.joblib",
+    "external_source": "TDC CYP3A4_Veith (PubChem AID 1851 qHTS)",
+    "external_file": "datasets/raw/tdc_cyp3a4_veith_raw.tsv",
+    "exact_training_overlap": "excluded by full InChIKey",
+    "tier_boundaries": "identical to the hERG analysis and Phase 4.5",
+    "decision_threshold": 0.5,
+    "label_definition_caveat": "TDC's Y is a single-concentration qHTS activity call; this model's training label is an aggregated dose-response IC50 threshold. Related but not identical definitions -- consistency evidence, not a like-for-like reproduction."
+  },
+  "pool_composition": {
+    "internal_test": 459,
+    "external_tdc": 12161
+  },
+  "reference_internal_test": {
+    "n": 459,
+    "positive_fraction": 0.6667,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "tp": 275,
+      "fp": 91,
+      "fn": 31,
+      "tn": 62
+    },
+    "precision": 0.7514,
+    "recall": 0.8987,
+    "specificity": 0.4052,
+    "balanced_accuracy": 0.652,
+    "accuracy": 0.7342,
+    "mcc": 0.3564,
+    "roc_auc": 0.7995,
+    "pr_auc": 0.8922
+  },
+  "external_overall": {
+    "n": 12161,
+    "positive_fraction": 0.4185,
+    "threshold": 0.5,
+    "confusion_matrix": {
+      "tp": 4033,
+      "fp": 2747,
+      "fn": 1056,
+      "tn": 4325
+    },
+    "precision": 0.5948,
+    "recall": 0.7925,
+    "specificity": 0.6116,
+    "balanced_accuracy": 0.702,
+    "accuracy": 0.6873,
+    "mcc": 0.4013,
+    "roc_auc": 0.7759,
+    "pr_auc": 0.7078
+  },
+  "external_by_applicability_domain_tier": {
+    "highly_similar": {
+      "n": 27,
+      "positive_fraction": 0.7037,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "tp": 16,
+        "fp": 2,
+        "fn": 3,
+        "tn": 6
+      },
+      "precision": 0.8889,
+      "recall": 0.8421,
+      "specificity": 0.75,
+      "balanced_accuracy": 0.7961,
+      "accuracy": 0.8148,
+      "mcc": 0.5735,
+      "roc_auc": 0.8947,
+      "pr_auc": 0.9558,
+      "tanimoto_range": [
+        0.7,
+        1.01
+      ],
+      "mean_tanimoto": 0.8445
+    },
+    "moderately_similar": {
+      "n": 675,
+      "positive_fraction": 0.5067,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "tp": 273,
+        "fp": 130,
+        "fn": 69,
+        "tn": 203
+      },
+      "precision": 0.6774,
+      "recall": 0.7982,
+      "specificity": 0.6096,
+      "balanced_accuracy": 0.7039,
+      "accuracy": 0.7052,
+      "mcc": 0.4157,
+      "roc_auc": 0.7772,
+      "pr_auc": 0.7674,
+      "tanimoto_range": [
+        0.4,
+        0.7
+      ],
+      "mean_tanimoto": 0.4607
+    },
+    "chemically_novel": {
+      "n": 10660,
+      "positive_fraction": 0.4376,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "tp": 3703,
+        "fp": 2371,
+        "fn": 962,
+        "tn": 3624
+      },
+      "precision": 0.6096,
+      "recall": 0.7938,
+      "specificity": 0.6045,
+      "balanced_accuracy": 0.6991,
+      "accuracy": 0.6873,
+      "mcc": 0.3991,
+      "roc_auc": 0.7722,
+      "pr_auc": 0.7186,
+      "tanimoto_range": [
+        0.2,
+        0.4
+      ],
+      "mean_tanimoto": 0.2907
+    },
+    "out_of_domain": {
+      "n": 799,
+      "positive_fraction": 0.0788,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "tp": 41,
+        "fp": 244,
+        "fn": 22,
+        "tn": 492
+      },
+      "precision": 0.1439,
+      "recall": 0.6508,
+      "specificity": 0.6685,
+      "balanced_accuracy": 0.6596,
+      "accuracy": 0.6671,
+      "mcc": 0.1796,
+      "roc_auc": 0.7373,
+      "pr_auc": 0.2852,
+      "tanimoto_range": [
+        -0.01,
+        0.2
+      ],
+      "mean_tanimoto": 0.1732
+    }
+  },
+  "threshold_sensitivity_external": {
+    "0.30": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.3,
+      "confusion_matrix": {
+        "tp": 5071,
+        "fp": 6820,
+        "fn": 18,
+        "tn": 252
+      },
+      "precision": 0.4265,
+      "recall": 0.9965,
+      "specificity": 0.0356,
+      "balanced_accuracy": 0.516,
+      "accuracy": 0.4377,
+      "mcc": 0.1075,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.40": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.4,
+      "confusion_matrix": {
+        "tp": 4888,
+        "fp": 5210,
+        "fn": 201,
+        "tn": 1862
+      },
+      "precision": 0.4841,
+      "recall": 0.9605,
+      "specificity": 0.2633,
+      "balanced_accuracy": 0.6119,
+      "accuracy": 0.5551,
+      "mcc": 0.2942,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.50": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.5,
+      "confusion_matrix": {
+        "tp": 4033,
+        "fp": 2747,
+        "fn": 1056,
+        "tn": 4325
+      },
+      "precision": 0.5948,
+      "recall": 0.7925,
+      "specificity": 0.6116,
+      "balanced_accuracy": 0.702,
+      "accuracy": 0.6873,
+      "mcc": 0.4013,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.60": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.6,
+      "confusion_matrix": {
+        "tp": 2574,
+        "fp": 1085,
+        "fn": 2515,
+        "tn": 5987
+      },
+      "precision": 0.7035,
+      "recall": 0.5058,
+      "specificity": 0.8466,
+      "balanced_accuracy": 0.6762,
+      "accuracy": 0.704,
+      "mcc": 0.379,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.70": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.7,
+      "confusion_matrix": {
+        "tp": 1048,
+        "fp": 230,
+        "fn": 4041,
+        "tn": 6842
+      },
+      "precision": 0.82,
+      "recall": 0.2059,
+      "specificity": 0.9675,
+      "balanced_accuracy": 0.5867,
+      "accuracy": 0.6488,
+      "mcc": 0.2789,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.80": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.8,
+      "confusion_matrix": {
+        "tp": 116,
+        "fp": 4,
+        "fn": 4973,
+        "tn": 7068
+      },
+      "precision": 0.9667,
+      "recall": 0.0228,
+      "specificity": 0.9994,
+      "balanced_accuracy": 0.5111,
+      "accuracy": 0.5907,
+      "mcc": 0.1109,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    },
+    "0.90": {
+      "n": 12161,
+      "positive_fraction": 0.4185,
+      "threshold": 0.9,
+      "confusion_matrix": {
+        "tp": 10,
+        "fp": 0,
+        "fn": 5079,
+        "tn": 7072
+      },
+      "precision": 1.0,
+      "recall": 0.002,
+      "specificity": 1.0,
+      "balanced_accuracy": 0.501,
+      "accuracy": 0.5824,
+      "mcc": 0.0338,
+      "roc_auc": 0.7759,
+      "pr_auc": 0.7078
+    }
+  }
+}

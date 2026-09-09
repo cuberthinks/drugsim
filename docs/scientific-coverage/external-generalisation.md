@@ -1,6 +1,6 @@
 # External Generalisation, Applicability Domain & Threshold Sensitivity
 
-**Endpoint:** hERG inhibition. **Date:** 2026-09-09.
+**Endpoints:** hERG (Part I) and CYP3A4 (Part II). **Date:** 2026-09-09.
 **Produced by:** `scripts/scientific_coverage/01_external_generalisation.py`
 **Raw output:** `scripts/scientific_coverage/01_external_generalisation_report.json`
 
@@ -182,3 +182,69 @@ estimates. That is a measurement-confidence gap, not a model-capability gap.
 
 Internal and external sets are different populations with different
 prevalence; every cross-set comparison above states that explicitly.
+
+---
+
+# Part II — CYP3A4 (independent confirmation)
+
+**Produced by:** `scripts/scientific_coverage/03_cyp3a4_external_generalisation.py`
+**External source:** TDC `CYP3A4_Veith` (PubChem AID 1851 qHTS), 12,161
+genuinely external compounds after standardisation, de-duplication and exact
+full-InChIKey training-overlap exclusion.
+
+**Label caveat, carried forward not glossed:** TDC's `Y` is a single-
+concentration qHTS activity call; this model trains on an aggregated dose-
+response IC50 threshold. Related, not identical — consistency evidence, not a
+like-for-like reproduction.
+
+## II.1 The base-rate thesis, tested on a second endpoint
+
+| Metric | Internal (n=459) | External (n=12,161) |
+|---|---|---|
+| Positive fraction | 0.667 | 0.419 |
+| Precision | 0.751 | 0.595 |
+| **Specificity** | 0.405 | **0.612** |
+| ROC-AUC | 0.800 | 0.776 |
+| **MCC** | 0.356 | **0.401** |
+
+**MCC is higher externally than internally (0.401 vs 0.356)**, and specificity
+is again substantially higher (0.612 vs 0.405). By the prevalence-aware
+agreement metric, this model performs *better* on independent data.
+
+The decisive comparison is between the two endpoints:
+
+| Endpoint | Prevalence drop | Precision drop |
+|---|---|---|
+| hERG | 0.611 → **0.094** (−85%) | 0.694 → **0.218** (−69%) |
+| CYP3A4 | 0.667 → **0.419** (−37%) | 0.751 → **0.595** (−21%) |
+
+**The size of the precision loss tracks the size of the prevalence loss.**
+CYP3A4's base rate falls modestly and its precision falls modestly; hERG's
+base rate collapses and its precision collapses. That is the signature of a
+base-rate effect, and it is not what model degradation looks like — a
+genuinely degrading model would not politely scale its precision loss to the
+prevalence shift of each independent dataset.
+
+Two endpoints, two unrelated external assays, same conclusion.
+
+## II.2 Applicability domain — monotonic again
+
+| Tier | n | Positive frac. | Precision | Specificity | **PR-AUC** | **MCC** |
+|---|---|---|---|---|---|---|
+| highly_similar | 27 | 0.704 | 0.889 | 0.750 | **0.956** | **0.574** |
+| moderately_similar | 675 | 0.507 | 0.677 | 0.610 | **0.767** | **0.416** |
+| chemically_novel | 10,660 | 0.438 | 0.610 | 0.605 | **0.719** | **0.399** |
+| out_of_domain | 799 | 0.079 | 0.144 | 0.669 | **0.285** | **0.180** |
+
+PR-AUC is monotonic (0.956 → 0.767 → 0.719 → 0.285) and MCC degrades
+monotonically (0.574 → 0.416 → 0.399 → 0.180), collapsing out-of-domain
+exactly as on hERG.
+
+**The applicability-domain mechanism is now validated on both production
+endpoints**, using prevalence-aware metrics. Phase 4.5's "partially supported,
+not cleanly monotonic" verdict should be updated: it was an artifact of
+evaluating prevalence-varying tiers with prevalence-insensitive ROC-AUC.
+
+The `highly_similar` tier again has a small n (27), so its 0.889 precision is
+the least precisely estimated figure in the table — the same
+measurement-confidence gap noted for hERG (G2 in `data-gap-analysis.md`).
