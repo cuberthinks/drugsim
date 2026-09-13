@@ -7,6 +7,20 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Deployed — Scientific Coverage upgrade live in production
+
+- Commit `830fe7a` (identity skeleton-tier resolution, external
+  generalisation + AD analysis for both endpoints, prediction-history
+  statistics, compound-level error record, benchmark dataset transparency)
+  deployed to `drugsim-predict-api` and `drugsim-frontend` on Render.
+  Verified after deploy: clean single-boot startup (no restart signature),
+  a real `/predict` request against the new instance resolved caffeine's
+  identity via the skeleton/exact snapshot path and returned a complete
+  reliability block, and memory settled at the known-safe ~403MB baseline
+  (well under the 512MB Starter limit) — no Dockerfile, dependency, or
+  model-artifact changes were part of this deploy, so this carries none of
+  the OOM risk the psychiatric-screening attempts did.
+
 ### Improved — Scientific Coverage, Generalisation & Compound Intelligence
 
 - Improved known-compound identity resolution: added an **unambiguous
