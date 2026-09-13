@@ -30,10 +30,7 @@ from drugsim_identity.snapshot import (
 __all__ = [
     "CompoundIdentityRecord",
     "CompoundIdentityResult",
-<<<<<<< HEAD
-=======
     "build_skeleton_index",
->>>>>>> 9939e0e (feat(scientific-coverage): identity tiers, external generalisation analysis, history statistics)
     "load_identity_snapshot",
     "resolve_identity",
 ]

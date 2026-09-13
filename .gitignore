@@ -78,3 +78,9 @@ notebooks/**/*.ipynb_checkpoints
 # Scientific-coverage analysis caches (regenerable; large)
 scripts/scientific_coverage/.pool_cache.json
 scripts/scientific_coverage/.cyp3a4_pool_cache.json
+
+# Frontend build tooling -- never project source.
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
