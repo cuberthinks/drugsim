@@ -65,4 +65,64 @@ describe("HistoryPage", () => {
     renderPage();
     expect(screen.queryByRole("link", { name: /compare two compounds/i })).not.toBeInTheDocument();
   });
+
+  it("exposes the conformal statistics behind a disclosure, with a plain-language caveat", async () => {
+    const user = userEvent.setup();
+    saveToHistory(makePrediction(), "Aspirin", "2026-01-01T00:00:00Z");
+    renderPage();
+
+    // Closed by default -- the summary label is present, the p-values are not
+    // yet the *only* thing on the card.
+    expect(screen.getByText(/statistical detail/i)).toBeInTheDocument();
+
+    await user.click(screen.getByText(/statistical detail/i));
+
+    expect(screen.getByText("0.030 / 0.620")).toBeInTheDocument();
+    expect(screen.getByText(/90%/)).toBeInTheDocument();
+    expect(screen.getByText(/split_conformal_prediction/)).toBeInTheDocument();
+    expect(screen.getByText(/not a significance test and carries no clinical meaning/i)).toBeInTheDocument();
+  });
+
+  it("renders a non-singleton conformal set with its both-classes-retained caveat", async () => {
+    const user = userEvent.setup();
+    saveToHistory(
+      makePrediction({
+        reliability: {
+          ...makePrediction().reliability,
+          conformal: {
+            ...makePrediction().reliability.conformal,
+            predicted_set: ["blocker", "non_blocker"],
+            is_singleton: false,
+          },
+        },
+      }),
+      "Ambiguous compound",
+      "2026-01-01T00:00:00Z",
+    );
+    renderPage();
+
+    await user.click(screen.getByText(/statistical detail/i));
+    expect(screen.getByText(/could not separate them at this confidence level/i)).toBeInTheDocument();
+  });
+
+  it("renders history entries saved before the statistics field existed without the disclosure", () => {
+    const legacyEntry = {
+      id: "legacy-1",
+      timestamp: "2026-01-01T00:00:00Z",
+      compoundName: "Legacy Compound",
+      endpoint: "herg_inhibition",
+      structure: "CCO",
+      predictedLabel: "non_blocker",
+      reliabilityRating: "High",
+      applicabilityDomainVerdict: "in_domain",
+      modelId: "herg_inhibition",
+      modelVersion: "0.1.0",
+      // no `statistics` field -- exactly what a pre-migration row looks like.
+    };
+    window.localStorage.setItem("drugsim_prediction_history_v1", JSON.stringify([legacyEntry]));
+    renderPage();
+
+    expect(screen.getByText("Legacy Compound")).toBeInTheDocument();
+    expect(screen.queryByText(/statistical detail/i)).not.toBeInTheDocument();
+  });
 });

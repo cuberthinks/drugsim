@@ -114,6 +114,7 @@ def _build_pool() -> list[dict]:
         xq = np.concatenate([descriptors, fp]).reshape(1, -1)
         pool.append({
             "source": "external_tdc",
+            "inchikey": ik,
             "label": int(row.Y),
             "prob": float(model.predict_proba(xq)[0, 1]),
             "max_tanimoto": float(_max_tanimoto(fp.reshape(1, -1), train_fps)[0]),

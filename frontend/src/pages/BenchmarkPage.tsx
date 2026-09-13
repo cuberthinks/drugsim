@@ -241,6 +241,8 @@ function ApplicabilityDomainTierList({ tiers }: { tiers: ApplicabilityDomainTier
 
 function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
   const baselineMax = Math.max(...benchmark.baselines.map((b) => b.rocAuc ?? 0));
+  const [positiveLabel, negativeLabel] =
+    benchmark.endpointId === "cyp3a4_inhibition" ? ["Inhibitor", "Non-inhibitor"] : ["Blocker", "Non-blocker"];
 
   return (
     <div className="flex flex-col gap-6">
@@ -270,6 +272,61 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
         <p className="mt-2 text-xs leading-relaxed text-ink-soft">{benchmark.splitDescription}</p>
         <p className="mt-2 break-words font-mono text-[11px] text-ink-soft">
           Model v{benchmark.modelVersion} · evaluated {benchmark.evaluationDate} · source: {benchmark.sourceFile}
+        </p>
+      </div>
+
+      {/* Dataset & model transparency (Section 15/16) */}
+      <div className="card p-6">
+        <h3 className="font-display text-base font-semibold text-ink">Dataset &amp; model transparency</h3>
+        <p className="mt-1 text-xs leading-relaxed text-ink-soft">
+          {benchmark.finalCompoundCount.toLocaleString()} compounds total is DrugSim's overall dataset size for{" "}
+          <em>this endpoint</em> — not the number of compounds labelled for every ADMET endpoint, and not the size
+          of the reference databases (ChEMBL, PubChem) this data was drawn from.
+        </p>
+        <dl className="mt-3 grid grid-cols-2 gap-3 text-xs text-ink-soft sm:grid-cols-4">
+          <div>
+            <dt className="font-medium text-ink">Training-set size</dt>
+            <dd>{benchmark.trainingSetSize.toLocaleString()} compounds</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink">Validation-set size</dt>
+            <dd>{benchmark.validationSetSize.toLocaleString()} compounds</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink">Test-set size</dt>
+            <dd>{benchmark.testSetSize.toLocaleString()} compounds</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink">Calibration-set size</dt>
+            <dd>{benchmark.calibrationSetSize.toLocaleString()} compounds</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink">Primary metric</dt>
+            <dd>ROC-AUC {benchmark.scaffoldSplitTest.rocAuc.toFixed(3)} (scaffold-split test)</dd>
+          </div>
+          <div>
+            <dt className="font-medium text-ink">External metric</dt>
+            <dd>
+              {benchmark.externalValidation
+                ? `ROC-AUC ${benchmark.externalValidation.rocAuc.toFixed(3)} (n=${benchmark.externalValidation.n.toLocaleString()})`
+                : "Not evaluated"}
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+          <span className="font-medium text-ink">Applicability-domain method: </span>
+          {benchmark.applicabilityDomainMethod}
+        </p>
+        <p className="mt-2 text-[11px] text-ink-soft">
+          Training + calibration + validation + test = {(
+            benchmark.trainingSetSize +
+            benchmark.calibrationSetSize +
+            benchmark.validationSetSize +
+            benchmark.testSetSize
+          ).toLocaleString()}{" "}
+          compounds, matching the {benchmark.finalCompoundCount.toLocaleString()}-compound dataset total exactly —
+          four disjoint groups, not a generic three-way split: calibration (conformal p-values) and validation
+          (model selection during training) are genuinely different sets used for different purposes.
         </p>
       </div>
 
@@ -321,7 +378,7 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
 
         <p className="mt-4 text-xs font-medium text-ink">Confusion matrix (scaffold-split test set)</p>
         <div className="mt-2 max-w-sm">
-          <ConfusionMatrixGrid matrix={benchmark.scaffoldSplitTest.confusionMatrix} />
+          <ConfusionMatrixGrid matrix={benchmark.scaffoldSplitTest.confusionMatrix} positiveLabel={positiveLabel} negativeLabel={negativeLabel} />
         </div>
 
         <details className="mt-4 text-xs text-ink-soft">
@@ -368,7 +425,7 @@ function BenchmarkSection({ benchmark }: { benchmark: Benchmark }) {
             </div>
           </dl>
           <div className="mt-3 max-w-sm">
-            <ConfusionMatrixGrid matrix={benchmark.externalValidation.confusionMatrix} />
+            <ConfusionMatrixGrid matrix={benchmark.externalValidation.confusionMatrix} positiveLabel={positiveLabel} negativeLabel={negativeLabel} />
           </div>
           <p className="mt-3 rounded-md border border-line bg-paper-alt p-3 text-xs leading-relaxed text-ink-soft">
             {benchmark.externalValidation.labelDefinitionCaveat}

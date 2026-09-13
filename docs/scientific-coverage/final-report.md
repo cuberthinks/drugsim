@@ -1,9 +1,20 @@
 # Scientific Coverage Upgrade — Final Report
 
-**Date:** 2026-09-09 · **Endpoint focus:** hERG inhibition (with CYP3A4
-included in identity coverage) · **Models changed: none.**
+**Date:** 2026-09-09, updated 2026-09-10 · **Endpoint focus:** hERG and
+CYP3A4 inhibition (both now have full external-generalisation + AD analysis;
+identity coverage covers both) · **Models changed: none.**
 
 Reports against the ten items the brief asks for at completion.
+
+> **2026-09-10 update:** this report originally covered hERG only. A same-day
+> follow-up commit (`9945167`) extended the external-generalisation and
+> applicability-domain analysis to CYP3A4, ran the database constraint suite
+> for the first time (75 passed), and completed the Section 17/18 audits this
+> report had listed as "not done." This version reconciles those changes —
+> see the updated tables below and the corrected "Work not completed"
+> section. A second follow-up (this pass) added a compound-level
+> false-positive/false-negative sample (Section 9) and dataset-transparency
+> page fields (Section 15), both genuinely absent before now.
 
 ---
 
@@ -27,39 +38,59 @@ shipped with hard limits rather than as a claimed solution.
 ## 2. External performance before / after
 
 **Unchanged — by design.** No model, weight or threshold was modified. What
-changed is that it is now measured properly.
+changed is that it is now measured properly, on both production endpoints.
 
-| Metric | Internal test (n=800) | External (n=3,956) |
-|---|---|---|
-| Positive fraction | 0.611 | 0.094 |
-| Precision | 0.694 | 0.218 |
-| Specificity | 0.373 | **0.682** |
-| ROC-AUC | 0.784 | **0.865** |
-| MCC | 0.335 | 0.327 |
+| Metric | hERG internal (n=800) | hERG external (n=3,956) | CYP3A4 internal (n=459) | CYP3A4 external (n=12,161) |
+|---|---|---|---|---|
+| Positive fraction | 0.611 | 0.094 | 0.667 | 0.419 |
+| Precision | 0.694 | 0.218 | 0.751 | 0.595 |
+| Specificity | 0.373 | **0.682** | 0.405 | **0.612** |
+| ROC-AUC | 0.784 | **0.865** | 0.800 | 0.776 |
+| MCC | 0.335 | 0.327 | 0.356 | **0.401** |
 
-The reviewer's premise does not survive measurement. **Specificity is nearly
-double externally, ROC-AUC is higher, and MCC is unchanged.** Precision falls
-because the base rate falls from 61% to 9.4% — arithmetic, not degradation.
+The reviewer's premise does not survive measurement on either endpoint.
+**Specificity is higher externally on both**, hERG's MCC is unchanged and
+CYP3A4's is *higher* externally, and hERG's ROC-AUC is higher (CYP3A4's is
+flat). Precision falls on both because the base rate falls — hERG's by 85%
+(0.611→0.094, precision falls 69%), CYP3A4's by a smaller 37%
+(0.667→0.419, precision falls 21%). **Precision loss scales with base-rate
+loss across two independent endpoints and two independent external sources
+(PubChem qHTS, TDC/PubChem qHTS)** — the signature of a base-rate effect, not
+a model failing to generalise.
 
 ## 3. Main failure modes
 
-**One dominant systematic mode:** over-calling "blocker" on chemically novel,
-low-prevalence populations. At the production threshold, external errors run
-**1,139 false positives to 52 false negatives** (22:1). 89% of external
-compounds sit in the `chemically_novel` or `out_of_domain` tiers, which supply
-almost all false positives.
+**One dominant systematic mode on both endpoints:** over-calling the positive
+class on chemically novel, lower-prevalence populations. hERG's external
+errors run **1,139 false positives to 52 false negatives** (22:1); CYP3A4's
+run 2,747:1,056 (2.6:1) — smaller because CYP3A4's prevalence shift is
+smaller. In both cases the great majority of external compounds sit in the
+`chemically_novel` or `out_of_domain` tiers, which supply almost all false
+positives.
 
-Individual "most important" false positives are deliberately **not** listed:
-with a single well-understood mode, per-compound storytelling would add
-narrative confidence without adding evidence.
+A curated "most important individual false positives" list is still not
+provided, and for the same reason as before: with a single well-understood
+systematic mode, hand-picking compounds would add narrative confidence
+without adding evidence. What the brief's Section 9 asks for instead — a
+compound-level record with AD status, chemical distance, dataset, model
+version, and an explanation — **is now provided as a fixed-seed random
+sample** (not a curated "worst offenders" list) in
+`scripts/scientific_coverage/04_compound_level_errors_report.json`, 15 false
+positives and 15 false negatives per endpoint. Every row carries the same
+explanation because only one systematic mode has been found; assigning
+different explanations per row without new evidence would itself be a
+fabrication.
 
 ## 4. Applicability-domain findings
 
-**The AD mechanism works, and an earlier conclusion was too pessimistic.**
+**The AD mechanism works on both production endpoints, and an earlier
+conclusion was too pessimistic.**
 
 Phase 4.5 judged it *"PARTIALLY supported, not cleanly monotonic"* using
 ROC-AUC. ROC-AUC is prevalence-insensitive, and these tiers range from 44% to
 1% positive — the wrong instrument. With prevalence-aware metrics:
+
+**hERG**
 
 | Tier | n | PR-AUC | MCC |
 |---|---|---|---|
@@ -68,8 +99,20 @@ ROC-AUC. ROC-AUC is prevalence-insensitive, and these tiers range from 44% to
 | chemically_novel | 2,592 | **0.404** | 0.298 |
 | out_of_domain | 891 | **0.131** | **0.085** |
 
-PR-AUC is perfectly monotonic; MCC collapses to 0.085 out-of-domain — near-
-worthless discrimination, exactly as the AD claims. **Recommendation: keep the
+**CYP3A4**
+
+| Tier | n | PR-AUC | MCC |
+|---|---|---|---|
+| highly_similar | 27 | **0.956** | 0.574 |
+| moderately_similar | 675 | **0.767** | 0.416 |
+| chemically_novel | 10,660 | **0.719** | 0.399 |
+| out_of_domain | 799 | **0.285** | **0.180** |
+
+PR-AUC is monotonic on both endpoints; MCC collapses toward the out-of-domain
+tier on both (0.085 for hERG, 0.180 for CYP3A4) — markedly weaker
+discrimination, exactly as the AD claims. Confirming this on a second,
+independent endpoint and a second, independent external source rules out
+the result being an artifact of one dataset. **Recommendation: keep the
 mechanism, do not re-tune it, and update Phase 4.5's stated conclusion.**
 
 ## 5. Data gaps discovered
@@ -130,9 +173,10 @@ two elements for the same label text. It was fixed by changing **my new UI** to
 render raw conformal class labels instead of duplicating humanised prose. The
 existing test was not modified or weakened.
 
-Database constraint tests were **not** run. `CHANGELOG.md:197` still claims
-they cannot be, citing missing Docker; **Docker is now installed**, so that
-line is stale and the tests are now runnable. Flagged, not fixed.
+Database constraint tests were run for the first time in the 2026-09-09
+follow-up commit: **75 passed.** `CHANGELOG.md`'s note that they could not be
+run (missing Docker) is now itself stale and superseded by the CHANGELOG's
+own later "Verified — database constraint tests finally executed" entry.
 
 ## 9. Was any model changed?
 
@@ -167,14 +211,35 @@ claimed, because it does not.
 
 ---
 
-## Work not completed in this pass
+## Work not completed, as of this update (2026-09-10)
 
-Stated plainly rather than left implied:
+Stated plainly rather than left implied. This section itself has already
+needed two corrections (see the update note at the top) — treat it as
+accurate as of this file's own last-edit date, not as a permanent record.
 
-- **Sections 15–17** (dataset/model transparency pages, and the audit of
-  "more data improves accuracy" website copy) — not done.
+- **Sections 15–17 — corrected.** Section 17 (audit of "more data improves
+  accuracy" website copy) was completed 2026-09-09: swept, no unsupported
+  claim found, none added or removed — recorded in `CHANGELOG.md`. Section 15
+  (dataset-transparency page) was genuinely incomplete until this pass —
+  `SourcesPage.tsx` had no per-endpoint train/val/test sizes or split
+  methodology — now added; see `docs/scientific-coverage/README.md`'s
+  "Dataset transparency" section for what changed and where. Section 16
+  (model transparency) was already satisfied by the existing
+  `models/registry/*.json` structure, predating this workstream.
 - **Section 18** benchmark-reproducibility metadata — recorded for the two new
-  analyses; existing benchmarks not retrofitted.
-- **CYP3A4** received identity-coverage measurement only; the external
-  generalisation and AD analysis covers hERG alone.
-- Constraint tests not executed (see §8).
+  analyses at the time; **existing production benchmarks were retrofitted**
+  the same day (`frontend/src/lib/benchmarks.ts`: `randomSeed`,
+  `preprocessing` version block) — see `CHANGELOG.md`.
+- **CYP3A4 — corrected.** Originally received identity-coverage measurement
+  only. A same-day follow-up (`03_cyp3a4_external_generalisation.py`)
+  extended the external-generalisation and AD analysis to CYP3A4 and
+  independently reproduced the hERG finding (Sections 2–4 above).
+- **Constraint tests — corrected.** Run the same day: 75 passed (see §8).
+- **Section 9 (compound-level error record) — completed this pass.** See §3
+  above and `04_compound_level_errors_report.json`.
+- **Still not done:** a broader identity name-dictionary for gap G1 (proposed,
+  not built — see `data-gap-analysis.md`); Section 11's controlled-
+  augmentation protocol has not been exercised for any *new* dataset (the
+  separate `drugsim_curation`/curated-retraining work satisfies its
+  mechanics incidentally, but was not scoped as part of this brief and is not
+  claimed as such here).

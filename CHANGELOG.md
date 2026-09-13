@@ -100,6 +100,49 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
   the same claim as a database of millions of unlabelled bioactivity
   records."* No copy change was needed, so none was made.
 
+### Improved — compound-level error record, dataset transparency, report reconciliation
+
+- **Section 9 (model error analysis), completed.** Added
+  `scripts/scientific_coverage/04_compound_level_errors.py`: a fixed-seed
+  random sample (not a curated "worst offenders" list) of 15 false positives
+  and 15 false negatives per endpoint (hERG, CYP3A4), each tagged with its
+  real applicability-domain tier, chemical distance (max Tanimoto), dataset
+  source, model version, and the single systematic explanation the earlier
+  analysis found (base-rate/operating-point mismatch). Every row carries the
+  same explanation deliberately — assigning different ones per compound
+  without new evidence would itself be a fabrication.
+  `03_cyp3a4_external_generalisation.py`'s cached pool was extended with each
+  external compound's InChIKey (purely additive; re-ran and confirmed every
+  aggregate metric is unchanged) so a compound could actually be identified
+  in the sample — it previously had no identifier at all.
+- **Section 15 (dataset transparency), completed.** `BenchmarkPage.tsx` and
+  `lib/benchmarks.ts` now show, per endpoint: training/calibration/
+  validation/test-set sizes (real counts from each `train_manifest.json`,
+  summing exactly to the dataset total), a labelled primary metric and
+  external metric, and the applicability-domain method summary — the exact
+  field set Section 15 asks for. Explicit copy distinguishes the
+  endpoint's own dataset size from DrugSim's overall reference-database size.
+- **Section 11 tie-in documented, not newly built.** `data-gap-analysis.md`
+  now cites the pre-existing `drugsim_curation`/curated-retraining pipeline
+  as a real, working example of the ingest→curate→evaluate→benchmark
+  protocol Section 11 requires — scoped separately from this brief, not
+  claimed as satisfying it, cited only as evidence the mechanism exists.
+- **`docs/scientific-coverage/final-report.md` reconciled.** It previously
+  listed Sections 15–17, CYP3A4 external-generalisation, and the constraint
+  tests as incomplete after a later same-day commit had already completed
+  them; the report now reflects the actual current state and links the two
+  commits, rather than leaving a stale self-contradiction across two sibling
+  docs.
+- **New tests:** `tests/unit/test_build_compound_identity_snapshot.py` — a
+  PubChem timeout/outage mid-batch is logged and skipped, never fatal to the
+  rest of the batch or corrupting of already-resolved entries (extracted the
+  build script's resolution loop into `_resolve_compounds()`, a pure
+  refactor, to make this testable without live network calls).
+  `HistoryPage.test.tsx` gained coverage for the conformal-statistics
+  disclosure (open it, read the p-values, read the non-singleton caveat) and
+  for a pre-migration history row rendering correctly without it — this
+  block previously had zero test coverage.
+
 ### Explicitly not claimed
 
 - **No model was changed** — no training, retraining, re-thresholding, weight

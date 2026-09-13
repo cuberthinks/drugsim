@@ -81,3 +81,32 @@ version → benchmark against the current model → promote only on evidence.
 G1 does not enter this protocol at all: it is reference data, and it must
 never be added to a training set. Doing so would convert an identity
 improvement into silent training-set contamination.
+
+**This protocol is not hypothetical — it already exists and has been
+exercised**, though not for either gap above. `src/drugsim_curation/`
+(`docs/data-curation/README.md`) implements exactly this sequence for hERG
+and CYP3A4: `curate_measurements.py` → `prepare_features_curated.py` →
+`train_curated.py` → `evaluate_curated.py` writes an
+`experiments/curated_v1/cross_evaluation_report.json` that is compared
+against, never substituted for, the production model — and neither curated
+model has been promoted. That work was scoped separately from this brief and
+is not claimed as satisfying it; it is cited here only as evidence the
+protocol above is a real, working mechanism in this codebase, not a proposal.
+
+## 4. Why there is no "external cache" identity tier
+
+The brief's suggested resolution order includes a live "approved external
+reference source/cache" tier between the internal snapshot and
+"unidentified." **DrugSim's implementation does not have one, by design, not
+by omission.** `src/drugsim_identity/snapshot.py::resolve_identity` only ever
+reads the committed, offline `compound_identity_snapshot.json` — PubChem is
+called exclusively by `scripts/build_compound_identity_snapshot.py`, an
+operator-run batch job, never from the live `/predict` request path (see
+`current-state-audit.md` §1.1). Adding a live external-lookup tier would
+mean a customer's submitted structure could be transmitted to a third party
+during prediction, which is exactly what DrugSim's existing, tested privacy
+guarantee (`docs/privacy/confidentiality-audit.md` §8) forbids. The gap this
+leaves — a structurally novel compound that PubChem *would* resolve but the
+offline snapshot does not yet contain — is real, and is what G1 (above)
+proposes to narrow through the existing offline build path, not a live
+lookup.

@@ -137,6 +137,24 @@ export interface Benchmark {
   modelVersion: string;
   evaluationDate: string;
   sourceFile: string;
+  /** Section 15 dataset transparency: the real per-split-group counts this
+   * training run actually used (train_manifest.json), not the total
+   * dataset size divided evenly -- DrugSim's pipeline holds out four
+   * distinct groups (train / conformal-calibration / model-selection
+   * validation / final test), not the three a generic "train/val/test"
+   * label implies, so calibrationSetSize is exposed alongside rather than
+   * folded into validationSetSize, which would misstate what group 8 is
+   * actually used for. trainingSetSize + calibrationSetSize +
+   * validationSetSize + testSetSize sums to finalCompoundCount exactly. */
+  trainingSetSize: number;
+  calibrationSetSize: number;
+  validationSetSize: number;
+  testSetSize: number;
+  /** One-line summary of the AD verdict logic -- the full three-signal
+   * definition lives in models/registry/{endpointId}_v1.json's own
+   * applicability_domain_method object; this is not a second source of
+   * truth, just a display-length excerpt of it. */
+  applicabilityDomainMethod: string;
   /** Section 18 reproducibility: the seed the split/training actually used. */
   randomSeed: number;
   /** Toolchain identity a re-run must match for features to be comparable. */
@@ -199,6 +217,12 @@ export const BENCHMARKS: Benchmark[] = [
     modelVersion: "0.1.0",
     evaluationDate: "2026-08-09",
     sourceFile: "models/admet/herg_inhibition/evaluation_report.json",
+    trainingSetSize: 6792,
+    calibrationSetSize: 976,
+    validationSetSize: 1021,
+    testSetSize: 800,
+    applicabilityDomainMethod:
+      "Three-signal verdict: max Tanimoto similarity to training (Morgan fingerprints), k-NN distance in standardised descriptor space (k=5, threshold=95th percentile of training-internal distances), and whether the scaffold was seen in training. See models/registry/herg_inhibition_v1.json for the full verdict logic and empirical validation.",
     scaffoldSplitTest: {
       n: 800,
       positiveFraction: 0.6112,
@@ -357,6 +381,12 @@ export const BENCHMARKS: Benchmark[] = [
     modelVersion: "0.1.0",
     evaluationDate: "2026-08-10",
     sourceFile: "models/admet/cyp3a4_inhibition/evaluation_report.json",
+    trainingSetSize: 3767,
+    calibrationSetSize: 514,
+    validationSetSize: 604,
+    testSetSize: 459,
+    applicabilityDomainMethod:
+      "Three-signal verdict: max Tanimoto similarity to training (Morgan fingerprints), k-NN distance in standardised descriptor space (k=5, threshold=95th percentile of training-internal distances), and whether the scaffold was seen in training. See models/registry/cyp3a4_inhibition_v1.json for the full verdict logic and empirical validation.",
     scaffoldSplitTest: {
       n: 459,
       positiveFraction: 0.6667,

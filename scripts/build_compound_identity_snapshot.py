@@ -171,6 +171,69 @@ def _fetch_description(client: httpx.Client, cid: str) -> tuple[str | None, str 
     return None, None
 
 
+def _resolve_compounds(
+    smiles_list: list[str],
+    existing: dict[str, dict],
+    client: httpx.Client,
+    license_spdx: str,
+) -> tuple[dict[str, dict], list[str]]:
+    """Resolve every seed SMILES against PubChem, once each.
+
+    Extracted from ``main()`` so the "one unreachable compound must not
+    corrupt or discard everything already resolved" guarantee is directly
+    unit-testable with a fake client, rather than only provable by a live
+    network integration test. Behaviour is unchanged from the inline version
+    this replaces -- see ``test_build_compound_identity_snapshot.py`` for the
+    case a live-network test cannot cover: a mid-batch timeout/outage.
+    """
+    compounds: dict[str, dict] = dict(existing)
+    skipped: list[str] = []
+
+    for smiles in smiles_list:
+        processed = process_structure(smiles)
+        inchikey = processed.identity.inchikey_full
+        if inchikey in compounds:
+            continue  # already resolved in a prior run
+        try:
+            time.sleep(REQUEST_DELAY_SECONDS)
+            cid = _fetch_cid(client, inchikey)
+            if cid is None:
+                print(f"  no PubChem CID for {smiles!r} ({inchikey}) -- skipping", file=sys.stderr)
+                skipped.append(smiles)
+                continue
+            time.sleep(REQUEST_DELAY_SECONDS)
+            name = _fetch_name(client, cid)
+            if not name:
+                print(f"  PubChem CID {cid} has no Title -- skipping {smiles!r}", file=sys.stderr)
+                skipped.append(smiles)
+                continue
+            time.sleep(REQUEST_DELAY_SECONDS)
+            synonyms = _fetch_synonyms(client, cid, name)
+            time.sleep(REQUEST_DELAY_SECONDS)
+            description, description_source = _fetch_description(client, cid)
+        except httpx.HTTPError as exc:
+            # A per-compound network failure is logged and skipped, never
+            # fatal to the whole batch -- one unreachable compound must not
+            # corrupt or discard everything already resolved.
+            print(f"  fetch failed for {smiles!r} ({inchikey}): {exc} -- skipping", file=sys.stderr)
+            skipped.append(smiles)
+            continue
+
+        compounds[inchikey] = {
+            "inchikey_full": inchikey,
+            "pubchem_cid": cid,
+            "preferred_name": name,
+            "synonyms": synonyms,
+            "description": description,
+            "description_source": description_source,
+            "retrieved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "license_spdx": license_spdx,
+        }
+        print(f"  resolved {smiles!r} -> {name!r} (CID {cid})", file=sys.stderr)
+
+    return compounds, skipped
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-network", action="store_true", help="Skip PubChem calls; keep existing snapshot entries only.")
@@ -195,47 +258,7 @@ def main() -> int:
 
     if not args.no_network:
         with httpx.Client(timeout=10.0, headers={"User-Agent": "DrugSim/1.0 (compound-identity-snapshot-builder)"}) as client:
-            for smiles in smiles_list:
-                processed = process_structure(smiles)
-                inchikey = processed.identity.inchikey_full
-                if inchikey in compounds:
-                    continue  # already resolved in a prior run
-                try:
-                    time.sleep(REQUEST_DELAY_SECONDS)
-                    cid = _fetch_cid(client, inchikey)
-                    if cid is None:
-                        print(f"  no PubChem CID for {smiles!r} ({inchikey}) -- skipping", file=sys.stderr)
-                        skipped.append(smiles)
-                        continue
-                    time.sleep(REQUEST_DELAY_SECONDS)
-                    name = _fetch_name(client, cid)
-                    if not name:
-                        print(f"  PubChem CID {cid} has no Title -- skipping {smiles!r}", file=sys.stderr)
-                        skipped.append(smiles)
-                        continue
-                    time.sleep(REQUEST_DELAY_SECONDS)
-                    synonyms = _fetch_synonyms(client, cid, name)
-                    time.sleep(REQUEST_DELAY_SECONDS)
-                    description, description_source = _fetch_description(client, cid)
-                except httpx.HTTPError as exc:
-                    # A per-compound network failure is logged and skipped, never
-                    # fatal to the whole batch -- one unreachable compound must not
-                    # corrupt or discard everything already resolved.
-                    print(f"  fetch failed for {smiles!r} ({inchikey}): {exc} -- skipping", file=sys.stderr)
-                    skipped.append(smiles)
-                    continue
-
-                compounds[inchikey] = {
-                    "inchikey_full": inchikey,
-                    "pubchem_cid": cid,
-                    "preferred_name": name,
-                    "synonyms": synonyms,
-                    "description": description,
-                    "description_source": description_source,
-                    "retrieved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                    "license_spdx": license_resolution.spdx,
-                }
-                print(f"  resolved {smiles!r} -> {name!r} (CID {cid})", file=sys.stderr)
+            compounds, skipped = _resolve_compounds(smiles_list, existing, client, license_resolution.spdx)
 
     OUTPUT_SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_SNAPSHOT.write_text(
