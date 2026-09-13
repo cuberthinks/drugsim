@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-09-09T15:10:26.994423+00:00",
+  "scope": "Reference-identity coverage only. Says nothing about ADMET model performance -- reference data and training data are separate concerns (brief Section 12). Public compounds only; no customer structures.",
+  "snapshot": {
+    "path": "src/drugsim_identity/data/compound_identity_snapshot.json",
+    "n_compounds": 960,
+    "n_distinct_skeletons": 952,
+    "current_resolution": "exact full-InChIKey lookup only"
+  },
+  "skeleton_tier_collision_risk": {
+    "n_colliding_skeletons": 7,
+    "colliding_examples": {
+      "DCSUBABJRXZOMT": [
+        "DCSUBABJRXZOMT-RBBKRZOGSA-N",
+        "DCSUBABJRXZOMT-UHFFFAOYSA-N"
+      ],
+      "XEEQGYMUWCZPDN": [
+        "XEEQGYMUWCZPDN-DOMZBBRYSA-N",
+        "XEEQGYMUWCZPDN-SWLSCSKDSA-N",
+        "XEEQGYMUWCZPDN-UHFFFAOYSA-N"
+      ],
+      "XMAYWYJOQHXEEK": [
+        "XMAYWYJOQHXEEK-UHFFFAOYSA-N",
+        "XMAYWYJOQHXEEK-ZEQKJWHPSA-N"
+      ],
+      "FELGMEQIXOGIFQ": [
+        "FELGMEQIXOGIFQ-CYBMUJFWSA-N",
+        "FELGMEQIXOGIFQ-UHFFFAOYSA-N"
+      ],
+      "UYNVMODNBIQBMV": [
+        "UYNVMODNBIQBMV-HRAATJIYSA-N",
+        "UYNVMODNBIQBMV-UHFFFAOYSA-N"
+      ]
+    },
+    "interpretation": "A skeleton mapping to >1 full InChIKey cannot be resolved to a single identity without guessing. Any skeleton tier must refuse these, not pick one. Count is the number of such skeletons in the snapshot."
+  },
+  "coverage_by_stratum": {
+    "A_curated_known_drugs_BUILD_INPUT_upper_bound": {
+      "n": 5,
+      "exact_inchikey_match": 4,
+      "exact_inchikey_match_rate": 0.8,
+      "skeleton_match_unambiguous": 0,
+      "skeleton_match_unambiguous_rate": 0.0,
+      "skeleton_match_ambiguous_unusable": 0,
+      "unresolved": 1,
+      "unresolved_rate": 0.2,
+      "combined_resolvable_rate": 0.8,
+      "coverage_gain_from_skeleton_tier": 0.0,
+      "independence": "NOT INDEPENDENT -- these compounds are part of the snapshot's own build input (scripts/build_compound_identity_snapshot.py reads golden's drug-category rows). Reported as an upper bound and sanity check only."
+    },
+    "B_public_chembl_herg": {
+      "n": 9589,
+      "exact_inchikey_match": 342,
+      "exact_inchikey_match_rate": 0.0357,
+      "skeleton_match_unambiguous": 15,
+      "skeleton_match_unambiguous_rate": 0.0016,
+      "skeleton_match_ambiguous_unusable": 2,
+      "unresolved": 9230,
+      "unresolved_rate": 0.9626,
+      "combined_resolvable_rate": 0.0372,
+      "coverage_gain_from_skeleton_tier": 0.0016,
+      "independence": "INDEPENDENT -- public ChEMBL compounds from this endpoint's dataset; not part of the identity snapshot's seed list."
+    },
+    "C_public_chembl_cyp3a4": {
+      "n": 5344,
+      "exact_inchikey_match": 225,
+      "exact_inchikey_match_rate": 0.0421,
+      "skeleton_match_unambiguous": 17,
+      "skeleton_match_unambiguous_rate": 0.0032,
+      "skeleton_match_ambiguous_unusable": 3,
+      "unresolved": 5099,
+      "unresolved_rate": 0.9542,
+      "combined_resolvable_rate": 0.0453,
+      "coverage_gain_from_skeleton_tier": 0.0032,
+      "independence": "INDEPENDENT -- public ChEMBL compounds from this endpoint's dataset; not part of the identity snapshot's seed list."
+    }
+  }
+}

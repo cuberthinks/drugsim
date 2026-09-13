@@ -122,6 +122,57 @@ export function HistoryPage() {
                       <dd className="mt-1 text-sm text-ink">{entry.applicabilityDomainVerdict.replace(/_/g, " ")}</dd>
                     </div>
                   </dl>
+                  {entry.statistics && (
+                    <details className="mt-3 border-t border-line pt-3">
+                      <summary className="cursor-pointer text-xs font-medium tracking-wide text-ink-soft uppercase">
+                        Statistical detail
+                      </summary>
+                      <dl className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <div>
+                          <dt className="text-xs text-ink-soft">Prediction set</dt>
+                          <dd className="mt-1 text-sm text-ink">
+                            <span className="font-mono text-[13px]">
+                              {"{"}
+                              {entry.statistics.predictedSet.join(", ")}
+                              {"}"}
+                            </span>
+                            {!entry.statistics.isSingleton && (
+                              <span className="text-ink-soft">
+                                {" "}
+                                — both classes retained, so the model could not
+                                separate them at this confidence level
+                              </span>
+                            )}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-ink-soft">
+                            Conformal p-values
+                          </dt>
+                          <dd className="mt-1 font-mono text-sm text-ink">
+                            {entry.statistics.pValuePositive.toFixed(3)} /{" "}
+                            {entry.statistics.pValueNegative.toFixed(3)}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-ink-soft">
+                            Nominal confidence
+                          </dt>
+                          <dd className="mt-1 text-sm text-ink">
+                            {Math.round(entry.statistics.nominalConfidence * 100)}%
+                          </dd>
+                        </div>
+                      </dl>
+                      <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+                        A conformal p-value is the proportion of calibration
+                        compounds the model found at least as hard to classify as
+                        this one, for that label. A <em>low</em> p-value is
+                        evidence <em>against</em> the label. It is not a
+                        significance test and carries no clinical meaning.
+                        Method: {entry.statistics.uncertaintyMethod}.
+                      </p>
+                    </details>
+                  )}
                   <p className="mt-3 font-mono text-[11px] text-ink-soft">
                     Model {entry.modelId} v{entry.modelVersion}
                   </p>

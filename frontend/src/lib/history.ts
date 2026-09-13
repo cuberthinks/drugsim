@@ -15,6 +15,28 @@ export interface HistoryEntry {
   applicabilityDomainVerdict: string;
   modelId: string;
   modelVersion: string;
+  /**
+   * Statistical detail carried forward from the original response.
+   *
+   * Optional because entries saved before this field existed are still
+   * valid history: older rows simply render without the statistics block
+   * rather than being discarded or back-filled with invented values.
+   */
+  statistics?: {
+    /** Conformal prediction set; a non-singleton set means the model
+     *  could not separate the classes at the nominal confidence level. */
+    predictedSet: string[];
+    isSingleton: boolean;
+    nominalConfidence: number;
+    /** Split-conformal p-values. These are genuinely defined by the
+     *  methodology -- not added because they were requested. */
+    pValuePositive: number;
+    pValueNegative: number;
+    /** Names the uncertainty method, so a stored row stays interpretable
+     *  even if the method later changes. */
+    uncertaintyMethod: string;
+    predictedProbability: number;
+  };
 }
 
 /**
@@ -73,6 +95,15 @@ export function saveToHistory(
     predictedLabel: prediction.estimate.predicted_label,
     reliabilityRating: deriveReliabilityRating(prediction.reliability),
     applicabilityDomainVerdict: prediction.reliability.applicability_domain.verdict,
+    statistics: {
+      predictedSet: prediction.reliability.conformal.predicted_set,
+      isSingleton: prediction.reliability.conformal.is_singleton,
+      nominalConfidence: prediction.reliability.conformal.nominal_confidence,
+      pValuePositive: prediction.reliability.conformal.p_value_blocker,
+      pValueNegative: prediction.reliability.conformal.p_value_non_blocker,
+      uncertaintyMethod: prediction.reliability.conformal.method,
+      predictedProbability: prediction.estimate.predicted_probability,
+    },
     modelId: prediction.provenance.model_id,
     modelVersion: prediction.provenance.model_version,
   };

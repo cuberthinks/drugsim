@@ -7,6 +7,100 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Improved — Scientific Coverage, Generalisation & Compound Intelligence
+
+- Improved known-compound identity resolution: added an **unambiguous
+  InChIKey-skeleton fallback tier** after exact full-InChIKey matching.
+  Ambiguous skeletons (one connectivity block, several stereoisomers) resolve
+  as `unidentified` rather than guessing between them, and skeleton matches
+  are reported with a distinct `match_type` plus a fixed caveat that
+  stereochemistry, isotopic labelling and protonation were not confirmed.
+  **Measured gain: +0.16pp (hERG) / +0.32pp (CYP3A4) exact-match coverage.**
+  This is explicitly *not* a fix for the coverage gap — see below.
+- Added deeper external generalisation and failure-mode reporting for hERG:
+  precision / specificity / recall / MCC / **PR-AUC** stratified by
+  applicability-domain tier on 3,956 independent PubChem compounds, plus a
+  threshold-sensitivity sweep. This metric family had not previously been
+  reported per tier.
+- Improved prediction-history transparency: history now retains and displays
+  the conformal prediction set, singleton status, nominal confidence, both
+  conformal p-values, the named uncertainty method and the predicted
+  probability, with plain-language text stating a low p-value is evidence
+  *against* a label and is not a significance test. History remains
+  client-side `localStorage` only; no server-side per-user storage was added.
+- New documentation set under `docs/scientific-coverage/` and reproducible
+  read-only analyses under `scripts/scientific_coverage/`.
+
+### Findings (no code change; recorded because they alter interpretation)
+
+- **The hERG external "precision problem" is a base-rate effect, not model
+  degradation.** On 3,956 independent compounds the model scores ROC-AUC
+  0.865 (vs 0.784 internal), specificity 0.682 (vs 0.373 internal) and
+  essentially unchanged MCC (0.327 vs 0.335). Precision falls to 0.218 only
+  because prevalence falls from 61% to 9.4%.
+- **The applicability domain is better validated than Phase 4.5 concluded.**
+  That phase judged it "partially supported, not cleanly monotonic" using
+  ROC-AUC, which is prevalence-insensitive across tiers ranging 44%→1%
+  positive. By PR-AUC the gradient is monotonic (0.825 → 0.663 → 0.404 →
+  0.131) and MCC collapses to 0.085 out-of-domain. Phase 4.5's stated
+  conclusion should be updated.
+- **Identity coverage is bounded by reference-set scope, not matching
+  quality.** ~96% of independent public ChEMBL compounds cannot be named
+  because the snapshot is seeded from compounds named in DrugSim's own
+  hERG/CYP3A4 assay files. Doxorubicin is unidentifiable for this reason.
+
+### Verified — database constraint tests finally executed
+
+- **The database constraint suite has been run for the first time: 75 tests,
+  all passing**, against real PostgreSQL 16 + RDKit via testcontainers
+  (63.2s). Phase 8, Phase 10 and the v1.0 blocker audit each recorded this
+  suite as written-but-unexecuted for want of a Docker daemon; that gap is now
+  closed and the guarantees are evidenced rather than asserted -- including
+  scaffold-leakage prevention (ADR-009), `ck_not_predicted`, feature-set
+  mismatch and ICH M7 methodology pairing.
+- Two environment notes, recorded so the next runner does not lose time:
+  the suite must currently be invoked with `-W ignore::DeprecationWarning`,
+  because the installed `testcontainers` emits a deprecation at import that
+  the project's warnings-as-errors policy escalates to a collection failure;
+  and a `PytestUnraisableExceptionWarning` appears at teardown from a
+  connection `__del__`. Neither is a DrugSim defect and neither failed a test,
+  but both should be resolved rather than tolerated.
+- Earlier documents refer to this suite as 63 or 67 tests; the current count
+  is **75**.
+
+### Improved — benchmark reproducibility metadata (Section 18)
+
+- `Benchmark` entries now carry `randomSeed` (42, read from each endpoint's
+  `train_manifest.json`) and a `preprocessing` block recording
+  `standardizationPipelineVersion`, `descriptorSpecVersion` and
+  `rdkitVersion` (2025.03.3) -- the toolchain identity a re-run must match for
+  features to be comparable. `benchmarkId`, `datasetVersion`, `splitMethod`,
+  `modelVersion`, `evaluationDate` and `sourceFile` already existed.
+
+### Audited — no unsupported "more data" claims found (Section 17)
+
+- Swept user-facing copy for claims that more data improves accuracy. **None
+  found.** The Benchmark page already states the required distinction
+  explicitly: *"a model trained on a few thousand labelled compounds is not
+  the same claim as a database of millions of unlabelled bioactivity
+  records."* No copy change was needed, so none was made.
+
+### Explicitly not claimed
+
+- **No model was changed** — no training, retraining, re-thresholding, weight
+  edit or registry promotion. The 0.5 decision threshold is unchanged, and is
+  now documented as a deliberate recall-favouring choice appropriate to a
+  cardiac-safety endpoint. A 0.70 threshold would maximise MCC but triples
+  false negatives (52 → 158); recommended against.
+- **No measurable model-performance improvement was demonstrated**, and none
+  was attempted. Identity coverage improved by a measured but small margin;
+  model accuracy did not change.
+- The earlier claim below that the constraint tests "have not been executed"
+  is now **superseded**: they were executed in this pass (75 passed). The
+  historical Sprint 2.2 note is left in place as a record of what was true
+  then, not corrected in retrospect.
+
+
 ### Added — Psychiatric Compound Screening Pipeline (offline research tool)
 
 - New multi-objective screening pipeline covering DRD2 (therapeutic

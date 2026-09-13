@@ -137,6 +137,14 @@ export interface Benchmark {
   modelVersion: string;
   evaluationDate: string;
   sourceFile: string;
+  /** Section 18 reproducibility: the seed the split/training actually used. */
+  randomSeed: number;
+  /** Toolchain identity a re-run must match for features to be comparable. */
+  preprocessing: {
+    standardizationPipelineVersion: string;
+    descriptorSpecVersion: string;
+    rdkitVersion: string;
+  };
   scaffoldSplitTest: ClassificationMetrics;
   randomSplitProxy: ClassificationMetrics;
   rocAucGap: number;
@@ -172,6 +180,12 @@ export interface Benchmark {
 export const BENCHMARKS: Benchmark[] = [
   {
     benchmarkId: "herg_inhibition_v1_scaffold_split",
+    randomSeed: 42,
+    preprocessing: {
+      standardizationPipelineVersion: "v1",
+      descriptorSpecVersion: "v1",
+      rdkitVersion: "2025.03.3",
+    },
     endpointId: "herg_inhibition",
     endpointName: "hERG (KCNH2/Kv11.1) cardiac channel inhibition",
     taskType: "classification",
@@ -324,6 +338,12 @@ export const BENCHMARKS: Benchmark[] = [
   },
   {
     benchmarkId: "cyp3a4_inhibition_v1_scaffold_split",
+    randomSeed: 42,
+    preprocessing: {
+      standardizationPipelineVersion: "v1",
+      descriptorSpecVersion: "v1",
+      rdkitVersion: "2025.03.3",
+    },
     endpointId: "cyp3a4_inhibition",
     endpointName: "CYP3A4 metabolic inhibition",
     taskType: "classification",

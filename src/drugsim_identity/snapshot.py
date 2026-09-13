@@ -21,6 +21,7 @@ from typing import Optional
 __all__ = [
     "CompoundIdentityRecord",
     "CompoundIdentityResult",
+    "build_skeleton_index",
     "load_identity_snapshot",
     "resolve_identity",
 ]
@@ -61,9 +62,26 @@ class CompoundIdentityResult:
     description_source: Optional[str] = None
     source: Optional[str] = None
     retrieved_at: Optional[str] = None
+    #: How the match was made: ``"exact"`` (full InChIKey) or ``"skeleton"``
+    #: (connectivity-only). ``None`` when unidentified. A skeleton match is
+    #: deliberately reported as a *different kind* of match, never merged into
+    #: the exact case -- see ``match_caveat``.
+    match_type: Optional[str] = None
+    #: Present only for skeleton matches: the reason this identity is weaker
+    #: than an exact one. Never generated text -- a fixed, reviewed string.
+    match_caveat: Optional[str] = None
 
 
 _UNIDENTIFIED = CompoundIdentityResult(identity_status="unidentified")
+
+#: Fixed, reviewed caveat text for connectivity-only matches. The InChIKey
+#: skeleton encodes constitution but not stereochemistry, isotopic labelling
+#: or protonation state, and enantiomers can differ sharply in pharmacology.
+_SKELETON_CAVEAT = (
+    "Matched on molecular connectivity only. Stereochemistry, isotopic "
+    "labelling and protonation state were not confirmed, and may differ from "
+    "the named compound."
+)
 
 
 def load_identity_snapshot(path: Path) -> dict[str, CompoundIdentityRecord]:
@@ -98,16 +116,27 @@ def load_identity_snapshot(path: Path) -> dict[str, CompoundIdentityRecord]:
     return records
 
 
-def resolve_identity(
-    inchikey_full: str, snapshot: dict[str, CompoundIdentityRecord]
-) -> CompoundIdentityResult:
-    """Resolve one structure's identity against the loaded snapshot.
+def build_skeleton_index(
+    snapshot: dict[str, CompoundIdentityRecord],
+) -> dict[str, tuple[CompoundIdentityRecord, ...]]:
+    """Index snapshot records by InChIKey skeleton (first 14 characters).
 
-    Pure, synchronous, zero I/O -- safe to call for every prediction.
+    Built once per process alongside the snapshot itself. Skeletons that map
+    to more than one record are kept as multi-element tuples on purpose:
+    ``resolve_identity`` must be able to *see* the ambiguity in order to
+    refuse it, rather than silently receiving one arbitrary winner.
+
+    Measured on the committed snapshot (see
+    ``docs/scientific-coverage/compound-identity-coverage.md``): 960 compounds
+    span 952 skeletons, and all 7 collisions are stereoisomer sets.
     """
-    record = snapshot.get(inchikey_full)
-    if record is None:
-        return _UNIDENTIFIED
+    index: dict[str, list[CompoundIdentityRecord]] = {}
+    for record in snapshot.values():
+        index.setdefault(record.inchikey_full[:14], []).append(record)
+    return {skeleton: tuple(records) for skeleton, records in index.items()}
+
+
+def _identified(record: CompoundIdentityRecord, match_type: str) -> CompoundIdentityResult:
     return CompoundIdentityResult(
         identity_status="identified",
         compound_name=record.preferred_name,
@@ -117,4 +146,42 @@ def resolve_identity(
         description_source=record.description_source,
         source="PubChem",
         retrieved_at=record.retrieved_at,
+        match_type=match_type,
+        match_caveat=_SKELETON_CAVEAT if match_type == "skeleton" else None,
     )
+
+
+def resolve_identity(
+    inchikey_full: str,
+    snapshot: dict[str, CompoundIdentityRecord],
+    skeleton_index: Optional[dict[str, tuple[CompoundIdentityRecord, ...]]] = None,
+) -> CompoundIdentityResult:
+    """Resolve one structure's identity against the loaded snapshot.
+
+    Resolution order:
+
+    1. exact full-InChIKey match -- ``match_type="exact"``;
+    2. **unambiguous** skeleton match, only when ``skeleton_index`` is
+       supplied -- ``match_type="skeleton"``, carrying ``match_caveat``;
+    3. otherwise unidentified.
+
+    A skeleton shared by more than one record resolves as **unidentified**,
+    not as a guess between them. Reporting the wrong enantiomer's name would
+    be worse than reporting no name: "unidentified" is an honest, expected
+    outcome, and the compound still predicts either way.
+
+    ``skeleton_index`` is optional so existing two-argument callers keep
+    exact-match-only behaviour unchanged.
+
+    Pure, synchronous, zero I/O -- safe to call for every prediction.
+    """
+    record = snapshot.get(inchikey_full)
+    if record is not None:
+        return _identified(record, "exact")
+
+    if skeleton_index:
+        candidates = skeleton_index.get(inchikey_full[:14])
+        if candidates and len(candidates) == 1:
+            return _identified(candidates[0], "skeleton")
+
+    return _UNIDENTIFIED

@@ -31,7 +31,12 @@ from drugsim_chem.parsing import StructureFormat, parse_molecule
 from drugsim_core.errors import EndpointNotAvailableError, ReproducibilityError, StructureError
 from drugsim_core.version import get_rdkit_version
 from drugsim_features import compute_feature_set_id
-from drugsim_identity import CompoundIdentityResult, load_identity_snapshot, resolve_identity
+from drugsim_identity import (
+    CompoundIdentityResult,
+    build_skeleton_index,
+    load_identity_snapshot,
+    resolve_identity,
+)
 
 from drugsim_predict.applicability_domain import ApplicabilityDomainResult, assess_applicability_domain
 from drugsim_predict.conformal import ConformalResult, compute_conformal_set
@@ -102,6 +107,16 @@ def _get_identity_snapshot() -> dict:
     "unidentified"), never a startup failure.
     """
     return load_identity_snapshot(get_predict_settings().compound_identity_snapshot_path)
+
+
+@lru_cache(maxsize=1)
+def _get_identity_skeleton_index() -> dict:
+    """Index the snapshot by InChIKey skeleton, once per process.
+
+    Enables the connectivity-only fallback tier in ``resolve_identity``.
+    Ambiguous skeletons are refused there, not resolved here.
+    """
+    return build_skeleton_index(_get_identity_snapshot())
 
 
 def _check_feature_set_id(bundle: ModelBundle) -> None:
@@ -215,7 +230,11 @@ def run_inference(
     # rejection gate above, and never blocks or fails prediction -- a
     # compound outside the snapshot resolves as "unidentified", the
     # expected outcome for a novel molecule, not an error.
-    identity_result = resolve_identity(processed.identity.inchikey_full, _get_identity_snapshot())
+    identity_result = resolve_identity(
+        processed.identity.inchikey_full,
+        _get_identity_snapshot(),
+        _get_identity_skeleton_index(),
+    )
 
     warnings: list[InferenceWarning] = []
     if processed.stereo_completeness in ("undefined", "partially_defined"):
