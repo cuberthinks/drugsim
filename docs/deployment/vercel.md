@@ -1,8 +1,8 @@
 # Deploying DrugSim on Vercel
 
-**Status: prepared, not live.** Render still serves production and is unchanged.
-This documents the Vercel path, what has been verified, and what can only be
-verified by a real Vercel deploy.
+**Status: API verified on a Vercel preview; frontend deployed but not yet wired to the
+API; cutover pending.** Both Vercel projects exist on the `cuberthinks-projects` team.
+This documents the path, what real builds taught us, and what remains.
 
 ## Shape
 
@@ -50,17 +50,46 @@ key can fetch its prediction and a different valid key gets 404; an invalid
 structure is 422; and both the accepted (keyed) and rejected rows are in the
 database. Ownership isolation is also covered by the test suite on both backends.
 
-## NOT verified — needs a real Vercel deploy
+## Verified on real Vercel builds
 
-1. **Bundle size.** Measured for Linux x86_64: dependencies 396 MB unzipped
-   (scipy 83, rdkit 68, sklearn 42, numpy + its libs 65, psycopg 20) plus 116 MB of
-   source and models = about **512 MB**; roughly 414 MB if test directories are
-   excluded. Vercel's documentation confirms Python bundles have a size cap but the
-   figure was not retrievable, so whether this fits is unknown until a preview
-   deploy builds. This is the go/no-go for moving the API.
-2. That files produced by `build.sh` are included in the function bundle.
-3. Cold-start time (two models, 115 MB, loaded on first request per instance) and
-   the memory available to the function.
+- **Bundle size: fits.** The first build was 505.02 MB against Vercel's **500 MB**
+  function limit. `build.sh` now prunes `tests`/`test` directories from the installed
+  venv (Vercel installs dependencies *before* running it and bundles *after*), then runs
+  a real prediction in the pruned environment so a bad prune fails the build. Result:
+  site-packages 402 -> 371 MB, bundle **478.65 MB**. Vercel then moves dependencies to
+  install at cold start (about 3 s) and the deployed function is 67 MB.
+- **Behaviour matches Render.** For the same molecule, all 14 compared fields (label,
+  probability, conformal set and p-values, applicability-domain verdict and statistics,
+  model checksum, RDKit version, feature-set id, identity) were identical to the last
+  live Render response.
+- **Latency (preview, Hobby):** first prediction on an idle instance about 3.3 s, warm
+  about 0.7 s, second model's first call about 1.6 s.
+- **Persistence:** with Neon attached, the repository's own
+  `scripts/smoke_test_deployment.py` passes all checks, and the audit rows are present
+  in Neon (pooled endpoint; keyed rows for accepted requests; probability stored as
+  double precision; no raw structure in the hash columns).
+
+## Gotchas learned the hard way
+
+- **A project's first deploy becomes *production*** in the CLI even when you pass
+  `--target preview` (it happened to the frontend). Deployment protection keeps such a
+  URL private, but the project's `<name>.vercel.app` production alias was publicly
+  reachable. Create the project, set its production env vars, and only then deploy.
+- Deployment protection blocks previews. Test them with a project **automation bypass
+  secret** sent as the `x-vercel-protection-bypass` header; revoke it when finished.
+- `--prefix DRUGSIM_PREDICT_PREDICTION_` on `vercel integration add neon` yields
+  `DRUGSIM_PREDICT_PREDICTION_DATABASE_URL` (the pooled string), which is what the
+  API reads. It prefixes every Neon variable; the API ignores the extras.
+- The Vercel CLI uploads git-ignored files; `.vercelignore` keeps the 115 MB of local
+  model artifacts out (the build fetches them itself).
+
+## Still to do
+
+1. **Make the API reachable by the browser:** the API project's protection must be off
+   (the API key is its lock), and it must be promoted to production.
+2. Set the frontend's *production* `VITE_API_BASE_URL` / `VITE_API_KEY` and redeploy it,
+   and set the API's `DRUGSIM_PREDICT_CORS_ALLOWED_ORIGINS` to the frontend URL.
+3. End-to-end browser check, then revoke the bypass secret.
 
 ## Behaviour that differs from Render
 
@@ -73,7 +102,7 @@ database. Ownership isolation is also covered by the test suite on both backends
 
 ## Cutover and rollback
 
-1. Deploy both projects as previews. Run
+1. Deploy both projects. Run
    `python scripts/smoke_test_deployment.py --api-url <api> --frontend-url <web> --api-key <key>`
    against them; it must pass.
 2. Only then point users at the Vercel URLs. Leave Render running for at least a
