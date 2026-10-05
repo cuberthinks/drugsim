@@ -54,11 +54,16 @@ export function AboutPage() {
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
           Origin: Hong Kong.
         </p>
-        <p className="mt-3 text-sm font-medium text-ink">Collaborators</p>
-        <ul className="mt-1 text-sm leading-relaxed text-ink-soft">
-          <li>Yiu Pak On</li>
-          <li>Lee Man Hung</li>
-        </ul>
+        <dl className="mt-3 text-sm leading-relaxed">
+          <div className="flex flex-wrap gap-x-2">
+            <dt className="font-medium text-ink">Founder</dt>
+            <dd className="text-ink-soft">Lee Man Hong</dd>
+          </div>
+          <div className="flex flex-wrap gap-x-2">
+            <dt className="font-medium text-ink">Co-founder</dt>
+            <dd className="text-ink-soft">Yiu Pak On</dd>
+          </div>
+        </dl>
       </section>
 
       <section className="rounded-lg border border-line bg-paper-alt p-5" aria-labelledby="contact-heading">
