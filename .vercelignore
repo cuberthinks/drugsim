@@ -1,0 +1,10 @@
+# The Vercel build fetches model artifacts itself (deployment/vercel-api/build.sh),
+# so never upload the ~115 MB copies a developer may have downloaded locally.
+models/**/artifact/
+datasets/raw/
+datasets/processed/
+datasets/curated/
+datasets/reference/
+graphify-out/
+frontend/node_modules/
+frontend/dist/
