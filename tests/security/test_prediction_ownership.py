@@ -21,9 +21,29 @@ from drugsim_predict.store import PredictionStore
 pytestmark = [pytest.mark.unit, pytest.mark.model_artifact, pytest.mark.security]
 
 
-@pytest.fixture
-def client(tmp_path):
-    test_store = PredictionStore(db_path=tmp_path / "ownership_test.sqlite3")
+@pytest.fixture(scope="session")
+def _postgres_url(tmp_path_factory):
+    pgserver = pytest.importorskip("pgserver")
+    pytest.importorskip("psycopg")
+    server = pgserver.get_server(tmp_path_factory.mktemp("pgdata_ownership"))
+    yield server.get_uri()
+    server.cleanup()
+
+
+# Ownership isolation is a confidentiality guarantee, so it is proven on
+# BOTH backends: serverless deployments run on PostgreSQL, and a guarantee
+# that held only on SQLite would not be a guarantee for them.
+@pytest.fixture(params=["sqlite", "postgres"])
+def client(request, tmp_path):
+    if request.param == "sqlite":
+        test_store = PredictionStore(db_path=tmp_path / "ownership_test.sqlite3")
+    else:
+        url = request.getfixturevalue("_postgres_url")
+        import psycopg
+
+        with psycopg.connect(url) as conn:
+            conn.execute("DROP TABLE IF EXISTS predictions")
+        test_store = PredictionStore(database_url=url)
     app.dependency_overrides[get_store] = lambda: test_store
     with TestClient(app) as c:
         yield c

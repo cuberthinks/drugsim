@@ -51,6 +51,12 @@ class PredictSettings(BaseSettings):
     # exactly the file they always did -- this is purely additive.
     registry_dir: Path = Path(__file__).resolve().parents[2] / "models" / "registry"
     prediction_db_path: Path = _project_root() / "var" / "predictions.sqlite3"
+    # When set, the provenance store uses PostgreSQL instead of the SQLite
+    # file above. Needed on serverless hosts (e.g. Vercel) where the
+    # filesystem is read-only/ephemeral, so a SQLite file cannot hold an
+    # audit trail. Empty (the default) keeps the SQLite behaviour exactly
+    # as before. Holds credentials: never logged, never echoed in a response.
+    prediction_database_url: str = ""
     # Offline-built, committed snapshot (see scripts/build_compound_identity_
     # snapshot.py) -- the live service only ever reads this file, never
     # PubChem directly, preserving the "no third party receives a submitted
