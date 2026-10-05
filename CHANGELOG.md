@@ -7,6 +7,22 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
+### Added — Vercel deployment path (prepared, not live)
+
+- `PredictionStore` can now run on **PostgreSQL** (set
+  `DRUGSIM_PREDICT_PREDICTION_DATABASE_URL`) as well as SQLite, which stays the
+  default, so Render, local dev and CI are unchanged. The existing store tests run
+  on both backends against a real PostgreSQL 16, and the ownership-isolation
+  guarantee (`GET /predict/{id}` scoped to the creating API key, fail-closed for
+  keyless rows) is now proven end to end on both.
+- `deployment/vercel-api/` (entrypoint, pinned requirements, bundle assembler) and
+  `frontend/vercel.json`; runbook in `docs/deployment/vercel.md`. The assembled
+  bundle was exercised locally in production mode on PostgreSQL.
+- **Not yet verified, and not live:** whether the API bundle (about 512 MB measured
+  for Linux, ~414 MB with tests excluded) fits Vercel's Python size limit can only
+  be settled by a real preview deploy, which is blocked on Vercel account access.
+  Production is still served by Render.
+
 ### Deployed — Scientific Coverage upgrade live in production
 
 - Commit `830fe7a` (identity skeleton-tier resolution, external

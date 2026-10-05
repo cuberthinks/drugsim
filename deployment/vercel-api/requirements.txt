@@ -1,0 +1,16 @@
+# Runtime dependencies for the Vercel deployment of drugsim_predict.
+# Identical pins to requirements-predict-api.txt (the Render/Docker image),
+# so both hosts run the same numerical stack, plus the PostgreSQL driver the
+# serverless prediction store needs (no persistent disk for SQLite there).
+# scikit-learn 1.6.1 is not optional: the model artifacts were pickled with it.
+rdkit==2025.3.3
+pydantic==2.13.4
+pydantic-settings==2.11.0
+structlog==25.5.0
+pyyaml==6.0.3
+numpy==1.26.4
+scikit-learn==1.6.1
+joblib==1.5.3
+fastapi==0.128.8
+uvicorn==0.39.0
+psycopg[binary]==3.3.5
