@@ -7,7 +7,7 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
 
 ## [Unreleased]
 
-### Added — Vercel deployment path (API verified on a preview, cutover pending)
+### Added — Vercel deployment (live)
 
 - `PredictionStore` can now run on **PostgreSQL** (set
   `DRUGSIM_PREDICT_PREDICTION_DATABASE_URL`) as well as SQLite, which stays the
@@ -22,8 +22,12 @@ Core DB releases are versioned separately as `core-db-vN.N.N` (Phase 1 Step 2 §
   at build time) brings it to 478.65 MB. On a preview backed by Neon Postgres the
   repository's own smoke test passes, audit rows persist, and a prediction for the same
   molecule matches the last live Render response in all 14 compared fields.
-- Not yet done: the API project is still protected and un-promoted, and the frontend is
-  not wired to it, so the Vercel deployment does not serve predictions to the public.
+- **Live:** API at https://drugsim-api.vercel.app and frontend at
+  https://drugsim-frontend.vercel.app, backed by Neon Postgres. The repository smoke
+  test passes all 8 checks on the public URLs, CORS admits only the frontend origin, and
+  a prediction through the real UI returned a verified identity and a full reliability
+  block. Deployed by CLI from the `vercel-migration` branch; the projects are not yet
+  connected to GitHub. Render was suspended by the account owner before this work.
 
 ### Deployed — Scientific Coverage upgrade live in production
 

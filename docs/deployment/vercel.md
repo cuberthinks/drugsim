@@ -1,8 +1,10 @@
 # Deploying DrugSim on Vercel
 
-**Status: API verified on a Vercel preview; frontend deployed but not yet wired to the
-API; cutover pending.** Both Vercel projects exist on the `cuberthinks-projects` team.
-This documents the path, what real builds taught us, and what remains.
+**Status: live on Vercel.** API: https://drugsim-api.vercel.app. Frontend:
+https://drugsim-frontend.vercel.app. Both were deployed with the Vercel CLI from the
+`vercel-migration` branch; the projects are **not yet connected to GitHub**, so a push
+does not redeploy them. Render was suspended by the account owner before this work and
+was left untouched.
 
 ## Shape
 
@@ -83,13 +85,30 @@ database. Ownership isolation is also covered by the test suite on both backends
 - The Vercel CLI uploads git-ignored files; `.vercelignore` keeps the 115 MB of local
   model artifacts out (the build fetches them itself).
 
-## Still to do
+## Cutover (done 2026-10-05)
 
-1. **Make the API reachable by the browser:** the API project's protection must be off
-   (the API key is its lock), and it must be promoted to production.
-2. Set the frontend's *production* `VITE_API_BASE_URL` / `VITE_API_KEY` and redeploy it,
-   and set the API's `DRUGSIM_PREDICT_CORS_ALLOWED_ORIGINS` to the frontend URL.
-3. End-to-end browser check, then revoke the bypass secret.
+API project protection turned off (the API key is its lock), CORS origin set to the
+frontend, API promoted to production, frontend wired to it and redeployed. Verified on
+the public URLs: repository smoke test passes all 8 checks including the frontend;
+missing or wrong key is 401; CORS allows only the frontend origin; and a prediction made
+through the real UI (Terfenadine) returned its PubChem-verified identity, a hERG
+inhibitor call with probability 0.920, and the audit row in Neon. The temporary
+protection-bypass secret used for preview testing was revoked.
+
+## Remaining
+
+1. Merge `vercel-migration` to `main` and connect both projects to GitHub
+   (`vercel git connect`) so pushes deploy. Until then, redeploy by hand with
+   `vercel deploy --prod` from the repository root using the project's IDs.
+2. A custom domain, if wanted.
+3. Decide Render's fate (it is suspended). Nothing here depends on it.
+4. Preview and production share one Neon database, so test rows from previews and smoke
+   tests are mixed into the audit table. Use a separate Neon branch for previews if
+   that matters.
+5. `VITE_API_KEY` is baked into the public frontend bundle. This is the project's
+   documented design (a weak barrier, not a secret); stronger protection needs a
+   server-side proxy or Vercel's firewall rate limiting, not a different env var.
+6. Vercel's Hobby plan is for non-commercial use.
 
 ## Behaviour that differs from Render
 
@@ -102,7 +121,7 @@ database. Ownership isolation is also covered by the test suite on both backends
 
 ## Cutover and rollback
 
-1. Deploy both projects. Run
+1. Deploy. Run
    `python scripts/smoke_test_deployment.py --api-url <api> --frontend-url <web> --api-key <key>`
    against them; it must pass.
 2. Only then point users at the Vercel URLs. Leave Render running for at least a
